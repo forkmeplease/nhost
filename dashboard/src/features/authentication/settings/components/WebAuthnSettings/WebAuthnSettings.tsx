@@ -1,18 +1,21 @@
+import { ApplyLocalSettingsDialog } from '@/components/common/ApplyLocalSettingsDialog';
+import { useDialog } from '@/components/common/DialogProvider';
 import { useUI } from '@/components/common/UIProvider';
 import { Form } from '@/components/form/Form';
 import { SettingsContainer } from '@/components/layout/SettingsContainer';
 import { ActivityIndicator } from '@/components/ui/v2/ActivityIndicator';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import {
   GetSignInMethodsDocument,
   useGetSignInMethodsQuery,
   useUpdateConfigMutation,
 } from '@/generated/graphql';
-import { getToastStyleProps } from '@/utils/constants/settings';
-import { getServerError } from '@/utils/getServerError';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object({
@@ -22,15 +25,19 @@ const validationSchema = Yup.object({
 export type WebAuthnFormValues = Yup.InferType<typeof validationSchema>;
 
 export default function WebAuthnSettings() {
+  const { openDialog } = useDialog();
+  const isPlatform = useIsPlatform();
+  const localMimirClient = useLocalMimirClient();
   const { maintenanceActive } = useUI();
   const { currentProject } = useCurrentWorkspaceAndProject();
   const [updateConfig] = useUpdateConfigMutation({
     refetchQueries: [GetSignInMethodsDocument],
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { data, loading, error } = useGetSignInMethodsQuery({
     variables: { appId: currentProject?.id },
-    fetchPolicy: 'cache-only',
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { enabled } = data?.config?.auth?.method?.webauthn || {};
@@ -42,6 +49,12 @@ export default function WebAuthnSettings() {
     },
     resolver: yupResolver(validationSchema),
   });
+
+  useEffect(() => {
+    if (!loading) {
+      form.reset({ enabled });
+    }
+  }, [loading, enabled, form]);
 
   if (loading) {
     return (
@@ -66,33 +79,41 @@ export default function WebAuthnSettings() {
         config: {
           auth: {
             method: {
-              webauthn: {...values,
-              relyingParty: {
-                name: currentProject.name,
-              }},
+              webauthn: {
+                ...values,
+                relyingParty: {
+                  name: currentProject.name,
+                },
+              },
             },
           },
         },
       },
     });
 
-    try {
-      await toast.promise(
-        updateConfigPromise,
-        {
-          loading: `WebAuthn settings are being updated...`,
-          success: `WebAuthn settings have been updated successfully.`,
-          error: getServerError(
-            `An error occurred while trying to update the project's WebAuthn settings.`,
-          ),
-        },
-        getToastStyleProps(),
-      );
+    await execPromiseWithErrorToast(
+      async () => {
+        await updateConfigPromise;
+        form.reset(values);
 
-      form.reset(values);
-    } catch {
-      // Note: The toast will handle the error.
-    }
+        if (!isPlatform) {
+          openDialog({
+            title: 'Apply your changes',
+            component: <ApplyLocalSettingsDialog />,
+            props: {
+              PaperProps: {
+                className: 'max-w-2xl',
+              },
+            },
+          });
+        }
+      },
+      {
+        loadingMessage: 'WebAuthn settings are being updated...',
+        successMessage: 'WebAuthn settings have been updated successfully.',
+        errorMessage: `An error occurred while trying to update the project's WebAuthn settings.`,
+      },
+    );
   };
 
   return (
@@ -107,7 +128,7 @@ export default function WebAuthnSettings() {
               loading: formState.isSubmitting,
             },
           }}
-          docsLink="https://docs.nhost.io/authentication/sign-in-with-security-keys"
+          docsLink="https://docs.nhost.io/guides/auth/sign-in-webauthn"
           docsTitle="how to sign in users with security keys"
           switchId="enabled"
           showSwitch

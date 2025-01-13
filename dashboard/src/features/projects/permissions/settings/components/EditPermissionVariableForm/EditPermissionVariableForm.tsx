@@ -1,5 +1,8 @@
+import { ApplyLocalSettingsDialog } from '@/components/common/ApplyLocalSettingsDialog';
+import { useDialog } from '@/components/common/DialogProvider';
 import { ActivityIndicator } from '@/components/ui/v2/ActivityIndicator';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import type {
   BasePermissionVariableFormProps,
   BasePermissionVariableFormValues,
@@ -9,8 +12,9 @@ import {
   basePermissionVariableValidationSchema,
 } from '@/features/projects/permissions/settings/components/BasePermissionVariableForm';
 import { getAllPermissionVariables } from '@/features/projects/permissions/settings/utils/getAllPermissionVariables';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
 import type { PermissionVariable } from '@/types/application';
-import { getToastStyleProps } from '@/utils/constants/settings';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import {
   GetRolesPermissionsDocument,
   useGetRolesPermissionsQuery,
@@ -18,7 +22,6 @@ import {
 } from '@/utils/__generated__/graphql';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 
 export interface EditPermissionVariableFormProps
   extends Pick<BasePermissionVariableFormProps, 'onCancel' | 'location'> {
@@ -29,7 +32,7 @@ export interface EditPermissionVariableFormProps
   /**
    * Function to be called when the form is submitted.
    */
-  onSubmit?: () => Promise<void>;
+  onSubmit?: () => any;
 }
 
 export default function EditPermissionVariableForm({
@@ -37,11 +40,14 @@ export default function EditPermissionVariableForm({
   onSubmit,
   ...props
 }: EditPermissionVariableFormProps) {
+  const { openDialog } = useDialog();
+  const isPlatform = useIsPlatform();
+  const localMimirClient = useLocalMimirClient();
   const { currentProject } = useCurrentWorkspaceAndProject();
 
   const { data, error, loading } = useGetRolesPermissionsQuery({
     variables: { appId: currentProject?.id },
-    fetchPolicy: 'cache-only',
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { customClaims: permissionVariables } =
@@ -58,6 +64,7 @@ export default function EditPermissionVariableForm({
 
   const [updateConfig] = useUpdateConfigMutation({
     refetchQueries: [GetRolesPermissionsDocument],
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   if (loading) {
@@ -130,18 +137,30 @@ export default function EditPermissionVariableForm({
       },
     });
 
-    await toast.promise(
-      updateConfigPromise,
+    await execPromiseWithErrorToast(
+      async () => {
+        await updateConfigPromise;
+        await onSubmit?.();
+
+        if (!isPlatform) {
+          openDialog({
+            title: 'Apply your changes',
+            component: <ApplyLocalSettingsDialog />,
+            props: {
+              PaperProps: {
+                className: 'max-w-2xl',
+              },
+            },
+          });
+        }
+      },
       {
-        loading: 'Updating permission variable...',
-        success: 'Permission variable has been updated successfully.',
-        error:
+        loadingMessage: 'Updating permission variable...',
+        successMessage: 'Permission variable has been updated successfully.',
+        errorMessage:
           'An error occurred while trying to update the permission variable.',
       },
-      getToastStyleProps(),
     );
-
-    await onSubmit?.();
   }
 
   return (

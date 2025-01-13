@@ -1,5 +1,29 @@
 # @nhost/sync-versions
 
+## 0.2.0
+
+### Minor Changes
+
+- 768ca17: chore: update dependencies
+
+## 0.1.0
+
+### Minor Changes
+
+- 49a80c2: chore: update dependencies
+
+## 0.0.10
+
+### Patch Changes
+
+- e5bab6a: chore: update dependencies
+
+## 0.0.9
+
+### Patch Changes
+
+- 8d91f71: chore: update deps and enable pnpm audit
+
 ## 0.0.8
 
 ### Patch Changes

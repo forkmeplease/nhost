@@ -2,111 +2,70 @@ import { AuthenticatedLayout } from '@/components/layout/AuthenticatedLayout';
 import { Container } from '@/components/layout/Container';
 import { LoadingScreen } from '@/components/presentational/LoadingScreen';
 import { MaintenanceAlert } from '@/components/presentational/MaintenanceAlert';
-import { Box } from '@/components/ui/v2/Box';
-import { Button } from '@/components/ui/v2/Button';
-import { Text } from '@/components/ui/v2/Text';
-import { WorkspaceAndProjectList } from '@/features/projects/common/components/WorkspaceAndProjectList';
-import { WorkspaceSidebar } from '@/features/projects/common/components/WorkspaceSidebar';
-import { useGetAllWorkspacesAndProjectsQuery } from '@/utils/__generated__/graphql';
-import { darken } from '@mui/system';
-import { useUserData } from '@nhost/nextjs';
-import NavLink from 'next/link';
-import type { ReactElement } from 'react';
-import { useEffect } from 'react';
+import { useIsPlatform } from '@/features/orgs/projects/common/hooks/useIsPlatform';
+import { useOrgs } from '@/features/orgs/projects/hooks/useOrgs';
+import { useWorkspaces } from '@/features/orgs/projects/hooks/useWorkspaces';
+import { useSSRLocalStorage } from '@/hooks/useSSRLocalStorage';
+import { useRouter } from 'next/router';
+import { useEffect, type ReactElement } from 'react';
 
 export default function IndexPage() {
-  const user = useUserData();
-  const { data, loading, startPolling, stopPolling } =
-    useGetAllWorkspacesAndProjectsQuery({
-      skip: !user,
-    });
+  const { push } = useRouter();
+  const isPlatform = useIsPlatform();
+  const { orgs, loading: loadingOrgs } = useOrgs();
+  const { workspaces, loading: loadingWorkspaces } = useWorkspaces();
 
-  const numberOfProjects = data?.workspaces.reduce(
-    (projectCount, currentWorkspace) =>
-      projectCount + currentWorkspace.projects.length,
-    0,
-  );
-
-  // keep polling for workspaces until there is a workspace available.
-  // We do this because when a user signs up a workspace is created automatically
-  // and the serverless function can take some time to complete.
-  useEffect(() => {
-    startPolling(1000);
-  }, [startPolling]);
+  const [lastSlug] = useSSRLocalStorage('slug', null);
 
   useEffect(() => {
-    if (!data?.workspaces.length) {
-      return;
+    const navigateToSlug = async () => {
+      if (loadingOrgs || loadingWorkspaces) {
+        return;
+      }
+
+      if (orgs && workspaces) {
+        const orgFromLastSlug = orgs.find((o) => o.slug === lastSlug);
+        const workspaceFromLastSlug = workspaces.find(
+          (w) => w.slug === lastSlug,
+        );
+
+        if (orgFromLastSlug) {
+          await push(`/orgs/${orgFromLastSlug.slug}/projects`);
+          return;
+        }
+
+        if (workspaceFromLastSlug) {
+          await push(`/${workspaceFromLastSlug.slug}`);
+          return;
+        }
+
+        const personalOrg = orgs.find((org) => org.plan.isFree);
+
+        if (personalOrg) {
+          push(`/orgs/${personalOrg.slug}/projects`);
+        }
+      }
+    };
+
+    if (isPlatform) {
+      navigateToSlug();
     }
+  }, [
+    orgs,
+    lastSlug,
+    push,
+    workspaces,
+    loadingOrgs,
+    loadingWorkspaces,
+    isPlatform,
+  ]);
 
-    stopPolling();
-  }, [data?.workspaces, stopPolling]);
-
-  if ((!data && loading) || !user) {
-    return <LoadingScreen />;
-  }
-
-  if (numberOfProjects === 0) {
-    return (
-      <Container className="grid grid-cols-1 gap-8 md:grid-cols-4 md:pt-8">
-        <Box className="noapps col-span-1 h-80 rounded-md text-center md:col-span-3">
-          <div className="pt-12">
-            <Text
-              className="text-center text-2xl font-semibold"
-              sx={{ color: 'common.white' }}
-            >
-              Welcome to Nhost!
-            </Text>
-
-            <Text className="mt-2" sx={{ color: 'common.white' }}>
-              Let&apos;s set up your first backend - the Nhost way.
-            </Text>
-
-            <div className="inline-block pt-10">
-              <NavLink href="/new" passHref>
-                <Button
-                  sx={{
-                    backgroundColor: (theme) =>
-                      `${theme.palette.common.white} !important`,
-                    color: (theme) =>
-                      `${theme.palette.common.black} !important`,
-                    '&:hover': {
-                      backgroundColor: (theme) =>
-                        `${darken(theme.palette.common.white, 0.1)} !important`,
-                    },
-                  }}
-                  disabled={data?.workspaces?.length === 0}
-                >
-                  Create Your First Project
-                </Button>
-              </NavLink>
-            </div>
-          </div>
-        </Box>
-
-        <WorkspaceSidebar workspaces={data?.workspaces || []} />
-      </Container>
-    );
-  }
-
-  return (
-    <Container className="grid grid-cols-1 gap-8 md:grid-cols-4">
-      <WorkspaceAndProjectList
-        workspaces={data?.workspaces || []}
-        className="col-span-1 md:col-span-3"
-      />
-
-      <WorkspaceSidebar workspaces={data?.workspaces || []} />
-    </Container>
-  );
+  return <LoadingScreen />;
 }
 
 IndexPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthenticatedLayout
-      title="Dashboard"
-      contentContainerProps={{ className: 'flex w-full flex-col px-4' }}
-    >
+    <AuthenticatedLayout title="Dashboard">
       <Container className="py-0">
         <MaintenanceAlert />
       </Container>

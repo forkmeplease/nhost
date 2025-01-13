@@ -21,7 +21,7 @@ import {
   render as rtlRender,
   waitForElementToBeRemoved as rtlWaitForElementToBeRemoved,
 } from '@testing-library/react';
-import { RouterContext } from 'next/dist/shared/lib/router-context';
+import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
 import type { PropsWithChildren, ReactElement } from 'react';
 import { Toaster } from 'react-hot-toast';
 
@@ -29,6 +29,7 @@ import { Toaster } from 'react-hot-toast';
 const emotionCache = createEmotionCache();
 
 process.env = {
+  TEST_MODE: 'true',
   NODE_ENV: 'development',
   NEXT_PUBLIC_NHOST_PLATFORM: 'false',
   NEXT_PUBLIC_ENV: 'dev',

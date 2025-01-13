@@ -1,5 +1,142 @@
 # @nhost/hasura-auth-js
 
+## 2.10.0
+
+### Minor Changes
+
+- 04d2ce1: feat: add signin security key with user handle
+
+### Patch Changes
+
+- 44c1e17: chore: update `msw` to v1.3.5 to fix vulnerabilities
+
+## 2.9.0
+
+### Minor Changes
+
+- b944d05: feat: introduce `initWithSession` to initialize auth client with an existing session
+
+## 2.8.0
+
+### Minor Changes
+
+- 14e6100: feat: add support for ID token sign-in from authentication providers
+
+## 2.7.0
+
+### Minor Changes
+
+- fe6e8e2: feat: add email OTP sign-in functionality
+- 72899a6: fix: use a unique `broadcastKey` per nhost client for synchronizing authentication state across browser tabs
+
+## 2.6.0
+
+### Minor Changes
+
+- 55d8bb5: feat: support custom headers in sign-up and deanonymize requests
+
+## 2.5.6
+
+### Patch Changes
+
+- 8b12426: fix: correct signout to send accessToken when clearing all session
+
+## 2.5.5
+
+### Patch Changes
+
+- caa8bd7: fix: add error handling logic to transition to the signedOut state when the token is invalid or expired
+
+## 2.5.4
+
+### Patch Changes
+
+- 4564232: chore: update `clientStorage` docs and add usage examples
+
+## 2.5.3
+
+### Patch Changes
+
+- e28975d: fix: refactor refreshTimer logic to avoid an infinite loop when refreshToken has expired
+
+## 2.5.2
+
+### Patch Changes
+
+- a03fb2c: fix: deep clone machine context to prevent mutations in nested objects during initial session setup
+
+## 2.5.1
+
+### Patch Changes
+
+- f4f0353: fix: improve environment/browser detection to support React Native
+- defffd8: fix: resolve issue where `/token` endpoint is called with an empty token during sign-in
+
+## 2.5.0
+
+### Minor Changes
+
+- d0c9f4c: fix: replace `jose` with `jwt-decode` version 4.0.0
+
+## 2.4.2
+
+### Patch Changes
+
+- 68e0622: fix: resolved infinite loop occurring with requests to /token when a user logs out in one tab while other tabs are open
+
+## 2.4.1
+
+### Patch Changes
+
+- bcd889b: fix: change expiresAt format to RFC3339 in createPATPromise
+
+## 2.4.0
+
+### Minor Changes
+
+- 311374e: fix: ensure that the user remains signed in even after being redirected with an error following an attempt to connect with a social provider
+
+### Patch Changes
+
+- 1623e9b: chore: update `@simplewebauthn/browser` to `9.0.1`
+
+## 2.3.1
+
+### Patch Changes
+
+- 7baee8a: fix(hasura-auth-js): replace `jwt-decode` with `jose` for decoding access tokens that works on both the browser and Node.js
+- e0ab6d9: fix: add extra logic to check and wait for a valid JWT
+
+## 2.3.0
+
+### Minor Changes
+
+- 017f1a6: feat: add elevated permission examples
+
+## 2.2.0
+
+### Minor Changes
+
+- 1a61c65: feat: add 'elevateEmailSecurityKey' to the SDKs along with integration into react-apollo and vue-apollo examples
+
+## 2.1.11
+
+### Patch Changes
+
+- 8d91f71: chore: update deps and enable pnpm audit
+
+## 2.1.10
+
+### Patch Changes
+
+- b338793d6: Fix typo
+
+## 2.1.9
+
+### Patch Changes
+
+- 4fe4a1696: return `refreshToken` immediately after signIn and signUp
+
 ## 2.1.8
 
 ### Patch Changes

@@ -1,5 +1,667 @@
 # @nhost/dashboard
 
+## 2.14.0
+
+### Minor Changes
+
+- d43931e: fix: invalid organization slug/project subdomain doesn't open 404 page
+- 5df6fa2: feat: add unencrypted disk warning in storage capacity settings
+
+### Patch Changes
+
+- 44c1e17: chore: update `msw` to v1.3.5 to fix vulnerabilities
+  - @nhost/react-apollo@16.0.0
+  - @nhost/nextjs@2.2.1
+
+## 2.13.0
+
+### Minor Changes
+
+- 21e90da: chore: remove restrictions on SMTP sender so My Name <name@acme.com> can be added
+- 865dd93: fix: duplicate Run placeholders when there is an error in the backend
+- 6902a36: fix: can remove resources if postgres capacity is higher than 10
+- a535aa3: fix: fetch user roles locally in auth section
+- 0c50816: fix: allow decimal numbers in database row insert
+- aea6d18: chore: add warning when pausing a project about losing Run services persistent volume data
+- d3b4fc3: feat: allow to change postgres settings if project is paused
+- 29d27e1: chore: update `next` to v14.2.22 to fix vulnerabilities
+- c9dca09: feat: add reset password form
+- b3bcacb: fix: paused project banner cannot read null project name
+
+### Patch Changes
+
+- Updated dependencies [46fc520]
+- Updated dependencies [29d27e1]
+  - @nhost/nextjs@2.2.0
+  - @nhost/react-apollo@15.0.1
+
+## 2.12.0
+
+### Minor Changes
+
+- eb95562: fix: show all available permission variables in permission dropdown select
+
+### Patch Changes
+
+- 8b5c4a0: chore: cleanup layout and add disable duplicate atom key checking in development mode
+
+## 2.11.3
+
+### Patch Changes
+
+- 714dffa: fix: improve project polling logic and unify usage across components
+
+## 2.11.2
+
+### Patch Changes
+
+- 6a34f89: fix: improve project polling logic and unify usage across components
+
+## 2.11.1
+
+### Patch Changes
+
+- 0f6ce52: fix: consolidate useProject hook and fix jwt expired error
+
+## 2.11.0
+
+### Minor Changes
+
+- cea3ef5: Feat: add org and project placeholders
+
+## 2.10.0
+
+### Minor Changes
+
+- 86ecf27: feat: add support for additional metrics in overview
+- 21708be: feat: dashboard: add support for storage buckets to AI assistants
+
+## 1.30.0
+
+### Minor Changes
+
+- 50441a8: feat: add ui for project autoscaler settings and run services autoscaler settings
+
+## 1.29.0
+
+### Minor Changes
+
+- 55d8bb5: feat: integrate turnstile for signup verification
+- 2a2e54c: fix: update docs url in run services form tooltip
+- 18f942f: fix: display long error messages in error toast without overflow
+
+### Patch Changes
+
+- @nhost/react-apollo@13.0.0
+- @nhost/nextjs@2.1.22
+
+## 1.28.2
+
+### Patch Changes
+
+- 52a38fe: chore: update dependencies to address security vulnerabilities
+- Updated dependencies [52a38fe]
+  - @nhost/nextjs@2.1.21
+
+## 1.28.1
+
+### Patch Changes
+
+- 9735fa2: chore: remove broken link
+
+## 1.28.0
+
+### Minor Changes
+
+- 526183a: feat: allow filtering users in "make request as" in graphql section
+- be3b85b: feat: add conceal errors toggle on auth settings page
+
+### Patch Changes
+
+- 35a2f12: fix: prevent run service details from opening when attempting to delete
+  - @nhost/react-apollo@12.0.6
+  - @nhost/nextjs@2.1.20
+
+## 1.27.0
+
+### Minor Changes
+
+- a7cd02c: fix: resolve rate limit query
+
+## 1.26.0
+
+### Minor Changes
+
+- 3773ad7: chore: update pricing information
+- b63250d: fix: not allow run service creation form resubmission while creating a run service
+- a44a1d4: feat: add rate limits settings page
+
+### Patch Changes
+
+- @nhost/react-apollo@12.0.5
+- @nhost/nextjs@2.1.19
+
+## 1.25.0
+
+### Minor Changes
+
+- d1ceede: feat: add setting to migrate postgres major and/or minor versions
+- e5d3d1a: fix: allow manually typing column for custom check in database row permissions
+
+### Patch Changes
+
+- @nhost/react-apollo@12.0.4
+- @nhost/nextjs@2.1.18
+
+## 1.24.1
+
+### Patch Changes
+
+- 49f2e55: fix: use service subdomain in service form and service details dialog
+- 598b988: fix: use current project subdomain in ServiceDetailsDialog component
+
+## 1.24.0
+
+### Minor Changes
+
+- abb24af: chore: add redirect to support page when project is locked
+- 18a6455: feat: show contact us info and locked reason when project is locked
+
+### Patch Changes
+
+- e31eefa: fix: include ingresses field when updating run services
+
+## 1.23.0
+
+### Minor Changes
+
+- 33284d3: fix: don't show double scrollbar in configuration editor
+
+### Patch Changes
+
+- @nhost/react-apollo@12.0.3
+- @nhost/nextjs@2.1.17
+
+## 1.22.0
+
+### Minor Changes
+
+- 998c037: fix: align drop-down list in select component
+- 807b8c0: fix: show city name in region selection for project creation
+
+## 1.21.0
+
+### Minor Changes
+
+- a2efeed: fix: improve project health error handling, add unknown state and polling interval for health state
+
+## 1.20.0
+
+### Minor Changes
+
+- 8ea4210: fix: error toasts can be closed individually, instead of dismissing all toasts at once
+- 58919ba: chore: add blink animation when project health service is updating
+
+## 1.19.0
+
+### Minor Changes
+
+- b519862: fix: get configuration in configuration editor using local development environment
+
+## 1.18.0
+
+### Minor Changes
+
+- 502abad: feat: add services health checks indicators to the overview page
+- b3ff6ad: chore: update title text on service status modal
+- dbadf59: feat: add project configuration TOML editor to the settings page
+
+## 1.17.0
+
+### Minor Changes
+
+- 77fba27: fix: postgres version validation when activating ai in ai settings page
+- ac6d1b6: feat: use name instead of awsName
+
+## 1.16.3
+
+### Patch Changes
+
+- 87a37cf: fix: remove unnecessary isPlatform check from verify button disable logic on custom domains
+  - @nhost/react-apollo@12.0.2
+  - @nhost/nextjs@2.1.16
+
+## 1.16.2
+
+### Patch Changes
+
+- a9413af: fix: update `GetAllWorkspacesAndProjects` query polling to use exponential backoff
+  - @nhost/react-apollo@12.0.1
+  - @nhost/nextjs@2.1.15
+
+## 1.16.1
+
+### Patch Changes
+
+- @nhost/react-apollo@12.0.0
+- @nhost/nextjs@2.1.14
+
+## 1.16.0
+
+### Minor Changes
+
+- c6d5c5c: feat: add toggle switch to enable/disable public access in the database settings
+
+## 1.15.2
+
+### Patch Changes
+
+- @nhost/react-apollo@11.0.4
+- @nhost/nextjs@2.1.13
+
+## 1.15.1
+
+### Patch Changes
+
+- @nhost/react-apollo@11.0.3
+- @nhost/nextjs@2.1.12
+
+## 1.15.0
+
+### Minor Changes
+
+- a7bde37: feat: send metadata in the edit form
+
+### Patch Changes
+
+- 1bc615b: feat: improve error message handling in `ErrorToast` component
+  - @nhost/react-apollo@11.0.2
+  - @nhost/nextjs@2.1.11
+
+## 1.14.0
+
+### Minor Changes
+
+- a448d7d: feat: allow configuring postmark and delete SMTP settings
+
+## 1.13.3
+
+### Patch Changes
+
+- 5924bc3: fix: include password in `GetSmtpSettings` query
+- c5ad634: fix: resolved an issue where one-click install links were broken on Safari
+- 7278991: fix: update graphql auto-embeddings configuration to use String type for model field
+
+## 1.13.2
+
+### Patch Changes
+
+- 026f84f: fix: use configuration server URL from environment variable
+
+## 1.13.1
+
+### Patch Changes
+
+- 7e9a2ce: fix: resolve issue where run services form fails to open
+
+## 1.13.0
+
+### Minor Changes
+
+- dd5d262: feat: add model field to the auto-embeddings form
+- 09962be: feat: enable settings and run services when running the dashboard locally
+- 9cdecb6: feat: enable users to update their email address from the account settings page
+
+## 1.12.2
+
+### Patch Changes
+
+- c195c51: fix: send email upon signin for unverified users
+
+## 1.12.1
+
+### Patch Changes
+
+- 93ebdf8: fix: use service urls when initilizaing NhostClient running local dashboard
+  - @nhost/react-apollo@11.0.1
+  - @nhost/nextjs@2.1.10
+
+## 1.12.0
+
+### Minor Changes
+
+- f242e4b: feat: add connect with github to the user's account settings
+- 768ca17: chore: update dependencies
+- d62bd0f: fix: "Track this" option within the SQL editor now correctly updates the metadata
+- 91c2bb6: feat: refactor sign-in and sign-up pages to enforce email verification
+
+### Patch Changes
+
+- 943831f: fix: resolve an error toast issue when unpausing a project
+- Updated dependencies [768ca17]
+  - @nhost/react-apollo@11.0.0
+  - @nhost/nextjs@2.1.9
+
+## 1.11.2
+
+### Patch Changes
+
+- @nhost/react-apollo@10.0.2
+- @nhost/nextjs@2.1.8
+
+## 1.11.1
+
+### Patch Changes
+
+- 981404f: fix: set default value for healthCheck field validation
+
+## 1.11.0
+
+### Minor Changes
+
+- 7789469: chore: upgrade dependency `@graphql-codegen/cli` to `5.0.2` to address vulnerability
+- 6c11b75: feat: add update user displayName section in account settings
+
+### Patch Changes
+
+- @nhost/react-apollo@10.0.1
+- @nhost/nextjs@2.1.7
+
+## 1.10.0
+
+### Minor Changes
+
+- 49a80c2: chore: update dependencies
+- 150c04a: feat: add healthcheck config to run services
+
+### Patch Changes
+
+- e03f141: fix: allow insert, update and delete on tables in `auth` and `storage` schemas
+- 28676f4: feat: add min postgres version check to enable the ai service
+- Updated dependencies [49a80c2]
+  - @nhost/react-apollo@10.0.0
+  - @nhost/nextjs@2.1.6
+
+## 1.9.0
+
+### Minor Changes
+
+- d86e5c9: feat: add support for filtering the logs using a RegExp
+
+## 1.8.3
+
+### Patch Changes
+
+- @nhost/react-apollo@9.0.3
+- @nhost/nextjs@2.1.5
+
+## 1.8.2
+
+### Patch Changes
+
+- 6df4f02: fix: use custom error toast and show correct message when sending an invite
+
+## 1.8.1
+
+### Patch Changes
+
+- @nhost/react-apollo@9.0.2
+- @nhost/nextjs@2.1.4
+
+## 1.8.0
+
+### Minor Changes
+
+- 713d53c: feat: add catch-all route for workspace/project - useful for documentation
+
+### Patch Changes
+
+- 3db2999: fix: refresh table list after running SQL using the editor
+- 3c4dd55: fix: handle `Error` objects properly in the `ErrorToast` component
+- 92b434e: fix: resolve an issue where the checkbox in the data-grid header did not select all rows
+  - @nhost/react-apollo@9.0.1
+  - @nhost/nextjs@2.1.3
+
+## 1.7.0
+
+### Minor Changes
+
+- 0d8d0eb: Update docs and dashboard references
+
+## 1.6.9
+
+### Patch Changes
+
+- @nhost/react-apollo@9.0.0
+- @nhost/nextjs@2.1.2
+
+## 1.6.8
+
+### Patch Changes
+
+- @nhost/react-apollo@8.0.1
+- @nhost/nextjs@2.1.1
+
+## 1.6.7
+
+### Patch Changes
+
+- 5ef5189: fix: update `@apollo/client` to `3.9.4` to fix a cache bug
+
+## 1.6.6
+
+### Patch Changes
+
+- 3ba485e: fix: added discord.com to connect-src
+- e5bab6a: chore: update dependencies
+- Updated dependencies [b19ffed]
+- Updated dependencies [e5bab6a]
+  - @nhost/nextjs@2.1.0
+  - @nhost/react-apollo@8.0.0
+
+## 1.6.5
+
+### Patch Changes
+
+- ba73bb4: fix: update ErrorToast component to show the internal graphql error
+- d5337ff: fix: utilize accumulator in the creation of validation schema within data grid utils
+
+## 1.6.4
+
+### Patch Changes
+
+- 7c2a1c2: feat: show error and debug info in the error toast
+
+## 1.6.3
+
+### Patch Changes
+
+- 6b8aad5: fix: add bare nhost.run to CSP
+
+## 1.6.2
+
+### Patch Changes
+
+- b18edc0: feat: added CSP and X-Frame-Options
+
+## 1.6.1
+
+### Patch Changes
+
+- 8d91f71: chore: update deps and enable pnpm audit
+- 3b8473b: chore: update turbo to `1.11.3` and pnpm to `8.10.5` in Dockerfile
+- Updated dependencies [8d91f71]
+  - @nhost/react-apollo@7.0.2
+  - @nhost/nextjs@2.0.2
+
+## 1.6.0
+
+### Minor Changes
+
+- 3ff1c2b53: fix: show upgrade option for pro projects
+
+## 1.5.0
+
+### Minor Changes
+
+- c2ef17c0a: feat: add support for new Team plan
+
+## 1.4.0
+
+### Minor Changes
+
+- 7883bbcbd: feat: don't show deprecated plans
+- 44be6dc0a: feat: set redirectTo during sign-in to support preview environments
+
+### Patch Changes
+
+- 3c3594898: fix: allow access to graphite when configured running in local dashboard
+- 32c246b7a: chore: update docs icon
+
+## 1.3.2
+
+### Patch Changes
+
+- 174b4165b: chore: use env variables when running graphql codegen
+- 7c977e714: chore: change `Allowed Roles` to `Default Allowed Roles`
+- 46f028b9f: fix: remove hardcoded ai version setting
+
+## 1.3.1
+
+### Patch Changes
+
+- af33c21d1: chore: remove backendUrl deprecation notice and remove all references to `providersUpdated`
+
+## 1.3.0
+
+### Minor Changes
+
+- 04784d880: Fix graphite's default version
+
+## 1.2.0
+
+### Minor Changes
+
+- 5733162ed: feat: add settings and ui for graphite
+
+## 1.1.0
+
+### Minor Changes
+
+- e2b79b5ec: chore: remove sharp from deps
+
+## 1.0.1
+
+### Patch Changes
+
+- @nhost/react-apollo@7.0.1
+- @nhost/nextjs@2.0.1
+
+## 1.0.0
+
+### Major Changes
+
+- bc9eff6e4: chore: remove support for using backendUrl when instantiating the Nhost client
+
+### Patch Changes
+
+- Updated dependencies [bc9eff6e4]
+  - @nhost/nextjs@2.0.0
+  - @nhost/react-apollo@7.0.0
+
+## 0.21.1
+
+### Patch Changes
+
+- 97ced73a3: fix(dashboard): prevent dashboard from resolving secrets
+
+## 0.21.0
+
+### Minor Changes
+
+- ed1a8d458: Update alert message on increasing PostgreSQL's volume capacity
+- 2e2248fd4: feat(dashboard): add SQL editor
+
+## 0.20.28
+
+### Patch Changes
+
+- 7c2c31082: feat: add support for users to delete their account
+  - @nhost/react-apollo@6.0.1
+  - @nhost/nextjs@1.13.40
+
+## 0.20.27
+
+### Patch Changes
+
+- fa79b7709: chore(dashboard): tweaks and fixes to the service form and dialog
+- 8df84d782: fix(dashboard): allow resetting custom domains
+  - @nhost/react-apollo@6.0.0
+  - @nhost/nextjs@1.13.39
+
+## 0.20.26
+
+### Patch Changes
+
+- 331ba0376: feat(dashboard): add postgres storage capacity modifier in the settings
+- b7f801874: feat(dashboard): add new settings page for custom domains
+
+## 0.20.25
+
+### Patch Changes
+
+- @nhost/react-apollo@5.0.38
+
+## 0.20.24
+
+### Patch Changes
+
+- e10389ecf: fix(dashboard): disable run tab when developing locally
+  - @nhost/react-apollo@5.0.37
+
+## 0.20.23
+
+### Patch Changes
+
+- c01568a7d: chore(dashboard): show alert to update oauth providers
+
+## 0.20.22
+
+### Patch Changes
+
+- c3efb7ec8: feat(dashboard): query latest announcement from platform
+
+## 0.20.21
+
+### Patch Changes
+
+- 3e46d3873: chore: update link to node18 announcement
+
+## 0.20.20
+
+### Patch Changes
+
+- @nhost/react-apollo@5.0.36
+- @nhost/nextjs@1.13.38
+
+## 0.20.19
+
+### Patch Changes
+
+- 75c4c8ae3: feat(dashboard): make env value input multiline
+
+## 0.20.18
+
+### Patch Changes
+
+- 425d485f8: fix(dashboard): make sure dedicated resources pricing follows total resources
+
+## 0.20.17
+
+### Patch Changes
+
+- ae324f67f: fix(dashboard): remove unused graphql fields
+
 ## 0.20.16
 
 ### Patch Changes

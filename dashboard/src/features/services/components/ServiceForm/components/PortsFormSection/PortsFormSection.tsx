@@ -11,10 +11,9 @@ import { Text } from '@/components/ui/v2/Text';
 import { Tooltip } from '@/components/ui/v2/Tooltip';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
 import { InfoCard } from '@/features/projects/overview/components/InfoCard';
-import {
-  PortTypes,
-  type ServiceFormValues,
-} from '@/features/services/components/ServiceForm';
+import { PortTypes } from '@/features/services/components/ServiceForm/components/PortsFormSection/PortsFormSectionTypes';
+import { type ServiceFormValues } from '@/features/services/components/ServiceForm/ServiceFormTypes';
+import { getRunServicePortURL } from '@/utils/helpers';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 
 export default function PortsFormSection() {
@@ -39,17 +38,12 @@ export default function PortsFormSection() {
 
   const showURL = (index: number) =>
     formValues.subdomain &&
-    formValues.ports[index]?.type === PortTypes.HTTP &&
+    (formValues.ports[index]?.type === PortTypes.HTTP ||
+      formValues.ports[index]?.type === PortTypes.GRPC) &&
     formValues.ports[index]?.publish;
 
-  const getPortURL = (_port: string | number, subdomain: string) => {
-    const port = Number(_port) > 0 ? Number(_port) : '[port]';
-
-    return `https://${subdomain}-${port}.svc.${currentProject?.region.awsName}.${currentProject?.region.domain}`;
-  };
-
   return (
-    <Box className="space-y-4 rounded border-1 p-4">
+    <Box className="p-4 space-y-4 rounded border-1">
       <Box className="flex flex-row items-center justify-between ">
         <Box className="flex flex-row items-center space-x-2">
           <Text variant="h4" className="font-semibold">
@@ -71,14 +65,14 @@ export default function PortsFormSection() {
               </span>
             }
           >
-            <InfoIcon aria-label="Info" className="h-4 w-4" color="primary" />
+            <InfoIcon aria-label="Info" className="w-4 h-4" color="primary" />
           </Tooltip>
         </Box>
         <Button
           variant="borderless"
           onClick={() => append({ port: null, type: null, publish: false })}
         >
-          <PlusIcon className="h-5 w-5" />
+          <PlusIcon className="w-5 h-5" />
         </Button>
       </Box>
 
@@ -109,11 +103,11 @@ export default function PortsFormSection() {
                   listbox: { className: 'min-w-0 w-full' },
                   popper: {
                     disablePortal: false,
-                    className: 'z-[10000] w-[270px] w-full',
+                    className: 'z-[10000] w-[270px]',
                   },
                 }}
               >
-                {['http', 'tcp', 'udp']?.map((portType) => (
+                {['http', 'tcp', 'udp', 'grpc']?.map((portType) => (
                   <Option key={portType} value={portType}>
                     {portType}
                   </Option>
@@ -135,16 +129,18 @@ export default function PortsFormSection() {
                 color="error"
                 onClick={() => remove(index)}
               >
-                <TrashIcon className="h-4 w-4" />
+                <TrashIcon className="w-4 h-4" />
               </Button>
             </Box>
 
             {showURL(index) && (
               <InfoCard
                 title="URL"
-                value={getPortURL(
-                  formValues.ports[index]?.port,
-                  formValues.subdomain,
+                value={getRunServicePortURL(
+                  formValues?.subdomain,
+                  currentProject?.region.name,
+                  currentProject?.region.domain,
+                  formValues.ports[index],
                 )}
               />
             )}

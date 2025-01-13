@@ -6,16 +6,6 @@ export function isPlatform() {
 }
 
 /**
- * Backend URL for the locally running instance. This is only used when running
- * the Nhost Dashboard locally.
- */
-export function getLocalBackendUrl() {
-  return `http://localhost:${
-    process.env.NEXT_PUBLIC_NHOST_LOCAL_SERVICES_PORT || '1337'
-  }`;
-}
-
-/**
  * Admin secret for Hasura.
  */
 export function getHasuraAdminSecret() {
@@ -95,5 +85,15 @@ export function getHasuraApiUrl() {
   return (
     process.env.NEXT_PUBLIC_NHOST_HASURA_API_URL ||
     'https://local.hasura.nhost.run'
+  );
+}
+
+/**
+ * Custom URL of the config service.
+ */
+export function getConfigServerUrl() {
+  return (
+    process.env.NEXT_PUBLIC_NHOST_CONFIGSERVER_URL ||
+    'https://local.dashboard.nhost.run/v1/configserver/graphql'
   );
 }

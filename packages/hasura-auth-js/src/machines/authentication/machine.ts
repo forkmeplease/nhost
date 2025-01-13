@@ -5,7 +5,7 @@ import type {
   PublicKeyCredentialRequestOptionsJSON,
   RegistrationCredentialJSON
 } from '@simplewebauthn/typescript-types'
-import { InterpreterFrom, assign, createMachine, send } from 'xstate'
+import { assign, createMachine, InterpreterFrom, send } from 'xstate'
 import {
   NHOST_JWT_EXPIRES_AT_KEY,
   NHOST_REFRESH_TOKEN_ID_KEY,
@@ -35,11 +35,13 @@ import {
   PasswordlessSmsResponse,
   RefreshSessionResponse,
   SignInAnonymousResponse,
+  SignInEmailOTPResponse,
   SignInMfaTotpResponse,
   SignInPATResponse,
   SignInResponse,
   SignOutResponse,
-  SignUpResponse
+  SignUpResponse,
+  VerifyEmailOTPResponse
 } from '../../types'
 import {
   getParameterByName,
@@ -66,11 +68,15 @@ type AuthServices = {
   signInPassword: { data: SignInResponse }
   passwordlessSms: { data: PasswordlessSmsResponse | DeanonymizeResponse }
   passwordlessSmsOtp: { data: PasswordlessSmsOtpResponse }
+  signInEmailOTP: { data: SignInEmailOTPResponse }
+  verifyEmailOTP: { data: VerifyEmailOTPResponse }
   passwordlessEmail: { data: PasswordlessEmailResponse | DeanonymizeResponse }
   signInAnonymous: { data: SignInAnonymousResponse }
   signInPAT: { data: SignInPATResponse }
+  signInIdToken: { data: SignInResponse }
   signInMfaTotp: { data: SignInMfaTotpResponse }
   signInSecurityKeyEmail: { data: SignInResponse }
+  signInSecurityKey: { data: SignInResponse }
   refreshToken: { data: NhostSessionResponse }
   signout: { data: SignOutResponse }
   signUpEmailPassword: { data: SignUpResponse }
@@ -81,6 +87,7 @@ type AuthServices = {
 export const createAuthMachine = ({
   backendUrl,
   clientUrl,
+  broadcastKey,
   clientStorageType = 'web',
   clientStorage,
   refreshIntervalTime,
@@ -92,9 +99,10 @@ export const createAuthMachine = ({
   const postRequest = async <T = any, D = any>(
     url: string,
     data?: D,
-    token?: string | null
+    token?: string | null,
+    headers?: Record<string, string>
   ): Promise<T> => {
-    const result = await postFetch<T>(`${backendUrl}${url}`, data, token)
+    const result = await postFetch<T>(`${backendUrl}${url}`, data, token, headers)
 
     return result.data
   }
@@ -165,8 +173,8 @@ export const createAuthMachine = ({
                 needsMfa: {},
                 failed: {},
                 signingOut: {
-                  entry: ['clearContextExceptRefreshToken'],
-                  exit: ['destroyRefreshToken', 'reportTokenChanged'],
+                  entry: ['clearContextExceptTokens'],
+                  exit: ['destroyAccessToken', 'destroyRefreshToken', 'reportTokenChanged'],
                   invoke: {
                     src: 'signout',
                     id: 'signingOut',
@@ -184,8 +192,10 @@ export const createAuthMachine = ({
                 SIGNIN_PASSWORD: 'authenticating.password',
                 SIGNIN_ANONYMOUS: 'authenticating.anonymous',
                 SIGNIN_SECURITY_KEY_EMAIL: 'authenticating.securityKeyEmail',
+                SIGNIN_SECURITY_KEY: 'authenticating.securityKey',
                 SIGNIN_MFA_TOTP: 'authenticating.mfa.totp',
-                SIGNIN_PAT: 'authenticating.pat'
+                SIGNIN_PAT: 'authenticating.pat',
+                SIGNIN_ID_TOKEN: 'authenticating.idToken'
               }
             },
             authenticating: {
@@ -235,6 +245,20 @@ export const createAuthMachine = ({
                     }
                   }
                 },
+                idToken: {
+                  invoke: {
+                    src: 'signInIdToken',
+                    id: 'authenticateWithIdToken',
+                    onDone: {
+                      actions: ['saveSession', 'reportTokenChanged'],
+                      target: '#nhost.authentication.signedIn'
+                    },
+                    onError: {
+                      actions: 'saveAuthenticationError',
+                      target: '#nhost.authentication.signedOut.failed'
+                    }
+                  }
+                },
                 anonymous: {
                   invoke: {
                     src: 'signInAnonymous',
@@ -270,6 +294,29 @@ export const createAuthMachine = ({
                 securityKeyEmail: {
                   invoke: {
                     src: 'signInSecurityKeyEmail',
+                    id: 'authenticateUserWithSecurityKey',
+                    onDone: {
+                      actions: ['saveSession', 'reportTokenChanged'],
+                      target: '#nhost.authentication.signedIn'
+                    },
+                    onError: [
+                      {
+                        cond: 'unverified',
+                        target: [
+                          '#nhost.authentication.signedOut',
+                          '#nhost.registration.incomplete.needsEmailVerification'
+                        ]
+                      },
+                      {
+                        actions: 'saveAuthenticationError',
+                        target: '#nhost.authentication.signedOut.failed'
+                      }
+                    ]
+                  }
+                },
+                securityKey: {
+                  invoke: {
+                    src: 'signInSecurityKey',
                     id: 'authenticateUserWithSecurityKey',
                     onDone: {
                       actions: ['saveSession', 'reportTokenChanged'],
@@ -341,7 +388,13 @@ export const createAuthMachine = ({
                               actions: ['saveSession', 'resetTimer', 'reportTokenChanged'],
                               target: 'pending'
                             },
-                            onError: [{ actions: 'saveRefreshAttempt', target: 'pending' }]
+                            onError: [
+                              {
+                                cond: 'isUnauthorizedError',
+                                target: '#nhost.authentication.signedOut'
+                              },
+                              { actions: 'saveRefreshAttempt', target: 'pending' }
+                            ]
                           }
                         }
                       }
@@ -393,7 +446,9 @@ export const createAuthMachine = ({
                 SIGNUP_SECURITY_KEY: 'securityKey',
                 PASSWORDLESS_EMAIL: 'passwordlessEmail',
                 PASSWORDLESS_SMS: 'passwordlessSms',
-                PASSWORDLESS_SMS_OTP: 'passwordlessSmsOtp'
+                PASSWORDLESS_SMS_OTP: 'passwordlessSmsOtp',
+                SIGNIN_EMAIL_OTP: 'signInEmailOTP',
+                VERIFY_EMAIL_OTP: 'verifyEmailOTP'
               },
               initial: 'noErrors',
               states: {
@@ -504,7 +559,36 @@ export const createAuthMachine = ({
                 }
               }
             },
-
+            signInEmailOTP: {
+              entry: ['resetErrors'],
+              invoke: {
+                src: 'signInEmailOTP',
+                id: 'signInEmailOTP',
+                onDone: {
+                  actions: 'clearContext',
+                  target: ['#nhost.authentication.signedOut', 'incomplete.needsOtp']
+                },
+                onError: {
+                  actions: 'saveRegistrationError',
+                  target: 'incomplete.failed'
+                }
+              }
+            },
+            verifyEmailOTP: {
+              entry: ['resetErrors'],
+              invoke: {
+                src: 'verifyEmailOTP',
+                id: 'verifyEmailOTP',
+                onDone: {
+                  actions: ['saveSession', 'reportTokenChanged'],
+                  target: '#nhost.authentication.signedIn'
+                },
+                onError: {
+                  actions: 'saveRegistrationError',
+                  target: 'incomplete.failed'
+                }
+              }
+            },
             complete: {
               on: {
                 SIGNED_OUT: 'incomplete'
@@ -530,11 +614,11 @@ export const createAuthMachine = ({
             ...INITIAL_MACHINE_CONTEXT
           }
         }),
-        clearContextExceptRefreshToken: assign(({ refreshToken: { value } }) => {
-          storageSetter(NHOST_JWT_EXPIRES_AT_KEY, null)
+        clearContextExceptTokens: assign(({ accessToken, refreshToken }) => {
           return {
             ...INITIAL_MACHINE_CONTEXT,
-            refreshToken: { value }
+            accessToken: accessToken,
+            refreshToken: refreshToken
           }
         }),
 
@@ -655,6 +739,17 @@ export const createAuthMachine = ({
           }
         }),
 
+        destroyAccessToken: assign({
+          accessToken: (_) => {
+            storageSetter(NHOST_JWT_EXPIRES_AT_KEY, null)
+            return {
+              value: null,
+              expiresAt: null,
+              expiresInSeconds: null
+            }
+          }
+        }),
+
         // * Clean the browser url when `autoSignIn` is activated
         cleanUrl: () => {
           if (autoSignIn && getParameterByName('refreshToken')) {
@@ -666,11 +761,16 @@ export const createAuthMachine = ({
 
         // * Broadcast the token to other tabs when `autoSignIn` is activated
         broadcastToken: (context) => {
-          if (autoSignIn) {
+          if (autoSignIn && broadcastKey) {
             try {
-              const channel = new BroadcastChannel('nhost')
+              const channel = new BroadcastChannel(broadcastKey)
               // ? broadcat session instead of token ?
-              channel.postMessage(context.refreshToken.value)
+              channel.postMessage({
+                type: 'broadcast_token',
+                payload: {
+                  token: context.refreshToken.value
+                }
+              })
             } catch (error) {
               // * BroadcastChannel is not available e.g. react-native
             }
@@ -680,16 +780,18 @@ export const createAuthMachine = ({
 
       guards: {
         isAnonymous: (ctx, e) => !!ctx.user?.isAnonymous,
-        isSignedIn: (ctx) => !!ctx.user && !!ctx.refreshToken.value && !!ctx.accessToken.value,
+        isSignedIn: (ctx) => !!ctx.user && !!ctx.accessToken.value,
         noToken: (ctx) => !ctx.refreshToken.value,
         isRefreshTokenPAT: (ctx) => !!ctx.refreshToken?.isPAT,
         hasRefreshToken: (ctx) => !!ctx.refreshToken.value,
         isAutoRefreshDisabled: () => !autoRefreshToken,
         refreshTimerShouldRefresh: (ctx) => {
           const { expiresAt } = ctx.accessToken
+
           if (!expiresAt) {
             return false
           }
+
           if (ctx.refreshTimer.lastAttempt) {
             // * If the refresh timer reached the maximum number of attempts, we should not try again
             if (ctx.refreshTimer.attempts > REFRESH_TOKEN_MAX_ATTEMPTS) {
@@ -699,6 +801,12 @@ export const createAuthMachine = ({
             // * Exponential backoff
             return elapsed > Math.pow(2, ctx.refreshTimer.attempts - 1) * 5_000
           }
+
+          // This happens when either the computer goes to sleep or when Chrome descides to suspend the tab
+          if (expiresAt.getTime() < Date.now()) {
+            return true
+          }
+
           if (refreshIntervalTime) {
             // * If a refreshIntervalTime has been passed on as an option, it will notify
             // * the token should be refershed when this interval is overdue
@@ -742,7 +850,8 @@ export const createAuthMachine = ({
 
         // * Event guards
         hasSession: (_, e) => !!e.data?.session,
-        hasMfaTicket: (_, e) => !!e.data?.mfa
+        hasMfaTicket: (_, e) => !!e.data?.mfa,
+        isUnauthorizedError: (_, { data: { error } }: any) => error.status === 401
       },
 
       services: {
@@ -761,6 +870,13 @@ export const createAuthMachine = ({
         signInPAT: (_context, { pat }) => {
           return postRequest<SignInPATResponse>('/signin/pat', {
             personalAccessToken: pat
+          })
+        },
+        signInIdToken: (_context, { provider, idToken, nonce }) => {
+          return postRequest<SignInResponse>('/signin/idtoken', {
+            provider,
+            idToken,
+            ...(nonce && { nonce })
           })
         },
         passwordlessSms: (context, { phoneNumber, options }) => {
@@ -796,6 +912,26 @@ export const createAuthMachine = ({
           }
           return postRequest('/signin/passwordless/sms/otp', {
             phoneNumber,
+            otp
+          })
+        },
+        signInEmailOTP: (_, { email, options }) => {
+          if (!isValidEmail(email)) {
+            return Promise.reject({ error: INVALID_EMAIL_ERROR })
+          }
+
+          return postRequest('/signin/otp/email', {
+            email,
+            options: rewriteRedirectTo(clientUrl, options)
+          })
+        },
+        verifyEmailOTP: (_, { email, otp }) => {
+          if (!isValidEmail(email)) {
+            return Promise.reject({ error: INVALID_EMAIL_ERROR })
+          }
+
+          return postRequest('/signin/otp/email/verify', {
+            email,
             otp
           })
         },
@@ -854,23 +990,59 @@ export const createAuthMachine = ({
         },
         refreshToken: async (ctx, event) => {
           const refreshToken = event.type === 'TRY_TOKEN' ? event.token : ctx.refreshToken.value
-          const session = await postRequest<RefreshSessionResponse>('/token', {
+          const session: NhostSession = await postRequest<RefreshSessionResponse>('/token', {
             refreshToken
           })
           return { session, error: null }
         },
-        signout: (ctx, e) =>
-          postRequest('/signout', {
-            refreshToken: ctx.refreshToken.value,
-            all: !!e.all
-          }),
-        signUpEmailPassword: async (context, { email, password, options }) => {
+        signInSecurityKey: async (): Promise<SignInResponse> => {
+          try {
+            const options: PublicKeyCredentialRequestOptionsJSON = await postRequest(
+              '/signin/webauthn',
+              {}
+            )
+
+            let credential: AuthenticationCredentialJSON
+            try {
+              credential = await startAuthentication(options)
+            } catch (e) {
+              throw new CodifiedError(e as Error)
+            }
+            return postRequest<SignInResponse>('/signin/webauthn/verify', { credential })
+          } catch (error) {
+            throw new CodifiedError(error as Error)
+          }
+        },
+        signout: async (ctx, e) => {
+          const signOutResponse = await postRequest(
+            '/signout',
+            {
+              refreshToken: ctx.refreshToken.value,
+              all: !!e.all
+            },
+            !!e.all ? ctx.accessToken.value : undefined
+          )
+
+          if (broadcastKey) {
+            try {
+              const channel = new BroadcastChannel(broadcastKey)
+              // ? broadcast the signout event to other tabs to remove the accessToken
+              channel.postMessage({ type: 'signout' })
+            } catch (error) {
+              // * BroadcastChannel is not available e.g. react-native
+            }
+          }
+
+          return signOutResponse
+        },
+        signUpEmailPassword: async (context, { email, password, options, requestOptions }) => {
           if (!isValidEmail(email)) {
             return Promise.reject<SignUpResponse>({ error: INVALID_EMAIL_ERROR })
           }
           if (!isValidPassword(password)) {
             return Promise.reject<SignUpResponse>({ error: INVALID_PASSWORD_ERROR })
           }
+
           if (context.user?.isAnonymous) {
             return postRequest<SignUpResponse>(
               '/user/deanonymize',
@@ -880,14 +1052,20 @@ export const createAuthMachine = ({
                 password,
                 options: rewriteRedirectTo(clientUrl, options)
               },
-              context.accessToken.value
+              context.accessToken.value,
+              requestOptions?.headers
             )
           } else {
-            return postRequest<SignUpResponse>('/signup/email-password', {
-              email,
-              password,
-              options: rewriteRedirectTo(clientUrl, options)
-            })
+            return postRequest<SignUpResponse>(
+              '/signup/email-password',
+              {
+                email,
+                password,
+                options: rewriteRedirectTo(clientUrl, options)
+              },
+              null,
+              requestOptions?.headers
+            )
           }
         },
         signUpSecurityKey: async (_, { email, options }) => {
@@ -953,15 +1131,19 @@ export const createAuthMachine = ({
               }
             } else {
               const error = getParameterByName('error')
+              const errorDescription = getParameterByName('errorDescription')
+
               if (error) {
-                return Promise.reject<NhostSessionResponse>({
-                  session: null,
-                  error: {
-                    status: VALIDATION_ERROR_CODE,
-                    error,
-                    message: getParameterByName('errorDescription') || error
-                  }
-                })
+                if (errorDescription !== 'social user already exists') {
+                  return Promise.reject<NhostSessionResponse>({
+                    session: null,
+                    error: {
+                      status: VALIDATION_ERROR_CODE,
+                      error,
+                      message: errorDescription || error
+                    }
+                  })
+                }
               }
             }
           }

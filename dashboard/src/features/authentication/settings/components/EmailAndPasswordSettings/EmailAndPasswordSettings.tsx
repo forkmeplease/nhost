@@ -1,3 +1,5 @@
+import { ApplyLocalSettingsDialog } from '@/components/common/ApplyLocalSettingsDialog';
+import { useDialog } from '@/components/common/DialogProvider';
 import { useUI } from '@/components/common/UIProvider';
 import { ControlledCheckbox } from '@/components/form/ControlledCheckbox';
 import { Form } from '@/components/form/Form';
@@ -6,16 +8,17 @@ import { ActivityIndicator } from '@/components/ui/v2/ActivityIndicator';
 import { Input } from '@/components/ui/v2/Input';
 import { Text } from '@/components/ui/v2/Text';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import {
   GetSignInMethodsDocument,
   useGetSignInMethodsQuery,
   useUpdateConfigMutation,
 } from '@/generated/graphql';
-import { getToastStyleProps } from '@/utils/constants/settings';
-import { getServerError } from '@/utils/getServerError';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object({
@@ -31,15 +34,19 @@ const validationSchema = Yup.object({
 export type EmailAndPasswordFormValues = Yup.InferType<typeof validationSchema>;
 
 export default function EmailAndPasswordSettings() {
+  const { openDialog } = useDialog();
+  const isPlatform = useIsPlatform();
   const { maintenanceActive } = useUI();
+  const localMimirClient = useLocalMimirClient();
   const { currentProject } = useCurrentWorkspaceAndProject();
   const [updateConfig] = useUpdateConfigMutation({
     refetchQueries: [GetSignInMethodsDocument],
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { data, error, loading } = useGetSignInMethodsQuery({
     variables: { appId: currentProject?.id },
-    fetchPolicy: 'cache-only',
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { hibpEnabled, emailVerificationRequired, passwordMinLength } =
@@ -54,6 +61,22 @@ export default function EmailAndPasswordSettings() {
     },
     resolver: yupResolver(validationSchema),
   });
+
+  useEffect(() => {
+    if (!loading) {
+      form.reset({
+        hibpEnabled,
+        emailVerificationRequired,
+        passwordMinLength,
+      });
+    }
+  }, [
+    loading,
+    hibpEnabled,
+    emailVerificationRequired,
+    passwordMinLength,
+    form,
+  ]);
 
   if (loading) {
     return (
@@ -85,23 +108,31 @@ export default function EmailAndPasswordSettings() {
       },
     });
 
-    try {
-      await toast.promise(
-        updateConfigPromise,
-        {
-          loading: `Email and password sign-in settings are being updated...`,
-          success: `Email and password sign-in settings have been updated successfully.`,
-          error: getServerError(
-            `An error occurred while trying to update email sign-in settings.`,
-          ),
-        },
-        getToastStyleProps(),
-      );
+    await execPromiseWithErrorToast(
+      async () => {
+        await updateConfigPromise;
+        form.reset(formValues);
 
-      form.reset(formValues);
-    } catch {
-      // Note: The toast will handle the error.
-    }
+        if (!isPlatform) {
+          openDialog({
+            title: 'Apply your changes',
+            component: <ApplyLocalSettingsDialog />,
+            props: {
+              PaperProps: {
+                className: 'max-w-2xl',
+              },
+            },
+          });
+        }
+      },
+      {
+        loadingMessage: `Email and password sign-in settings are being updated...`,
+        successMessage:
+          'Email and password sign-in settings have been updated successfully.',
+        errorMessage:
+          'An error occurred while trying to update email sign-in settings.',
+      },
+    );
   }
 
   return (
@@ -110,7 +141,7 @@ export default function EmailAndPasswordSettings() {
         <SettingsContainer
           title="Email and Password"
           description="Allow users to sign in with email and password."
-          docsLink="https://docs.nhost.io/authentication/sign-in-with-email-and-password"
+          docsLink="https://docs.nhost.io/guides/auth/sign-in-email-password"
           docsTitle="how to sign in users with email and password"
           className="grid grid-flow-row"
           showSwitch

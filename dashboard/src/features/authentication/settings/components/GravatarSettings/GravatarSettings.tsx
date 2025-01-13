@@ -1,3 +1,5 @@
+import { ApplyLocalSettingsDialog } from '@/components/common/ApplyLocalSettingsDialog';
+import { useDialog } from '@/components/common/DialogProvider';
 import { useUI } from '@/components/common/UIProvider';
 import { ControlledSelect } from '@/components/form/ControlledSelect';
 import { Form } from '@/components/form/Form';
@@ -5,20 +7,21 @@ import { SettingsContainer } from '@/components/layout/SettingsContainer';
 import { ActivityIndicator } from '@/components/ui/v2/ActivityIndicator';
 import { Option } from '@/components/ui/v2/Option';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import {
   GetAuthenticationSettingsDocument,
   useGetAuthenticationSettingsQuery,
   useUpdateConfigMutation,
 } from '@/generated/graphql';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
 import {
   AUTH_GRAVATAR_DEFAULT,
   AUTH_GRAVATAR_RATING,
-  getToastStyleProps,
 } from '@/utils/constants/settings';
-import { getServerError } from '@/utils/getServerError';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
 import { twMerge } from 'tailwind-merge';
 import * as Yup from 'yup';
 
@@ -31,15 +34,19 @@ const validationSchema = Yup.object({
 export type GravatarFormValues = Yup.InferType<typeof validationSchema>;
 
 export default function GravatarSettings() {
+  const { openDialog } = useDialog();
+  const isPlatform = useIsPlatform();
   const { maintenanceActive } = useUI();
+  const localMimirClient = useLocalMimirClient();
   const { currentProject } = useCurrentWorkspaceAndProject();
   const [updateConfig] = useUpdateConfigMutation({
     refetchQueries: [GetAuthenticationSettingsDocument],
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { data, loading, error } = useGetAuthenticationSettingsQuery({
     variables: { appId: currentProject?.id },
-    fetchPolicy: 'cache-only',
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const {
@@ -57,6 +64,16 @@ export default function GravatarSettings() {
     },
     resolver: yupResolver(validationSchema),
   });
+
+  useEffect(() => {
+    if (!loading) {
+      form.reset({
+        default: defaultGravatar || '',
+        rating: rating || '',
+        enabled: enabled || false,
+      });
+    }
+  }, [loading, defaultGravatar, rating, enabled, form]);
 
   if (loading) {
     return (
@@ -89,23 +106,30 @@ export default function GravatarSettings() {
       },
     });
 
-    try {
-      await toast.promise(
-        updateConfigPromise,
-        {
-          loading: `Gravatar settings are being updated...`,
-          success: `Gravatar settings have been updated successfully.`,
-          error: getServerError(
-            `An error occurred while trying to update the project's Gravatar settings.`,
-          ),
-        },
-        getToastStyleProps(),
-      );
+    await execPromiseWithErrorToast(
+      async () => {
+        await updateConfigPromise;
+        form.reset(values);
 
-      form.reset(values);
-    } catch {
-      // Note: The toast will handle the error.
-    }
+        if (!isPlatform) {
+          openDialog({
+            title: 'Apply your changes',
+            component: <ApplyLocalSettingsDialog />,
+            props: {
+              PaperProps: {
+                className: 'max-w-2xl',
+              },
+            },
+          });
+        }
+      },
+      {
+        loadingMessage: 'Gravatar settings are being updated...',
+        successMessage: 'Gravatar settings have been updated successfully.',
+        errorMessage:
+          "An error occurred while trying to update the project's Gravatar settings.",
+      },
+    );
   };
 
   return (
@@ -120,7 +144,7 @@ export default function GravatarSettings() {
               loading: formState.isSubmitting,
             },
           }}
-          docsLink="https://docs.nhost.io/authentication#gravatar"
+          docsLink="https://docs.nhost.io/guides/auth/overview#gravatar"
           switchId="enabled"
           showSwitch
           className={twMerge(

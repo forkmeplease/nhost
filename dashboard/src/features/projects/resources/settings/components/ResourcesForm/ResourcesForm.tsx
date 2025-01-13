@@ -1,3 +1,4 @@
+import { ApplyLocalSettingsDialog } from '@/components/common/ApplyLocalSettingsDialog';
 import { useDialog } from '@/components/common/DialogProvider';
 import { Form } from '@/components/form/Form';
 import { SettingsContainer } from '@/components/layout/SettingsContainer';
@@ -7,6 +8,7 @@ import { Box } from '@/components/ui/v2/Box';
 import { Divider } from '@/components/ui/v2/Divider';
 import { Link } from '@/components/ui/v2/Link';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import { useProPlan } from '@/features/projects/common/hooks/useProPlan';
 import { ResourcesConfirmationDialog } from '@/features/projects/resources/settings/components/ResourcesConfirmationDialog';
 import { ServiceResourcesFormFragment } from '@/features/projects/resources/settings/components/ServiceResourcesFormFragment';
@@ -14,12 +16,12 @@ import { TotalResourcesFormFragment } from '@/features/projects/resources/settin
 import { calculateBillableResources } from '@/features/projects/resources/settings/utils/calculateBillableResources';
 import type { ResourceSettingsFormValues } from '@/features/projects/resources/settings/utils/resourceSettingsValidationSchema';
 import { resourceSettingsValidationSchema } from '@/features/projects/resources/settings/utils/resourceSettingsValidationSchema';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
 import {
   RESOURCE_VCPU_MULTIPLIER,
   RESOURCE_VCPU_PRICE,
 } from '@/utils/constants/common';
-import { getToastStyleProps } from '@/utils/constants/settings';
-import { getServerError } from '@/utils/getServerError';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import type { GetResourcesQuery } from '@/utils/__generated__/graphql';
 import {
   GetResourcesDocument,
@@ -28,7 +30,6 @@ import {
 } from '@/utils/__generated__/graphql';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
 import { twMerge } from 'tailwind-merge';
 import ResourcesFormFooter from './ResourcesFormFooter';
 
@@ -36,16 +37,20 @@ function getInitialServiceResources(
   data: GetResourcesQuery,
   service: Exclude<keyof GetResourcesQuery['config'], '__typename'>,
 ) {
-  const { compute, replicas } = data?.config?.[service]?.resources || {};
+  const { compute, replicas, autoscaler } =
+    data?.config?.[service]?.resources || {};
 
   return {
     replicas,
     vcpu: compute?.cpu || 0,
     memory: compute?.memory || 0,
+    autoscale: autoscaler || null,
   };
 }
 
 export default function ResourcesForm() {
+  const isPlatform = useIsPlatform();
+  const localMimirClient = useLocalMimirClient();
   const { openDialog, closeDialog } = useDialog();
   const { currentProject } = useCurrentWorkspaceAndProject();
 
@@ -57,6 +62,7 @@ export default function ResourcesForm() {
     variables: {
       appId: currentProject?.id,
     },
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const {
@@ -67,6 +73,7 @@ export default function ResourcesForm() {
 
   const [updateConfig] = useUpdateConfigMutation({
     refetchQueries: [GetResourcesDocument],
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const initialDatabaseResources = getInitialServiceResources(data, 'postgres');
@@ -95,27 +102,35 @@ export default function ResourcesForm() {
         replicas: initialDatabaseResources.replicas || 1,
         vcpu: initialDatabaseResources.vcpu || 1000,
         memory: initialDatabaseResources.memory || 2048,
+        autoscale: !!initialDatabaseResources.autoscale || false,
+        maxReplicas: initialDatabaseResources.autoscale?.maxReplicas || 10,
       },
       hasura: {
         replicas: initialHasuraResources.replicas || 1,
         vcpu: initialHasuraResources.vcpu || 500,
         memory: initialHasuraResources.memory || 1536,
+        autoscale: !!initialHasuraResources.autoscale || false,
+        maxReplicas: initialHasuraResources.autoscale?.maxReplicas || 10,
       },
       auth: {
         replicas: initialAuthResources.replicas || 1,
         vcpu: initialAuthResources.vcpu || 250,
         memory: initialAuthResources.memory || 256,
+        autoscale: !!initialAuthResources.autoscale || false,
+        maxReplicas: initialAuthResources.autoscale?.maxReplicas || 10,
       },
       storage: {
         replicas: initialStorageResources.replicas || 1,
         vcpu: initialStorageResources.vcpu || 250,
         memory: initialStorageResources.memory || 256,
+        autoscale: !!initialStorageResources.autoscale || false,
+        maxReplicas: initialStorageResources.autoscale?.maxReplicas || 10,
       },
     },
     resolver: yupResolver(resourceSettingsValidationSchema),
   });
 
-  if (!proPlan && !proPlanLoading) {
+  if (isPlatform && !proPlan && !proPlanLoading) {
     return (
       <Alert severity="error">
         Couldn&apos;t load the plan for this project. Please try again.
@@ -123,7 +138,7 @@ export default function ResourcesForm() {
     );
   }
 
-  if (loading || proPlanLoading) {
+  if (isPlatform && (loading || proPlanLoading)) {
     return (
       <ActivityIndicator
         label="Loading resource settings..."
@@ -158,9 +173,10 @@ export default function ResourcesForm() {
     },
   );
 
-  const initialPrice =
-    proPlan.price +
-    (billableResources.vcpu / RESOURCE_VCPU_MULTIPLIER) * RESOURCE_VCPU_PRICE;
+  const initialPrice = isPlatform
+    ? proPlan.price +
+      (billableResources.vcpu / RESOURCE_VCPU_MULTIPLIER) * RESOURCE_VCPU_PRICE
+    : 0;
 
   async function handleSubmit(formValues: ResourceSettingsFormValues) {
     const updateConfigPromise = updateConfig({
@@ -175,6 +191,11 @@ export default function ResourcesForm() {
                     memory: formValues.database.memory,
                   },
                   replicas: formValues.database.replicas,
+                  autoscaler: formValues.database.autoscale
+                    ? {
+                        maxReplicas: formValues.database.maxReplicas,
+                      }
+                    : null,
                 }
               : null,
           },
@@ -186,6 +207,11 @@ export default function ResourcesForm() {
                     memory: formValues.hasura.memory,
                   },
                   replicas: formValues.hasura.replicas,
+                  autoscaler: formValues.hasura.autoscale
+                    ? {
+                        maxReplicas: formValues.hasura.maxReplicas,
+                      }
+                    : null,
                 }
               : null,
           },
@@ -197,6 +223,11 @@ export default function ResourcesForm() {
                     memory: formValues.auth.memory,
                   },
                   replicas: formValues.auth.replicas,
+                  autoscaler: formValues.auth.autoscale
+                    ? {
+                        maxReplicas: formValues.auth.maxReplicas,
+                      }
+                    : null,
                 }
               : null,
           },
@@ -208,6 +239,11 @@ export default function ResourcesForm() {
                     memory: formValues.storage.memory,
                   },
                   replicas: formValues.storage.replicas,
+                  autoscaler: formValues.storage.autoscale
+                    ? {
+                        maxReplicas: formValues.storage.maxReplicas,
+                      }
+                    : null,
                 }
               : null,
           },
@@ -216,16 +252,28 @@ export default function ResourcesForm() {
     });
 
     try {
-      await toast.promise(
-        updateConfigPromise,
-        {
-          loading: 'Updating resources...',
-          success: 'Resources have been updated successfully.',
-          error: getServerError(
-            'An error occurred while updating resources. Please try again.',
-          ),
+      await execPromiseWithErrorToast(
+        async () => {
+          await updateConfigPromise;
+
+          if (!isPlatform) {
+            openDialog({
+              title: 'Apply your changes',
+              component: <ApplyLocalSettingsDialog />,
+              props: {
+                PaperProps: {
+                  className: 'max-w-2xl',
+                },
+              },
+            });
+          }
         },
-        getToastStyleProps(),
+        {
+          loadingMessage: 'Updating resources...',
+          successMessage: 'Resources have been updated successfully.',
+          errorMessage:
+            'An error occurred while updating resources. Please try again.',
+        },
       );
 
       if (!formValues.enabled) {
@@ -235,21 +283,29 @@ export default function ResourcesForm() {
           totalAvailableMemory: 4096,
           database: {
             replicas: 1,
+            maxReplicas: 1,
+            autoscale: false,
             vcpu: 1000,
             memory: 2048,
           },
           hasura: {
             replicas: 1,
+            maxReplicas: 1,
+            autoscale: false,
             vcpu: 500,
             memory: 1536,
           },
           auth: {
             replicas: 1,
+            maxReplicas: 1,
+            autoscale: false,
             vcpu: 250,
             memory: 256,
           },
           storage: {
             replicas: 1,
+            maxReplicas: 1,
+            autoscale: false,
             vcpu: 250,
             memory: 256,
           },
@@ -262,7 +318,12 @@ export default function ResourcesForm() {
     }
   }
 
-  function handleConfirm(formValues: ResourceSettingsFormValues) {
+  async function handleConfirm(formValues: ResourceSettingsFormValues) {
+    if (!isPlatform) {
+      await handleSubmit(formValues);
+      return;
+    }
+
     openDialog({
       title: formValues.enabled
         ? 'Confirm Dedicated Resources'

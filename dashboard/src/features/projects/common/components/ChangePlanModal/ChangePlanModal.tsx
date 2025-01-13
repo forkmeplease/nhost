@@ -2,9 +2,8 @@ import { useDialog } from '@/components/common/DialogProvider';
 import { ActivityIndicator } from '@/components/ui/v2/ActivityIndicator';
 import { Box } from '@/components/ui/v2/Box';
 import { Button } from '@/components/ui/v2/Button';
-import { Checkbox } from '@/components/ui/v2/Checkbox';
 import { BaseDialog } from '@/components/ui/v2/Dialog';
-import { Link } from '@/components/ui/v2/Link';
+import { Radio } from '@/components/ui/v2/Radio';
 import { Text } from '@/components/ui/v2/Text';
 import { useAppState } from '@/features/projects/common/hooks/useAppState';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
@@ -12,17 +11,15 @@ import { planDescriptions } from '@/features/projects/common/utils/planDescripti
 import { BillingPaymentMethodForm } from '@/features/projects/workspaces/components/BillingPaymentMethodForm';
 import {
   refetchGetApplicationPlanQuery,
-  useGetAppPlanAndGlobalPlansQuery,
   useGetPaymentMethodsQuery,
+  useGetWorkspacesAppPlansAndGlobalPlansQuery,
   useUpdateApplicationMutation,
 } from '@/generated/graphql';
 import { ApplicationStatus } from '@/types/application';
-import { getToastStyleProps } from '@/utils/constants/settings';
-import { getServerError } from '@/utils/getServerError';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-hot-toast';
 
 function Plan({ planName, price, setPlan, planId, selectedPlanId }: any) {
   return (
@@ -34,7 +31,7 @@ function Plan({ planName, price, setPlan, planId, selectedPlanId }: any) {
     >
       <div className="grid grid-flow-row gap-y-0.5">
         <div className="grid grid-flow-col items-center justify-start gap-2">
-          <Checkbox
+          <Radio
             onChange={setPlan}
             checked={selectedPlanId === planId}
             aria-label={planName}
@@ -83,8 +80,9 @@ export function ChangePlanModalWithData({ app, plans, close }: any) {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const paymentMethodAvailable = data?.paymentMethods.length > 0;
 
-  const currentPlan = plans.find((plan) => plan.id === app.plan.id);
+  const currentPlan = plans.find((plan) => plan.id === app.legacyPlan);
   const selectedPlan = plans.find((plan) => plan.id === selectedPlanId);
+  const higherPlans = plans.filter((plan) => plan.price > currentPlan.price);
 
   useEffect(() => {
     if (!pollingCurrentProject || state === ApplicationStatus.Paused) {
@@ -119,31 +117,26 @@ export function ChangePlanModalWithData({ app, plans, close }: any) {
   });
 
   const handleUpdateAppPlan = async () => {
-    try {
-      await toast.promise(
-        updateApp({
+    await execPromiseWithErrorToast(
+      async () => {
+        await updateApp({
           variables: {
             appId: app.id,
             app: {
-              planId: selectedPlan.id,
               desiredState: 5,
             },
           },
-        }),
-        {
-          loading: 'Updating plan...',
-          success: `Plan has been updated successfully to ${selectedPlan.name}.`,
-          error: getServerError(
-            'An error occurred while updating the plan. Please try again.',
-          ),
-        },
-        getToastStyleProps(),
-      );
+        });
 
-      setPollingCurrentProject(true);
-    } catch (error) {
-      // Note: Error is handled by the toast.
-    }
+        setPollingCurrentProject(true);
+      },
+      {
+        loadingMessage: 'Updating plan...',
+        successMessage: `Plan has been updated successfully to ${selectedPlan.name}.`,
+        errorMessage:
+          'An error occurred while updating the plan. Please try again.',
+      },
+    );
   };
 
   const handleChangePlanClick = async () => {
@@ -201,53 +194,6 @@ export function ChangePlanModalWithData({ app, plans, close }: any) {
     );
   }
 
-  if (app.plan.id !== plans.find((plan) => plan.isFree)?.id) {
-    return (
-      <Box className="mx-auto w-full max-w-xl rounded-lg p-6 text-left">
-        <div className="flex flex-col">
-          <div className="mx-auto">
-            <Image
-              src="/assets/upgrade.svg"
-              alt="Nhost Logo"
-              width={72}
-              height={72}
-            />
-          </div>
-          <Text variant="h3" component="h2" className="mt-2 text-center">
-            Downgrade is not available
-          </Text>
-
-          <Text className="mt-1 text-center">
-            You can&apos;t downgrade from a paid plan to a free plan here.
-          </Text>
-
-          <Text className="text-center">
-            Please contact us at{' '}
-            <Link href="mailto:info@nhost.io">info@nhost.io</Link> if you want
-            to downgrade.
-          </Text>
-
-          <div className="mt-6 grid grid-flow-row gap-2">
-            <Button
-              variant="outlined"
-              color="secondary"
-              className="mx-auto w-full max-w-sm"
-              onClick={() => {
-                if (close) {
-                  close();
-                }
-
-                closeAlertDialog();
-              }}
-            >
-              Cancel
-            </Button>
-          </div>
-        </div>
-      </Box>
-    );
-  }
-
   return (
     <Box className="w-full max-w-xl rounded-lg p-6 text-left">
       <BaseDialog
@@ -277,7 +223,7 @@ export function ChangePlanModalWithData({ app, plans, close }: any) {
         </Text>
 
         <div className="mt-2">
-          {plans
+          {higherPlans
             .filter((plan) => plan.id !== app.plan.id)
             .map((plan) => (
               <div className="mt-4" key={plan.id}>
@@ -294,7 +240,21 @@ export function ChangePlanModalWithData({ app, plans, close }: any) {
             ))}
         </div>
 
-        <div className="mt-2 grid grid-flow-row gap-2">
+        <div className="mt-0">
+          <Text variant="subtitle2" className="w-full px-1">
+            For a complete list of features, visit our{' '}
+            <a
+              href="https://nhost.io/pricing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              pricing page
+            </a>
+          </Text>
+        </div>
+
+        <div className="mt-6 grid grid-flow-row gap-2">
           <Button
             onClick={handleChangePlanClick}
             disabled={!selectedPlan}
@@ -334,10 +294,10 @@ export default function ChangePlanModal({ onCancel }: ChangePlanModalProps) {
     query: { workspaceSlug, appSlug },
   } = useRouter();
 
-  const { data, loading, error } = useGetAppPlanAndGlobalPlansQuery({
+  const { data, loading, error } = useGetWorkspacesAppPlansAndGlobalPlansQuery({
     variables: {
       workspaceSlug: workspaceSlug as string,
-      appSlug: appSlug as string,
+      slug: appSlug as string,
     },
     fetchPolicy: 'cache-first',
   });

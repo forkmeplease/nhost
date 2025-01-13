@@ -18,16 +18,22 @@ import { TwitterProviderSettings } from '@/features/authentication/settings/comp
 import { WebAuthnSettings } from '@/features/authentication/settings/components/WebAuthnSettings';
 import { WindowsLiveProviderSettings } from '@/features/authentication/settings/components/WindowsLiveProviderSettings';
 import { WorkOsProviderSettings } from '@/features/authentication/settings/components/WorkOsProviderSettings';
+import { ProjectLayout } from '@/features/orgs/layout/ProjectLayout';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import { useGetSignInMethodsQuery } from '@/generated/graphql';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
 import type { ReactElement } from 'react';
 
 export default function SettingsSignInMethodsPage() {
+  const isPlatform = useIsPlatform();
+  const localMimirClient = useLocalMimirClient();
   const { currentProject } = useCurrentWorkspaceAndProject();
 
   const { loading, error } = useGetSignInMethodsQuery({
     variables: { appId: currentProject?.id },
     fetchPolicy: 'network-only',
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   if (loading) {
@@ -71,5 +77,17 @@ export default function SettingsSignInMethodsPage() {
 }
 
 SettingsSignInMethodsPage.getLayout = function getLayout(page: ReactElement) {
-  return <SettingsLayout>{page}</SettingsLayout>;
+  return (
+    <ProjectLayout
+      mainContainerProps={{
+        className: 'flex h-full',
+      }}
+    >
+      <SettingsLayout>
+        <Container sx={{ backgroundColor: 'background.default' }}>
+          {page}
+        </Container>
+      </SettingsLayout>
+    </ProjectLayout>
+  );
 };
