@@ -51,6 +51,11 @@ export const RESOURCE_VCPU_STEP = 0.25 * RESOURCE_VCPU_MULTIPLIER;
 export const RESOURCE_MEMORY_STEP = 128;
 
 /**
+ * Number of steps between GiB of RAM when the ratio is locked.
+ */
+export const RESOURCE_MEMORY_LOCKED_STEP = 4 * RESOURCE_MEMORY_STEP;
+
+/**
  * Price per vCPU.
  *
  * @remarks This will be moved to the backend in the future.
@@ -66,3 +71,8 @@ export const RESOURCE_VCPU_PRICE_PER_MINUTE = 0.0012;
  * Maximum number of free projects a user is allowed to have.
  */
 export const MAX_FREE_PROJECTS = 1;
+
+/**
+ * Default value in minutes to use for querying the logs
+ */
+export const MINUTES_TO_DECREASE_FROM_CURRENT_DATE = 20;

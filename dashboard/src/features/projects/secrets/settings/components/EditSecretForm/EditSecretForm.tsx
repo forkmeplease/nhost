@@ -1,4 +1,5 @@
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import type {
   BaseSecretFormProps,
   BaseSecretFormValues,
@@ -7,15 +8,15 @@ import {
   BaseSecretForm,
   baseSecretFormValidationSchema,
 } from '@/features/projects/secrets/settings/components/BaseSecretForm';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
 import type { Secret } from '@/types/application';
-import { getToastStyleProps } from '@/utils/constants/settings';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import {
   GetSecretsDocument,
   useUpdateSecretMutation,
 } from '@/utils/__generated__/graphql';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 
 export interface EditSecretFormProps
   extends Pick<BaseSecretFormProps, 'onCancel'> {
@@ -34,6 +35,9 @@ export default function EditSecretForm({
   onSubmit,
   ...props
 }: EditSecretFormProps) {
+  const isPlatform = useIsPlatform();
+  const localMimirClient = useLocalMimirClient();
+
   const form = useForm<BaseSecretFormValues>({
     defaultValues: {
       name: originalSecret.name,
@@ -46,6 +50,7 @@ export default function EditSecretForm({
   const { currentProject } = useCurrentWorkspaceAndProject();
   const [updateSecret] = useUpdateSecretMutation({
     refetchQueries: [GetSecretsDocument],
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   async function handleSubmit({ name, value }: BaseSecretFormValues) {
@@ -60,20 +65,17 @@ export default function EditSecretForm({
     });
 
     try {
-      await toast.promise(
-        updateSecretPromise,
-        {
-          loading: 'Updating secret...',
-          success: 'Secret has been updated successfully.',
-          error: (arg: Error) =>
-            arg?.message
-              ? `Error: ${arg?.message}`
-              : 'An error occurred while updating the secret.',
+      await execPromiseWithErrorToast(
+        async () => {
+          await updateSecretPromise;
+          onSubmit?.();
         },
-        getToastStyleProps(),
+        {
+          loadingMessage: 'Updating secret...',
+          successMessage: 'Secret has been updated successfully.',
+          errorMessage: 'An error occurred while updating the secret.',
+        },
       );
-
-      onSubmit?.();
     } catch (error) {
       console.error(error);
     }

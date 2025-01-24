@@ -6,24 +6,24 @@ import { SettingsContainer } from '@/components/layout/SettingsContainer';
 import { SettingsLayout } from '@/components/layout/SettingsLayout';
 import { ActivityIndicator } from '@/components/ui/v2/ActivityIndicator';
 import { Input } from '@/components/ui/v2/Input';
+import { ProjectLayout } from '@/features/orgs/layout/ProjectLayout';
 import { RemoveApplicationModal } from '@/features/projects/common/components/RemoveApplicationModal';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
 import { useIsCurrentUserOwner } from '@/features/projects/common/hooks/useIsCurrentUserOwner';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import {
   GetAllWorkspacesAndProjectsDocument,
   useDeleteApplicationMutation,
   usePauseApplicationMutation,
   useUpdateApplicationMutation,
 } from '@/generated/graphql';
-import { getToastStyleProps } from '@/utils/constants/settings';
 import { discordAnnounce } from '@/utils/discordAnnounce';
-import { getServerError } from '@/utils/getServerError';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import { slugifyString } from '@/utils/helpers';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 import type { ReactElement } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
 import * as Yup from 'yup';
 
 const projectNameValidationSchema = Yup.object({
@@ -44,6 +44,7 @@ export default function SettingsGeneralPage() {
     loading,
     refetch: refetchWorkspaceAndProject,
   } = useCurrentWorkspaceAndProject();
+
   const isOwner = useIsCurrentUserOwner();
   const { openDialog, openAlertDialog, closeDialog } = useDialog();
   const [updateApp] = useUpdateApplicationMutation();
@@ -57,6 +58,8 @@ export default function SettingsGeneralPage() {
   });
   const router = useRouter();
   const { maintenanceActive } = useUI();
+
+  const isPlatform = useIsPlatform();
 
   const form = useForm<ProjectNameValidationSchema>({
     mode: 'onSubmit',
@@ -102,16 +105,13 @@ export default function SettingsGeneralPage() {
     });
 
     try {
-      const { data: updateAppData } = await toast.promise(
-        updateAppMutation,
+      const { data: updateAppData } = await execPromiseWithErrorToast(
+        async () => updateAppMutation,
         {
-          loading: `Project name is being updated...`,
-          success: `Project name has been updated successfully.`,
-          error: getServerError(
-            `An error occurred while trying to update project name.`,
-          ),
+          loadingMessage: `Project name is being updated...`,
+          successMessage: `Project name has been updated successfully.`,
+          errorMessage: `An error occurred while trying to update project name.`,
         },
-        getToastStyleProps(),
       );
 
       const updateAppResult = updateAppData?.updateApp;
@@ -134,35 +134,31 @@ export default function SettingsGeneralPage() {
   }
 
   async function handleDeleteApplication() {
-    await toast.promise(
-      deleteApplication(),
-      {
-        loading: `Deleting ${currentProject.name}...`,
-        success: `${currentProject.name} has been deleted successfully.`,
-        error: getServerError(
-          `An error occurred while trying to delete the project "${currentProject.name}". Please try again.`,
-        ),
+    await execPromiseWithErrorToast(
+      async () => {
+        await deleteApplication();
+        await router.push('/');
       },
-      getToastStyleProps(),
+      {
+        loadingMessage: `Deleting ${currentProject.name}...`,
+        successMessage: `${currentProject.name} has been deleted successfully.`,
+        errorMessage: `An error occurred while trying to delete the project "${currentProject.name}". Please try again.`,
+      },
     );
-
-    await router.push('/');
   }
 
   async function handlePauseApplication() {
-    await toast.promise(
-      pauseApplication(),
-      {
-        loading: `Pausing ${currentProject.name}...`,
-        success: `${currentProject.name} will be paused, but please note that it may take some time to complete the process.`,
-        error: getServerError(
-          `An error occurred while trying to pause the project "${currentProject.name}". Please try again.`,
-        ),
+    await execPromiseWithErrorToast(
+      async () => {
+        await pauseApplication();
+        await router.push('/');
       },
-      getToastStyleProps(),
+      {
+        loadingMessage: `Pausing ${currentProject.name}...`,
+        successMessage: `${currentProject.name} will be paused, but please note that it may take some time to complete the process.`,
+        errorMessage: `An error occurred while trying to pause the project "${currentProject.name}". Please try again.`,
+      },
     );
-
-    await router.push('/');
   }
 
   if (loading) {
@@ -182,7 +178,8 @@ export default function SettingsGeneralPage() {
             className="grid grid-flow-row px-4 lg:grid-cols-4"
             slotProps={{
               submitButton: {
-                disabled: !formState.isDirty || maintenanceActive,
+                disabled:
+                  !formState.isDirty || maintenanceActive || !isPlatform,
                 loading: formState.isSubmitting,
               },
             }}
@@ -203,7 +200,7 @@ export default function SettingsGeneralPage() {
         </Form>
       </FormProvider>
 
-      {currentProject?.plan.isFree && (
+      {currentProject?.legacyPlan?.isFree && (
         <SettingsContainer
           title="Pause Project"
           description="While your project is paused, it will not be accessible. You can wake it up anytime after."
@@ -265,5 +262,17 @@ export default function SettingsGeneralPage() {
 }
 
 SettingsGeneralPage.getLayout = function getLayout(page: ReactElement) {
-  return <SettingsLayout>{page}</SettingsLayout>;
+  return (
+    <ProjectLayout
+      mainContainerProps={{
+        className: 'flex h-full',
+      }}
+    >
+      <SettingsLayout>
+        <Container sx={{ backgroundColor: 'background.default' }}>
+          {page}
+        </Container>
+      </SettingsLayout>
+    </ProjectLayout>
+  );
 };

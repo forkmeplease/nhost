@@ -1,4 +1,5 @@
 import { useUI } from '@/components/common/UIProvider';
+import { AIIcon } from '@/components/ui/v2/icons/AIIcon';
 import { CloudIcon } from '@/components/ui/v2/icons/CloudIcon';
 import { CogIcon } from '@/components/ui/v2/icons/CogIcon';
 import { DatabaseIcon } from '@/components/ui/v2/icons/DatabaseIcon';
@@ -89,14 +90,6 @@ export default function useProjectRoutes() {
       icon: <GaugeIcon />,
       disabled: !isPlatform,
     },
-    {
-      relativeMainPath: '/settings',
-      relativePath: '/settings/general',
-      exact: false,
-      label: 'Settings',
-      icon: <CogIcon />,
-      disabled: !isPlatform || maintenanceActive,
-    },
   ];
 
   const allRoutes: ProjectRoute[] = [
@@ -143,7 +136,22 @@ export default function useProjectRoutes() {
       label: 'Run',
       icon: <ServicesIcon />,
     },
+    {
+      relativeMainPath: '/ai',
+      relativePath: '/ai/auto-embeddings',
+      exact: false,
+      label: 'AI',
+      icon: <AIIcon />,
+    },
     ...nhostRoutes,
+    {
+      relativeMainPath: '/settings',
+      relativePath: '/settings/general',
+      exact: false,
+      label: 'Settings',
+      icon: <CogIcon />,
+      disabled: maintenanceActive,
+    },
   ];
 
   return {

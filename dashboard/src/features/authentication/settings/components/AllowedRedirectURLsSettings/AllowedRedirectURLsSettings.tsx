@@ -1,19 +1,22 @@
+import { ApplyLocalSettingsDialog } from '@/components/common/ApplyLocalSettingsDialog';
+import { useDialog } from '@/components/common/DialogProvider';
 import { useUI } from '@/components/common/UIProvider';
 import { Form } from '@/components/form/Form';
 import { SettingsContainer } from '@/components/layout/SettingsContainer';
 import { ActivityIndicator } from '@/components/ui/v2/ActivityIndicator';
 import { Input } from '@/components/ui/v2/Input';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import {
   GetAuthenticationSettingsDocument,
   useGetAuthenticationSettingsQuery,
   useUpdateConfigMutation,
 } from '@/generated/graphql';
-import { getToastStyleProps } from '@/utils/constants/settings';
-import { getServerError } from '@/utils/getServerError';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object({
@@ -25,15 +28,19 @@ export type AllowedRedirectURLFormValues = Yup.InferType<
 >;
 
 export default function AllowedRedirectURLsSettings() {
+  const { openDialog } = useDialog();
+  const isPlatform = useIsPlatform();
+  const localMimirClient = useLocalMimirClient();
   const { maintenanceActive } = useUI();
   const { currentProject } = useCurrentWorkspaceAndProject();
   const [updateConfig] = useUpdateConfigMutation({
     refetchQueries: [GetAuthenticationSettingsDocument],
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { data, loading, error } = useGetAuthenticationSettingsQuery({
     variables: { appId: currentProject?.id },
-    fetchPolicy: 'cache-only',
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { allowedUrls } = data?.config?.auth?.redirections || {};
@@ -45,6 +52,14 @@ export default function AllowedRedirectURLsSettings() {
     },
     resolver: yupResolver(validationSchema),
   });
+
+  useEffect(() => {
+    if (!loading && allowedUrls) {
+      form.reset({
+        allowedUrls: allowedUrls?.join(', ') || '',
+      });
+    }
+  }, [loading, allowedUrls, form]);
 
   if (loading) {
     return (
@@ -80,23 +95,31 @@ export default function AllowedRedirectURLsSettings() {
       },
     });
 
-    try {
-      await toast.promise(
-        updateConfigPromise,
-        {
-          loading: `Allowed redirect URL settings are being updated...`,
-          success: `Allowed redirect URL settings have been updated successfully.`,
-          error: getServerError(
-            `An error occurred while trying to update the project's allowed redirect URL settings.`,
-          ),
-        },
-        getToastStyleProps(),
-      );
+    await execPromiseWithErrorToast(
+      async () => {
+        await updateConfigPromise;
+        form.reset(values);
 
-      form.reset(values);
-    } catch {
-      // Note: The toast will handle the error.
-    }
+        if (!isPlatform) {
+          openDialog({
+            title: 'Apply your changes',
+            component: <ApplyLocalSettingsDialog />,
+            props: {
+              PaperProps: {
+                className: 'max-w-2xl',
+              },
+            },
+          });
+        }
+      },
+      {
+        loadingMessage: 'Allowed redirect URL settings are being updated...',
+        successMessage:
+          'Allowed redirect URL settings have been updated successfully.',
+        errorMessage:
+          "An error occurred while trying to update the project's allowed redirect URL settings.",
+      },
+    );
   };
 
   return (
@@ -111,7 +134,7 @@ export default function AllowedRedirectURLsSettings() {
               loading: formState.isSubmitting,
             },
           }}
-          docsLink="https://docs.nhost.io/authentication#allowed-redirect-urls"
+          docsLink="https://docs.nhost.io/guides/auth/overview#allowed-redirect-urls"
           className="grid grid-flow-row px-4 lg:grid-cols-5"
         >
           <Input

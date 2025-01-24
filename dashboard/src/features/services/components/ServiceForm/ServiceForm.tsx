@@ -1,8 +1,10 @@
+import { ApplyLocalSettingsDialog } from '@/components/common/ApplyLocalSettingsDialog';
 import { useDialog } from '@/components/common/DialogProvider';
 import { Form } from '@/components/form/Form';
 import { Alert } from '@/components/ui/v2/Alert';
 import { Box } from '@/components/ui/v2/Box';
 import { Button } from '@/components/ui/v2/Button';
+import { ArrowsClockwise } from '@/components/ui/v2/icons/ArrowsClockwise';
 import { CopyIcon } from '@/components/ui/v2/icons/CopyIcon';
 import { InfoIcon } from '@/components/ui/v2/icons/InfoIcon';
 import { PlusIcon } from '@/components/ui/v2/icons/PlusIcon';
@@ -11,101 +13,37 @@ import { Text } from '@/components/ui/v2/Text';
 import { Tooltip } from '@/components/ui/v2/Tooltip';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
 import { useHostName } from '@/features/projects/common/hooks/useHostName';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import { InfoCard } from '@/features/projects/overview/components/InfoCard';
-import {
-  COST_PER_VCPU,
-  MAX_SERVICES_CPU,
-  MAX_SERVICES_MEM,
-  MAX_SERVICE_REPLICAS,
-  MIN_SERVICES_CPU,
-  MIN_SERVICES_MEM,
-} from '@/features/projects/resources/settings/utils/resourceSettingsValidationSchema';
+import { COST_PER_VCPU } from '@/features/projects/resources/settings/utils/resourceSettingsValidationSchema';
 import { ComputeFormSection } from '@/features/services/components/ServiceForm/components/ComputeFormSection';
 import { EnvironmentFormSection } from '@/features/services/components/ServiceForm/components/EnvironmentFormSection';
 import { PortsFormSection } from '@/features/services/components/ServiceForm/components/PortsFormSection';
 import { ReplicasFormSection } from '@/features/services/components/ServiceForm/components/ReplicasFormSection';
 import { StorageFormSection } from '@/features/services/components/ServiceForm/components/StorageFormSection';
-import type { DialogFormProps } from '@/types/common';
-import { RESOURCE_VCPU_MULTIPLIER } from '@/utils/constants/common';
-import { getToastStyleProps } from '@/utils/constants/settings';
-import { copy } from '@/utils/copy';
+
+import {
+  validationSchema,
+  type ServiceFormProps,
+  type ServiceFormValues,
+} from '@/features/services/components/ServiceForm/ServiceFormTypes';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
 import {
   useInsertRunServiceConfigMutation,
-  useInsertRunServiceMutation,
   useReplaceRunServiceConfigMutation,
   type ConfigRunServiceConfigInsertInput,
 } from '@/utils/__generated__/graphql';
-import type { ApolloError } from '@apollo/client';
+import { RESOURCE_VCPU_MULTIPLIER } from '@/utils/constants/common';
+import { copy } from '@/utils/copy';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
+import { removeTypename } from '@/utils/helpers';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
 import { parse } from 'shell-quote';
-import * as Yup from 'yup';
+import { HealthCheckFormSection } from './components/HealthCheckFormSection';
 import { ServiceConfirmationDialog } from './components/ServiceConfirmationDialog';
 import { ServiceDetailsDialog } from './components/ServiceDetailsDialog';
-
-export enum PortTypes {
-  HTTP = 'http',
-  TCP = 'tcp',
-  UDP = 'udp',
-}
-
-export const validationSchema = Yup.object({
-  name: Yup.string().required('The name is required.'),
-  image: Yup.string().label('Image to run'),
-  command: Yup.string(),
-  environment: Yup.array().of(
-    Yup.object().shape({
-      name: Yup.string().required(),
-      value: Yup.string().required(),
-    }),
-  ),
-  compute: Yup.object({
-    cpu: Yup.number().min(MIN_SERVICES_CPU).max(MAX_SERVICES_CPU).required(),
-    memory: Yup.number().min(MIN_SERVICES_MEM).max(MAX_SERVICES_MEM).required(),
-  }),
-  replicas: Yup.number().min(0).max(MAX_SERVICE_REPLICAS).required(),
-  ports: Yup.array().of(
-    Yup.object().shape({
-      port: Yup.number().required(),
-      type: Yup.mixed<PortTypes>().oneOf(Object.values(PortTypes)).required(),
-      publish: Yup.boolean().default(false),
-    }),
-  ),
-  storage: Yup.array().of(
-    Yup.object()
-      .shape({
-        name: Yup.string().required(),
-        path: Yup.string().required(),
-        capacity: Yup.number().nonNullable().required(),
-      })
-      .required(),
-  ),
-});
-
-export type ServiceFormValues = Yup.InferType<typeof validationSchema>;
-
-export interface ServiceFormProps extends DialogFormProps {
-  /**
-   * To use in conjunction with initialData to allow for updating the service
-   */
-  serviceID?: string;
-
-  /**
-   * if there is initialData then it's an update operation
-   */
-  initialData?: ServiceFormValues & { subdomain?: string }; // subdomain is only set on the backend
-
-  /**
-   * Function to be called when the operation is cancelled.
-   */
-  onCancel?: VoidFunction;
-  /**
-   * Function to be called when the submit is successful.
-   */
-  onSubmit?: VoidFunction | ((args?: any) => Promise<any>);
-}
 
 export default function ServiceForm({
   serviceID,
@@ -115,11 +53,14 @@ export default function ServiceForm({
   location,
 }: ServiceFormProps) {
   const hostName = useHostName();
+  const isPlatform = useIsPlatform();
+  const localMimirClient = useLocalMimirClient();
   const { onDirtyStateChange, openDialog, closeDialog } = useDialog();
-  const [insertRunService] = useInsertRunServiceMutation();
   const { currentProject } = useCurrentWorkspaceAndProject();
   const [insertRunServiceConfig] = useInsertRunServiceConfigMutation();
-  const [replaceRunServiceConfig] = useReplaceRunServiceConfigMutation();
+  const [replaceRunServiceConfig] = useReplaceRunServiceConfigMutation({
+    ...(!isPlatform ? { client: localMimirClient } : {}),
+  });
   const [detailsServiceId, setDetailsServiceId] = useState('');
   const [detailsServiceSubdomain, setDetailsServiceSubdomain] = useState(
     initialData?.subdomain,
@@ -135,6 +76,7 @@ export default function ServiceForm({
         memory: 128,
       },
       replicas: 1,
+      autoscaler: null,
     },
     reValidateMode: 'onSubmit',
     resolver: yupResolver(validationSchema),
@@ -157,33 +99,57 @@ export default function ServiceForm({
   }, [isDirty, location, onDirtyStateChange]);
 
   const getFormattedConfig = (values: ServiceFormValues) => {
+    // Remove any __typename property from the values
+    const sanitizedValues = removeTypename(values) as ServiceFormValues;
+    const sanitizedInitialDataPorts = initialData?.ports
+      ? removeTypename(initialData.ports)
+      : [];
+
     const config: ConfigRunServiceConfigInsertInput = {
-      name: values.name,
+      name: sanitizedValues.name,
       image: {
-        image: values.image,
+        image: sanitizedValues.image,
       },
-      command: parse(values.command).map((item) => item.toString()),
+      command: parse(sanitizedValues.command).map((item) => item.toString()),
       resources: {
         compute: {
-          cpu: values.compute.cpu,
-          memory: values.compute.memory,
+          cpu: sanitizedValues.compute.cpu,
+          memory: sanitizedValues.compute.memory,
         },
-        storage: values.storage.map((item) => ({
+        storage: sanitizedValues.storage.map((item) => ({
           name: item.name,
           path: item.path,
           capacity: item.capacity,
         })),
-        replicas: values.replicas,
+        replicas: sanitizedValues.replicas,
+        autoscaler: sanitizedValues.autoscaler
+          ? {
+              maxReplicas: sanitizedValues.autoscaler?.maxReplicas,
+            }
+          : null,
       },
-      environment: values.environment.map((item) => ({
+      environment: sanitizedValues.environment.map((item) => ({
         name: item.name,
         value: item.value,
       })),
-      ports: values.ports.map((item) => ({
+      ports: sanitizedValues.ports.map((item) => ({
         port: item.port,
         type: item.type,
         publish: item.publish,
+        ingresses: item.ingresses,
+        rateLimit:
+          sanitizedInitialDataPorts.find(
+            (port) => port.port === item.port && port.type === item.type,
+          )?.rateLimit ?? null,
       })),
+      healthCheck: sanitizedValues.healthCheck
+        ? {
+            port: sanitizedValues.healthCheck?.port,
+            initialDelaySeconds:
+              sanitizedValues.healthCheck?.initialDelaySeconds,
+            probePeriodSeconds: sanitizedValues.healthCheck?.probePeriodSeconds,
+          }
+        : null,
     };
 
     return config;
@@ -203,24 +169,27 @@ export default function ServiceForm({
       });
 
       setDetailsServiceId(serviceID);
+
+      if (!isPlatform) {
+        openDialog({
+          title: 'Apply your changes',
+          component: <ApplyLocalSettingsDialog />,
+          props: {
+            PaperProps: {
+              className: 'max-w-2xl',
+            },
+          },
+        });
+      }
     } else {
       // Insert service config
       const {
         data: {
-          insertRunService: { id: newServiceID, subdomain },
+          insertRunServiceConfig: { serviceID: newServiceID },
         },
-      } = await insertRunService({
-        variables: {
-          object: {
-            appID: currentProject.id,
-          },
-        },
-      });
-
-      await insertRunServiceConfig({
+      } = await insertRunServiceConfig({
         variables: {
           appID: currentProject.id,
-          serviceID: newServiceID,
           config: {
             ...config,
             image: {
@@ -229,48 +198,38 @@ export default function ServiceForm({
               image:
                 values.image.length > 0
                   ? values.image
-                  : `registry.${currentProject.region.awsName}.${currentProject.region.domain}/${newServiceID}`,
+                  : `registry.${currentProject.region.name}.${currentProject.region.domain}/<uuid-to-be-generated-on-creation>`,
             },
           },
         },
       });
 
       setDetailsServiceId(newServiceID);
-      setDetailsServiceSubdomain(subdomain);
+      setDetailsServiceSubdomain('');
     }
   };
 
   const handleSubmit = async (values: ServiceFormValues) => {
-    try {
-      await toast.promise(
-        createOrUpdateService(values),
-        {
-          loading: 'Configuring the service...',
-          success: `The service has been configured successfully.`,
-          error: (arg: ApolloError) => {
-            // we need to get the internal error message from the GraphQL error
-            const { internal } = arg.graphQLErrors[0]?.extensions || {};
-            const { message } = (internal as Record<string, any>)?.error || {};
-
-            // we use the default Apollo error message if we can't find the
-            // internal error message
-            return (
-              message ||
-              arg.message ||
-              'An error occurred while configuring the service. Please try again.'
-            );
-          },
-        },
-        getToastStyleProps(),
-      );
-
-      onSubmit?.();
-    } catch {
-      // Note: The toast will handle the error.
-    }
+    await execPromiseWithErrorToast(
+      async () => {
+        await createOrUpdateService(values);
+        onSubmit?.();
+      },
+      {
+        loadingMessage: 'Configuring the service...',
+        successMessage: 'The service has been configured successfully.',
+        errorMessage:
+          'An error occurred while configuring the service. Please try again.',
+      },
+    );
   };
 
-  const handleConfirm = (values: ServiceFormValues) => {
+  const handleConfirm = async (values: ServiceFormValues) => {
+    if (!isPlatform) {
+      await handleSubmit(formValues);
+      return;
+    }
+
     openDialog({
       title: 'Confirm Resources',
       component: (
@@ -286,26 +245,34 @@ export default function ServiceForm({
   };
 
   useEffect(() => {
-    (async () => {
-      if (detailsServiceId) {
-        openDialog({
-          title: 'Service Details',
-          component: (
-            <ServiceDetailsDialog
-              serviceID={detailsServiceId}
-              subdomain={detailsServiceSubdomain}
-              ports={formValues.ports}
-            />
-          ),
-          props: {
-            PaperProps: {
-              className: 'max-w-2xl',
-            },
+    if (!isPlatform) {
+      return;
+    }
+
+    if (detailsServiceId) {
+      openDialog({
+        title: 'Service Details',
+        component: (
+          <ServiceDetailsDialog
+            serviceID={detailsServiceId}
+            subdomain={detailsServiceSubdomain}
+            ports={formValues.ports}
+          />
+        ),
+        props: {
+          PaperProps: {
+            className: 'max-w-2xl',
           },
-        });
-      }
-    })();
-  }, [detailsServiceId, detailsServiceSubdomain, formValues, openDialog]);
+        },
+      });
+    }
+  }, [
+    detailsServiceId,
+    detailsServiceSubdomain,
+    formValues,
+    openDialog,
+    isPlatform,
+  ]);
 
   const pricingExplanation = () => {
     const vCPUs = `${formValues.compute.cpu / RESOURCE_VCPU_MULTIPLIER} vCPUs`;
@@ -398,11 +365,11 @@ export default function ServiceForm({
           autoComplete="off"
         />
 
-        {/* This shows only when trying to edit a service */}
-        {serviceID && serviceImage && (
+        {/* This shows only when trying to edit a service and when running against the nhost platform */}
+        {isPlatform && serviceID && serviceImage && (
           <InfoCard
             title="Private registry"
-            value={`registry.${currentProject.region.awsName}.${currentProject.region.domain}/${serviceID}`}
+            value={`registry.${currentProject.region.name}.${currentProject.region.domain}/${serviceID}`}
           />
         )}
 
@@ -429,24 +396,26 @@ export default function ServiceForm({
           autoComplete="off"
         />
 
-        <Alert
-          severity="info"
-          className="flex items-center justify-between space-x-2"
-        >
-          <span>{pricingExplanation()}</span>
-          <b>
-            $
-            {parseFloat(
-              (
-                formValues.compute.cpu *
-                formValues.replicas *
-                COST_PER_VCPU
-              ).toFixed(2),
-            )}
-          </b>
-        </Alert>
+        {isPlatform ? (
+          <Alert
+            severity="info"
+            className="flex items-center justify-between space-x-2"
+          >
+            <span>{pricingExplanation()}</span>
+            <b>
+              $
+              {parseFloat(
+                (
+                  formValues.compute.cpu *
+                  formValues.replicas *
+                  COST_PER_VCPU
+                ).toFixed(2),
+              )}
+            </b>
+          </Alert>
+        ) : null}
 
-        <ComputeFormSection />
+        <ComputeFormSection showTooltip />
 
         <ReplicasFormSection />
 
@@ -455,6 +424,8 @@ export default function ServiceForm({
         <PortsFormSection />
 
         <StorageFormSection />
+
+        <HealthCheckFormSection />
 
         {createServiceFormError && (
           <Alert
@@ -482,7 +453,7 @@ export default function ServiceForm({
             <Button
               type="submit"
               disabled={isSubmitting}
-              startIcon={<PlusIcon />}
+              startIcon={serviceID ? <ArrowsClockwise /> : <PlusIcon />}
             >
               {serviceID ? 'Update' : 'Create'}
             </Button>

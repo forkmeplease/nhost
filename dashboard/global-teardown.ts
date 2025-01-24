@@ -1,11 +1,10 @@
 import {
   TEST_DASHBOARD_URL,
+  TEST_ORGANIZATION_SLUG,
   TEST_PROJECT_ADMIN_SECRET,
-  TEST_PROJECT_NAME,
-  TEST_PROJECT_SLUG,
-  TEST_WORKSPACE_SLUG,
+  TEST_PROJECT_SUBDOMAIN,
 } from '@/e2e/env';
-import { openProject } from '@/e2e/utils';
+import { navigateToProject } from '@/e2e/utils';
 import { chromium } from '@playwright/test';
 
 async function globalTeardown() {
@@ -18,13 +17,10 @@ async function globalTeardown() {
 
   const page = await context.newPage();
 
-  await page.goto('/');
-
-  await openProject({
+  await navigateToProject({
     page,
-    projectName: TEST_PROJECT_NAME,
-    workspaceSlug: TEST_WORKSPACE_SLUG,
-    projectSlug: TEST_PROJECT_SLUG,
+    orgSlug: TEST_ORGANIZATION_SLUG,
+    projectSubdomain: TEST_PROJECT_SUBDOMAIN,
   });
 
   const pagePromise = context.waitForEvent('page');
@@ -43,8 +39,8 @@ async function globalTeardown() {
   await adminSecretInput.press('Enter');
 
   // note: getByRole doesn't work here
-  await hasuraPage.locator('a', { hasText: /data/i }).click();
-  await hasuraPage.getByRole('link', { name: /sql/i }).click();
+  await hasuraPage.locator('a', { hasText: /data/i }).nth(0).click();
+  await hasuraPage.locator('[data-test="sql-link"]').click();
 
   // Set the value of the Ace code editor using JavaScript evaluation in the browser context
   await hasuraPage.evaluate(() => {

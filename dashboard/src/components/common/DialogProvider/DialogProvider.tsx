@@ -258,6 +258,7 @@ function DialogProvider({ children }: PropsWithChildren<unknown>) {
           className: twMerge(
             'max-w-md w-full',
             dialogProps?.PaperProps?.className,
+            'z-30',
           ),
         }}
       >
@@ -288,10 +289,11 @@ function DialogProvider({ children }: PropsWithChildren<unknown>) {
         open={drawerOpen}
         onClose={closeDrawerWithDirtyGuard}
         SlideProps={{ onExited: clearDrawerContent, unmountOnExit: false }}
+        className="z-40"
         PaperProps={{
           ...drawerProps?.PaperProps,
           className: twMerge(
-            'max-w-2.5xl w-full',
+            'max-w-4xl w-full',
             drawerProps?.PaperProps?.className,
           ),
         }}

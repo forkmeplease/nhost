@@ -19,6 +19,11 @@ export interface Typegen0 {
       data: unknown
       __tip: 'See the XState TS docs to learn how to strongly type this.'
     }
+    'done.invoke.authenticateWithIdToken': {
+      type: 'done.invoke.authenticateWithIdToken'
+      data: unknown
+      __tip: 'See the XState TS docs to learn how to strongly type this.'
+    }
     'done.invoke.authenticateWithPAT': {
       type: 'done.invoke.authenticateWithPAT'
       data: unknown
@@ -54,6 +59,11 @@ export interface Typegen0 {
       data: unknown
       __tip: 'See the XState TS docs to learn how to strongly type this.'
     }
+    'done.invoke.signInEmailOTP': {
+      type: 'done.invoke.signInEmailOTP'
+      data: unknown
+      __tip: 'See the XState TS docs to learn how to strongly type this.'
+    }
     'done.invoke.signInMfaTotp': {
       type: 'done.invoke.signInMfaTotp'
       data: unknown
@@ -74,6 +84,11 @@ export interface Typegen0 {
       data: unknown
       __tip: 'See the XState TS docs to learn how to strongly type this.'
     }
+    'done.invoke.verifyEmailOTP': {
+      type: 'done.invoke.verifyEmailOTP'
+      data: unknown
+      __tip: 'See the XState TS docs to learn how to strongly type this.'
+    }
     'error.platform.authenticateAnonymously': {
       type: 'error.platform.authenticateAnonymously'
       data: unknown
@@ -84,6 +99,10 @@ export interface Typegen0 {
     }
     'error.platform.authenticateUserWithSecurityKey': {
       type: 'error.platform.authenticateUserWithSecurityKey'
+      data: unknown
+    }
+    'error.platform.authenticateWithIdToken': {
+      type: 'error.platform.authenticateWithIdToken'
       data: unknown
     }
     'error.platform.authenticateWithPAT': {
@@ -105,6 +124,7 @@ export interface Typegen0 {
       data: unknown
     }
     'error.platform.refreshToken': { type: 'error.platform.refreshToken'; data: unknown }
+    'error.platform.signInEmailOTP': { type: 'error.platform.signInEmailOTP'; data: unknown }
     'error.platform.signInMfaTotp': { type: 'error.platform.signInMfaTotp'; data: unknown }
     'error.platform.signUpEmailPassword': {
       type: 'error.platform.signUpEmailPassword'
@@ -112,6 +132,7 @@ export interface Typegen0 {
     }
     'error.platform.signUpSecurityKey': { type: 'error.platform.signUpSecurityKey'; data: unknown }
     'error.platform.signingOut': { type: 'error.platform.signingOut'; data: unknown }
+    'error.platform.verifyEmailOTP': { type: 'error.platform.verifyEmailOTP'; data: unknown }
     'xstate.after(1000)#nhost.authentication.signedIn.refreshTimer.running.pending': {
       type: 'xstate.after(1000)#nhost.authentication.signedIn.refreshTimer.running.pending'
     }
@@ -128,13 +149,17 @@ export interface Typegen0 {
     passwordlessSmsOtp: 'done.invoke.passwordlessSmsOtp'
     refreshToken: 'done.invoke.authenticateWithToken' | 'done.invoke.refreshToken'
     signInAnonymous: 'done.invoke.authenticateAnonymously'
+    signInEmailOTP: 'done.invoke.signInEmailOTP'
+    signInIdToken: 'done.invoke.authenticateWithIdToken'
     signInMfaTotp: 'done.invoke.signInMfaTotp'
     signInPAT: 'done.invoke.authenticateWithPAT'
     signInPassword: 'done.invoke.authenticateUserWithPassword'
+    signInSecurityKey: 'done.invoke.authenticateUserWithSecurityKey'
     signInSecurityKeyEmail: 'done.invoke.authenticateUserWithSecurityKey'
     signUpEmailPassword: 'done.invoke.signUpEmailPassword'
     signUpSecurityKey: 'done.invoke.signUpSecurityKey'
     signout: 'done.invoke.signingOut'
+    verifyEmailOTP: 'done.invoke.verifyEmailOTP'
   }
   missingImplementations: {
     actions: never
@@ -149,6 +174,7 @@ export interface Typegen0 {
       | 'done.invoke.authenticateAnonymously'
       | 'done.invoke.authenticateUserWithPassword'
       | 'done.invoke.authenticateUserWithSecurityKey'
+      | 'done.invoke.authenticateWithIdToken'
       | 'done.invoke.authenticateWithPAT'
       | 'done.invoke.authenticateWithToken'
       | 'done.invoke.importRefreshToken'
@@ -156,12 +182,14 @@ export interface Typegen0 {
       | 'done.invoke.signInMfaTotp'
       | 'done.invoke.signUpEmailPassword'
       | 'done.invoke.signUpSecurityKey'
+      | 'done.invoke.verifyEmailOTP'
     cleanUrl:
       | ''
       | 'SESSION_UPDATE'
       | 'done.invoke.authenticateAnonymously'
       | 'done.invoke.authenticateUserWithPassword'
       | 'done.invoke.authenticateUserWithSecurityKey'
+      | 'done.invoke.authenticateWithIdToken'
       | 'done.invoke.authenticateWithPAT'
       | 'done.invoke.authenticateWithToken'
       | 'done.invoke.importRefreshToken'
@@ -169,18 +197,34 @@ export interface Typegen0 {
       | 'done.invoke.signInMfaTotp'
       | 'done.invoke.signUpEmailPassword'
       | 'done.invoke.signUpSecurityKey'
+      | 'done.invoke.verifyEmailOTP'
     clearContext:
       | 'done.invoke.passwordlessEmail'
       | 'done.invoke.passwordlessSms'
+      | 'done.invoke.signInEmailOTP'
       | 'done.invoke.signUpEmailPassword'
       | 'done.invoke.signUpSecurityKey'
-    clearContextExceptRefreshToken: 'SIGNOUT'
-    destroyRefreshToken:
+    clearContextExceptTokens: 'SIGNOUT'
+    destroyAccessToken:
       | 'SESSION_UPDATE'
       | 'SIGNIN_ANONYMOUS'
+      | 'SIGNIN_ID_TOKEN'
       | 'SIGNIN_MFA_TOTP'
       | 'SIGNIN_PASSWORD'
       | 'SIGNIN_PAT'
+      | 'SIGNIN_SECURITY_KEY'
+      | 'SIGNIN_SECURITY_KEY_EMAIL'
+      | 'done.invoke.signingOut'
+      | 'error.platform.signingOut'
+      | 'xstate.stop'
+    destroyRefreshToken:
+      | 'SESSION_UPDATE'
+      | 'SIGNIN_ANONYMOUS'
+      | 'SIGNIN_ID_TOKEN'
+      | 'SIGNIN_MFA_TOTP'
+      | 'SIGNIN_PASSWORD'
+      | 'SIGNIN_PAT'
+      | 'SIGNIN_SECURITY_KEY'
       | 'SIGNIN_SECURITY_KEY_EMAIL'
       | 'done.invoke.signingOut'
       | 'error.platform.signingOut'
@@ -192,6 +236,7 @@ export interface Typegen0 {
       | 'done.invoke.authenticateAnonymously'
       | 'done.invoke.authenticateUserWithPassword'
       | 'done.invoke.authenticateUserWithSecurityKey'
+      | 'done.invoke.authenticateWithIdToken'
       | 'done.invoke.authenticateWithPAT'
       | 'done.invoke.authenticateWithToken'
       | 'done.invoke.importRefreshToken'
@@ -199,31 +244,38 @@ export interface Typegen0 {
       | 'done.invoke.signInMfaTotp'
       | 'done.invoke.signUpEmailPassword'
       | 'done.invoke.signUpSecurityKey'
+      | 'done.invoke.verifyEmailOTP'
     reportSignedOut:
       | 'SIGNOUT'
       | 'done.invoke.authenticateUserWithPassword'
       | 'done.invoke.importRefreshToken'
       | 'done.invoke.passwordlessEmail'
       | 'done.invoke.passwordlessSms'
+      | 'done.invoke.signInEmailOTP'
       | 'done.invoke.signUpEmailPassword'
       | 'done.invoke.signUpSecurityKey'
       | 'error.platform.authenticateAnonymously'
       | 'error.platform.authenticateUserWithPassword'
       | 'error.platform.authenticateUserWithSecurityKey'
+      | 'error.platform.authenticateWithIdToken'
       | 'error.platform.authenticateWithPAT'
       | 'error.platform.authenticateWithToken'
       | 'error.platform.importRefreshToken'
+      | 'error.platform.refreshToken'
       | 'error.platform.signInMfaTotp'
     reportTokenChanged:
       | 'SESSION_UPDATE'
       | 'SIGNIN_ANONYMOUS'
+      | 'SIGNIN_ID_TOKEN'
       | 'SIGNIN_MFA_TOTP'
       | 'SIGNIN_PASSWORD'
       | 'SIGNIN_PAT'
+      | 'SIGNIN_SECURITY_KEY'
       | 'SIGNIN_SECURITY_KEY_EMAIL'
       | 'done.invoke.authenticateAnonymously'
       | 'done.invoke.authenticateUserWithPassword'
       | 'done.invoke.authenticateUserWithSecurityKey'
+      | 'done.invoke.authenticateWithIdToken'
       | 'done.invoke.authenticateWithPAT'
       | 'done.invoke.authenticateWithToken'
       | 'done.invoke.importRefreshToken'
@@ -233,6 +285,7 @@ export interface Typegen0 {
       | 'done.invoke.signUpEmailPassword'
       | 'done.invoke.signUpSecurityKey'
       | 'done.invoke.signingOut'
+      | 'done.invoke.verifyEmailOTP'
       | 'error.platform.signingOut'
       | 'xstate.stop'
     resetErrors:
@@ -242,15 +295,20 @@ export interface Typegen0 {
       | 'PASSWORDLESS_SMS_OTP'
       | 'SESSION_UPDATE'
       | 'SIGNIN_ANONYMOUS'
+      | 'SIGNIN_EMAIL_OTP'
+      | 'SIGNIN_ID_TOKEN'
       | 'SIGNIN_MFA_TOTP'
       | 'SIGNIN_PASSWORD'
       | 'SIGNIN_PAT'
+      | 'SIGNIN_SECURITY_KEY'
       | 'SIGNIN_SECURITY_KEY_EMAIL'
       | 'SIGNUP_EMAIL_PASSWORD'
       | 'SIGNUP_SECURITY_KEY'
+      | 'VERIFY_EMAIL_OTP'
       | 'done.invoke.authenticateAnonymously'
       | 'done.invoke.authenticateUserWithPassword'
       | 'done.invoke.authenticateUserWithSecurityKey'
+      | 'done.invoke.authenticateWithIdToken'
       | 'done.invoke.authenticateWithPAT'
       | 'done.invoke.authenticateWithToken'
       | 'done.invoke.importRefreshToken'
@@ -258,11 +316,13 @@ export interface Typegen0 {
       | 'done.invoke.signInMfaTotp'
       | 'done.invoke.signUpEmailPassword'
       | 'done.invoke.signUpSecurityKey'
+      | 'done.invoke.verifyEmailOTP'
     resetTimer: '' | 'SESSION_UPDATE' | 'done.invoke.refreshToken'
     saveAuthenticationError:
       | 'error.platform.authenticateAnonymously'
       | 'error.platform.authenticateUserWithPassword'
       | 'error.platform.authenticateUserWithSecurityKey'
+      | 'error.platform.authenticateWithIdToken'
       | 'error.platform.authenticateWithPAT'
       | 'error.platform.authenticateWithToken'
       | 'error.platform.importRefreshToken'
@@ -275,13 +335,16 @@ export interface Typegen0 {
       | 'error.platform.passwordlessEmail'
       | 'error.platform.passwordlessSms'
       | 'error.platform.passwordlessSmsOtp'
+      | 'error.platform.signInEmailOTP'
       | 'error.platform.signUpEmailPassword'
       | 'error.platform.signUpSecurityKey'
+      | 'error.platform.verifyEmailOTP'
     saveSession:
       | 'SESSION_UPDATE'
       | 'done.invoke.authenticateAnonymously'
       | 'done.invoke.authenticateUserWithPassword'
       | 'done.invoke.authenticateUserWithSecurityKey'
+      | 'done.invoke.authenticateWithIdToken'
       | 'done.invoke.authenticateWithToken'
       | 'done.invoke.importRefreshToken'
       | 'done.invoke.passwordlessSmsOtp'
@@ -289,6 +352,7 @@ export interface Typegen0 {
       | 'done.invoke.signInMfaTotp'
       | 'done.invoke.signUpEmailPassword'
       | 'done.invoke.signUpSecurityKey'
+      | 'done.invoke.verifyEmailOTP'
   }
   eventsCausingDelays: {
     RETRY_IMPORT_TOKEN_DELAY: 'error.platform.importRefreshToken'
@@ -305,6 +369,7 @@ export interface Typegen0 {
     isAutoRefreshDisabled: ''
     isRefreshTokenPAT: ''
     isSignedIn: '' | 'error.platform.authenticateWithToken'
+    isUnauthorizedError: 'error.platform.refreshToken'
     noToken: ''
     refreshTimerShouldRefresh: ''
     shouldRetryImportToken: 'error.platform.importRefreshToken'
@@ -320,8 +385,10 @@ export interface Typegen0 {
       | 'done.invoke.passwordlessEmail'
       | 'done.invoke.passwordlessSms'
       | 'done.invoke.passwordlessSmsOtp'
+      | 'done.invoke.signInEmailOTP'
       | 'done.invoke.signUpEmailPassword'
       | 'done.invoke.signUpSecurityKey'
+      | 'done.invoke.verifyEmailOTP'
       | 'error.platform.authenticateWithToken'
       | 'xstate.after(RETRY_IMPORT_TOKEN_DELAY)#nhost.authentication.retryTokenImport'
       | 'xstate.init'
@@ -330,22 +397,28 @@ export interface Typegen0 {
     passwordlessSmsOtp: 'PASSWORDLESS_SMS_OTP'
     refreshToken: '' | 'TRY_TOKEN'
     signInAnonymous: 'SIGNIN_ANONYMOUS'
+    signInEmailOTP: 'SIGNIN_EMAIL_OTP'
+    signInIdToken: 'SIGNIN_ID_TOKEN'
     signInMfaTotp: 'SIGNIN_MFA_TOTP'
     signInPAT: 'SIGNIN_PAT'
     signInPassword: 'SIGNIN_PASSWORD'
+    signInSecurityKey: 'SIGNIN_SECURITY_KEY'
     signInSecurityKeyEmail: 'SIGNIN_SECURITY_KEY_EMAIL'
     signUpEmailPassword: 'SIGNUP_EMAIL_PASSWORD'
     signUpSecurityKey: 'SIGNUP_SECURITY_KEY'
     signout: 'SIGNOUT'
+    verifyEmailOTP: 'VERIFY_EMAIL_OTP'
   }
   matchesStates:
     | 'authentication'
     | 'authentication.authenticating'
     | 'authentication.authenticating.anonymous'
+    | 'authentication.authenticating.idToken'
     | 'authentication.authenticating.mfa'
     | 'authentication.authenticating.mfa.totp'
     | 'authentication.authenticating.password'
     | 'authentication.authenticating.pat'
+    | 'authentication.authenticating.securityKey'
     | 'authentication.authenticating.securityKeyEmail'
     | 'authentication.retryTokenImport'
     | 'authentication.signedIn'
@@ -376,6 +449,8 @@ export interface Typegen0 {
     | 'registration.passwordlessSms'
     | 'registration.passwordlessSmsOtp'
     | 'registration.securityKey'
+    | 'registration.signInEmailOTP'
+    | 'registration.verifyEmailOTP'
     | 'token'
     | 'token.idle'
     | 'token.idle.error'
@@ -391,9 +466,11 @@ export interface Typegen0 {
           | {
               authenticating?:
                 | 'anonymous'
+                | 'idToken'
                 | 'mfa'
                 | 'password'
                 | 'pat'
+                | 'securityKey'
                 | 'securityKeyEmail'
                 | { mfa?: 'totp' }
               signedIn?:
@@ -422,6 +499,8 @@ export interface Typegen0 {
           | 'passwordlessSms'
           | 'passwordlessSmsOtp'
           | 'securityKey'
+          | 'signInEmailOTP'
+          | 'verifyEmailOTP'
           | { incomplete?: 'failed' | 'needsEmailVerification' | 'needsOtp' | 'noErrors' }
         token?: 'idle' | 'running' | { idle?: 'error' | 'noErrors' }
       }

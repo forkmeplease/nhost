@@ -1,3 +1,4 @@
+import { ApplyLocalSettingsDialog } from '@/components/common/ApplyLocalSettingsDialog';
 import { useDialog } from '@/components/common/DialogProvider';
 import { useUI } from '@/components/common/UIProvider';
 import { Container } from '@/components/layout/Container';
@@ -15,11 +16,14 @@ import { PlusIcon } from '@/components/ui/v2/icons/PlusIcon';
 import { List } from '@/components/ui/v2/List';
 import { ListItem } from '@/components/ui/v2/ListItem';
 import { Text } from '@/components/ui/v2/Text';
+import { ProjectLayout } from '@/features/orgs/layout/ProjectLayout';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import { CreateSecretForm } from '@/features/projects/secrets/settings/components/CreateSecretForm';
 import { EditSecretForm } from '@/features/projects/secrets/settings/components/EditSecretForm';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
 import type { Secret } from '@/types/application';
-import { getToastStyleProps } from '@/utils/constants/settings';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import {
   GetSecretsDocument,
   useDeleteSecretMutation,
@@ -27,20 +31,23 @@ import {
 } from '@/utils/__generated__/graphql';
 import type { ReactElement } from 'react';
 import { Fragment } from 'react';
-import { toast } from 'react-hot-toast';
 import { twMerge } from 'tailwind-merge';
 
 export default function SecretsPage() {
-  const { openDialog, openAlertDialog } = useDialog();
+  const isPlatform = useIsPlatform();
   const { maintenanceActive } = useUI();
+  const localMimirClient = useLocalMimirClient();
+  const { openDialog, openAlertDialog } = useDialog();
   const { currentProject } = useCurrentWorkspaceAndProject();
 
-  const { data, loading, error } = useGetSecretsQuery({
+  const { data, loading, error, refetch } = useGetSecretsQuery({
     variables: { appId: currentProject?.id },
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const [deleteSecret] = useDeleteSecretMutation({
     refetchQueries: [GetSecretsDocument],
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   if (loading) {
@@ -59,28 +66,35 @@ export default function SecretsPage() {
       },
     });
 
-    try {
-      await toast.promise(
-        deleteSecretPromise,
-        {
-          loading: 'Deleting secret...',
-          success: 'Secret has been deleted successfully.',
-          error: (arg: Error) =>
-            arg?.message
-              ? `Error: ${arg?.message}`
-              : 'An error occurred while deleting the secret.',
-        },
-        getToastStyleProps(),
-      );
-    } catch (deleteSecretError) {
-      console.error(deleteSecretError);
-    }
+    await execPromiseWithErrorToast(
+      async () => {
+        await deleteSecretPromise;
+        await refetch();
+
+        if (!isPlatform) {
+          openDialog({
+            title: 'Apply your changes',
+            component: <ApplyLocalSettingsDialog />,
+            props: {
+              PaperProps: {
+                className: 'max-w-2xl',
+              },
+            },
+          });
+        }
+      },
+      {
+        loadingMessage: 'Deleting secret...',
+        successMessage: 'Secret has been deleted successfully.',
+        errorMessage: 'An error occurred while deleting the secret.',
+      },
+    );
   }
 
   function handleOpenCreator() {
     openDialog({
       title: 'Create Secret',
-      component: <CreateSecretForm />,
+      component: <CreateSecretForm onSubmit={refetch} />,
       props: {
         titleProps: { className: '!pb-0' },
         PaperProps: { className: 'gap-2 max-w-md' },
@@ -238,5 +252,17 @@ export default function SecretsPage() {
 }
 
 SecretsPage.getLayout = function getLayout(page: ReactElement) {
-  return <SettingsLayout>{page}</SettingsLayout>;
+  return (
+    <ProjectLayout
+      mainContainerProps={{
+        className: 'flex h-full',
+      }}
+    >
+      <SettingsLayout>
+        <Container sx={{ backgroundColor: 'background.default' }}>
+          {page}
+        </Container>
+      </SettingsLayout>
+    </ProjectLayout>
+  );
 };

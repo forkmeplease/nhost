@@ -1,5 +1,47 @@
 # @nhost/graphql-js
 
+## 0.3.0
+
+### Minor Changes
+
+- d0c9f4c: fix: replace `jose` with `jwt-decode` version 4.0.0
+
+## 0.2.0
+
+### Minor Changes
+
+- 304065a: feat: add `setHeaders` method enabling global configuration of storage, graphql, and functions client headers, alongside added support for passing specific headers with individual calls
+
+## 0.1.9
+
+### Patch Changes
+
+- 7789469: fix: resolve process is undefined error when running with vitejs
+
+## 0.1.8
+
+### Patch Changes
+
+- 407feea: fix: replace `jwt-decode` with `jose` to decode access tokens in a non browser environment
+
+## 0.1.7
+
+### Patch Changes
+
+- 2d68fee: fix: resolve an issue where unauthenticated graphql requests are not sent
+
+## 0.1.6
+
+### Patch Changes
+
+- e0ab6d9: fix: add extra logic to check and wait for a valid JWT
+
+## 0.1.5
+
+### Patch Changes
+
+- 8d91f71: chore: update deps and enable pnpm audit
+
 ## 0.1.4
 
 ### Patch Changes

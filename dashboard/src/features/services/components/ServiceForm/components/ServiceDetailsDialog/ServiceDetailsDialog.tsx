@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/v2/Button';
 import { Text } from '@/components/ui/v2/Text';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
 import { InfoCard } from '@/features/projects/overview/components/InfoCard';
+import { getRunServicePortURL } from '@/utils/helpers';
 import type { ConfigRunServicePort } from '@/utils/__generated__/graphql';
 
 export interface ServiceDetailsDialogProps {
@@ -32,11 +33,7 @@ export default function ServiceDetailsDialog({
 
   const { closeDialog } = useDialog();
 
-  const getPortURL = (_port: string | number) => {
-    const port = Number(_port) > 0 ? Number(_port) : '[port]';
-
-    return `https://${subdomain}-${port}.svc.${currentProject?.region.awsName}.${currentProject?.region.domain}`;
-  };
+  const publishedPorts = ports.filter((port) => port.publish);
 
   return (
     <div className="flex flex-col gap-4 px-6 pb-6">
@@ -44,21 +41,25 @@ export default function ServiceDetailsDialog({
         <Text color="secondary">Private registry</Text>
         <InfoCard
           title=""
-          value={`registry.${currentProject.region.awsName}.${currentProject.region.domain}/${serviceID}`}
+          value={`registry.${currentProject.region.name}.${currentProject.region.domain}/${serviceID}`}
         />
       </div>
 
-      {ports?.length > 0 && (
+      {publishedPorts?.length > 0 && (
         <div className="flex flex-col gap-2">
           <Text color="secondary">Ports</Text>
-          {ports
-            .filter((port) => port.publish)
-            .map((port) => (
-              <InfoCard
-                title={`${port.type}:${port.port}`}
-                value={getPortURL(port.port)}
-              />
-            ))}
+          {publishedPorts.map((port) => (
+            <InfoCard
+              key={String(port.port)}
+              title={`${port.type} <--> ${port.port}`}
+              value={getRunServicePortURL(
+                subdomain,
+                currentProject?.region.name,
+                currentProject?.region.domain,
+                port,
+              )}
+            />
+          ))}
         </div>
       )}
 

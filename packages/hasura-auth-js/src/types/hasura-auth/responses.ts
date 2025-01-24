@@ -58,5 +58,13 @@ export type SignInPATResponse = NhostSessionResponse
 /** payload from hasura-auth endpoint /signin/anonymous */
 export type PasswordlessSmsOtpResponse = NhostSessionResponse
 
+/** payload from hasura-auth endpoint /signin/otp/email */
+export interface SignInEmailOTPResponse extends NullableErrorResponse {}
+
+/** payload from hasura-auth endpoint /signin/otp/email/verify */
+export type VerifyEmailOTPResponse = NhostSessionResponse
+
 /** payload from hasura-auth endpoint /signin/mfa/totp */
 export type SignInMfaTotpResponse = NhostSessionResponse
+
+export type ConnectProviderResponse = { providerUrl?: string }

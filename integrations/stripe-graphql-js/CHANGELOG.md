@@ -1,5 +1,35 @@
 # @nhost/stripe-graphql-js
 
+## 1.2.0
+
+### Minor Changes
+
+- 768ca17: chore: update dependencies
+
+## 1.1.1
+
+### Patch Changes
+
+- 7789469: chore: address linter errors and remove unnecessary imports
+
+## 1.1.0
+
+### Minor Changes
+
+- 49a80c2: chore: update dependencies
+
+## 1.0.7
+
+### Patch Changes
+
+- e5bab6a: chore: update dependencies
+
+## 1.0.6
+
+### Patch Changes
+
+- 8d91f71: chore: update deps and enable pnpm audit
+
 ## 1.0.5
 
 ### Patch Changes

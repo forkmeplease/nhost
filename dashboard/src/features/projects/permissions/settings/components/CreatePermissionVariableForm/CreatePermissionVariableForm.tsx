@@ -1,5 +1,8 @@
+import { ApplyLocalSettingsDialog } from '@/components/common/ApplyLocalSettingsDialog';
+import { useDialog } from '@/components/common/DialogProvider';
 import { ActivityIndicator } from '@/components/ui/v2/ActivityIndicator';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import type {
   BasePermissionVariableFormProps,
   BasePermissionVariableFormValues,
@@ -9,7 +12,8 @@ import {
   basePermissionVariableValidationSchema,
 } from '@/features/projects/permissions/settings/components/BasePermissionVariableForm';
 import { getAllPermissionVariables } from '@/features/projects/permissions/settings/utils/getAllPermissionVariables';
-import { getToastStyleProps } from '@/utils/constants/settings';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import {
   GetRolesPermissionsDocument,
   useGetRolesPermissionsQuery,
@@ -17,25 +21,26 @@ import {
 } from '@/utils/__generated__/graphql';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 
 export interface CreatePermissionVariableFormProps
   extends Pick<BasePermissionVariableFormProps, 'onCancel' | 'location'> {
   /**
    * Function to be called when the form is submitted.
    */
-  onSubmit?: () => Promise<void>;
+  onSubmit?: () => Promise<any>;
 }
 
 export default function CreatePermissionVariableForm({
   onSubmit,
   ...props
 }: CreatePermissionVariableFormProps) {
+  const { openDialog } = useDialog();
+  const isPlatform = useIsPlatform();
+  const localMimirClient = useLocalMimirClient();
   const { currentProject } = useCurrentWorkspaceAndProject();
-
   const { data, error, loading } = useGetRolesPermissionsQuery({
     variables: { appId: currentProject?.id },
-    fetchPolicy: 'cache-only',
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { customClaims: permissionVariables } =
@@ -52,6 +57,7 @@ export default function CreatePermissionVariableForm({
 
   const [updateConfig] = useUpdateConfigMutation({
     refetchQueries: [GetRolesPermissionsDocument],
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   if (loading) {
@@ -103,18 +109,30 @@ export default function CreatePermissionVariableForm({
       },
     });
 
-    await toast.promise(
-      updateConfigPromise,
+    await execPromiseWithErrorToast(
+      async () => {
+        await updateConfigPromise;
+        await onSubmit?.();
+
+        if (!isPlatform) {
+          openDialog({
+            title: 'Apply your changes',
+            component: <ApplyLocalSettingsDialog />,
+            props: {
+              PaperProps: {
+                className: 'max-w-2xl',
+              },
+            },
+          });
+        }
+      },
       {
-        loading: 'Creating permission variable...',
-        success: 'Permission variable has been created successfully.',
-        error:
+        loadingMessage: 'Creating permission variable...',
+        successMessage: 'Permission variable has been created successfully.',
+        errorMessage:
           'An error occurred while trying to create the permission variable.',
       },
-      getToastStyleProps(),
     );
-
-    await onSubmit?.();
   }
 
   return (
