@@ -15,8 +15,11 @@ export type Scalars = {
   Float: number;
   ConfigEmail: any;
   ConfigHasuraAPIs: any;
+  ConfigInt32: any;
   ConfigLocale: any;
   ConfigPort: any;
+  ConfigRunServiceName: any;
+  ConfigUint: any;
   ConfigUint8: any;
   ConfigUint32: any;
   ConfigUrl: any;
@@ -69,6 +72,112 @@ export type Boolean_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['Boolean']>>;
 };
 
+export enum CheckoutStatus {
+  Completed = 'COMPLETED',
+  Expired = 'EXPIRED',
+  Open = 'OPEN'
+}
+
+export type ConfigAi = {
+  __typename?: 'ConfigAI';
+  autoEmbeddings?: Maybe<ConfigAiAutoEmbeddings>;
+  openai: ConfigAiOpenai;
+  resources: ConfigAiResources;
+  version?: Maybe<Scalars['String']>;
+  webhookSecret: Scalars['String'];
+};
+
+export type ConfigAiAutoEmbeddings = {
+  __typename?: 'ConfigAIAutoEmbeddings';
+  synchPeriodMinutes?: Maybe<Scalars['ConfigUint32']>;
+};
+
+export type ConfigAiAutoEmbeddingsComparisonExp = {
+  _and?: InputMaybe<Array<ConfigAiAutoEmbeddingsComparisonExp>>;
+  _not?: InputMaybe<ConfigAiAutoEmbeddingsComparisonExp>;
+  _or?: InputMaybe<Array<ConfigAiAutoEmbeddingsComparisonExp>>;
+  synchPeriodMinutes?: InputMaybe<ConfigUint32ComparisonExp>;
+};
+
+export type ConfigAiAutoEmbeddingsInsertInput = {
+  synchPeriodMinutes?: InputMaybe<Scalars['ConfigUint32']>;
+};
+
+export type ConfigAiAutoEmbeddingsUpdateInput = {
+  synchPeriodMinutes?: InputMaybe<Scalars['ConfigUint32']>;
+};
+
+export type ConfigAiComparisonExp = {
+  _and?: InputMaybe<Array<ConfigAiComparisonExp>>;
+  _not?: InputMaybe<ConfigAiComparisonExp>;
+  _or?: InputMaybe<Array<ConfigAiComparisonExp>>;
+  autoEmbeddings?: InputMaybe<ConfigAiAutoEmbeddingsComparisonExp>;
+  openai?: InputMaybe<ConfigAiOpenaiComparisonExp>;
+  resources?: InputMaybe<ConfigAiResourcesComparisonExp>;
+  version?: InputMaybe<ConfigStringComparisonExp>;
+  webhookSecret?: InputMaybe<ConfigStringComparisonExp>;
+};
+
+export type ConfigAiInsertInput = {
+  autoEmbeddings?: InputMaybe<ConfigAiAutoEmbeddingsInsertInput>;
+  openai: ConfigAiOpenaiInsertInput;
+  resources: ConfigAiResourcesInsertInput;
+  version?: InputMaybe<Scalars['String']>;
+  webhookSecret: Scalars['String'];
+};
+
+export type ConfigAiOpenai = {
+  __typename?: 'ConfigAIOpenai';
+  apiKey: Scalars['String'];
+  organization?: Maybe<Scalars['String']>;
+};
+
+export type ConfigAiOpenaiComparisonExp = {
+  _and?: InputMaybe<Array<ConfigAiOpenaiComparisonExp>>;
+  _not?: InputMaybe<ConfigAiOpenaiComparisonExp>;
+  _or?: InputMaybe<Array<ConfigAiOpenaiComparisonExp>>;
+  apiKey?: InputMaybe<ConfigStringComparisonExp>;
+  organization?: InputMaybe<ConfigStringComparisonExp>;
+};
+
+export type ConfigAiOpenaiInsertInput = {
+  apiKey: Scalars['String'];
+  organization?: InputMaybe<Scalars['String']>;
+};
+
+export type ConfigAiOpenaiUpdateInput = {
+  apiKey?: InputMaybe<Scalars['String']>;
+  organization?: InputMaybe<Scalars['String']>;
+};
+
+export type ConfigAiResources = {
+  __typename?: 'ConfigAIResources';
+  compute: ConfigComputeResources;
+};
+
+export type ConfigAiResourcesComparisonExp = {
+  _and?: InputMaybe<Array<ConfigAiResourcesComparisonExp>>;
+  _not?: InputMaybe<ConfigAiResourcesComparisonExp>;
+  _or?: InputMaybe<Array<ConfigAiResourcesComparisonExp>>;
+  compute?: InputMaybe<ConfigComputeResourcesComparisonExp>;
+};
+
+export type ConfigAiResourcesInsertInput = {
+  compute: ConfigComputeResourcesInsertInput;
+};
+
+export type ConfigAiResourcesUpdateInput = {
+  compute?: InputMaybe<ConfigComputeResourcesUpdateInput>;
+};
+
+export type ConfigAiUpdateInput = {
+  autoEmbeddings?: InputMaybe<ConfigAiAutoEmbeddingsUpdateInput>;
+  openai?: InputMaybe<ConfigAiOpenaiUpdateInput>;
+  resources?: InputMaybe<ConfigAiResourcesUpdateInput>;
+  version?: InputMaybe<Scalars['String']>;
+  webhookSecret?: InputMaybe<Scalars['String']>;
+};
+
 export type ConfigAppConfig = {
   __typename?: 'ConfigAppConfig';
   appID: Scalars['uuid'];
@@ -94,7 +203,10 @@ export type ConfigAppSystemConfig = {
  */
 export type ConfigAuth = {
   __typename?: 'ConfigAuth';
+  elevatedPrivileges?: Maybe<ConfigAuthElevatedPrivileges>;
   method?: Maybe<ConfigAuthMethod>;
+  misc?: Maybe<ConfigAuthMisc>;
+  rateLimit?: Maybe<ConfigAuthRateLimit>;
   redirections?: Maybe<ConfigAuthRedirections>;
   /** Resources for the service */
   resources?: Maybe<ConfigResources>;
@@ -117,7 +229,10 @@ export type ConfigAuthComparisonExp = {
   _and?: InputMaybe<Array<ConfigAuthComparisonExp>>;
   _not?: InputMaybe<ConfigAuthComparisonExp>;
   _or?: InputMaybe<Array<ConfigAuthComparisonExp>>;
+  elevatedPrivileges?: InputMaybe<ConfigAuthElevatedPrivilegesComparisonExp>;
   method?: InputMaybe<ConfigAuthMethodComparisonExp>;
+  misc?: InputMaybe<ConfigAuthMiscComparisonExp>;
+  rateLimit?: InputMaybe<ConfigAuthRateLimitComparisonExp>;
   redirections?: InputMaybe<ConfigAuthRedirectionsComparisonExp>;
   resources?: InputMaybe<ConfigResourcesComparisonExp>;
   session?: InputMaybe<ConfigAuthSessionComparisonExp>;
@@ -127,8 +242,31 @@ export type ConfigAuthComparisonExp = {
   version?: InputMaybe<ConfigStringComparisonExp>;
 };
 
+export type ConfigAuthElevatedPrivileges = {
+  __typename?: 'ConfigAuthElevatedPrivileges';
+  mode?: Maybe<Scalars['String']>;
+};
+
+export type ConfigAuthElevatedPrivilegesComparisonExp = {
+  _and?: InputMaybe<Array<ConfigAuthElevatedPrivilegesComparisonExp>>;
+  _not?: InputMaybe<ConfigAuthElevatedPrivilegesComparisonExp>;
+  _or?: InputMaybe<Array<ConfigAuthElevatedPrivilegesComparisonExp>>;
+  mode?: InputMaybe<ConfigStringComparisonExp>;
+};
+
+export type ConfigAuthElevatedPrivilegesInsertInput = {
+  mode?: InputMaybe<Scalars['String']>;
+};
+
+export type ConfigAuthElevatedPrivilegesUpdateInput = {
+  mode?: InputMaybe<Scalars['String']>;
+};
+
 export type ConfigAuthInsertInput = {
+  elevatedPrivileges?: InputMaybe<ConfigAuthElevatedPrivilegesInsertInput>;
   method?: InputMaybe<ConfigAuthMethodInsertInput>;
+  misc?: InputMaybe<ConfigAuthMiscInsertInput>;
+  rateLimit?: InputMaybe<ConfigAuthRateLimitInsertInput>;
   redirections?: InputMaybe<ConfigAuthRedirectionsInsertInput>;
   resources?: InputMaybe<ConfigResourcesInsertInput>;
   session?: InputMaybe<ConfigAuthSessionInsertInput>;
@@ -144,6 +282,7 @@ export type ConfigAuthMethod = {
   emailPassword?: Maybe<ConfigAuthMethodEmailPassword>;
   emailPasswordless?: Maybe<ConfigAuthMethodEmailPasswordless>;
   oauth?: Maybe<ConfigAuthMethodOauth>;
+  otp?: Maybe<ConfigAuthMethodOtp>;
   smsPasswordless?: Maybe<ConfigAuthMethodSmsPasswordless>;
   webauthn?: Maybe<ConfigAuthMethodWebauthn>;
 };
@@ -176,6 +315,7 @@ export type ConfigAuthMethodComparisonExp = {
   emailPassword?: InputMaybe<ConfigAuthMethodEmailPasswordComparisonExp>;
   emailPasswordless?: InputMaybe<ConfigAuthMethodEmailPasswordlessComparisonExp>;
   oauth?: InputMaybe<ConfigAuthMethodOauthComparisonExp>;
+  otp?: InputMaybe<ConfigAuthMethodOtpComparisonExp>;
   smsPasswordless?: InputMaybe<ConfigAuthMethodSmsPasswordlessComparisonExp>;
   webauthn?: InputMaybe<ConfigAuthMethodWebauthnComparisonExp>;
 };
@@ -237,6 +377,7 @@ export type ConfigAuthMethodInsertInput = {
   emailPassword?: InputMaybe<ConfigAuthMethodEmailPasswordInsertInput>;
   emailPasswordless?: InputMaybe<ConfigAuthMethodEmailPasswordlessInsertInput>;
   oauth?: InputMaybe<ConfigAuthMethodOauthInsertInput>;
+  otp?: InputMaybe<ConfigAuthMethodOtpInsertInput>;
   smsPasswordless?: InputMaybe<ConfigAuthMethodSmsPasswordlessInsertInput>;
   webauthn?: InputMaybe<ConfigAuthMethodWebauthnInsertInput>;
 };
@@ -262,6 +403,7 @@ export type ConfigAuthMethodOauth = {
 
 export type ConfigAuthMethodOauthApple = {
   __typename?: 'ConfigAuthMethodOauthApple';
+  audience?: Maybe<Scalars['String']>;
   clientId?: Maybe<Scalars['String']>;
   enabled?: Maybe<Scalars['Boolean']>;
   keyId?: Maybe<Scalars['String']>;
@@ -274,6 +416,7 @@ export type ConfigAuthMethodOauthAppleComparisonExp = {
   _and?: InputMaybe<Array<ConfigAuthMethodOauthAppleComparisonExp>>;
   _not?: InputMaybe<ConfigAuthMethodOauthAppleComparisonExp>;
   _or?: InputMaybe<Array<ConfigAuthMethodOauthAppleComparisonExp>>;
+  audience?: InputMaybe<ConfigStringComparisonExp>;
   clientId?: InputMaybe<ConfigStringComparisonExp>;
   enabled?: InputMaybe<ConfigBooleanComparisonExp>;
   keyId?: InputMaybe<ConfigStringComparisonExp>;
@@ -283,6 +426,7 @@ export type ConfigAuthMethodOauthAppleComparisonExp = {
 };
 
 export type ConfigAuthMethodOauthAppleInsertInput = {
+  audience?: InputMaybe<Scalars['String']>;
   clientId?: InputMaybe<Scalars['String']>;
   enabled?: InputMaybe<Scalars['Boolean']>;
   keyId?: InputMaybe<Scalars['String']>;
@@ -292,6 +436,7 @@ export type ConfigAuthMethodOauthAppleInsertInput = {
 };
 
 export type ConfigAuthMethodOauthAppleUpdateInput = {
+  audience?: InputMaybe<Scalars['String']>;
   clientId?: InputMaybe<Scalars['String']>;
   enabled?: InputMaybe<Scalars['Boolean']>;
   keyId?: InputMaybe<Scalars['String']>;
@@ -453,6 +598,46 @@ export type ConfigAuthMethodOauthWorkosUpdateInput = {
   organization?: InputMaybe<Scalars['String']>;
 };
 
+export type ConfigAuthMethodOtp = {
+  __typename?: 'ConfigAuthMethodOtp';
+  email?: Maybe<ConfigAuthMethodOtpEmail>;
+};
+
+export type ConfigAuthMethodOtpComparisonExp = {
+  _and?: InputMaybe<Array<ConfigAuthMethodOtpComparisonExp>>;
+  _not?: InputMaybe<ConfigAuthMethodOtpComparisonExp>;
+  _or?: InputMaybe<Array<ConfigAuthMethodOtpComparisonExp>>;
+  email?: InputMaybe<ConfigAuthMethodOtpEmailComparisonExp>;
+};
+
+export type ConfigAuthMethodOtpEmail = {
+  __typename?: 'ConfigAuthMethodOtpEmail';
+  enabled?: Maybe<Scalars['Boolean']>;
+};
+
+export type ConfigAuthMethodOtpEmailComparisonExp = {
+  _and?: InputMaybe<Array<ConfigAuthMethodOtpEmailComparisonExp>>;
+  _not?: InputMaybe<ConfigAuthMethodOtpEmailComparisonExp>;
+  _or?: InputMaybe<Array<ConfigAuthMethodOtpEmailComparisonExp>>;
+  enabled?: InputMaybe<ConfigBooleanComparisonExp>;
+};
+
+export type ConfigAuthMethodOtpEmailInsertInput = {
+  enabled?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type ConfigAuthMethodOtpEmailUpdateInput = {
+  enabled?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type ConfigAuthMethodOtpInsertInput = {
+  email?: InputMaybe<ConfigAuthMethodOtpEmailInsertInput>;
+};
+
+export type ConfigAuthMethodOtpUpdateInput = {
+  email?: InputMaybe<ConfigAuthMethodOtpEmailUpdateInput>;
+};
+
 export type ConfigAuthMethodSmsPasswordless = {
   __typename?: 'ConfigAuthMethodSmsPasswordless';
   enabled?: Maybe<Scalars['Boolean']>;
@@ -478,6 +663,7 @@ export type ConfigAuthMethodUpdateInput = {
   emailPassword?: InputMaybe<ConfigAuthMethodEmailPasswordUpdateInput>;
   emailPasswordless?: InputMaybe<ConfigAuthMethodEmailPasswordlessUpdateInput>;
   oauth?: InputMaybe<ConfigAuthMethodOauthUpdateInput>;
+  otp?: InputMaybe<ConfigAuthMethodOtpUpdateInput>;
   smsPasswordless?: InputMaybe<ConfigAuthMethodSmsPasswordlessUpdateInput>;
   webauthn?: InputMaybe<ConfigAuthMethodWebauthnUpdateInput>;
 };
@@ -526,6 +712,7 @@ export type ConfigAuthMethodWebauthnInsertInput = {
 
 export type ConfigAuthMethodWebauthnRelyingParty = {
   __typename?: 'ConfigAuthMethodWebauthnRelyingParty';
+  id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   origins?: Maybe<Array<Scalars['ConfigUrl']>>;
 };
@@ -534,16 +721,19 @@ export type ConfigAuthMethodWebauthnRelyingPartyComparisonExp = {
   _and?: InputMaybe<Array<ConfigAuthMethodWebauthnRelyingPartyComparisonExp>>;
   _not?: InputMaybe<ConfigAuthMethodWebauthnRelyingPartyComparisonExp>;
   _or?: InputMaybe<Array<ConfigAuthMethodWebauthnRelyingPartyComparisonExp>>;
+  id?: InputMaybe<ConfigStringComparisonExp>;
   name?: InputMaybe<ConfigStringComparisonExp>;
   origins?: InputMaybe<ConfigUrlComparisonExp>;
 };
 
 export type ConfigAuthMethodWebauthnRelyingPartyInsertInput = {
+  id?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   origins?: InputMaybe<Array<Scalars['ConfigUrl']>>;
 };
 
 export type ConfigAuthMethodWebauthnRelyingPartyUpdateInput = {
+  id?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   origins?: InputMaybe<Array<Scalars['ConfigUrl']>>;
 };
@@ -552,6 +742,62 @@ export type ConfigAuthMethodWebauthnUpdateInput = {
   attestation?: InputMaybe<ConfigAuthMethodWebauthnAttestationUpdateInput>;
   enabled?: InputMaybe<Scalars['Boolean']>;
   relyingParty?: InputMaybe<ConfigAuthMethodWebauthnRelyingPartyUpdateInput>;
+};
+
+export type ConfigAuthMisc = {
+  __typename?: 'ConfigAuthMisc';
+  concealErrors?: Maybe<Scalars['Boolean']>;
+};
+
+export type ConfigAuthMiscComparisonExp = {
+  _and?: InputMaybe<Array<ConfigAuthMiscComparisonExp>>;
+  _not?: InputMaybe<ConfigAuthMiscComparisonExp>;
+  _or?: InputMaybe<Array<ConfigAuthMiscComparisonExp>>;
+  concealErrors?: InputMaybe<ConfigBooleanComparisonExp>;
+};
+
+export type ConfigAuthMiscInsertInput = {
+  concealErrors?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type ConfigAuthMiscUpdateInput = {
+  concealErrors?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type ConfigAuthRateLimit = {
+  __typename?: 'ConfigAuthRateLimit';
+  bruteForce?: Maybe<ConfigRateLimit>;
+  emails?: Maybe<ConfigRateLimit>;
+  global?: Maybe<ConfigRateLimit>;
+  signups?: Maybe<ConfigRateLimit>;
+  sms?: Maybe<ConfigRateLimit>;
+};
+
+export type ConfigAuthRateLimitComparisonExp = {
+  _and?: InputMaybe<Array<ConfigAuthRateLimitComparisonExp>>;
+  _not?: InputMaybe<ConfigAuthRateLimitComparisonExp>;
+  _or?: InputMaybe<Array<ConfigAuthRateLimitComparisonExp>>;
+  bruteForce?: InputMaybe<ConfigRateLimitComparisonExp>;
+  emails?: InputMaybe<ConfigRateLimitComparisonExp>;
+  global?: InputMaybe<ConfigRateLimitComparisonExp>;
+  signups?: InputMaybe<ConfigRateLimitComparisonExp>;
+  sms?: InputMaybe<ConfigRateLimitComparisonExp>;
+};
+
+export type ConfigAuthRateLimitInsertInput = {
+  bruteForce?: InputMaybe<ConfigRateLimitInsertInput>;
+  emails?: InputMaybe<ConfigRateLimitInsertInput>;
+  global?: InputMaybe<ConfigRateLimitInsertInput>;
+  signups?: InputMaybe<ConfigRateLimitInsertInput>;
+  sms?: InputMaybe<ConfigRateLimitInsertInput>;
+};
+
+export type ConfigAuthRateLimitUpdateInput = {
+  bruteForce?: InputMaybe<ConfigRateLimitUpdateInput>;
+  emails?: InputMaybe<ConfigRateLimitUpdateInput>;
+  global?: InputMaybe<ConfigRateLimitUpdateInput>;
+  signups?: InputMaybe<ConfigRateLimitUpdateInput>;
+  sms?: InputMaybe<ConfigRateLimitUpdateInput>;
 };
 
 export type ConfigAuthRedirections = {
@@ -653,23 +899,52 @@ export type ConfigAuthSessionUpdateInput = {
 
 export type ConfigAuthSignUp = {
   __typename?: 'ConfigAuthSignUp';
-  /** Inverse of AUTH_DISABLE_NEW_USERS */
+  /** AUTH_DISABLE_NEW_USERS */
+  disableNewUsers?: Maybe<Scalars['Boolean']>;
+  /** Inverse of AUTH_DISABLE_SIGNUP */
   enabled?: Maybe<Scalars['Boolean']>;
+  turnstile?: Maybe<ConfigAuthSignUpTurnstile>;
 };
 
 export type ConfigAuthSignUpComparisonExp = {
   _and?: InputMaybe<Array<ConfigAuthSignUpComparisonExp>>;
   _not?: InputMaybe<ConfigAuthSignUpComparisonExp>;
   _or?: InputMaybe<Array<ConfigAuthSignUpComparisonExp>>;
+  disableNewUsers?: InputMaybe<ConfigBooleanComparisonExp>;
   enabled?: InputMaybe<ConfigBooleanComparisonExp>;
+  turnstile?: InputMaybe<ConfigAuthSignUpTurnstileComparisonExp>;
 };
 
 export type ConfigAuthSignUpInsertInput = {
+  disableNewUsers?: InputMaybe<Scalars['Boolean']>;
   enabled?: InputMaybe<Scalars['Boolean']>;
+  turnstile?: InputMaybe<ConfigAuthSignUpTurnstileInsertInput>;
+};
+
+export type ConfigAuthSignUpTurnstile = {
+  __typename?: 'ConfigAuthSignUpTurnstile';
+  secretKey: Scalars['String'];
+};
+
+export type ConfigAuthSignUpTurnstileComparisonExp = {
+  _and?: InputMaybe<Array<ConfigAuthSignUpTurnstileComparisonExp>>;
+  _not?: InputMaybe<ConfigAuthSignUpTurnstileComparisonExp>;
+  _or?: InputMaybe<Array<ConfigAuthSignUpTurnstileComparisonExp>>;
+  secretKey?: InputMaybe<ConfigStringComparisonExp>;
+};
+
+export type ConfigAuthSignUpTurnstileInsertInput = {
+  secretKey: Scalars['String'];
+};
+
+export type ConfigAuthSignUpTurnstileUpdateInput = {
+  secretKey?: InputMaybe<Scalars['String']>;
 };
 
 export type ConfigAuthSignUpUpdateInput = {
+  disableNewUsers?: InputMaybe<Scalars['Boolean']>;
   enabled?: InputMaybe<Scalars['Boolean']>;
+  turnstile?: InputMaybe<ConfigAuthSignUpTurnstileUpdateInput>;
 };
 
 export type ConfigAuthTotp = {
@@ -697,7 +972,10 @@ export type ConfigAuthTotpUpdateInput = {
 };
 
 export type ConfigAuthUpdateInput = {
+  elevatedPrivileges?: InputMaybe<ConfigAuthElevatedPrivilegesUpdateInput>;
   method?: InputMaybe<ConfigAuthMethodUpdateInput>;
+  misc?: InputMaybe<ConfigAuthMiscUpdateInput>;
+  rateLimit?: InputMaybe<ConfigAuthRateLimitUpdateInput>;
   redirections?: InputMaybe<ConfigAuthRedirectionsUpdateInput>;
   resources?: InputMaybe<ConfigResourcesUpdateInput>;
   session?: InputMaybe<ConfigAuthSessionUpdateInput>;
@@ -901,6 +1179,26 @@ export type ConfigAuthsessionaccessTokenCustomClaimsUpdateInput = {
   value?: InputMaybe<Scalars['String']>;
 };
 
+export type ConfigAutoscaler = {
+  __typename?: 'ConfigAutoscaler';
+  maxReplicas: Scalars['ConfigUint8'];
+};
+
+export type ConfigAutoscalerComparisonExp = {
+  _and?: InputMaybe<Array<ConfigAutoscalerComparisonExp>>;
+  _not?: InputMaybe<ConfigAutoscalerComparisonExp>;
+  _or?: InputMaybe<Array<ConfigAutoscalerComparisonExp>>;
+  maxReplicas?: InputMaybe<ConfigUint8ComparisonExp>;
+};
+
+export type ConfigAutoscalerInsertInput = {
+  maxReplicas: Scalars['ConfigUint8'];
+};
+
+export type ConfigAutoscalerUpdateInput = {
+  maxReplicas?: InputMaybe<Scalars['ConfigUint8']>;
+};
+
 export type ConfigBooleanComparisonExp = {
   _eq?: InputMaybe<Scalars['Boolean']>;
   _in?: InputMaybe<Array<Scalars['Boolean']>>;
@@ -940,21 +1238,52 @@ export type ConfigClaimMapUpdateInput = {
   value?: InputMaybe<Scalars['String']>;
 };
 
+/** Resource configuration for a service */
+export type ConfigComputeResources = {
+  __typename?: 'ConfigComputeResources';
+  /** milicpus, 1000 milicpus = 1 cpu */
+  cpu: Scalars['ConfigUint32'];
+  /** MiB: 128MiB to 30GiB */
+  memory: Scalars['ConfigUint32'];
+};
+
+export type ConfigComputeResourcesComparisonExp = {
+  _and?: InputMaybe<Array<ConfigComputeResourcesComparisonExp>>;
+  _not?: InputMaybe<ConfigComputeResourcesComparisonExp>;
+  _or?: InputMaybe<Array<ConfigComputeResourcesComparisonExp>>;
+  cpu?: InputMaybe<ConfigUint32ComparisonExp>;
+  memory?: InputMaybe<ConfigUint32ComparisonExp>;
+};
+
+export type ConfigComputeResourcesInsertInput = {
+  cpu: Scalars['ConfigUint32'];
+  memory: Scalars['ConfigUint32'];
+};
+
+export type ConfigComputeResourcesUpdateInput = {
+  cpu?: InputMaybe<Scalars['ConfigUint32']>;
+  memory?: InputMaybe<Scalars['ConfigUint32']>;
+};
+
 /** main entrypoint to the configuration */
 export type ConfigConfig = {
   __typename?: 'ConfigConfig';
+  /** Configuration for graphite service */
+  ai?: Maybe<ConfigAi>;
   /** Configuration for auth service */
   auth?: Maybe<ConfigAuth>;
   /** Configuration for functions service */
   functions?: Maybe<ConfigFunctions>;
   /** Global configuration that applies to all services */
   global?: Maybe<ConfigGlobal>;
+  /** Advanced configuration for GraphQL */
+  graphql?: Maybe<ConfigGraphql>;
   /** Configuration for hasura */
   hasura: ConfigHasura;
   /** Configuration for observability service */
   observability: ConfigObservability;
   /** Configuration for postgres service */
-  postgres?: Maybe<ConfigPostgres>;
+  postgres: ConfigPostgres;
   /** Configuration for third party providers like SMTP, SMS, etc. */
   provider?: Maybe<ConfigProvider>;
   /** Configuration for storage service */
@@ -965,9 +1294,11 @@ export type ConfigConfigComparisonExp = {
   _and?: InputMaybe<Array<ConfigConfigComparisonExp>>;
   _not?: InputMaybe<ConfigConfigComparisonExp>;
   _or?: InputMaybe<Array<ConfigConfigComparisonExp>>;
+  ai?: InputMaybe<ConfigAiComparisonExp>;
   auth?: InputMaybe<ConfigAuthComparisonExp>;
   functions?: InputMaybe<ConfigFunctionsComparisonExp>;
   global?: InputMaybe<ConfigGlobalComparisonExp>;
+  graphql?: InputMaybe<ConfigGraphqlComparisonExp>;
   hasura?: InputMaybe<ConfigHasuraComparisonExp>;
   observability?: InputMaybe<ConfigObservabilityComparisonExp>;
   postgres?: InputMaybe<ConfigPostgresComparisonExp>;
@@ -976,20 +1307,24 @@ export type ConfigConfigComparisonExp = {
 };
 
 export type ConfigConfigInsertInput = {
+  ai?: InputMaybe<ConfigAiInsertInput>;
   auth?: InputMaybe<ConfigAuthInsertInput>;
   functions?: InputMaybe<ConfigFunctionsInsertInput>;
   global?: InputMaybe<ConfigGlobalInsertInput>;
+  graphql?: InputMaybe<ConfigGraphqlInsertInput>;
   hasura: ConfigHasuraInsertInput;
   observability: ConfigObservabilityInsertInput;
-  postgres?: InputMaybe<ConfigPostgresInsertInput>;
+  postgres: ConfigPostgresInsertInput;
   provider?: InputMaybe<ConfigProviderInsertInput>;
   storage?: InputMaybe<ConfigStorageInsertInput>;
 };
 
 export type ConfigConfigUpdateInput = {
+  ai?: InputMaybe<ConfigAiUpdateInput>;
   auth?: InputMaybe<ConfigAuthUpdateInput>;
   functions?: InputMaybe<ConfigFunctionsUpdateInput>;
   global?: InputMaybe<ConfigGlobalUpdateInput>;
+  graphql?: InputMaybe<ConfigGraphqlUpdateInput>;
   hasura?: InputMaybe<ConfigHasuraUpdateInput>;
   observability?: InputMaybe<ConfigObservabilityUpdateInput>;
   postgres?: InputMaybe<ConfigPostgresUpdateInput>;
@@ -1029,10 +1364,19 @@ export type ConfigEnvironmentVariableUpdateInput = {
   value?: InputMaybe<Scalars['String']>;
 };
 
+export type ConfigFloatComparisonExp = {
+  _eq?: InputMaybe<Scalars['Float']>;
+  _in?: InputMaybe<Array<Scalars['Float']>>;
+  _neq?: InputMaybe<Scalars['Float']>;
+  _nin?: InputMaybe<Array<Scalars['Float']>>;
+};
+
 /** Configuration for functions service */
 export type ConfigFunctions = {
   __typename?: 'ConfigFunctions';
   node?: Maybe<ConfigFunctionsNode>;
+  rateLimit?: Maybe<ConfigRateLimit>;
+  resources?: Maybe<ConfigFunctionsResources>;
 };
 
 export type ConfigFunctionsComparisonExp = {
@@ -1040,10 +1384,14 @@ export type ConfigFunctionsComparisonExp = {
   _not?: InputMaybe<ConfigFunctionsComparisonExp>;
   _or?: InputMaybe<Array<ConfigFunctionsComparisonExp>>;
   node?: InputMaybe<ConfigFunctionsNodeComparisonExp>;
+  rateLimit?: InputMaybe<ConfigRateLimitComparisonExp>;
+  resources?: InputMaybe<ConfigFunctionsResourcesComparisonExp>;
 };
 
 export type ConfigFunctionsInsertInput = {
   node?: InputMaybe<ConfigFunctionsNodeInsertInput>;
+  rateLimit?: InputMaybe<ConfigRateLimitInsertInput>;
+  resources?: InputMaybe<ConfigFunctionsResourcesInsertInput>;
 };
 
 export type ConfigFunctionsNode = {
@@ -1066,35 +1414,105 @@ export type ConfigFunctionsNodeUpdateInput = {
   version?: InputMaybe<Scalars['Int']>;
 };
 
+export type ConfigFunctionsResources = {
+  __typename?: 'ConfigFunctionsResources';
+  networking?: Maybe<ConfigNetworking>;
+};
+
+export type ConfigFunctionsResourcesComparisonExp = {
+  _and?: InputMaybe<Array<ConfigFunctionsResourcesComparisonExp>>;
+  _not?: InputMaybe<ConfigFunctionsResourcesComparisonExp>;
+  _or?: InputMaybe<Array<ConfigFunctionsResourcesComparisonExp>>;
+  networking?: InputMaybe<ConfigNetworkingComparisonExp>;
+};
+
+export type ConfigFunctionsResourcesInsertInput = {
+  networking?: InputMaybe<ConfigNetworkingInsertInput>;
+};
+
+export type ConfigFunctionsResourcesUpdateInput = {
+  networking?: InputMaybe<ConfigNetworkingUpdateInput>;
+};
+
 export type ConfigFunctionsUpdateInput = {
   node?: InputMaybe<ConfigFunctionsNodeUpdateInput>;
+  rateLimit?: InputMaybe<ConfigRateLimitUpdateInput>;
+  resources?: InputMaybe<ConfigFunctionsResourcesUpdateInput>;
 };
 
 /** Global configuration that applies to all services */
 export type ConfigGlobal = {
   __typename?: 'ConfigGlobal';
   /** User-defined environment variables that are spread over all services */
-  environment?: Maybe<Array<ConfigEnvironmentVariable>>;
+  environment?: Maybe<Array<ConfigGlobalEnvironmentVariable>>;
 };
 
 export type ConfigGlobalComparisonExp = {
   _and?: InputMaybe<Array<ConfigGlobalComparisonExp>>;
   _not?: InputMaybe<ConfigGlobalComparisonExp>;
   _or?: InputMaybe<Array<ConfigGlobalComparisonExp>>;
-  environment?: InputMaybe<ConfigEnvironmentVariableComparisonExp>;
+  environment?: InputMaybe<ConfigGlobalEnvironmentVariableComparisonExp>;
+};
+
+export type ConfigGlobalEnvironmentVariable = {
+  __typename?: 'ConfigGlobalEnvironmentVariable';
+  name: Scalars['String'];
+  /** Value of the environment variable */
+  value: Scalars['String'];
+};
+
+export type ConfigGlobalEnvironmentVariableComparisonExp = {
+  _and?: InputMaybe<Array<ConfigGlobalEnvironmentVariableComparisonExp>>;
+  _not?: InputMaybe<ConfigGlobalEnvironmentVariableComparisonExp>;
+  _or?: InputMaybe<Array<ConfigGlobalEnvironmentVariableComparisonExp>>;
+  name?: InputMaybe<ConfigStringComparisonExp>;
+  value?: InputMaybe<ConfigStringComparisonExp>;
+};
+
+export type ConfigGlobalEnvironmentVariableInsertInput = {
+  name: Scalars['String'];
+  value: Scalars['String'];
+};
+
+export type ConfigGlobalEnvironmentVariableUpdateInput = {
+  name?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
 };
 
 export type ConfigGlobalInsertInput = {
-  environment?: InputMaybe<Array<ConfigEnvironmentVariableInsertInput>>;
+  environment?: InputMaybe<Array<ConfigGlobalEnvironmentVariableInsertInput>>;
 };
 
 export type ConfigGlobalUpdateInput = {
-  environment?: InputMaybe<Array<ConfigEnvironmentVariableUpdateInput>>;
+  environment?: InputMaybe<Array<ConfigGlobalEnvironmentVariableUpdateInput>>;
 };
 
 export type ConfigGrafana = {
   __typename?: 'ConfigGrafana';
   adminPassword: Scalars['String'];
+  alerting?: Maybe<ConfigGrafanaAlerting>;
+  contacts?: Maybe<ConfigGrafanaContacts>;
+  smtp?: Maybe<ConfigGrafanaSmtp>;
+};
+
+export type ConfigGrafanaAlerting = {
+  __typename?: 'ConfigGrafanaAlerting';
+  enabled?: Maybe<Scalars['Boolean']>;
+};
+
+export type ConfigGrafanaAlertingComparisonExp = {
+  _and?: InputMaybe<Array<ConfigGrafanaAlertingComparisonExp>>;
+  _not?: InputMaybe<ConfigGrafanaAlertingComparisonExp>;
+  _or?: InputMaybe<Array<ConfigGrafanaAlertingComparisonExp>>;
+  enabled?: InputMaybe<ConfigBooleanComparisonExp>;
+};
+
+export type ConfigGrafanaAlertingInsertInput = {
+  enabled?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type ConfigGrafanaAlertingUpdateInput = {
+  enabled?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ConfigGrafanaComparisonExp = {
@@ -1102,14 +1520,299 @@ export type ConfigGrafanaComparisonExp = {
   _not?: InputMaybe<ConfigGrafanaComparisonExp>;
   _or?: InputMaybe<Array<ConfigGrafanaComparisonExp>>;
   adminPassword?: InputMaybe<ConfigStringComparisonExp>;
+  alerting?: InputMaybe<ConfigGrafanaAlertingComparisonExp>;
+  contacts?: InputMaybe<ConfigGrafanaContactsComparisonExp>;
+  smtp?: InputMaybe<ConfigGrafanaSmtpComparisonExp>;
+};
+
+export type ConfigGrafanaContacts = {
+  __typename?: 'ConfigGrafanaContacts';
+  discord?: Maybe<Array<ConfigGrafanacontactsDiscord>>;
+  emails?: Maybe<Array<Scalars['String']>>;
+  pagerduty?: Maybe<Array<ConfigGrafanacontactsPagerduty>>;
+  slack?: Maybe<Array<ConfigGrafanacontactsSlack>>;
+  webhook?: Maybe<Array<ConfigGrafanacontactsWebhook>>;
+};
+
+export type ConfigGrafanaContactsComparisonExp = {
+  _and?: InputMaybe<Array<ConfigGrafanaContactsComparisonExp>>;
+  _not?: InputMaybe<ConfigGrafanaContactsComparisonExp>;
+  _or?: InputMaybe<Array<ConfigGrafanaContactsComparisonExp>>;
+  discord?: InputMaybe<ConfigGrafanacontactsDiscordComparisonExp>;
+  emails?: InputMaybe<ConfigStringComparisonExp>;
+  pagerduty?: InputMaybe<ConfigGrafanacontactsPagerdutyComparisonExp>;
+  slack?: InputMaybe<ConfigGrafanacontactsSlackComparisonExp>;
+  webhook?: InputMaybe<ConfigGrafanacontactsWebhookComparisonExp>;
+};
+
+export type ConfigGrafanaContactsInsertInput = {
+  discord?: InputMaybe<Array<ConfigGrafanacontactsDiscordInsertInput>>;
+  emails?: InputMaybe<Array<Scalars['String']>>;
+  pagerduty?: InputMaybe<Array<ConfigGrafanacontactsPagerdutyInsertInput>>;
+  slack?: InputMaybe<Array<ConfigGrafanacontactsSlackInsertInput>>;
+  webhook?: InputMaybe<Array<ConfigGrafanacontactsWebhookInsertInput>>;
+};
+
+export type ConfigGrafanaContactsUpdateInput = {
+  discord?: InputMaybe<Array<ConfigGrafanacontactsDiscordUpdateInput>>;
+  emails?: InputMaybe<Array<Scalars['String']>>;
+  pagerduty?: InputMaybe<Array<ConfigGrafanacontactsPagerdutyUpdateInput>>;
+  slack?: InputMaybe<Array<ConfigGrafanacontactsSlackUpdateInput>>;
+  webhook?: InputMaybe<Array<ConfigGrafanacontactsWebhookUpdateInput>>;
 };
 
 export type ConfigGrafanaInsertInput = {
   adminPassword: Scalars['String'];
+  alerting?: InputMaybe<ConfigGrafanaAlertingInsertInput>;
+  contacts?: InputMaybe<ConfigGrafanaContactsInsertInput>;
+  smtp?: InputMaybe<ConfigGrafanaSmtpInsertInput>;
+};
+
+export type ConfigGrafanaSmtp = {
+  __typename?: 'ConfigGrafanaSmtp';
+  host: Scalars['String'];
+  password: Scalars['String'];
+  port: Scalars['ConfigPort'];
+  sender: Scalars['String'];
+  user: Scalars['String'];
+};
+
+export type ConfigGrafanaSmtpComparisonExp = {
+  _and?: InputMaybe<Array<ConfigGrafanaSmtpComparisonExp>>;
+  _not?: InputMaybe<ConfigGrafanaSmtpComparisonExp>;
+  _or?: InputMaybe<Array<ConfigGrafanaSmtpComparisonExp>>;
+  host?: InputMaybe<ConfigStringComparisonExp>;
+  password?: InputMaybe<ConfigStringComparisonExp>;
+  port?: InputMaybe<ConfigPortComparisonExp>;
+  sender?: InputMaybe<ConfigStringComparisonExp>;
+  user?: InputMaybe<ConfigStringComparisonExp>;
+};
+
+export type ConfigGrafanaSmtpInsertInput = {
+  host: Scalars['String'];
+  password: Scalars['String'];
+  port: Scalars['ConfigPort'];
+  sender: Scalars['String'];
+  user: Scalars['String'];
+};
+
+export type ConfigGrafanaSmtpUpdateInput = {
+  host?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
+  port?: InputMaybe<Scalars['ConfigPort']>;
+  sender?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<Scalars['String']>;
 };
 
 export type ConfigGrafanaUpdateInput = {
   adminPassword?: InputMaybe<Scalars['String']>;
+  alerting?: InputMaybe<ConfigGrafanaAlertingUpdateInput>;
+  contacts?: InputMaybe<ConfigGrafanaContactsUpdateInput>;
+  smtp?: InputMaybe<ConfigGrafanaSmtpUpdateInput>;
+};
+
+export type ConfigGrafanacontactsDiscord = {
+  __typename?: 'ConfigGrafanacontactsDiscord';
+  avatarUrl: Scalars['String'];
+  url: Scalars['String'];
+};
+
+export type ConfigGrafanacontactsDiscordComparisonExp = {
+  _and?: InputMaybe<Array<ConfigGrafanacontactsDiscordComparisonExp>>;
+  _not?: InputMaybe<ConfigGrafanacontactsDiscordComparisonExp>;
+  _or?: InputMaybe<Array<ConfigGrafanacontactsDiscordComparisonExp>>;
+  avatarUrl?: InputMaybe<ConfigStringComparisonExp>;
+  url?: InputMaybe<ConfigStringComparisonExp>;
+};
+
+export type ConfigGrafanacontactsDiscordInsertInput = {
+  avatarUrl: Scalars['String'];
+  url: Scalars['String'];
+};
+
+export type ConfigGrafanacontactsDiscordUpdateInput = {
+  avatarUrl?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export type ConfigGrafanacontactsPagerduty = {
+  __typename?: 'ConfigGrafanacontactsPagerduty';
+  class: Scalars['String'];
+  component: Scalars['String'];
+  group: Scalars['String'];
+  integrationKey: Scalars['String'];
+  severity: Scalars['String'];
+};
+
+export type ConfigGrafanacontactsPagerdutyComparisonExp = {
+  _and?: InputMaybe<Array<ConfigGrafanacontactsPagerdutyComparisonExp>>;
+  _not?: InputMaybe<ConfigGrafanacontactsPagerdutyComparisonExp>;
+  _or?: InputMaybe<Array<ConfigGrafanacontactsPagerdutyComparisonExp>>;
+  class?: InputMaybe<ConfigStringComparisonExp>;
+  component?: InputMaybe<ConfigStringComparisonExp>;
+  group?: InputMaybe<ConfigStringComparisonExp>;
+  integrationKey?: InputMaybe<ConfigStringComparisonExp>;
+  severity?: InputMaybe<ConfigStringComparisonExp>;
+};
+
+export type ConfigGrafanacontactsPagerdutyInsertInput = {
+  class: Scalars['String'];
+  component: Scalars['String'];
+  group: Scalars['String'];
+  integrationKey: Scalars['String'];
+  severity: Scalars['String'];
+};
+
+export type ConfigGrafanacontactsPagerdutyUpdateInput = {
+  class?: InputMaybe<Scalars['String']>;
+  component?: InputMaybe<Scalars['String']>;
+  group?: InputMaybe<Scalars['String']>;
+  integrationKey?: InputMaybe<Scalars['String']>;
+  severity?: InputMaybe<Scalars['String']>;
+};
+
+export type ConfigGrafanacontactsSlack = {
+  __typename?: 'ConfigGrafanacontactsSlack';
+  endpointURL: Scalars['String'];
+  iconEmoji: Scalars['String'];
+  iconURL: Scalars['String'];
+  mentionChannel: Scalars['String'];
+  mentionGroups: Array<Scalars['String']>;
+  mentionUsers: Array<Scalars['String']>;
+  recipient: Scalars['String'];
+  token: Scalars['String'];
+  url: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type ConfigGrafanacontactsSlackComparisonExp = {
+  _and?: InputMaybe<Array<ConfigGrafanacontactsSlackComparisonExp>>;
+  _not?: InputMaybe<ConfigGrafanacontactsSlackComparisonExp>;
+  _or?: InputMaybe<Array<ConfigGrafanacontactsSlackComparisonExp>>;
+  endpointURL?: InputMaybe<ConfigStringComparisonExp>;
+  iconEmoji?: InputMaybe<ConfigStringComparisonExp>;
+  iconURL?: InputMaybe<ConfigStringComparisonExp>;
+  mentionChannel?: InputMaybe<ConfigStringComparisonExp>;
+  mentionGroups?: InputMaybe<ConfigStringComparisonExp>;
+  mentionUsers?: InputMaybe<ConfigStringComparisonExp>;
+  recipient?: InputMaybe<ConfigStringComparisonExp>;
+  token?: InputMaybe<ConfigStringComparisonExp>;
+  url?: InputMaybe<ConfigStringComparisonExp>;
+  username?: InputMaybe<ConfigStringComparisonExp>;
+};
+
+export type ConfigGrafanacontactsSlackInsertInput = {
+  endpointURL: Scalars['String'];
+  iconEmoji: Scalars['String'];
+  iconURL: Scalars['String'];
+  mentionChannel: Scalars['String'];
+  mentionGroups: Array<Scalars['String']>;
+  mentionUsers: Array<Scalars['String']>;
+  recipient: Scalars['String'];
+  token: Scalars['String'];
+  url: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type ConfigGrafanacontactsSlackUpdateInput = {
+  endpointURL?: InputMaybe<Scalars['String']>;
+  iconEmoji?: InputMaybe<Scalars['String']>;
+  iconURL?: InputMaybe<Scalars['String']>;
+  mentionChannel?: InputMaybe<Scalars['String']>;
+  mentionGroups?: InputMaybe<Array<Scalars['String']>>;
+  mentionUsers?: InputMaybe<Array<Scalars['String']>>;
+  recipient?: InputMaybe<Scalars['String']>;
+  token?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+  username?: InputMaybe<Scalars['String']>;
+};
+
+export type ConfigGrafanacontactsWebhook = {
+  __typename?: 'ConfigGrafanacontactsWebhook';
+  authorizationCredentials: Scalars['String'];
+  authorizationScheme: Scalars['String'];
+  httpMethod: Scalars['String'];
+  maxAlerts: Scalars['Int'];
+  password: Scalars['String'];
+  url: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type ConfigGrafanacontactsWebhookComparisonExp = {
+  _and?: InputMaybe<Array<ConfigGrafanacontactsWebhookComparisonExp>>;
+  _not?: InputMaybe<ConfigGrafanacontactsWebhookComparisonExp>;
+  _or?: InputMaybe<Array<ConfigGrafanacontactsWebhookComparisonExp>>;
+  authorizationCredentials?: InputMaybe<ConfigStringComparisonExp>;
+  authorizationScheme?: InputMaybe<ConfigStringComparisonExp>;
+  httpMethod?: InputMaybe<ConfigStringComparisonExp>;
+  maxAlerts?: InputMaybe<ConfigIntComparisonExp>;
+  password?: InputMaybe<ConfigStringComparisonExp>;
+  url?: InputMaybe<ConfigStringComparisonExp>;
+  username?: InputMaybe<ConfigStringComparisonExp>;
+};
+
+export type ConfigGrafanacontactsWebhookInsertInput = {
+  authorizationCredentials: Scalars['String'];
+  authorizationScheme: Scalars['String'];
+  httpMethod: Scalars['String'];
+  maxAlerts: Scalars['Int'];
+  password: Scalars['String'];
+  url: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type ConfigGrafanacontactsWebhookUpdateInput = {
+  authorizationCredentials?: InputMaybe<Scalars['String']>;
+  authorizationScheme?: InputMaybe<Scalars['String']>;
+  httpMethod?: InputMaybe<Scalars['String']>;
+  maxAlerts?: InputMaybe<Scalars['Int']>;
+  password?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+  username?: InputMaybe<Scalars['String']>;
+};
+
+export type ConfigGraphql = {
+  __typename?: 'ConfigGraphql';
+  security?: Maybe<ConfigGraphqlSecurity>;
+};
+
+export type ConfigGraphqlComparisonExp = {
+  _and?: InputMaybe<Array<ConfigGraphqlComparisonExp>>;
+  _not?: InputMaybe<ConfigGraphqlComparisonExp>;
+  _or?: InputMaybe<Array<ConfigGraphqlComparisonExp>>;
+  security?: InputMaybe<ConfigGraphqlSecurityComparisonExp>;
+};
+
+export type ConfigGraphqlInsertInput = {
+  security?: InputMaybe<ConfigGraphqlSecurityInsertInput>;
+};
+
+export type ConfigGraphqlSecurity = {
+  __typename?: 'ConfigGraphqlSecurity';
+  forbidAminSecret?: Maybe<Scalars['Boolean']>;
+  maxDepthQueries?: Maybe<Scalars['ConfigUint']>;
+};
+
+export type ConfigGraphqlSecurityComparisonExp = {
+  _and?: InputMaybe<Array<ConfigGraphqlSecurityComparisonExp>>;
+  _not?: InputMaybe<ConfigGraphqlSecurityComparisonExp>;
+  _or?: InputMaybe<Array<ConfigGraphqlSecurityComparisonExp>>;
+  forbidAminSecret?: InputMaybe<ConfigBooleanComparisonExp>;
+  maxDepthQueries?: InputMaybe<ConfigUintComparisonExp>;
+};
+
+export type ConfigGraphqlSecurityInsertInput = {
+  forbidAminSecret?: InputMaybe<Scalars['Boolean']>;
+  maxDepthQueries?: InputMaybe<Scalars['ConfigUint']>;
+};
+
+export type ConfigGraphqlSecurityUpdateInput = {
+  forbidAminSecret?: InputMaybe<Scalars['Boolean']>;
+  maxDepthQueries?: InputMaybe<Scalars['ConfigUint']>;
+};
+
+export type ConfigGraphqlUpdateInput = {
+  security?: InputMaybe<ConfigGraphqlSecurityUpdateInput>;
 };
 
 /** Configuration for hasura service */
@@ -1117,10 +1820,12 @@ export type ConfigHasura = {
   __typename?: 'ConfigHasura';
   /** Admin secret */
   adminSecret: Scalars['String'];
+  authHook?: Maybe<ConfigHasuraAuthHook>;
   events?: Maybe<ConfigHasuraEvents>;
   /** JWT Secrets configuration */
   jwtSecrets?: Maybe<Array<ConfigJwtSecret>>;
   logs?: Maybe<ConfigHasuraLogs>;
+  rateLimit?: Maybe<ConfigRateLimit>;
   /** Resources for the service */
   resources?: Maybe<ConfigResources>;
   /**
@@ -1144,14 +1849,46 @@ export type ConfigHasuraApIsComparisonExp = {
   _nin?: InputMaybe<Array<Scalars['ConfigHasuraAPIs']>>;
 };
 
+export type ConfigHasuraAuthHook = {
+  __typename?: 'ConfigHasuraAuthHook';
+  mode?: Maybe<Scalars['String']>;
+  /** HASURA_GRAPHQL_AUTH_HOOK_SEND_REQUEST_BODY */
+  sendRequestBody?: Maybe<Scalars['Boolean']>;
+  /** HASURA_GRAPHQL_AUTH_HOOK */
+  url: Scalars['String'];
+};
+
+export type ConfigHasuraAuthHookComparisonExp = {
+  _and?: InputMaybe<Array<ConfigHasuraAuthHookComparisonExp>>;
+  _not?: InputMaybe<ConfigHasuraAuthHookComparisonExp>;
+  _or?: InputMaybe<Array<ConfigHasuraAuthHookComparisonExp>>;
+  mode?: InputMaybe<ConfigStringComparisonExp>;
+  sendRequestBody?: InputMaybe<ConfigBooleanComparisonExp>;
+  url?: InputMaybe<ConfigStringComparisonExp>;
+};
+
+export type ConfigHasuraAuthHookInsertInput = {
+  mode?: InputMaybe<Scalars['String']>;
+  sendRequestBody?: InputMaybe<Scalars['Boolean']>;
+  url: Scalars['String'];
+};
+
+export type ConfigHasuraAuthHookUpdateInput = {
+  mode?: InputMaybe<Scalars['String']>;
+  sendRequestBody?: InputMaybe<Scalars['Boolean']>;
+  url?: InputMaybe<Scalars['String']>;
+};
+
 export type ConfigHasuraComparisonExp = {
   _and?: InputMaybe<Array<ConfigHasuraComparisonExp>>;
   _not?: InputMaybe<ConfigHasuraComparisonExp>;
   _or?: InputMaybe<Array<ConfigHasuraComparisonExp>>;
   adminSecret?: InputMaybe<ConfigStringComparisonExp>;
+  authHook?: InputMaybe<ConfigHasuraAuthHookComparisonExp>;
   events?: InputMaybe<ConfigHasuraEventsComparisonExp>;
   jwtSecrets?: InputMaybe<ConfigJwtSecretComparisonExp>;
   logs?: InputMaybe<ConfigHasuraLogsComparisonExp>;
+  rateLimit?: InputMaybe<ConfigRateLimitComparisonExp>;
   resources?: InputMaybe<ConfigResourcesComparisonExp>;
   settings?: InputMaybe<ConfigHasuraSettingsComparisonExp>;
   version?: InputMaybe<ConfigStringComparisonExp>;
@@ -1181,9 +1918,11 @@ export type ConfigHasuraEventsUpdateInput = {
 
 export type ConfigHasuraInsertInput = {
   adminSecret: Scalars['String'];
+  authHook?: InputMaybe<ConfigHasuraAuthHookInsertInput>;
   events?: InputMaybe<ConfigHasuraEventsInsertInput>;
   jwtSecrets?: InputMaybe<Array<ConfigJwtSecretInsertInput>>;
   logs?: InputMaybe<ConfigHasuraLogsInsertInput>;
+  rateLimit?: InputMaybe<ConfigRateLimitInsertInput>;
   resources?: InputMaybe<ConfigResourcesInsertInput>;
   settings?: InputMaybe<ConfigHasuraSettingsInsertInput>;
   version?: InputMaybe<Scalars['String']>;
@@ -1228,6 +1967,12 @@ export type ConfigHasuraSettings = {
   enableRemoteSchemaPermissions?: Maybe<Scalars['Boolean']>;
   /** HASURA_GRAPHQL_ENABLED_APIS */
   enabledAPIs?: Maybe<Array<Scalars['ConfigHasuraAPIs']>>;
+  /** HASURA_GRAPHQL_INFER_FUNCTION_PERMISSIONS */
+  inferFunctionPermissions?: Maybe<Scalars['Boolean']>;
+  /** HASURA_GRAPHQL_LIVE_QUERIES_MULTIPLEXED_REFETCH_INTERVAL */
+  liveQueriesMultiplexedRefetchInterval?: Maybe<Scalars['ConfigUint32']>;
+  /** HASURA_GRAPHQL_STRINGIFY_NUMERIC_TYPES */
+  stringifyNumericTypes?: Maybe<Scalars['Boolean']>;
 };
 
 export type ConfigHasuraSettingsComparisonExp = {
@@ -1240,6 +1985,9 @@ export type ConfigHasuraSettingsComparisonExp = {
   enableConsole?: InputMaybe<ConfigBooleanComparisonExp>;
   enableRemoteSchemaPermissions?: InputMaybe<ConfigBooleanComparisonExp>;
   enabledAPIs?: InputMaybe<ConfigHasuraApIsComparisonExp>;
+  inferFunctionPermissions?: InputMaybe<ConfigBooleanComparisonExp>;
+  liveQueriesMultiplexedRefetchInterval?: InputMaybe<ConfigUint32ComparisonExp>;
+  stringifyNumericTypes?: InputMaybe<ConfigBooleanComparisonExp>;
 };
 
 export type ConfigHasuraSettingsInsertInput = {
@@ -1249,6 +1997,9 @@ export type ConfigHasuraSettingsInsertInput = {
   enableConsole?: InputMaybe<Scalars['Boolean']>;
   enableRemoteSchemaPermissions?: InputMaybe<Scalars['Boolean']>;
   enabledAPIs?: InputMaybe<Array<Scalars['ConfigHasuraAPIs']>>;
+  inferFunctionPermissions?: InputMaybe<Scalars['Boolean']>;
+  liveQueriesMultiplexedRefetchInterval?: InputMaybe<Scalars['ConfigUint32']>;
+  stringifyNumericTypes?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ConfigHasuraSettingsUpdateInput = {
@@ -1258,17 +2009,94 @@ export type ConfigHasuraSettingsUpdateInput = {
   enableConsole?: InputMaybe<Scalars['Boolean']>;
   enableRemoteSchemaPermissions?: InputMaybe<Scalars['Boolean']>;
   enabledAPIs?: InputMaybe<Array<Scalars['ConfigHasuraAPIs']>>;
+  inferFunctionPermissions?: InputMaybe<Scalars['Boolean']>;
+  liveQueriesMultiplexedRefetchInterval?: InputMaybe<Scalars['ConfigUint32']>;
+  stringifyNumericTypes?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ConfigHasuraUpdateInput = {
   adminSecret?: InputMaybe<Scalars['String']>;
+  authHook?: InputMaybe<ConfigHasuraAuthHookUpdateInput>;
   events?: InputMaybe<ConfigHasuraEventsUpdateInput>;
   jwtSecrets?: InputMaybe<Array<ConfigJwtSecretUpdateInput>>;
   logs?: InputMaybe<ConfigHasuraLogsUpdateInput>;
+  rateLimit?: InputMaybe<ConfigRateLimitUpdateInput>;
   resources?: InputMaybe<ConfigResourcesUpdateInput>;
   settings?: InputMaybe<ConfigHasuraSettingsUpdateInput>;
   version?: InputMaybe<Scalars['String']>;
   webhookSecret?: InputMaybe<Scalars['String']>;
+};
+
+export type ConfigHealthCheck = {
+  __typename?: 'ConfigHealthCheck';
+  initialDelaySeconds?: Maybe<Scalars['Int']>;
+  port: Scalars['ConfigPort'];
+  probePeriodSeconds?: Maybe<Scalars['Int']>;
+};
+
+export type ConfigHealthCheckComparisonExp = {
+  _and?: InputMaybe<Array<ConfigHealthCheckComparisonExp>>;
+  _not?: InputMaybe<ConfigHealthCheckComparisonExp>;
+  _or?: InputMaybe<Array<ConfigHealthCheckComparisonExp>>;
+  initialDelaySeconds?: InputMaybe<ConfigIntComparisonExp>;
+  port?: InputMaybe<ConfigPortComparisonExp>;
+  probePeriodSeconds?: InputMaybe<ConfigIntComparisonExp>;
+};
+
+export type ConfigHealthCheckInsertInput = {
+  initialDelaySeconds?: InputMaybe<Scalars['Int']>;
+  port: Scalars['ConfigPort'];
+  probePeriodSeconds?: InputMaybe<Scalars['Int']>;
+};
+
+export type ConfigHealthCheckUpdateInput = {
+  initialDelaySeconds?: InputMaybe<Scalars['Int']>;
+  port?: InputMaybe<Scalars['ConfigPort']>;
+  probePeriodSeconds?: InputMaybe<Scalars['Int']>;
+};
+
+export type ConfigIngress = {
+  __typename?: 'ConfigIngress';
+  fqdn?: Maybe<Array<Scalars['String']>>;
+  tls?: Maybe<ConfigIngressTls>;
+};
+
+export type ConfigIngressComparisonExp = {
+  _and?: InputMaybe<Array<ConfigIngressComparisonExp>>;
+  _not?: InputMaybe<ConfigIngressComparisonExp>;
+  _or?: InputMaybe<Array<ConfigIngressComparisonExp>>;
+  fqdn?: InputMaybe<ConfigStringComparisonExp>;
+  tls?: InputMaybe<ConfigIngressTlsComparisonExp>;
+};
+
+export type ConfigIngressInsertInput = {
+  fqdn?: InputMaybe<Array<Scalars['String']>>;
+  tls?: InputMaybe<ConfigIngressTlsInsertInput>;
+};
+
+export type ConfigIngressTls = {
+  __typename?: 'ConfigIngressTls';
+  clientCA?: Maybe<Scalars['String']>;
+};
+
+export type ConfigIngressTlsComparisonExp = {
+  _and?: InputMaybe<Array<ConfigIngressTlsComparisonExp>>;
+  _not?: InputMaybe<ConfigIngressTlsComparisonExp>;
+  _or?: InputMaybe<Array<ConfigIngressTlsComparisonExp>>;
+  clientCA?: InputMaybe<ConfigStringComparisonExp>;
+};
+
+export type ConfigIngressTlsInsertInput = {
+  clientCA?: InputMaybe<Scalars['String']>;
+};
+
+export type ConfigIngressTlsUpdateInput = {
+  clientCA?: InputMaybe<Scalars['String']>;
+};
+
+export type ConfigIngressUpdateInput = {
+  fqdn?: InputMaybe<Array<Scalars['String']>>;
+  tls?: InputMaybe<ConfigIngressTlsUpdateInput>;
 };
 
 export type ConfigInsertConfigResponse = {
@@ -1276,6 +2104,13 @@ export type ConfigInsertConfigResponse = {
   config: ConfigConfig;
   secrets: Array<ConfigEnvironmentVariable>;
   systemConfig: ConfigSystemConfig;
+};
+
+export type ConfigInt32ComparisonExp = {
+  _eq?: InputMaybe<Scalars['ConfigInt32']>;
+  _in?: InputMaybe<Array<Scalars['ConfigInt32']>>;
+  _neq?: InputMaybe<Scalars['ConfigInt32']>;
+  _nin?: InputMaybe<Array<Scalars['ConfigInt32']>>;
 };
 
 export type ConfigIntComparisonExp = {
@@ -1298,6 +2133,8 @@ export type ConfigJwtSecret = {
   issuer?: Maybe<Scalars['String']>;
   jwk_url?: Maybe<Scalars['ConfigUrl']>;
   key?: Maybe<Scalars['String']>;
+  kid?: Maybe<Scalars['String']>;
+  signingKey?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
 };
 
@@ -1315,6 +2152,8 @@ export type ConfigJwtSecretComparisonExp = {
   issuer?: InputMaybe<ConfigStringComparisonExp>;
   jwk_url?: InputMaybe<ConfigUrlComparisonExp>;
   key?: InputMaybe<ConfigStringComparisonExp>;
+  kid?: InputMaybe<ConfigStringComparisonExp>;
+  signingKey?: InputMaybe<ConfigStringComparisonExp>;
   type?: InputMaybe<ConfigStringComparisonExp>;
 };
 
@@ -1329,6 +2168,8 @@ export type ConfigJwtSecretInsertInput = {
   issuer?: InputMaybe<Scalars['String']>;
   jwk_url?: InputMaybe<Scalars['ConfigUrl']>;
   key?: InputMaybe<Scalars['String']>;
+  kid?: InputMaybe<Scalars['String']>;
+  signingKey?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
 };
 
@@ -1343,6 +2184,8 @@ export type ConfigJwtSecretUpdateInput = {
   issuer?: InputMaybe<Scalars['String']>;
   jwk_url?: InputMaybe<Scalars['ConfigUrl']>;
   key?: InputMaybe<Scalars['String']>;
+  kid?: InputMaybe<Scalars['String']>;
+  signingKey?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
 };
 
@@ -1351,6 +2194,26 @@ export type ConfigLocaleComparisonExp = {
   _in?: InputMaybe<Array<Scalars['ConfigLocale']>>;
   _neq?: InputMaybe<Scalars['ConfigLocale']>;
   _nin?: InputMaybe<Array<Scalars['ConfigLocale']>>;
+};
+
+export type ConfigNetworking = {
+  __typename?: 'ConfigNetworking';
+  ingresses?: Maybe<Array<ConfigIngress>>;
+};
+
+export type ConfigNetworkingComparisonExp = {
+  _and?: InputMaybe<Array<ConfigNetworkingComparisonExp>>;
+  _not?: InputMaybe<ConfigNetworkingComparisonExp>;
+  _or?: InputMaybe<Array<ConfigNetworkingComparisonExp>>;
+  ingresses?: InputMaybe<ConfigIngressComparisonExp>;
+};
+
+export type ConfigNetworkingInsertInput = {
+  ingresses?: InputMaybe<Array<ConfigIngressInsertInput>>;
+};
+
+export type ConfigNetworkingUpdateInput = {
+  ingresses?: InputMaybe<Array<ConfigIngressUpdateInput>>;
 };
 
 export type ConfigObservability = {
@@ -1384,7 +2247,8 @@ export type ConfigPortComparisonExp = {
 export type ConfigPostgres = {
   __typename?: 'ConfigPostgres';
   /** Resources for the service */
-  resources?: Maybe<ConfigResources>;
+  resources: ConfigPostgresResources;
+  settings?: Maybe<ConfigPostgresSettings>;
   /**
    * Version of postgres, you can see available versions in the URL below:
    * https://hub.docker.com/r/nhost/postgres/tags
@@ -1396,17 +2260,183 @@ export type ConfigPostgresComparisonExp = {
   _and?: InputMaybe<Array<ConfigPostgresComparisonExp>>;
   _not?: InputMaybe<ConfigPostgresComparisonExp>;
   _or?: InputMaybe<Array<ConfigPostgresComparisonExp>>;
-  resources?: InputMaybe<ConfigResourcesComparisonExp>;
+  resources?: InputMaybe<ConfigPostgresResourcesComparisonExp>;
+  settings?: InputMaybe<ConfigPostgresSettingsComparisonExp>;
   version?: InputMaybe<ConfigStringComparisonExp>;
 };
 
 export type ConfigPostgresInsertInput = {
-  resources?: InputMaybe<ConfigResourcesInsertInput>;
+  resources: ConfigPostgresResourcesInsertInput;
+  settings?: InputMaybe<ConfigPostgresSettingsInsertInput>;
   version?: InputMaybe<Scalars['String']>;
 };
 
+/** Resources for the service */
+export type ConfigPostgresResources = {
+  __typename?: 'ConfigPostgresResources';
+  autoscaler?: Maybe<ConfigAutoscaler>;
+  compute?: Maybe<ConfigResourcesCompute>;
+  enablePublicAccess?: Maybe<Scalars['Boolean']>;
+  networking?: Maybe<ConfigNetworking>;
+  /** Number of replicas for a service */
+  replicas?: Maybe<Scalars['ConfigUint8']>;
+  storage: ConfigPostgresStorage;
+};
+
+export type ConfigPostgresResourcesComparisonExp = {
+  _and?: InputMaybe<Array<ConfigPostgresResourcesComparisonExp>>;
+  _not?: InputMaybe<ConfigPostgresResourcesComparisonExp>;
+  _or?: InputMaybe<Array<ConfigPostgresResourcesComparisonExp>>;
+  autoscaler?: InputMaybe<ConfigAutoscalerComparisonExp>;
+  compute?: InputMaybe<ConfigResourcesComputeComparisonExp>;
+  enablePublicAccess?: InputMaybe<ConfigBooleanComparisonExp>;
+  networking?: InputMaybe<ConfigNetworkingComparisonExp>;
+  replicas?: InputMaybe<ConfigUint8ComparisonExp>;
+  storage?: InputMaybe<ConfigPostgresStorageComparisonExp>;
+};
+
+export type ConfigPostgresResourcesInsertInput = {
+  autoscaler?: InputMaybe<ConfigAutoscalerInsertInput>;
+  compute?: InputMaybe<ConfigResourcesComputeInsertInput>;
+  enablePublicAccess?: InputMaybe<Scalars['Boolean']>;
+  networking?: InputMaybe<ConfigNetworkingInsertInput>;
+  replicas?: InputMaybe<Scalars['ConfigUint8']>;
+  storage: ConfigPostgresStorageInsertInput;
+};
+
+export type ConfigPostgresResourcesUpdateInput = {
+  autoscaler?: InputMaybe<ConfigAutoscalerUpdateInput>;
+  compute?: InputMaybe<ConfigResourcesComputeUpdateInput>;
+  enablePublicAccess?: InputMaybe<Scalars['Boolean']>;
+  networking?: InputMaybe<ConfigNetworkingUpdateInput>;
+  replicas?: InputMaybe<Scalars['ConfigUint8']>;
+  storage?: InputMaybe<ConfigPostgresStorageUpdateInput>;
+};
+
+export type ConfigPostgresSettings = {
+  __typename?: 'ConfigPostgresSettings';
+  checkpointCompletionTarget?: Maybe<Scalars['Float']>;
+  defaultStatisticsTarget?: Maybe<Scalars['ConfigInt32']>;
+  effectiveCacheSize?: Maybe<Scalars['String']>;
+  effectiveIOConcurrency?: Maybe<Scalars['ConfigInt32']>;
+  hugePages?: Maybe<Scalars['String']>;
+  jit?: Maybe<Scalars['String']>;
+  maintenanceWorkMem?: Maybe<Scalars['String']>;
+  maxConnections?: Maybe<Scalars['ConfigInt32']>;
+  maxParallelMaintenanceWorkers?: Maybe<Scalars['ConfigInt32']>;
+  maxParallelWorkers?: Maybe<Scalars['ConfigInt32']>;
+  maxParallelWorkersPerGather?: Maybe<Scalars['ConfigInt32']>;
+  maxReplicationSlots?: Maybe<Scalars['ConfigInt32']>;
+  maxWalSenders?: Maybe<Scalars['ConfigInt32']>;
+  maxWalSize?: Maybe<Scalars['String']>;
+  maxWorkerProcesses?: Maybe<Scalars['ConfigInt32']>;
+  minWalSize?: Maybe<Scalars['String']>;
+  randomPageCost?: Maybe<Scalars['Float']>;
+  sharedBuffers?: Maybe<Scalars['String']>;
+  walBuffers?: Maybe<Scalars['String']>;
+  walLevel?: Maybe<Scalars['String']>;
+  workMem?: Maybe<Scalars['String']>;
+};
+
+export type ConfigPostgresSettingsComparisonExp = {
+  _and?: InputMaybe<Array<ConfigPostgresSettingsComparisonExp>>;
+  _not?: InputMaybe<ConfigPostgresSettingsComparisonExp>;
+  _or?: InputMaybe<Array<ConfigPostgresSettingsComparisonExp>>;
+  checkpointCompletionTarget?: InputMaybe<ConfigFloatComparisonExp>;
+  defaultStatisticsTarget?: InputMaybe<ConfigInt32ComparisonExp>;
+  effectiveCacheSize?: InputMaybe<ConfigStringComparisonExp>;
+  effectiveIOConcurrency?: InputMaybe<ConfigInt32ComparisonExp>;
+  hugePages?: InputMaybe<ConfigStringComparisonExp>;
+  jit?: InputMaybe<ConfigStringComparisonExp>;
+  maintenanceWorkMem?: InputMaybe<ConfigStringComparisonExp>;
+  maxConnections?: InputMaybe<ConfigInt32ComparisonExp>;
+  maxParallelMaintenanceWorkers?: InputMaybe<ConfigInt32ComparisonExp>;
+  maxParallelWorkers?: InputMaybe<ConfigInt32ComparisonExp>;
+  maxParallelWorkersPerGather?: InputMaybe<ConfigInt32ComparisonExp>;
+  maxReplicationSlots?: InputMaybe<ConfigInt32ComparisonExp>;
+  maxWalSenders?: InputMaybe<ConfigInt32ComparisonExp>;
+  maxWalSize?: InputMaybe<ConfigStringComparisonExp>;
+  maxWorkerProcesses?: InputMaybe<ConfigInt32ComparisonExp>;
+  minWalSize?: InputMaybe<ConfigStringComparisonExp>;
+  randomPageCost?: InputMaybe<ConfigFloatComparisonExp>;
+  sharedBuffers?: InputMaybe<ConfigStringComparisonExp>;
+  walBuffers?: InputMaybe<ConfigStringComparisonExp>;
+  walLevel?: InputMaybe<ConfigStringComparisonExp>;
+  workMem?: InputMaybe<ConfigStringComparisonExp>;
+};
+
+export type ConfigPostgresSettingsInsertInput = {
+  checkpointCompletionTarget?: InputMaybe<Scalars['Float']>;
+  defaultStatisticsTarget?: InputMaybe<Scalars['ConfigInt32']>;
+  effectiveCacheSize?: InputMaybe<Scalars['String']>;
+  effectiveIOConcurrency?: InputMaybe<Scalars['ConfigInt32']>;
+  hugePages?: InputMaybe<Scalars['String']>;
+  jit?: InputMaybe<Scalars['String']>;
+  maintenanceWorkMem?: InputMaybe<Scalars['String']>;
+  maxConnections?: InputMaybe<Scalars['ConfigInt32']>;
+  maxParallelMaintenanceWorkers?: InputMaybe<Scalars['ConfigInt32']>;
+  maxParallelWorkers?: InputMaybe<Scalars['ConfigInt32']>;
+  maxParallelWorkersPerGather?: InputMaybe<Scalars['ConfigInt32']>;
+  maxReplicationSlots?: InputMaybe<Scalars['ConfigInt32']>;
+  maxWalSenders?: InputMaybe<Scalars['ConfigInt32']>;
+  maxWalSize?: InputMaybe<Scalars['String']>;
+  maxWorkerProcesses?: InputMaybe<Scalars['ConfigInt32']>;
+  minWalSize?: InputMaybe<Scalars['String']>;
+  randomPageCost?: InputMaybe<Scalars['Float']>;
+  sharedBuffers?: InputMaybe<Scalars['String']>;
+  walBuffers?: InputMaybe<Scalars['String']>;
+  walLevel?: InputMaybe<Scalars['String']>;
+  workMem?: InputMaybe<Scalars['String']>;
+};
+
+export type ConfigPostgresSettingsUpdateInput = {
+  checkpointCompletionTarget?: InputMaybe<Scalars['Float']>;
+  defaultStatisticsTarget?: InputMaybe<Scalars['ConfigInt32']>;
+  effectiveCacheSize?: InputMaybe<Scalars['String']>;
+  effectiveIOConcurrency?: InputMaybe<Scalars['ConfigInt32']>;
+  hugePages?: InputMaybe<Scalars['String']>;
+  jit?: InputMaybe<Scalars['String']>;
+  maintenanceWorkMem?: InputMaybe<Scalars['String']>;
+  maxConnections?: InputMaybe<Scalars['ConfigInt32']>;
+  maxParallelMaintenanceWorkers?: InputMaybe<Scalars['ConfigInt32']>;
+  maxParallelWorkers?: InputMaybe<Scalars['ConfigInt32']>;
+  maxParallelWorkersPerGather?: InputMaybe<Scalars['ConfigInt32']>;
+  maxReplicationSlots?: InputMaybe<Scalars['ConfigInt32']>;
+  maxWalSenders?: InputMaybe<Scalars['ConfigInt32']>;
+  maxWalSize?: InputMaybe<Scalars['String']>;
+  maxWorkerProcesses?: InputMaybe<Scalars['ConfigInt32']>;
+  minWalSize?: InputMaybe<Scalars['String']>;
+  randomPageCost?: InputMaybe<Scalars['Float']>;
+  sharedBuffers?: InputMaybe<Scalars['String']>;
+  walBuffers?: InputMaybe<Scalars['String']>;
+  walLevel?: InputMaybe<Scalars['String']>;
+  workMem?: InputMaybe<Scalars['String']>;
+};
+
+export type ConfigPostgresStorage = {
+  __typename?: 'ConfigPostgresStorage';
+  /** GiB */
+  capacity: Scalars['ConfigUint32'];
+};
+
+export type ConfigPostgresStorageComparisonExp = {
+  _and?: InputMaybe<Array<ConfigPostgresStorageComparisonExp>>;
+  _not?: InputMaybe<ConfigPostgresStorageComparisonExp>;
+  _or?: InputMaybe<Array<ConfigPostgresStorageComparisonExp>>;
+  capacity?: InputMaybe<ConfigUint32ComparisonExp>;
+};
+
+export type ConfigPostgresStorageInsertInput = {
+  capacity: Scalars['ConfigUint32'];
+};
+
+export type ConfigPostgresStorageUpdateInput = {
+  capacity?: InputMaybe<Scalars['ConfigUint32']>;
+};
+
 export type ConfigPostgresUpdateInput = {
-  resources?: InputMaybe<ConfigResourcesUpdateInput>;
+  resources?: InputMaybe<ConfigPostgresResourcesUpdateInput>;
+  settings?: InputMaybe<ConfigPostgresSettingsUpdateInput>;
   version?: InputMaybe<Scalars['String']>;
 };
 
@@ -1434,19 +2464,47 @@ export type ConfigProviderUpdateInput = {
   smtp?: InputMaybe<ConfigSmtpUpdateInput>;
 };
 
+export type ConfigRateLimit = {
+  __typename?: 'ConfigRateLimit';
+  interval: Scalars['String'];
+  limit: Scalars['ConfigUint32'];
+};
+
+export type ConfigRateLimitComparisonExp = {
+  _and?: InputMaybe<Array<ConfigRateLimitComparisonExp>>;
+  _not?: InputMaybe<ConfigRateLimitComparisonExp>;
+  _or?: InputMaybe<Array<ConfigRateLimitComparisonExp>>;
+  interval?: InputMaybe<ConfigStringComparisonExp>;
+  limit?: InputMaybe<ConfigUint32ComparisonExp>;
+};
+
+export type ConfigRateLimitInsertInput = {
+  interval: Scalars['String'];
+  limit: Scalars['ConfigUint32'];
+};
+
+export type ConfigRateLimitUpdateInput = {
+  interval?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['ConfigUint32']>;
+};
+
 /** Resource configuration for a service */
 export type ConfigResources = {
   __typename?: 'ConfigResources';
-  compute: ConfigResourcesCompute;
+  autoscaler?: Maybe<ConfigAutoscaler>;
+  compute?: Maybe<ConfigResourcesCompute>;
+  networking?: Maybe<ConfigNetworking>;
   /** Number of replicas for a service */
-  replicas: Scalars['ConfigUint8'];
+  replicas?: Maybe<Scalars['ConfigUint8']>;
 };
 
 export type ConfigResourcesComparisonExp = {
   _and?: InputMaybe<Array<ConfigResourcesComparisonExp>>;
   _not?: InputMaybe<ConfigResourcesComparisonExp>;
   _or?: InputMaybe<Array<ConfigResourcesComparisonExp>>;
+  autoscaler?: InputMaybe<ConfigAutoscalerComparisonExp>;
   compute?: InputMaybe<ConfigResourcesComputeComparisonExp>;
+  networking?: InputMaybe<ConfigNetworkingComparisonExp>;
   replicas?: InputMaybe<ConfigUint8ComparisonExp>;
 };
 
@@ -1477,12 +2535,16 @@ export type ConfigResourcesComputeUpdateInput = {
 };
 
 export type ConfigResourcesInsertInput = {
-  compute: ConfigResourcesComputeInsertInput;
-  replicas: Scalars['ConfigUint8'];
+  autoscaler?: InputMaybe<ConfigAutoscalerInsertInput>;
+  compute?: InputMaybe<ConfigResourcesComputeInsertInput>;
+  networking?: InputMaybe<ConfigNetworkingInsertInput>;
+  replicas?: InputMaybe<Scalars['ConfigUint8']>;
 };
 
 export type ConfigResourcesUpdateInput = {
+  autoscaler?: InputMaybe<ConfigAutoscalerUpdateInput>;
   compute?: InputMaybe<ConfigResourcesComputeUpdateInput>;
+  networking?: InputMaybe<ConfigNetworkingUpdateInput>;
   replicas?: InputMaybe<Scalars['ConfigUint8']>;
 };
 
@@ -1490,8 +2552,9 @@ export type ConfigRunServiceConfig = {
   __typename?: 'ConfigRunServiceConfig';
   command?: Maybe<Array<Scalars['String']>>;
   environment?: Maybe<Array<ConfigEnvironmentVariable>>;
+  healthCheck?: Maybe<ConfigHealthCheck>;
   image: ConfigRunServiceImage;
-  name: Scalars['String'];
+  name: Scalars['ConfigRunServiceName'];
   ports?: Maybe<Array<ConfigRunServicePort>>;
   resources: ConfigRunServiceResources;
 };
@@ -1502,8 +2565,9 @@ export type ConfigRunServiceConfigComparisonExp = {
   _or?: InputMaybe<Array<ConfigRunServiceConfigComparisonExp>>;
   command?: InputMaybe<ConfigStringComparisonExp>;
   environment?: InputMaybe<ConfigEnvironmentVariableComparisonExp>;
+  healthCheck?: InputMaybe<ConfigHealthCheckComparisonExp>;
   image?: InputMaybe<ConfigRunServiceImageComparisonExp>;
-  name?: InputMaybe<ConfigStringComparisonExp>;
+  name?: InputMaybe<ConfigRunServiceNameComparisonExp>;
   ports?: InputMaybe<ConfigRunServicePortComparisonExp>;
   resources?: InputMaybe<ConfigRunServiceResourcesComparisonExp>;
 };
@@ -1511,8 +2575,9 @@ export type ConfigRunServiceConfigComparisonExp = {
 export type ConfigRunServiceConfigInsertInput = {
   command?: InputMaybe<Array<Scalars['String']>>;
   environment?: InputMaybe<Array<ConfigEnvironmentVariableInsertInput>>;
+  healthCheck?: InputMaybe<ConfigHealthCheckInsertInput>;
   image: ConfigRunServiceImageInsertInput;
-  name: Scalars['String'];
+  name: Scalars['ConfigRunServiceName'];
   ports?: InputMaybe<Array<ConfigRunServicePortInsertInput>>;
   resources: ConfigRunServiceResourcesInsertInput;
 };
@@ -1520,8 +2585,9 @@ export type ConfigRunServiceConfigInsertInput = {
 export type ConfigRunServiceConfigUpdateInput = {
   command?: InputMaybe<Array<Scalars['String']>>;
   environment?: InputMaybe<Array<ConfigEnvironmentVariableUpdateInput>>;
+  healthCheck?: InputMaybe<ConfigHealthCheckUpdateInput>;
   image?: InputMaybe<ConfigRunServiceImageUpdateInput>;
-  name?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['ConfigRunServiceName']>;
   ports?: InputMaybe<Array<ConfigRunServicePortUpdateInput>>;
   resources?: InputMaybe<ConfigRunServiceResourcesUpdateInput>;
 };
@@ -1535,6 +2601,8 @@ export type ConfigRunServiceConfigWithId = {
 export type ConfigRunServiceImage = {
   __typename?: 'ConfigRunServiceImage';
   image: Scalars['String'];
+  /** content of "auths", i.e., { "auths": $THIS } */
+  pullCredentials?: Maybe<Scalars['String']>;
 };
 
 export type ConfigRunServiceImageComparisonExp = {
@@ -1542,20 +2610,32 @@ export type ConfigRunServiceImageComparisonExp = {
   _not?: InputMaybe<ConfigRunServiceImageComparisonExp>;
   _or?: InputMaybe<Array<ConfigRunServiceImageComparisonExp>>;
   image?: InputMaybe<ConfigStringComparisonExp>;
+  pullCredentials?: InputMaybe<ConfigStringComparisonExp>;
 };
 
 export type ConfigRunServiceImageInsertInput = {
   image: Scalars['String'];
+  pullCredentials?: InputMaybe<Scalars['String']>;
 };
 
 export type ConfigRunServiceImageUpdateInput = {
   image?: InputMaybe<Scalars['String']>;
+  pullCredentials?: InputMaybe<Scalars['String']>;
+};
+
+export type ConfigRunServiceNameComparisonExp = {
+  _eq?: InputMaybe<Scalars['ConfigRunServiceName']>;
+  _in?: InputMaybe<Array<Scalars['ConfigRunServiceName']>>;
+  _neq?: InputMaybe<Scalars['ConfigRunServiceName']>;
+  _nin?: InputMaybe<Array<Scalars['ConfigRunServiceName']>>;
 };
 
 export type ConfigRunServicePort = {
   __typename?: 'ConfigRunServicePort';
+  ingresses?: Maybe<Array<ConfigIngress>>;
   port: Scalars['ConfigPort'];
   publish?: Maybe<Scalars['Boolean']>;
+  rateLimit?: Maybe<ConfigRateLimit>;
   type: Scalars['String'];
 };
 
@@ -1563,27 +2643,34 @@ export type ConfigRunServicePortComparisonExp = {
   _and?: InputMaybe<Array<ConfigRunServicePortComparisonExp>>;
   _not?: InputMaybe<ConfigRunServicePortComparisonExp>;
   _or?: InputMaybe<Array<ConfigRunServicePortComparisonExp>>;
+  ingresses?: InputMaybe<ConfigIngressComparisonExp>;
   port?: InputMaybe<ConfigPortComparisonExp>;
   publish?: InputMaybe<ConfigBooleanComparisonExp>;
+  rateLimit?: InputMaybe<ConfigRateLimitComparisonExp>;
   type?: InputMaybe<ConfigStringComparisonExp>;
 };
 
 export type ConfigRunServicePortInsertInput = {
+  ingresses?: InputMaybe<Array<ConfigIngressInsertInput>>;
   port: Scalars['ConfigPort'];
   publish?: InputMaybe<Scalars['Boolean']>;
+  rateLimit?: InputMaybe<ConfigRateLimitInsertInput>;
   type: Scalars['String'];
 };
 
 export type ConfigRunServicePortUpdateInput = {
+  ingresses?: InputMaybe<Array<ConfigIngressUpdateInput>>;
   port?: InputMaybe<Scalars['ConfigPort']>;
   publish?: InputMaybe<Scalars['Boolean']>;
+  rateLimit?: InputMaybe<ConfigRateLimitUpdateInput>;
   type?: InputMaybe<Scalars['String']>;
 };
 
 /** Resource configuration for a service */
 export type ConfigRunServiceResources = {
   __typename?: 'ConfigRunServiceResources';
-  compute: ConfigRunServiceResourcesCompute;
+  autoscaler?: Maybe<ConfigAutoscaler>;
+  compute: ConfigComputeResources;
   /** Number of replicas for a service */
   replicas: Scalars['ConfigUint8'];
   storage?: Maybe<Array<ConfigRunServiceResourcesStorage>>;
@@ -1593,39 +2680,15 @@ export type ConfigRunServiceResourcesComparisonExp = {
   _and?: InputMaybe<Array<ConfigRunServiceResourcesComparisonExp>>;
   _not?: InputMaybe<ConfigRunServiceResourcesComparisonExp>;
   _or?: InputMaybe<Array<ConfigRunServiceResourcesComparisonExp>>;
-  compute?: InputMaybe<ConfigRunServiceResourcesComputeComparisonExp>;
+  autoscaler?: InputMaybe<ConfigAutoscalerComparisonExp>;
+  compute?: InputMaybe<ConfigComputeResourcesComparisonExp>;
   replicas?: InputMaybe<ConfigUint8ComparisonExp>;
   storage?: InputMaybe<ConfigRunServiceResourcesStorageComparisonExp>;
 };
 
-export type ConfigRunServiceResourcesCompute = {
-  __typename?: 'ConfigRunServiceResourcesCompute';
-  /** milicpus, 1000 milicpus = 1 cpu */
-  cpu: Scalars['ConfigUint32'];
-  /** MiB: 128MiB to 30GiB */
-  memory: Scalars['ConfigUint32'];
-};
-
-export type ConfigRunServiceResourcesComputeComparisonExp = {
-  _and?: InputMaybe<Array<ConfigRunServiceResourcesComputeComparisonExp>>;
-  _not?: InputMaybe<ConfigRunServiceResourcesComputeComparisonExp>;
-  _or?: InputMaybe<Array<ConfigRunServiceResourcesComputeComparisonExp>>;
-  cpu?: InputMaybe<ConfigUint32ComparisonExp>;
-  memory?: InputMaybe<ConfigUint32ComparisonExp>;
-};
-
-export type ConfigRunServiceResourcesComputeInsertInput = {
-  cpu: Scalars['ConfigUint32'];
-  memory: Scalars['ConfigUint32'];
-};
-
-export type ConfigRunServiceResourcesComputeUpdateInput = {
-  cpu?: InputMaybe<Scalars['ConfigUint32']>;
-  memory?: InputMaybe<Scalars['ConfigUint32']>;
-};
-
 export type ConfigRunServiceResourcesInsertInput = {
-  compute: ConfigRunServiceResourcesComputeInsertInput;
+  autoscaler?: InputMaybe<ConfigAutoscalerInsertInput>;
+  compute: ConfigComputeResourcesInsertInput;
   replicas: Scalars['ConfigUint8'];
   storage?: InputMaybe<Array<ConfigRunServiceResourcesStorageInsertInput>>;
 };
@@ -1635,7 +2698,7 @@ export type ConfigRunServiceResourcesStorage = {
   /** GiB */
   capacity: Scalars['ConfigUint32'];
   /** name of the volume, changing it will cause data loss */
-  name: Scalars['String'];
+  name: Scalars['ConfigRunServiceName'];
   path: Scalars['String'];
 };
 
@@ -1644,24 +2707,25 @@ export type ConfigRunServiceResourcesStorageComparisonExp = {
   _not?: InputMaybe<ConfigRunServiceResourcesStorageComparisonExp>;
   _or?: InputMaybe<Array<ConfigRunServiceResourcesStorageComparisonExp>>;
   capacity?: InputMaybe<ConfigUint32ComparisonExp>;
-  name?: InputMaybe<ConfigStringComparisonExp>;
+  name?: InputMaybe<ConfigRunServiceNameComparisonExp>;
   path?: InputMaybe<ConfigStringComparisonExp>;
 };
 
 export type ConfigRunServiceResourcesStorageInsertInput = {
   capacity: Scalars['ConfigUint32'];
-  name: Scalars['String'];
+  name: Scalars['ConfigRunServiceName'];
   path: Scalars['String'];
 };
 
 export type ConfigRunServiceResourcesStorageUpdateInput = {
   capacity?: InputMaybe<Scalars['ConfigUint32']>;
-  name?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['ConfigRunServiceName']>;
   path?: InputMaybe<Scalars['String']>;
 };
 
 export type ConfigRunServiceResourcesUpdateInput = {
-  compute?: InputMaybe<ConfigRunServiceResourcesComputeUpdateInput>;
+  autoscaler?: InputMaybe<ConfigAutoscalerUpdateInput>;
+  compute?: InputMaybe<ConfigComputeResourcesUpdateInput>;
   replicas?: InputMaybe<Scalars['ConfigUint8']>;
   storage?: InputMaybe<Array<ConfigRunServiceResourcesStorageUpdateInput>>;
 };
@@ -1772,6 +2836,7 @@ export type ConfigStandardOauthProviderUpdateInput = {
 
 export type ConfigStandardOauthProviderWithScope = {
   __typename?: 'ConfigStandardOauthProviderWithScope';
+  audience?: Maybe<Scalars['String']>;
   clientId?: Maybe<Scalars['String']>;
   clientSecret?: Maybe<Scalars['String']>;
   enabled?: Maybe<Scalars['Boolean']>;
@@ -1782,6 +2847,7 @@ export type ConfigStandardOauthProviderWithScopeComparisonExp = {
   _and?: InputMaybe<Array<ConfigStandardOauthProviderWithScopeComparisonExp>>;
   _not?: InputMaybe<ConfigStandardOauthProviderWithScopeComparisonExp>;
   _or?: InputMaybe<Array<ConfigStandardOauthProviderWithScopeComparisonExp>>;
+  audience?: InputMaybe<ConfigStringComparisonExp>;
   clientId?: InputMaybe<ConfigStringComparisonExp>;
   clientSecret?: InputMaybe<ConfigStringComparisonExp>;
   enabled?: InputMaybe<ConfigBooleanComparisonExp>;
@@ -1789,6 +2855,7 @@ export type ConfigStandardOauthProviderWithScopeComparisonExp = {
 };
 
 export type ConfigStandardOauthProviderWithScopeInsertInput = {
+  audience?: InputMaybe<Scalars['String']>;
   clientId?: InputMaybe<Scalars['String']>;
   clientSecret?: InputMaybe<Scalars['String']>;
   enabled?: InputMaybe<Scalars['Boolean']>;
@@ -1796,6 +2863,7 @@ export type ConfigStandardOauthProviderWithScopeInsertInput = {
 };
 
 export type ConfigStandardOauthProviderWithScopeUpdateInput = {
+  audience?: InputMaybe<Scalars['String']>;
   clientId?: InputMaybe<Scalars['String']>;
   clientSecret?: InputMaybe<Scalars['String']>;
   enabled?: InputMaybe<Scalars['Boolean']>;
@@ -1806,7 +2874,11 @@ export type ConfigStandardOauthProviderWithScopeUpdateInput = {
 export type ConfigStorage = {
   __typename?: 'ConfigStorage';
   antivirus?: Maybe<ConfigStorageAntivirus>;
-  /** Resources for the service */
+  rateLimit?: Maybe<ConfigRateLimit>;
+  /**
+   * Networking (custom domains at the moment) are not allowed as we need to do further
+   * configurations in the CDN. We will enable it again in the future.
+   */
   resources?: Maybe<ConfigResources>;
   /**
    * Version of storage service, you can see available versions in the URL below:
@@ -1844,18 +2916,21 @@ export type ConfigStorageComparisonExp = {
   _not?: InputMaybe<ConfigStorageComparisonExp>;
   _or?: InputMaybe<Array<ConfigStorageComparisonExp>>;
   antivirus?: InputMaybe<ConfigStorageAntivirusComparisonExp>;
+  rateLimit?: InputMaybe<ConfigRateLimitComparisonExp>;
   resources?: InputMaybe<ConfigResourcesComparisonExp>;
   version?: InputMaybe<ConfigStringComparisonExp>;
 };
 
 export type ConfigStorageInsertInput = {
   antivirus?: InputMaybe<ConfigStorageAntivirusInsertInput>;
+  rateLimit?: InputMaybe<ConfigRateLimitInsertInput>;
   resources?: InputMaybe<ConfigResourcesInsertInput>;
   version?: InputMaybe<Scalars['String']>;
 };
 
 export type ConfigStorageUpdateInput = {
   antivirus?: InputMaybe<ConfigStorageAntivirusUpdateInput>;
+  rateLimit?: InputMaybe<ConfigRateLimitUpdateInput>;
   resources?: InputMaybe<ConfigResourcesUpdateInput>;
   version?: InputMaybe<Scalars['String']>;
 };
@@ -1870,6 +2945,8 @@ export type ConfigStringComparisonExp = {
 export type ConfigSystemConfig = {
   __typename?: 'ConfigSystemConfig';
   auth?: Maybe<ConfigSystemConfigAuth>;
+  graphql?: Maybe<ConfigSystemConfigGraphql>;
+  persistentVolumesEncrypted?: Maybe<Scalars['Boolean']>;
   postgres: ConfigSystemConfigPostgres;
 };
 
@@ -1938,11 +3015,39 @@ export type ConfigSystemConfigComparisonExp = {
   _not?: InputMaybe<ConfigSystemConfigComparisonExp>;
   _or?: InputMaybe<Array<ConfigSystemConfigComparisonExp>>;
   auth?: InputMaybe<ConfigSystemConfigAuthComparisonExp>;
+  graphql?: InputMaybe<ConfigSystemConfigGraphqlComparisonExp>;
+  persistentVolumesEncrypted?: InputMaybe<ConfigBooleanComparisonExp>;
   postgres?: InputMaybe<ConfigSystemConfigPostgresComparisonExp>;
+};
+
+export type ConfigSystemConfigGraphql = {
+  __typename?: 'ConfigSystemConfigGraphql';
+  /**
+   * manually enable graphi on a per-service basis
+   * by default it follows the plan
+   */
+  featureAdvancedGraphql?: Maybe<Scalars['Boolean']>;
+};
+
+export type ConfigSystemConfigGraphqlComparisonExp = {
+  _and?: InputMaybe<Array<ConfigSystemConfigGraphqlComparisonExp>>;
+  _not?: InputMaybe<ConfigSystemConfigGraphqlComparisonExp>;
+  _or?: InputMaybe<Array<ConfigSystemConfigGraphqlComparisonExp>>;
+  featureAdvancedGraphql?: InputMaybe<ConfigBooleanComparisonExp>;
+};
+
+export type ConfigSystemConfigGraphqlInsertInput = {
+  featureAdvancedGraphql?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type ConfigSystemConfigGraphqlUpdateInput = {
+  featureAdvancedGraphql?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ConfigSystemConfigInsertInput = {
   auth?: InputMaybe<ConfigSystemConfigAuthInsertInput>;
+  graphql?: InputMaybe<ConfigSystemConfigGraphqlInsertInput>;
+  persistentVolumesEncrypted?: InputMaybe<Scalars['Boolean']>;
   postgres: ConfigSystemConfigPostgresInsertInput;
 };
 
@@ -1950,7 +3055,9 @@ export type ConfigSystemConfigPostgres = {
   __typename?: 'ConfigSystemConfigPostgres';
   connectionString: ConfigSystemConfigPostgresConnectionString;
   database: Scalars['String'];
+  disk?: Maybe<ConfigSystemConfigPostgresDisk>;
   enabled?: Maybe<Scalars['Boolean']>;
+  majorVersion?: Maybe<Scalars['String']>;
 };
 
 export type ConfigSystemConfigPostgresComparisonExp = {
@@ -1959,7 +3066,9 @@ export type ConfigSystemConfigPostgresComparisonExp = {
   _or?: InputMaybe<Array<ConfigSystemConfigPostgresComparisonExp>>;
   connectionString?: InputMaybe<ConfigSystemConfigPostgresConnectionStringComparisonExp>;
   database?: InputMaybe<ConfigStringComparisonExp>;
+  disk?: InputMaybe<ConfigSystemConfigPostgresDiskComparisonExp>;
   enabled?: InputMaybe<ConfigBooleanComparisonExp>;
+  majorVersion?: InputMaybe<ConfigStringComparisonExp>;
 };
 
 export type ConfigSystemConfigPostgresConnectionString = {
@@ -1994,20 +3103,50 @@ export type ConfigSystemConfigPostgresConnectionStringUpdateInput = {
   storage?: InputMaybe<Scalars['String']>;
 };
 
+export type ConfigSystemConfigPostgresDisk = {
+  __typename?: 'ConfigSystemConfigPostgresDisk';
+  iops?: Maybe<Scalars['ConfigUint32']>;
+  tput?: Maybe<Scalars['ConfigUint32']>;
+};
+
+export type ConfigSystemConfigPostgresDiskComparisonExp = {
+  _and?: InputMaybe<Array<ConfigSystemConfigPostgresDiskComparisonExp>>;
+  _not?: InputMaybe<ConfigSystemConfigPostgresDiskComparisonExp>;
+  _or?: InputMaybe<Array<ConfigSystemConfigPostgresDiskComparisonExp>>;
+  iops?: InputMaybe<ConfigUint32ComparisonExp>;
+  tput?: InputMaybe<ConfigUint32ComparisonExp>;
+};
+
+export type ConfigSystemConfigPostgresDiskInsertInput = {
+  iops?: InputMaybe<Scalars['ConfigUint32']>;
+  tput?: InputMaybe<Scalars['ConfigUint32']>;
+};
+
+export type ConfigSystemConfigPostgresDiskUpdateInput = {
+  iops?: InputMaybe<Scalars['ConfigUint32']>;
+  tput?: InputMaybe<Scalars['ConfigUint32']>;
+};
+
 export type ConfigSystemConfigPostgresInsertInput = {
   connectionString: ConfigSystemConfigPostgresConnectionStringInsertInput;
   database: Scalars['String'];
+  disk?: InputMaybe<ConfigSystemConfigPostgresDiskInsertInput>;
   enabled?: InputMaybe<Scalars['Boolean']>;
+  majorVersion?: InputMaybe<Scalars['String']>;
 };
 
 export type ConfigSystemConfigPostgresUpdateInput = {
   connectionString?: InputMaybe<ConfigSystemConfigPostgresConnectionStringUpdateInput>;
   database?: InputMaybe<Scalars['String']>;
+  disk?: InputMaybe<ConfigSystemConfigPostgresDiskUpdateInput>;
   enabled?: InputMaybe<Scalars['Boolean']>;
+  majorVersion?: InputMaybe<Scalars['String']>;
 };
 
 export type ConfigSystemConfigUpdateInput = {
   auth?: InputMaybe<ConfigSystemConfigAuthUpdateInput>;
+  graphql?: InputMaybe<ConfigSystemConfigGraphqlUpdateInput>;
+  persistentVolumesEncrypted?: InputMaybe<Scalars['Boolean']>;
   postgres?: InputMaybe<ConfigSystemConfigPostgresUpdateInput>;
 };
 
@@ -2025,6 +3164,13 @@ export type ConfigUint32ComparisonExp = {
   _nin?: InputMaybe<Array<Scalars['ConfigUint32']>>;
 };
 
+export type ConfigUintComparisonExp = {
+  _eq?: InputMaybe<Scalars['ConfigUint']>;
+  _in?: InputMaybe<Array<Scalars['ConfigUint']>>;
+  _neq?: InputMaybe<Scalars['ConfigUint']>;
+  _nin?: InputMaybe<Array<Scalars['ConfigUint']>>;
+};
+
 export type ConfigUrlComparisonExp = {
   _eq?: InputMaybe<Scalars['ConfigUrl']>;
   _in?: InputMaybe<Array<Scalars['ConfigUrl']>>;
@@ -2037,6 +3183,18 @@ export type ConfigUserRoleComparisonExp = {
   _in?: InputMaybe<Array<Scalars['ConfigUserRole']>>;
   _neq?: InputMaybe<Scalars['ConfigUserRole']>;
   _nin?: InputMaybe<Array<Scalars['ConfigUserRole']>>;
+};
+
+export type ContainerError = {
+  __typename?: 'ContainerError';
+  lastError: LastError;
+  name: Scalars['String'];
+};
+
+export type InsertRunServiceConfigResponse = {
+  __typename?: 'InsertRunServiceConfigResponse';
+  config: ConfigRunServiceConfig;
+  serviceID: Scalars['uuid'];
 };
 
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
@@ -2065,6 +3223,13 @@ export type InvoiceSummary = {
   items: Array<InvoiceItem>;
 };
 
+export type LastError = {
+  __typename?: 'LastError';
+  exitCode: Scalars['Int'];
+  message: Scalars['String'];
+  reason: Scalars['String'];
+};
+
 export type Log = {
   __typename?: 'Log';
   log: Scalars['String'];
@@ -2075,6 +3240,40 @@ export type Log = {
 export type Metrics = {
   __typename?: 'Metrics';
   value: Scalars['float64'];
+};
+
+export type PostOrganizationRequestResponse = {
+  __typename?: 'PostOrganizationRequestResponse';
+  ClientSecret?: Maybe<Scalars['String']>;
+  Slug: Scalars['String'];
+  Status: CheckoutStatus;
+};
+
+export type ProjectStatusResponse = {
+  __typename?: 'ProjectStatusResponse';
+  services: Array<ServiceStatus>;
+};
+
+export type ReplicaStatus = {
+  __typename?: 'ReplicaStatus';
+  date: Scalars['Timestamp'];
+  errors: Array<ContainerError>;
+  ready: Scalars['Boolean'];
+};
+
+export enum ServiceState {
+  Error = 'Error',
+  None = 'None',
+  Running = 'Running',
+  UpdateError = 'UpdateError',
+  Updating = 'Updating'
+}
+
+export type ServiceStatus = {
+  __typename?: 'ServiceStatus';
+  name: Scalars['String'];
+  replicas: Array<ReplicaStatus>;
+  state: ServiceState;
 };
 
 export type StatsLiveApps = {
@@ -2118,11 +3317,430 @@ export type String_Comparison_Exp = {
 
 export type UsageSummary = {
   __typename?: 'UsageSummary';
-  EgressBytes: Scalars['float64'];
-  EgressCDNBytes: Scalars['float64'];
-  EgressPgbouncerBytes: Scalars['float64'];
+  Egress: Scalars['float64'];
+  FunctionsInvocations: Scalars['float64'];
+  ID: Scalars['uuid'];
   LambdaUsageSeconds: Scalars['float64'];
-  appID: Scalars['uuid'];
+  PostgresVolumeUsage: Scalars['float64'];
+  TotalRequests: Scalars['float64'];
+};
+
+export type VerifySubscriptionsResponse = {
+  __typename?: 'VerifySubscriptionsResponse';
+  AppsWithInvalidSubscriptions: Array<Scalars['uuid']>;
+  OrganizationsWithInvalidSubscriptions: Array<Scalars['uuid']>;
+  SubscriptionsWithoutCustomer: Array<Scalars['String']>;
+};
+
+/** columns and relationships of "announcements" */
+export type Announcements = {
+  __typename?: 'announcements';
+  content: Scalars['String'];
+  createdAt: Scalars['timestamptz'];
+  expiresAt?: Maybe<Scalars['timestamptz']>;
+  href: Scalars['String'];
+  id: Scalars['uuid'];
+  /** An array relationship */
+  read: Array<Announcements_Read>;
+  /** An aggregate relationship */
+  read_aggregate: Announcements_Read_Aggregate;
+  updatedAt: Scalars['timestamptz'];
+};
+
+
+/** columns and relationships of "announcements" */
+export type AnnouncementsReadArgs = {
+  distinct_on?: InputMaybe<Array<Announcements_Read_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Announcements_Read_Order_By>>;
+  where?: InputMaybe<Announcements_Read_Bool_Exp>;
+};
+
+
+/** columns and relationships of "announcements" */
+export type AnnouncementsRead_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Announcements_Read_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Announcements_Read_Order_By>>;
+  where?: InputMaybe<Announcements_Read_Bool_Exp>;
+};
+
+/** aggregated selection of "announcements" */
+export type Announcements_Aggregate = {
+  __typename?: 'announcements_aggregate';
+  aggregate?: Maybe<Announcements_Aggregate_Fields>;
+  nodes: Array<Announcements>;
+};
+
+/** aggregate fields of "announcements" */
+export type Announcements_Aggregate_Fields = {
+  __typename?: 'announcements_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Announcements_Max_Fields>;
+  min?: Maybe<Announcements_Min_Fields>;
+};
+
+
+/** aggregate fields of "announcements" */
+export type Announcements_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Announcements_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "announcements". All fields are combined with a logical 'AND'. */
+export type Announcements_Bool_Exp = {
+  _and?: InputMaybe<Array<Announcements_Bool_Exp>>;
+  _not?: InputMaybe<Announcements_Bool_Exp>;
+  _or?: InputMaybe<Array<Announcements_Bool_Exp>>;
+  content?: InputMaybe<String_Comparison_Exp>;
+  createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  expiresAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  href?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  read?: InputMaybe<Announcements_Read_Bool_Exp>;
+  read_aggregate?: InputMaybe<Announcements_Read_Aggregate_Bool_Exp>;
+  updatedAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "announcements" */
+export enum Announcements_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  AnnouncementsPkey = 'announcements_pkey'
+}
+
+/** input type for inserting data into table "announcements" */
+export type Announcements_Insert_Input = {
+  content?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  expiresAt?: InputMaybe<Scalars['timestamptz']>;
+  href?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  read?: InputMaybe<Announcements_Read_Arr_Rel_Insert_Input>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Announcements_Max_Fields = {
+  __typename?: 'announcements_max_fields';
+  content?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  expiresAt?: Maybe<Scalars['timestamptz']>;
+  href?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  updatedAt?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type Announcements_Min_Fields = {
+  __typename?: 'announcements_min_fields';
+  content?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  expiresAt?: Maybe<Scalars['timestamptz']>;
+  href?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  updatedAt?: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "announcements" */
+export type Announcements_Mutation_Response = {
+  __typename?: 'announcements_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Announcements>;
+};
+
+/** on_conflict condition type for table "announcements" */
+export type Announcements_On_Conflict = {
+  constraint: Announcements_Constraint;
+  update_columns?: Array<Announcements_Update_Column>;
+  where?: InputMaybe<Announcements_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "announcements". */
+export type Announcements_Order_By = {
+  content?: InputMaybe<Order_By>;
+  createdAt?: InputMaybe<Order_By>;
+  expiresAt?: InputMaybe<Order_By>;
+  href?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  read_aggregate?: InputMaybe<Announcements_Read_Aggregate_Order_By>;
+  updatedAt?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: announcements */
+export type Announcements_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** columns and relationships of "announcements_read" */
+export type Announcements_Read = {
+  __typename?: 'announcements_read';
+  announcementID: Scalars['uuid'];
+  createdAt: Scalars['timestamptz'];
+  id: Scalars['uuid'];
+  userID: Scalars['uuid'];
+};
+
+/** aggregated selection of "announcements_read" */
+export type Announcements_Read_Aggregate = {
+  __typename?: 'announcements_read_aggregate';
+  aggregate?: Maybe<Announcements_Read_Aggregate_Fields>;
+  nodes: Array<Announcements_Read>;
+};
+
+export type Announcements_Read_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Announcements_Read_Aggregate_Bool_Exp_Count>;
+};
+
+export type Announcements_Read_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Announcements_Read_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Announcements_Read_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "announcements_read" */
+export type Announcements_Read_Aggregate_Fields = {
+  __typename?: 'announcements_read_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Announcements_Read_Max_Fields>;
+  min?: Maybe<Announcements_Read_Min_Fields>;
+};
+
+
+/** aggregate fields of "announcements_read" */
+export type Announcements_Read_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Announcements_Read_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "announcements_read" */
+export type Announcements_Read_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Announcements_Read_Max_Order_By>;
+  min?: InputMaybe<Announcements_Read_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "announcements_read" */
+export type Announcements_Read_Arr_Rel_Insert_Input = {
+  data: Array<Announcements_Read_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Announcements_Read_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "announcements_read". All fields are combined with a logical 'AND'. */
+export type Announcements_Read_Bool_Exp = {
+  _and?: InputMaybe<Array<Announcements_Read_Bool_Exp>>;
+  _not?: InputMaybe<Announcements_Read_Bool_Exp>;
+  _or?: InputMaybe<Array<Announcements_Read_Bool_Exp>>;
+  announcementID?: InputMaybe<Uuid_Comparison_Exp>;
+  createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  userID?: InputMaybe<Uuid_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "announcements_read" */
+export enum Announcements_Read_Constraint {
+  /** unique or primary key constraint on columns "user_id", "announcement_id" */
+  AnnouncementsReadAnnouncementIdUserIdKey = 'announcements_read_announcement_id_user_id_key',
+  /** unique or primary key constraint on columns "id" */
+  AnnouncementsReadPkey = 'announcements_read_pkey'
+}
+
+/** input type for inserting data into table "announcements_read" */
+export type Announcements_Read_Insert_Input = {
+  announcementID?: InputMaybe<Scalars['uuid']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  userID?: InputMaybe<Scalars['uuid']>;
+};
+
+/** aggregate max on columns */
+export type Announcements_Read_Max_Fields = {
+  __typename?: 'announcements_read_max_fields';
+  announcementID?: Maybe<Scalars['uuid']>;
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  userID?: Maybe<Scalars['uuid']>;
+};
+
+/** order by max() on columns of table "announcements_read" */
+export type Announcements_Read_Max_Order_By = {
+  announcementID?: InputMaybe<Order_By>;
+  createdAt?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  userID?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Announcements_Read_Min_Fields = {
+  __typename?: 'announcements_read_min_fields';
+  announcementID?: Maybe<Scalars['uuid']>;
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  userID?: Maybe<Scalars['uuid']>;
+};
+
+/** order by min() on columns of table "announcements_read" */
+export type Announcements_Read_Min_Order_By = {
+  announcementID?: InputMaybe<Order_By>;
+  createdAt?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  userID?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "announcements_read" */
+export type Announcements_Read_Mutation_Response = {
+  __typename?: 'announcements_read_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Announcements_Read>;
+};
+
+/** on_conflict condition type for table "announcements_read" */
+export type Announcements_Read_On_Conflict = {
+  constraint: Announcements_Read_Constraint;
+  update_columns?: Array<Announcements_Read_Update_Column>;
+  where?: InputMaybe<Announcements_Read_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "announcements_read". */
+export type Announcements_Read_Order_By = {
+  announcementID?: InputMaybe<Order_By>;
+  createdAt?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  userID?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: announcements_read */
+export type Announcements_Read_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "announcements_read" */
+export enum Announcements_Read_Select_Column {
+  /** column name */
+  AnnouncementId = 'announcementID',
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UserId = 'userID'
+}
+
+/** input type for updating data in table "announcements_read" */
+export type Announcements_Read_Set_Input = {
+  announcementID?: InputMaybe<Scalars['uuid']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  userID?: InputMaybe<Scalars['uuid']>;
+};
+
+/** Streaming cursor of the table "announcements_read" */
+export type Announcements_Read_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Announcements_Read_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Announcements_Read_Stream_Cursor_Value_Input = {
+  announcementID?: InputMaybe<Scalars['uuid']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  userID?: InputMaybe<Scalars['uuid']>;
+};
+
+/** update columns of table "announcements_read" */
+export enum Announcements_Read_Update_Column {
+  /** column name */
+  AnnouncementId = 'announcementID',
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UserId = 'userID'
+}
+
+export type Announcements_Read_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Announcements_Read_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Announcements_Read_Bool_Exp;
+};
+
+/** select columns of table "announcements" */
+export enum Announcements_Select_Column {
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  ExpiresAt = 'expiresAt',
+  /** column name */
+  Href = 'href',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+/** input type for updating data in table "announcements" */
+export type Announcements_Set_Input = {
+  content?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  expiresAt?: InputMaybe<Scalars['timestamptz']>;
+  href?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** Streaming cursor of the table "announcements" */
+export type Announcements_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Announcements_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Announcements_Stream_Cursor_Value_Input = {
+  content?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  expiresAt?: InputMaybe<Scalars['timestamptz']>;
+  href?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** update columns of table "announcements" */
+export enum Announcements_Update_Column {
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  ExpiresAt = 'expiresAt',
+  /** column name */
+  Href = 'href',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+export type Announcements_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Announcements_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Announcements_Bool_Exp;
 };
 
 /** columns and relationships of "app_state_history" */
@@ -2729,15 +4347,13 @@ export type Apps = {
   appStates: Array<AppStateHistory>;
   /** An aggregate relationship */
   appStates_aggregate: AppStateHistory_Aggregate;
-  autoUpdate: Scalars['Boolean'];
+  automaticDeploys: Scalars['Boolean'];
   /** An array relationship */
   backups: Array<Backups>;
   /** An aggregate relationship */
   backups_aggregate: Backups_Aggregate;
   /** An object relationship */
   billingDedicatedCompute?: Maybe<Billing_Dedicated_Compute>;
-  /** An object relationship */
-  billingDedicatedComputeReports?: Maybe<Billing_Dedicated_Compute_Reports>;
   /** An object relationship */
   billingSubscriptions?: Maybe<Billing_Subscriptions>;
   config?: Maybe<ConfigConfig>;
@@ -2761,19 +4377,21 @@ export type Apps = {
   githubRepository?: Maybe<GithubRepositories>;
   githubRepositoryId?: Maybe<Scalars['uuid']>;
   id: Scalars['uuid'];
-  isProvisioned: Scalars['Boolean'];
+  isLocked?: Maybe<Scalars['Boolean']>;
+  isLockedReason?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  legacyPlan?: Maybe<Plans>;
+  legacyPlanID?: Maybe<Scalars['uuid']>;
+  legacyStripeSubscriptionId?: Maybe<Scalars['String']>;
   metadataFunctions: Scalars['jsonb'];
   mimirConfigEnc?: Maybe<Scalars['String']>;
   mimirSecretsEnc?: Maybe<Scalars['String']>;
   mimirSystemConfigEnc?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   nhostBaseFolder: Scalars['String'];
-  /** whether or not this app is paused */
-  paused: Scalars['Boolean'];
   /** An object relationship */
-  plan: Plans;
-  planId: Scalars['uuid'];
-  providersUpdated?: Maybe<Scalars['Boolean']>;
+  organization?: Maybe<Organizations>;
+  organizationID?: Maybe<Scalars['uuid']>;
   /** An object relationship */
   region: Regions;
   regionId: Scalars['uuid'];
@@ -2784,13 +4402,12 @@ export type Apps = {
   runServices_aggregate: Run_Service_Aggregate;
   slug: Scalars['String'];
   stateMatch?: Maybe<Scalars['Boolean']>;
-  stripeSubscriptionId?: Maybe<Scalars['String']>;
   subdomain: Scalars['String'];
   systemConfig?: Maybe<ConfigSystemConfig>;
   updatedAt: Scalars['timestamptz'];
   /** An object relationship */
-  workspace: Workspaces;
-  workspaceId: Scalars['uuid'];
+  workspace?: Maybe<Workspaces>;
+  workspaceId?: Maybe<Scalars['uuid']>;
 };
 
 
@@ -3009,11 +4626,10 @@ export type Apps_Bool_Exp = {
   _or?: InputMaybe<Array<Apps_Bool_Exp>>;
   appStates?: InputMaybe<AppStateHistory_Bool_Exp>;
   appStates_aggregate?: InputMaybe<AppStateHistory_Aggregate_Bool_Exp>;
-  autoUpdate?: InputMaybe<Boolean_Comparison_Exp>;
+  automaticDeploys?: InputMaybe<Boolean_Comparison_Exp>;
   backups?: InputMaybe<Backups_Bool_Exp>;
   backups_aggregate?: InputMaybe<Backups_Aggregate_Bool_Exp>;
   billingDedicatedCompute?: InputMaybe<Billing_Dedicated_Compute_Bool_Exp>;
-  billingDedicatedComputeReports?: InputMaybe<Billing_Dedicated_Compute_Reports_Bool_Exp>;
   billingSubscriptions?: InputMaybe<Billing_Subscriptions_Bool_Exp>;
   createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   creator?: InputMaybe<Users_Bool_Exp>;
@@ -3028,17 +4644,19 @@ export type Apps_Bool_Exp = {
   githubRepository?: InputMaybe<GithubRepositories_Bool_Exp>;
   githubRepositoryId?: InputMaybe<Uuid_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
-  isProvisioned?: InputMaybe<Boolean_Comparison_Exp>;
+  isLocked?: InputMaybe<Boolean_Comparison_Exp>;
+  isLockedReason?: InputMaybe<String_Comparison_Exp>;
+  legacyPlan?: InputMaybe<Plans_Bool_Exp>;
+  legacyPlanID?: InputMaybe<Uuid_Comparison_Exp>;
+  legacyStripeSubscriptionId?: InputMaybe<String_Comparison_Exp>;
   metadataFunctions?: InputMaybe<Jsonb_Comparison_Exp>;
   mimirConfigEnc?: InputMaybe<String_Comparison_Exp>;
   mimirSecretsEnc?: InputMaybe<String_Comparison_Exp>;
   mimirSystemConfigEnc?: InputMaybe<String_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   nhostBaseFolder?: InputMaybe<String_Comparison_Exp>;
-  paused?: InputMaybe<Boolean_Comparison_Exp>;
-  plan?: InputMaybe<Plans_Bool_Exp>;
-  planId?: InputMaybe<Uuid_Comparison_Exp>;
-  providersUpdated?: InputMaybe<Boolean_Comparison_Exp>;
+  organization?: InputMaybe<Organizations_Bool_Exp>;
+  organizationID?: InputMaybe<Uuid_Comparison_Exp>;
   region?: InputMaybe<Regions_Bool_Exp>;
   regionId?: InputMaybe<Uuid_Comparison_Exp>;
   repositoryProductionBranch?: InputMaybe<String_Comparison_Exp>;
@@ -3046,7 +4664,6 @@ export type Apps_Bool_Exp = {
   runServices_aggregate?: InputMaybe<Run_Service_Aggregate_Bool_Exp>;
   slug?: InputMaybe<String_Comparison_Exp>;
   stateMatch?: InputMaybe<Boolean_Comparison_Exp>;
-  stripeSubscriptionId?: InputMaybe<String_Comparison_Exp>;
   subdomain?: InputMaybe<String_Comparison_Exp>;
   updatedAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   workspace?: InputMaybe<Workspaces_Bool_Exp>;
@@ -3087,10 +4704,9 @@ export type Apps_Inc_Input = {
 /** input type for inserting data into table "apps" */
 export type Apps_Insert_Input = {
   appStates?: InputMaybe<AppStateHistory_Arr_Rel_Insert_Input>;
-  autoUpdate?: InputMaybe<Scalars['Boolean']>;
+  automaticDeploys?: InputMaybe<Scalars['Boolean']>;
   backups?: InputMaybe<Backups_Arr_Rel_Insert_Input>;
   billingDedicatedCompute?: InputMaybe<Billing_Dedicated_Compute_Obj_Rel_Insert_Input>;
-  billingDedicatedComputeReports?: InputMaybe<Billing_Dedicated_Compute_Reports_Obj_Rel_Insert_Input>;
   billingSubscriptions?: InputMaybe<Billing_Subscriptions_Obj_Rel_Insert_Input>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
   creator?: InputMaybe<Users_Obj_Rel_Insert_Input>;
@@ -3103,24 +4719,24 @@ export type Apps_Insert_Input = {
   githubRepository?: InputMaybe<GithubRepositories_Obj_Rel_Insert_Input>;
   githubRepositoryId?: InputMaybe<Scalars['uuid']>;
   id?: InputMaybe<Scalars['uuid']>;
-  isProvisioned?: InputMaybe<Scalars['Boolean']>;
+  isLocked?: InputMaybe<Scalars['Boolean']>;
+  isLockedReason?: InputMaybe<Scalars['String']>;
+  legacyPlan?: InputMaybe<Plans_Obj_Rel_Insert_Input>;
+  legacyPlanID?: InputMaybe<Scalars['uuid']>;
+  legacyStripeSubscriptionId?: InputMaybe<Scalars['String']>;
   metadataFunctions?: InputMaybe<Scalars['jsonb']>;
   mimirConfigEnc?: InputMaybe<Scalars['String']>;
   mimirSecretsEnc?: InputMaybe<Scalars['String']>;
   mimirSystemConfigEnc?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   nhostBaseFolder?: InputMaybe<Scalars['String']>;
-  /** whether or not this app is paused */
-  paused?: InputMaybe<Scalars['Boolean']>;
-  plan?: InputMaybe<Plans_Obj_Rel_Insert_Input>;
-  planId?: InputMaybe<Scalars['uuid']>;
-  providersUpdated?: InputMaybe<Scalars['Boolean']>;
+  organization?: InputMaybe<Organizations_Obj_Rel_Insert_Input>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
   region?: InputMaybe<Regions_Obj_Rel_Insert_Input>;
   regionId?: InputMaybe<Scalars['uuid']>;
   repositoryProductionBranch?: InputMaybe<Scalars['String']>;
   runServices?: InputMaybe<Run_Service_Arr_Rel_Insert_Input>;
   slug?: InputMaybe<Scalars['String']>;
-  stripeSubscriptionId?: InputMaybe<Scalars['String']>;
   subdomain?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
   workspace?: InputMaybe<Workspaces_Obj_Rel_Insert_Input>;
@@ -3136,16 +4752,18 @@ export type Apps_Max_Fields = {
   desiredState?: Maybe<Scalars['Int']>;
   githubRepositoryId?: Maybe<Scalars['uuid']>;
   id?: Maybe<Scalars['uuid']>;
+  isLockedReason?: Maybe<Scalars['String']>;
+  legacyPlanID?: Maybe<Scalars['uuid']>;
+  legacyStripeSubscriptionId?: Maybe<Scalars['String']>;
   mimirConfigEnc?: Maybe<Scalars['String']>;
   mimirSecretsEnc?: Maybe<Scalars['String']>;
   mimirSystemConfigEnc?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   nhostBaseFolder?: Maybe<Scalars['String']>;
-  planId?: Maybe<Scalars['uuid']>;
+  organizationID?: Maybe<Scalars['uuid']>;
   regionId?: Maybe<Scalars['uuid']>;
   repositoryProductionBranch?: Maybe<Scalars['String']>;
   slug?: Maybe<Scalars['String']>;
-  stripeSubscriptionId?: Maybe<Scalars['String']>;
   subdomain?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['timestamptz']>;
   workspaceId?: Maybe<Scalars['uuid']>;
@@ -3159,16 +4777,18 @@ export type Apps_Max_Order_By = {
   desiredState?: InputMaybe<Order_By>;
   githubRepositoryId?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  isLockedReason?: InputMaybe<Order_By>;
+  legacyPlanID?: InputMaybe<Order_By>;
+  legacyStripeSubscriptionId?: InputMaybe<Order_By>;
   mimirConfigEnc?: InputMaybe<Order_By>;
   mimirSecretsEnc?: InputMaybe<Order_By>;
   mimirSystemConfigEnc?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   nhostBaseFolder?: InputMaybe<Order_By>;
-  planId?: InputMaybe<Order_By>;
+  organizationID?: InputMaybe<Order_By>;
   regionId?: InputMaybe<Order_By>;
   repositoryProductionBranch?: InputMaybe<Order_By>;
   slug?: InputMaybe<Order_By>;
-  stripeSubscriptionId?: InputMaybe<Order_By>;
   subdomain?: InputMaybe<Order_By>;
   updatedAt?: InputMaybe<Order_By>;
   workspaceId?: InputMaybe<Order_By>;
@@ -3183,16 +4803,18 @@ export type Apps_Min_Fields = {
   desiredState?: Maybe<Scalars['Int']>;
   githubRepositoryId?: Maybe<Scalars['uuid']>;
   id?: Maybe<Scalars['uuid']>;
+  isLockedReason?: Maybe<Scalars['String']>;
+  legacyPlanID?: Maybe<Scalars['uuid']>;
+  legacyStripeSubscriptionId?: Maybe<Scalars['String']>;
   mimirConfigEnc?: Maybe<Scalars['String']>;
   mimirSecretsEnc?: Maybe<Scalars['String']>;
   mimirSystemConfigEnc?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   nhostBaseFolder?: Maybe<Scalars['String']>;
-  planId?: Maybe<Scalars['uuid']>;
+  organizationID?: Maybe<Scalars['uuid']>;
   regionId?: Maybe<Scalars['uuid']>;
   repositoryProductionBranch?: Maybe<Scalars['String']>;
   slug?: Maybe<Scalars['String']>;
-  stripeSubscriptionId?: Maybe<Scalars['String']>;
   subdomain?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['timestamptz']>;
   workspaceId?: Maybe<Scalars['uuid']>;
@@ -3206,16 +4828,18 @@ export type Apps_Min_Order_By = {
   desiredState?: InputMaybe<Order_By>;
   githubRepositoryId?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  isLockedReason?: InputMaybe<Order_By>;
+  legacyPlanID?: InputMaybe<Order_By>;
+  legacyStripeSubscriptionId?: InputMaybe<Order_By>;
   mimirConfigEnc?: InputMaybe<Order_By>;
   mimirSecretsEnc?: InputMaybe<Order_By>;
   mimirSystemConfigEnc?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   nhostBaseFolder?: InputMaybe<Order_By>;
-  planId?: InputMaybe<Order_By>;
+  organizationID?: InputMaybe<Order_By>;
   regionId?: InputMaybe<Order_By>;
   repositoryProductionBranch?: InputMaybe<Order_By>;
   slug?: InputMaybe<Order_By>;
-  stripeSubscriptionId?: InputMaybe<Order_By>;
   subdomain?: InputMaybe<Order_By>;
   updatedAt?: InputMaybe<Order_By>;
   workspaceId?: InputMaybe<Order_By>;
@@ -3247,10 +4871,9 @@ export type Apps_On_Conflict = {
 /** Ordering options when selecting data from "apps". */
 export type Apps_Order_By = {
   appStates_aggregate?: InputMaybe<AppStateHistory_Aggregate_Order_By>;
-  autoUpdate?: InputMaybe<Order_By>;
+  automaticDeploys?: InputMaybe<Order_By>;
   backups_aggregate?: InputMaybe<Backups_Aggregate_Order_By>;
   billingDedicatedCompute?: InputMaybe<Billing_Dedicated_Compute_Order_By>;
-  billingDedicatedComputeReports?: InputMaybe<Billing_Dedicated_Compute_Reports_Order_By>;
   billingSubscriptions?: InputMaybe<Billing_Subscriptions_Order_By>;
   createdAt?: InputMaybe<Order_By>;
   creator?: InputMaybe<Users_Order_By>;
@@ -3263,24 +4886,25 @@ export type Apps_Order_By = {
   githubRepository?: InputMaybe<GithubRepositories_Order_By>;
   githubRepositoryId?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  isProvisioned?: InputMaybe<Order_By>;
+  isLocked?: InputMaybe<Order_By>;
+  isLockedReason?: InputMaybe<Order_By>;
+  legacyPlan?: InputMaybe<Plans_Order_By>;
+  legacyPlanID?: InputMaybe<Order_By>;
+  legacyStripeSubscriptionId?: InputMaybe<Order_By>;
   metadataFunctions?: InputMaybe<Order_By>;
   mimirConfigEnc?: InputMaybe<Order_By>;
   mimirSecretsEnc?: InputMaybe<Order_By>;
   mimirSystemConfigEnc?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   nhostBaseFolder?: InputMaybe<Order_By>;
-  paused?: InputMaybe<Order_By>;
-  plan?: InputMaybe<Plans_Order_By>;
-  planId?: InputMaybe<Order_By>;
-  providersUpdated?: InputMaybe<Order_By>;
+  organization?: InputMaybe<Organizations_Order_By>;
+  organizationID?: InputMaybe<Order_By>;
   region?: InputMaybe<Regions_Order_By>;
   regionId?: InputMaybe<Order_By>;
   repositoryProductionBranch?: InputMaybe<Order_By>;
   runServices_aggregate?: InputMaybe<Run_Service_Aggregate_Order_By>;
   slug?: InputMaybe<Order_By>;
   stateMatch?: InputMaybe<Order_By>;
-  stripeSubscriptionId?: InputMaybe<Order_By>;
   subdomain?: InputMaybe<Order_By>;
   updatedAt?: InputMaybe<Order_By>;
   workspace?: InputMaybe<Workspaces_Order_By>;
@@ -3300,7 +4924,7 @@ export type Apps_Prepend_Input = {
 /** select columns of table "apps" */
 export enum Apps_Select_Column {
   /** column name */
-  AutoUpdate = 'autoUpdate',
+  AutomaticDeploys = 'automaticDeploys',
   /** column name */
   CreatedAt = 'createdAt',
   /** column name */
@@ -3314,7 +4938,13 @@ export enum Apps_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  IsProvisioned = 'isProvisioned',
+  IsLocked = 'isLocked',
+  /** column name */
+  IsLockedReason = 'isLockedReason',
+  /** column name */
+  LegacyPlanId = 'legacyPlanID',
+  /** column name */
+  LegacyStripeSubscriptionId = 'legacyStripeSubscriptionId',
   /** column name */
   MetadataFunctions = 'metadataFunctions',
   /** column name */
@@ -3328,11 +4958,7 @@ export enum Apps_Select_Column {
   /** column name */
   NhostBaseFolder = 'nhostBaseFolder',
   /** column name */
-  Paused = 'paused',
-  /** column name */
-  PlanId = 'planId',
-  /** column name */
-  ProvidersUpdated = 'providersUpdated',
+  OrganizationId = 'organizationID',
   /** column name */
   RegionId = 'regionId',
   /** column name */
@@ -3341,8 +4967,6 @@ export enum Apps_Select_Column {
   Slug = 'slug',
   /** column name */
   StateMatch = 'stateMatch',
-  /** column name */
-  StripeSubscriptionId = 'stripeSubscriptionId',
   /** column name */
   Subdomain = 'subdomain',
   /** column name */
@@ -3354,13 +4978,9 @@ export enum Apps_Select_Column {
 /** select "apps_aggregate_bool_exp_bool_and_arguments_columns" columns of table "apps" */
 export enum Apps_Select_Column_Apps_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
   /** column name */
-  AutoUpdate = 'autoUpdate',
+  AutomaticDeploys = 'automaticDeploys',
   /** column name */
-  IsProvisioned = 'isProvisioned',
-  /** column name */
-  Paused = 'paused',
-  /** column name */
-  ProvidersUpdated = 'providersUpdated',
+  IsLocked = 'isLocked',
   /** column name */
   StateMatch = 'stateMatch'
 }
@@ -3368,41 +4988,36 @@ export enum Apps_Select_Column_Apps_Aggregate_Bool_Exp_Bool_And_Arguments_Column
 /** select "apps_aggregate_bool_exp_bool_or_arguments_columns" columns of table "apps" */
 export enum Apps_Select_Column_Apps_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
   /** column name */
-  AutoUpdate = 'autoUpdate',
+  AutomaticDeploys = 'automaticDeploys',
   /** column name */
-  IsProvisioned = 'isProvisioned',
-  /** column name */
-  Paused = 'paused',
-  /** column name */
-  ProvidersUpdated = 'providersUpdated',
+  IsLocked = 'isLocked',
   /** column name */
   StateMatch = 'stateMatch'
 }
 
 /** input type for updating data in table "apps" */
 export type Apps_Set_Input = {
-  autoUpdate?: InputMaybe<Scalars['Boolean']>;
+  automaticDeploys?: InputMaybe<Scalars['Boolean']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
   creatorUserId?: InputMaybe<Scalars['uuid']>;
   currentState?: InputMaybe<Scalars['Int']>;
   desiredState?: InputMaybe<Scalars['Int']>;
   githubRepositoryId?: InputMaybe<Scalars['uuid']>;
   id?: InputMaybe<Scalars['uuid']>;
-  isProvisioned?: InputMaybe<Scalars['Boolean']>;
+  isLocked?: InputMaybe<Scalars['Boolean']>;
+  isLockedReason?: InputMaybe<Scalars['String']>;
+  legacyPlanID?: InputMaybe<Scalars['uuid']>;
+  legacyStripeSubscriptionId?: InputMaybe<Scalars['String']>;
   metadataFunctions?: InputMaybe<Scalars['jsonb']>;
   mimirConfigEnc?: InputMaybe<Scalars['String']>;
   mimirSecretsEnc?: InputMaybe<Scalars['String']>;
   mimirSystemConfigEnc?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   nhostBaseFolder?: InputMaybe<Scalars['String']>;
-  /** whether or not this app is paused */
-  paused?: InputMaybe<Scalars['Boolean']>;
-  planId?: InputMaybe<Scalars['uuid']>;
-  providersUpdated?: InputMaybe<Scalars['Boolean']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
   regionId?: InputMaybe<Scalars['uuid']>;
   repositoryProductionBranch?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
-  stripeSubscriptionId?: InputMaybe<Scalars['String']>;
   subdomain?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
   workspaceId?: InputMaybe<Scalars['uuid']>;
@@ -3457,29 +5072,28 @@ export type Apps_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Apps_Stream_Cursor_Value_Input = {
-  autoUpdate?: InputMaybe<Scalars['Boolean']>;
+  automaticDeploys?: InputMaybe<Scalars['Boolean']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
   creatorUserId?: InputMaybe<Scalars['uuid']>;
   currentState?: InputMaybe<Scalars['Int']>;
   desiredState?: InputMaybe<Scalars['Int']>;
   githubRepositoryId?: InputMaybe<Scalars['uuid']>;
   id?: InputMaybe<Scalars['uuid']>;
-  isProvisioned?: InputMaybe<Scalars['Boolean']>;
+  isLocked?: InputMaybe<Scalars['Boolean']>;
+  isLockedReason?: InputMaybe<Scalars['String']>;
+  legacyPlanID?: InputMaybe<Scalars['uuid']>;
+  legacyStripeSubscriptionId?: InputMaybe<Scalars['String']>;
   metadataFunctions?: InputMaybe<Scalars['jsonb']>;
   mimirConfigEnc?: InputMaybe<Scalars['String']>;
   mimirSecretsEnc?: InputMaybe<Scalars['String']>;
   mimirSystemConfigEnc?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   nhostBaseFolder?: InputMaybe<Scalars['String']>;
-  /** whether or not this app is paused */
-  paused?: InputMaybe<Scalars['Boolean']>;
-  planId?: InputMaybe<Scalars['uuid']>;
-  providersUpdated?: InputMaybe<Scalars['Boolean']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
   regionId?: InputMaybe<Scalars['uuid']>;
   repositoryProductionBranch?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
   stateMatch?: InputMaybe<Scalars['Boolean']>;
-  stripeSubscriptionId?: InputMaybe<Scalars['String']>;
   subdomain?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
   workspaceId?: InputMaybe<Scalars['uuid']>;
@@ -3501,7 +5115,7 @@ export type Apps_Sum_Order_By = {
 /** update columns of table "apps" */
 export enum Apps_Update_Column {
   /** column name */
-  AutoUpdate = 'autoUpdate',
+  AutomaticDeploys = 'automaticDeploys',
   /** column name */
   CreatedAt = 'createdAt',
   /** column name */
@@ -3515,7 +5129,13 @@ export enum Apps_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  IsProvisioned = 'isProvisioned',
+  IsLocked = 'isLocked',
+  /** column name */
+  IsLockedReason = 'isLockedReason',
+  /** column name */
+  LegacyPlanId = 'legacyPlanID',
+  /** column name */
+  LegacyStripeSubscriptionId = 'legacyStripeSubscriptionId',
   /** column name */
   MetadataFunctions = 'metadataFunctions',
   /** column name */
@@ -3529,19 +5149,13 @@ export enum Apps_Update_Column {
   /** column name */
   NhostBaseFolder = 'nhostBaseFolder',
   /** column name */
-  Paused = 'paused',
-  /** column name */
-  PlanId = 'planId',
-  /** column name */
-  ProvidersUpdated = 'providersUpdated',
+  OrganizationId = 'organizationID',
   /** column name */
   RegionId = 'regionId',
   /** column name */
   RepositoryProductionBranch = 'repositoryProductionBranch',
   /** column name */
   Slug = 'slug',
-  /** column name */
-  StripeSubscriptionId = 'stripeSubscriptionId',
   /** column name */
   Subdomain = 'subdomain',
   /** column name */
@@ -4124,7 +5738,6 @@ export type AuthRefreshTokens = {
   id: Scalars['uuid'];
   metadata?: Maybe<Scalars['jsonb']>;
   refreshTokenHash?: Maybe<Scalars['String']>;
-  refresh_token?: Maybe<Scalars['uuid']>;
   type: AuthRefreshTokenTypes_Enum;
   /** An object relationship */
   user: Users;
@@ -4199,7 +5812,6 @@ export type AuthRefreshTokens_Bool_Exp = {
   id?: InputMaybe<Uuid_Comparison_Exp>;
   metadata?: InputMaybe<Jsonb_Comparison_Exp>;
   refreshTokenHash?: InputMaybe<String_Comparison_Exp>;
-  refresh_token?: InputMaybe<Uuid_Comparison_Exp>;
   type?: InputMaybe<AuthRefreshTokenTypes_Enum_Comparison_Exp>;
   user?: InputMaybe<Users_Bool_Exp>;
   userId?: InputMaybe<Uuid_Comparison_Exp>;
@@ -4233,7 +5845,6 @@ export type AuthRefreshTokens_Insert_Input = {
   id?: InputMaybe<Scalars['uuid']>;
   metadata?: InputMaybe<Scalars['jsonb']>;
   refreshTokenHash?: InputMaybe<Scalars['String']>;
-  refresh_token?: InputMaybe<Scalars['uuid']>;
   type?: InputMaybe<AuthRefreshTokenTypes_Enum>;
   user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
   userId?: InputMaybe<Scalars['uuid']>;
@@ -4246,7 +5857,6 @@ export type AuthRefreshTokens_Max_Fields = {
   expiresAt?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   refreshTokenHash?: Maybe<Scalars['String']>;
-  refresh_token?: Maybe<Scalars['uuid']>;
   userId?: Maybe<Scalars['uuid']>;
 };
 
@@ -4256,7 +5866,6 @@ export type AuthRefreshTokens_Max_Order_By = {
   expiresAt?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   refreshTokenHash?: InputMaybe<Order_By>;
-  refresh_token?: InputMaybe<Order_By>;
   userId?: InputMaybe<Order_By>;
 };
 
@@ -4267,7 +5876,6 @@ export type AuthRefreshTokens_Min_Fields = {
   expiresAt?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   refreshTokenHash?: Maybe<Scalars['String']>;
-  refresh_token?: Maybe<Scalars['uuid']>;
   userId?: Maybe<Scalars['uuid']>;
 };
 
@@ -4277,7 +5885,6 @@ export type AuthRefreshTokens_Min_Order_By = {
   expiresAt?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   refreshTokenHash?: InputMaybe<Order_By>;
-  refresh_token?: InputMaybe<Order_By>;
   userId?: InputMaybe<Order_By>;
 };
 
@@ -4304,7 +5911,6 @@ export type AuthRefreshTokens_Order_By = {
   id?: InputMaybe<Order_By>;
   metadata?: InputMaybe<Order_By>;
   refreshTokenHash?: InputMaybe<Order_By>;
-  refresh_token?: InputMaybe<Order_By>;
   type?: InputMaybe<Order_By>;
   user?: InputMaybe<Users_Order_By>;
   userId?: InputMaybe<Order_By>;
@@ -4333,8 +5939,6 @@ export enum AuthRefreshTokens_Select_Column {
   /** column name */
   RefreshTokenHash = 'refreshTokenHash',
   /** column name */
-  RefreshToken = 'refresh_token',
-  /** column name */
   Type = 'type',
   /** column name */
   UserId = 'userId'
@@ -4347,7 +5951,6 @@ export type AuthRefreshTokens_Set_Input = {
   id?: InputMaybe<Scalars['uuid']>;
   metadata?: InputMaybe<Scalars['jsonb']>;
   refreshTokenHash?: InputMaybe<Scalars['String']>;
-  refresh_token?: InputMaybe<Scalars['uuid']>;
   type?: InputMaybe<AuthRefreshTokenTypes_Enum>;
   userId?: InputMaybe<Scalars['uuid']>;
 };
@@ -4367,7 +5970,6 @@ export type AuthRefreshTokens_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['uuid']>;
   metadata?: InputMaybe<Scalars['jsonb']>;
   refreshTokenHash?: InputMaybe<Scalars['String']>;
-  refresh_token?: InputMaybe<Scalars['uuid']>;
   type?: InputMaybe<AuthRefreshTokenTypes_Enum>;
   userId?: InputMaybe<Scalars['uuid']>;
 };
@@ -4384,8 +5986,6 @@ export enum AuthRefreshTokens_Update_Column {
   Metadata = 'metadata',
   /** column name */
   RefreshTokenHash = 'refreshTokenHash',
-  /** column name */
-  RefreshToken = 'refresh_token',
   /** column name */
   Type = 'type',
   /** column name */
@@ -4679,9 +6279,9 @@ export type AuthUserProviders_Bool_Exp = {
 export enum AuthUserProviders_Constraint {
   /** unique or primary key constraint on columns "id" */
   UserProvidersPkey = 'user_providers_pkey',
-  /** unique or primary key constraint on columns "provider_id", "provider_user_id" */
+  /** unique or primary key constraint on columns "provider_user_id", "provider_id" */
   UserProvidersProviderIdProviderUserIdKey = 'user_providers_provider_id_provider_user_id_key',
-  /** unique or primary key constraint on columns "provider_id", "user_id" */
+  /** unique or primary key constraint on columns "user_id", "provider_id" */
   UserProvidersUserIdProviderIdKey = 'user_providers_user_id_provider_id_key'
 }
 
@@ -6016,6 +7616,7 @@ export type Billing_Dedicated_Compute = {
   appID: Scalars['uuid'];
   createdAt: Scalars['timestamptz'];
   id: Scalars['uuid'];
+  organizationID?: Maybe<Scalars['uuid']>;
   totalMillicores: Scalars['Int'];
   updatedAt: Scalars['timestamptz'];
 };
@@ -6065,6 +7666,7 @@ export type Billing_Dedicated_Compute_Bool_Exp = {
   appID?: InputMaybe<Uuid_Comparison_Exp>;
   createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  organizationID?: InputMaybe<Uuid_Comparison_Exp>;
   totalMillicores?: InputMaybe<Int_Comparison_Exp>;
   updatedAt?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
@@ -6088,6 +7690,7 @@ export type Billing_Dedicated_Compute_Insert_Input = {
   appID?: InputMaybe<Scalars['uuid']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
   id?: InputMaybe<Scalars['uuid']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
   totalMillicores?: InputMaybe<Scalars['Int']>;
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
@@ -6098,6 +7701,7 @@ export type Billing_Dedicated_Compute_Max_Fields = {
   appID?: Maybe<Scalars['uuid']>;
   createdAt?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
+  organizationID?: Maybe<Scalars['uuid']>;
   totalMillicores?: Maybe<Scalars['Int']>;
   updatedAt?: Maybe<Scalars['timestamptz']>;
 };
@@ -6108,6 +7712,7 @@ export type Billing_Dedicated_Compute_Min_Fields = {
   appID?: Maybe<Scalars['uuid']>;
   createdAt?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
+  organizationID?: Maybe<Scalars['uuid']>;
   totalMillicores?: Maybe<Scalars['Int']>;
   updatedAt?: Maybe<Scalars['timestamptz']>;
 };
@@ -6141,6 +7746,7 @@ export type Billing_Dedicated_Compute_Order_By = {
   appID?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  organizationID?: InputMaybe<Order_By>;
   totalMillicores?: InputMaybe<Order_By>;
   updatedAt?: InputMaybe<Order_By>;
 };
@@ -6148,285 +7754,6 @@ export type Billing_Dedicated_Compute_Order_By = {
 /** primary key columns input for table: billing.dedicated_compute */
 export type Billing_Dedicated_Compute_Pk_Columns_Input = {
   id: Scalars['uuid'];
-};
-
-/** columns and relationships of "billing.dedicated_compute_reports" */
-export type Billing_Dedicated_Compute_Reports = {
-  __typename?: 'billing_dedicated_compute_reports';
-  /** An object relationship */
-  app?: Maybe<Apps>;
-  app_id: Scalars['uuid'];
-  created_at: Scalars['timestamptz'];
-  id: Scalars['uuid'];
-  pending: Scalars['Boolean'];
-  report_ends: Scalars['timestamptz'];
-  report_starts: Scalars['timestamptz'];
-  total_millicores: Scalars['Int'];
-  updated_at: Scalars['timestamptz'];
-};
-
-/** aggregated selection of "billing.dedicated_compute_reports" */
-export type Billing_Dedicated_Compute_Reports_Aggregate = {
-  __typename?: 'billing_dedicated_compute_reports_aggregate';
-  aggregate?: Maybe<Billing_Dedicated_Compute_Reports_Aggregate_Fields>;
-  nodes: Array<Billing_Dedicated_Compute_Reports>;
-};
-
-/** aggregate fields of "billing.dedicated_compute_reports" */
-export type Billing_Dedicated_Compute_Reports_Aggregate_Fields = {
-  __typename?: 'billing_dedicated_compute_reports_aggregate_fields';
-  avg?: Maybe<Billing_Dedicated_Compute_Reports_Avg_Fields>;
-  count: Scalars['Int'];
-  max?: Maybe<Billing_Dedicated_Compute_Reports_Max_Fields>;
-  min?: Maybe<Billing_Dedicated_Compute_Reports_Min_Fields>;
-  stddev?: Maybe<Billing_Dedicated_Compute_Reports_Stddev_Fields>;
-  stddev_pop?: Maybe<Billing_Dedicated_Compute_Reports_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Billing_Dedicated_Compute_Reports_Stddev_Samp_Fields>;
-  sum?: Maybe<Billing_Dedicated_Compute_Reports_Sum_Fields>;
-  var_pop?: Maybe<Billing_Dedicated_Compute_Reports_Var_Pop_Fields>;
-  var_samp?: Maybe<Billing_Dedicated_Compute_Reports_Var_Samp_Fields>;
-  variance?: Maybe<Billing_Dedicated_Compute_Reports_Variance_Fields>;
-};
-
-
-/** aggregate fields of "billing.dedicated_compute_reports" */
-export type Billing_Dedicated_Compute_Reports_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Billing_Dedicated_Compute_Reports_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
-};
-
-/** aggregate avg on columns */
-export type Billing_Dedicated_Compute_Reports_Avg_Fields = {
-  __typename?: 'billing_dedicated_compute_reports_avg_fields';
-  total_millicores?: Maybe<Scalars['Float']>;
-};
-
-/** Boolean expression to filter rows from the table "billing.dedicated_compute_reports". All fields are combined with a logical 'AND'. */
-export type Billing_Dedicated_Compute_Reports_Bool_Exp = {
-  _and?: InputMaybe<Array<Billing_Dedicated_Compute_Reports_Bool_Exp>>;
-  _not?: InputMaybe<Billing_Dedicated_Compute_Reports_Bool_Exp>;
-  _or?: InputMaybe<Array<Billing_Dedicated_Compute_Reports_Bool_Exp>>;
-  app?: InputMaybe<Apps_Bool_Exp>;
-  app_id?: InputMaybe<Uuid_Comparison_Exp>;
-  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  pending?: InputMaybe<Boolean_Comparison_Exp>;
-  report_ends?: InputMaybe<Timestamptz_Comparison_Exp>;
-  report_starts?: InputMaybe<Timestamptz_Comparison_Exp>;
-  total_millicores?: InputMaybe<Int_Comparison_Exp>;
-  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "billing.dedicated_compute_reports" */
-export enum Billing_Dedicated_Compute_Reports_Constraint {
-  /** unique or primary key constraint on columns "id" */
-  DedicatedComputeReportsPkey = 'dedicated_compute_reports_pkey'
-}
-
-/** input type for incrementing numeric columns in table "billing.dedicated_compute_reports" */
-export type Billing_Dedicated_Compute_Reports_Inc_Input = {
-  total_millicores?: InputMaybe<Scalars['Int']>;
-};
-
-/** input type for inserting data into table "billing.dedicated_compute_reports" */
-export type Billing_Dedicated_Compute_Reports_Insert_Input = {
-  app?: InputMaybe<Apps_Obj_Rel_Insert_Input>;
-  app_id?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  pending?: InputMaybe<Scalars['Boolean']>;
-  report_ends?: InputMaybe<Scalars['timestamptz']>;
-  report_starts?: InputMaybe<Scalars['timestamptz']>;
-  total_millicores?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
-};
-
-/** aggregate max on columns */
-export type Billing_Dedicated_Compute_Reports_Max_Fields = {
-  __typename?: 'billing_dedicated_compute_reports_max_fields';
-  app_id?: Maybe<Scalars['uuid']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['uuid']>;
-  report_ends?: Maybe<Scalars['timestamptz']>;
-  report_starts?: Maybe<Scalars['timestamptz']>;
-  total_millicores?: Maybe<Scalars['Int']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-/** aggregate min on columns */
-export type Billing_Dedicated_Compute_Reports_Min_Fields = {
-  __typename?: 'billing_dedicated_compute_reports_min_fields';
-  app_id?: Maybe<Scalars['uuid']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['uuid']>;
-  report_ends?: Maybe<Scalars['timestamptz']>;
-  report_starts?: Maybe<Scalars['timestamptz']>;
-  total_millicores?: Maybe<Scalars['Int']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-/** response of any mutation on the table "billing.dedicated_compute_reports" */
-export type Billing_Dedicated_Compute_Reports_Mutation_Response = {
-  __typename?: 'billing_dedicated_compute_reports_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Billing_Dedicated_Compute_Reports>;
-};
-
-/** input type for inserting object relation for remote table "billing.dedicated_compute_reports" */
-export type Billing_Dedicated_Compute_Reports_Obj_Rel_Insert_Input = {
-  data: Billing_Dedicated_Compute_Reports_Insert_Input;
-  /** upsert condition */
-  on_conflict?: InputMaybe<Billing_Dedicated_Compute_Reports_On_Conflict>;
-};
-
-/** on_conflict condition type for table "billing.dedicated_compute_reports" */
-export type Billing_Dedicated_Compute_Reports_On_Conflict = {
-  constraint: Billing_Dedicated_Compute_Reports_Constraint;
-  update_columns?: Array<Billing_Dedicated_Compute_Reports_Update_Column>;
-  where?: InputMaybe<Billing_Dedicated_Compute_Reports_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "billing.dedicated_compute_reports". */
-export type Billing_Dedicated_Compute_Reports_Order_By = {
-  app?: InputMaybe<Apps_Order_By>;
-  app_id?: InputMaybe<Order_By>;
-  created_at?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  pending?: InputMaybe<Order_By>;
-  report_ends?: InputMaybe<Order_By>;
-  report_starts?: InputMaybe<Order_By>;
-  total_millicores?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
-};
-
-/** primary key columns input for table: billing.dedicated_compute_reports */
-export type Billing_Dedicated_Compute_Reports_Pk_Columns_Input = {
-  id: Scalars['uuid'];
-};
-
-/** select columns of table "billing.dedicated_compute_reports" */
-export enum Billing_Dedicated_Compute_Reports_Select_Column {
-  /** column name */
-  AppId = 'app_id',
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Pending = 'pending',
-  /** column name */
-  ReportEnds = 'report_ends',
-  /** column name */
-  ReportStarts = 'report_starts',
-  /** column name */
-  TotalMillicores = 'total_millicores',
-  /** column name */
-  UpdatedAt = 'updated_at'
-}
-
-/** input type for updating data in table "billing.dedicated_compute_reports" */
-export type Billing_Dedicated_Compute_Reports_Set_Input = {
-  app_id?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  pending?: InputMaybe<Scalars['Boolean']>;
-  report_ends?: InputMaybe<Scalars['timestamptz']>;
-  report_starts?: InputMaybe<Scalars['timestamptz']>;
-  total_millicores?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
-};
-
-/** aggregate stddev on columns */
-export type Billing_Dedicated_Compute_Reports_Stddev_Fields = {
-  __typename?: 'billing_dedicated_compute_reports_stddev_fields';
-  total_millicores?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Billing_Dedicated_Compute_Reports_Stddev_Pop_Fields = {
-  __typename?: 'billing_dedicated_compute_reports_stddev_pop_fields';
-  total_millicores?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Billing_Dedicated_Compute_Reports_Stddev_Samp_Fields = {
-  __typename?: 'billing_dedicated_compute_reports_stddev_samp_fields';
-  total_millicores?: Maybe<Scalars['Float']>;
-};
-
-/** Streaming cursor of the table "billing_dedicated_compute_reports" */
-export type Billing_Dedicated_Compute_Reports_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: Billing_Dedicated_Compute_Reports_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering?: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Billing_Dedicated_Compute_Reports_Stream_Cursor_Value_Input = {
-  app_id?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  pending?: InputMaybe<Scalars['Boolean']>;
-  report_ends?: InputMaybe<Scalars['timestamptz']>;
-  report_starts?: InputMaybe<Scalars['timestamptz']>;
-  total_millicores?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
-};
-
-/** aggregate sum on columns */
-export type Billing_Dedicated_Compute_Reports_Sum_Fields = {
-  __typename?: 'billing_dedicated_compute_reports_sum_fields';
-  total_millicores?: Maybe<Scalars['Int']>;
-};
-
-/** update columns of table "billing.dedicated_compute_reports" */
-export enum Billing_Dedicated_Compute_Reports_Update_Column {
-  /** column name */
-  AppId = 'app_id',
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Pending = 'pending',
-  /** column name */
-  ReportEnds = 'report_ends',
-  /** column name */
-  ReportStarts = 'report_starts',
-  /** column name */
-  TotalMillicores = 'total_millicores',
-  /** column name */
-  UpdatedAt = 'updated_at'
-}
-
-export type Billing_Dedicated_Compute_Reports_Updates = {
-  /** increments the numeric columns with given value of the filtered values */
-  _inc?: InputMaybe<Billing_Dedicated_Compute_Reports_Inc_Input>;
-  /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<Billing_Dedicated_Compute_Reports_Set_Input>;
-  /** filter the rows which have to be updated */
-  where: Billing_Dedicated_Compute_Reports_Bool_Exp;
-};
-
-/** aggregate var_pop on columns */
-export type Billing_Dedicated_Compute_Reports_Var_Pop_Fields = {
-  __typename?: 'billing_dedicated_compute_reports_var_pop_fields';
-  total_millicores?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate var_samp on columns */
-export type Billing_Dedicated_Compute_Reports_Var_Samp_Fields = {
-  __typename?: 'billing_dedicated_compute_reports_var_samp_fields';
-  total_millicores?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate variance on columns */
-export type Billing_Dedicated_Compute_Reports_Variance_Fields = {
-  __typename?: 'billing_dedicated_compute_reports_variance_fields';
-  total_millicores?: Maybe<Scalars['Float']>;
 };
 
 /** select columns of table "billing.dedicated_compute" */
@@ -6438,6 +7765,8 @@ export enum Billing_Dedicated_Compute_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  OrganizationId = 'organizationID',
+  /** column name */
   TotalMillicores = 'totalMillicores',
   /** column name */
   UpdatedAt = 'updatedAt'
@@ -6448,6 +7777,7 @@ export type Billing_Dedicated_Compute_Set_Input = {
   appID?: InputMaybe<Scalars['uuid']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
   id?: InputMaybe<Scalars['uuid']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
   totalMillicores?: InputMaybe<Scalars['Int']>;
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
@@ -6483,6 +7813,7 @@ export type Billing_Dedicated_Compute_Stream_Cursor_Value_Input = {
   appID?: InputMaybe<Scalars['uuid']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
   id?: InputMaybe<Scalars['uuid']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
   totalMillicores?: InputMaybe<Scalars['Int']>;
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
@@ -6501,6 +7832,8 @@ export enum Billing_Dedicated_Compute_Update_Column {
   CreatedAt = 'createdAt',
   /** column name */
   Id = 'id',
+  /** column name */
+  OrganizationId = 'organizationID',
   /** column name */
   TotalMillicores = 'totalMillicores',
   /** column name */
@@ -6532,6 +7865,158 @@ export type Billing_Dedicated_Compute_Var_Samp_Fields = {
 export type Billing_Dedicated_Compute_Variance_Fields = {
   __typename?: 'billing_dedicated_compute_variance_fields';
   totalMillicores?: Maybe<Scalars['Float']>;
+};
+
+/** columns and relationships of "billing.report_resource_type" */
+export type Billing_Report_Resource_Type = {
+  __typename?: 'billing_report_resource_type';
+  comment: Scalars['String'];
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "billing.report_resource_type" */
+export type Billing_Report_Resource_Type_Aggregate = {
+  __typename?: 'billing_report_resource_type_aggregate';
+  aggregate?: Maybe<Billing_Report_Resource_Type_Aggregate_Fields>;
+  nodes: Array<Billing_Report_Resource_Type>;
+};
+
+/** aggregate fields of "billing.report_resource_type" */
+export type Billing_Report_Resource_Type_Aggregate_Fields = {
+  __typename?: 'billing_report_resource_type_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Billing_Report_Resource_Type_Max_Fields>;
+  min?: Maybe<Billing_Report_Resource_Type_Min_Fields>;
+};
+
+
+/** aggregate fields of "billing.report_resource_type" */
+export type Billing_Report_Resource_Type_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Billing_Report_Resource_Type_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "billing.report_resource_type". All fields are combined with a logical 'AND'. */
+export type Billing_Report_Resource_Type_Bool_Exp = {
+  _and?: InputMaybe<Array<Billing_Report_Resource_Type_Bool_Exp>>;
+  _not?: InputMaybe<Billing_Report_Resource_Type_Bool_Exp>;
+  _or?: InputMaybe<Array<Billing_Report_Resource_Type_Bool_Exp>>;
+  comment?: InputMaybe<String_Comparison_Exp>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "billing.report_resource_type" */
+export enum Billing_Report_Resource_Type_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  ReportResourceTypePkey = 'report_resource_type_pkey'
+}
+
+export enum Billing_Report_Resource_Type_Enum {
+  /** Custom Domains */
+  CustomDomains = 'custom_domains',
+  /** Functions amount */
+  FunctionsAmount = 'functions_amount',
+  /** Persistent Volume */
+  PersistentVolume = 'persistent_volume'
+}
+
+/** Boolean expression to compare columns of type "billing_report_resource_type_enum". All fields are combined with logical 'AND'. */
+export type Billing_Report_Resource_Type_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<Billing_Report_Resource_Type_Enum>;
+  _in?: InputMaybe<Array<Billing_Report_Resource_Type_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<Billing_Report_Resource_Type_Enum>;
+  _nin?: InputMaybe<Array<Billing_Report_Resource_Type_Enum>>;
+};
+
+/** input type for inserting data into table "billing.report_resource_type" */
+export type Billing_Report_Resource_Type_Insert_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Billing_Report_Resource_Type_Max_Fields = {
+  __typename?: 'billing_report_resource_type_max_fields';
+  comment?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Billing_Report_Resource_Type_Min_Fields = {
+  __typename?: 'billing_report_resource_type_min_fields';
+  comment?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "billing.report_resource_type" */
+export type Billing_Report_Resource_Type_Mutation_Response = {
+  __typename?: 'billing_report_resource_type_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Billing_Report_Resource_Type>;
+};
+
+/** on_conflict condition type for table "billing.report_resource_type" */
+export type Billing_Report_Resource_Type_On_Conflict = {
+  constraint: Billing_Report_Resource_Type_Constraint;
+  update_columns?: Array<Billing_Report_Resource_Type_Update_Column>;
+  where?: InputMaybe<Billing_Report_Resource_Type_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "billing.report_resource_type". */
+export type Billing_Report_Resource_Type_Order_By = {
+  comment?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: billing.report_resource_type */
+export type Billing_Report_Resource_Type_Pk_Columns_Input = {
+  value: Scalars['String'];
+};
+
+/** select columns of table "billing.report_resource_type" */
+export enum Billing_Report_Resource_Type_Select_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "billing.report_resource_type" */
+export type Billing_Report_Resource_Type_Set_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "billing_report_resource_type" */
+export type Billing_Report_Resource_Type_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Billing_Report_Resource_Type_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Billing_Report_Resource_Type_Stream_Cursor_Value_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "billing.report_resource_type" */
+export enum Billing_Report_Resource_Type_Update_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+export type Billing_Report_Resource_Type_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Billing_Report_Resource_Type_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Billing_Report_Resource_Type_Bool_Exp;
 };
 
 /** columns and relationships of "billing.report_type" */
@@ -6692,9 +8177,11 @@ export type Billing_Reports = {
   appID: Scalars['uuid'];
   createdAt: Scalars['timestamptz'];
   id: Scalars['uuid'];
+  organizationID?: Maybe<Scalars['uuid']>;
   pending: Scalars['Boolean'];
   reportEnds: Scalars['timestamptz'];
   reportStarts: Scalars['timestamptz'];
+  stripeSubscriptionID: Scalars['String'];
   type: Billing_Report_Type_Enum;
   updatedAt: Scalars['timestamptz'];
   value: Scalars['Int'];
@@ -6798,9 +8285,11 @@ export type Billing_Reports_Bool_Exp = {
   appID?: InputMaybe<Uuid_Comparison_Exp>;
   createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  organizationID?: InputMaybe<Uuid_Comparison_Exp>;
   pending?: InputMaybe<Boolean_Comparison_Exp>;
   reportEnds?: InputMaybe<Timestamptz_Comparison_Exp>;
   reportStarts?: InputMaybe<Timestamptz_Comparison_Exp>;
+  stripeSubscriptionID?: InputMaybe<String_Comparison_Exp>;
   type?: InputMaybe<Billing_Report_Type_Enum_Comparison_Exp>;
   updatedAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   value?: InputMaybe<Int_Comparison_Exp>;
@@ -6822,9 +8311,11 @@ export type Billing_Reports_Insert_Input = {
   appID?: InputMaybe<Scalars['uuid']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
   id?: InputMaybe<Scalars['uuid']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
   pending?: InputMaybe<Scalars['Boolean']>;
   reportEnds?: InputMaybe<Scalars['timestamptz']>;
   reportStarts?: InputMaybe<Scalars['timestamptz']>;
+  stripeSubscriptionID?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Billing_Report_Type_Enum>;
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
   value?: InputMaybe<Scalars['Int']>;
@@ -6836,8 +8327,10 @@ export type Billing_Reports_Max_Fields = {
   appID?: Maybe<Scalars['uuid']>;
   createdAt?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
+  organizationID?: Maybe<Scalars['uuid']>;
   reportEnds?: Maybe<Scalars['timestamptz']>;
   reportStarts?: Maybe<Scalars['timestamptz']>;
+  stripeSubscriptionID?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['timestamptz']>;
   value?: Maybe<Scalars['Int']>;
 };
@@ -6847,8 +8340,10 @@ export type Billing_Reports_Max_Order_By = {
   appID?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  organizationID?: InputMaybe<Order_By>;
   reportEnds?: InputMaybe<Order_By>;
   reportStarts?: InputMaybe<Order_By>;
+  stripeSubscriptionID?: InputMaybe<Order_By>;
   updatedAt?: InputMaybe<Order_By>;
   value?: InputMaybe<Order_By>;
 };
@@ -6859,8 +8354,10 @@ export type Billing_Reports_Min_Fields = {
   appID?: Maybe<Scalars['uuid']>;
   createdAt?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
+  organizationID?: Maybe<Scalars['uuid']>;
   reportEnds?: Maybe<Scalars['timestamptz']>;
   reportStarts?: Maybe<Scalars['timestamptz']>;
+  stripeSubscriptionID?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['timestamptz']>;
   value?: Maybe<Scalars['Int']>;
 };
@@ -6870,8 +8367,10 @@ export type Billing_Reports_Min_Order_By = {
   appID?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  organizationID?: InputMaybe<Order_By>;
   reportEnds?: InputMaybe<Order_By>;
   reportStarts?: InputMaybe<Order_By>;
+  stripeSubscriptionID?: InputMaybe<Order_By>;
   updatedAt?: InputMaybe<Order_By>;
   value?: InputMaybe<Order_By>;
 };
@@ -6897,9 +8396,11 @@ export type Billing_Reports_Order_By = {
   appID?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  organizationID?: InputMaybe<Order_By>;
   pending?: InputMaybe<Order_By>;
   reportEnds?: InputMaybe<Order_By>;
   reportStarts?: InputMaybe<Order_By>;
+  stripeSubscriptionID?: InputMaybe<Order_By>;
   type?: InputMaybe<Order_By>;
   updatedAt?: InputMaybe<Order_By>;
   value?: InputMaybe<Order_By>;
@@ -6908,6 +8409,307 @@ export type Billing_Reports_Order_By = {
 /** primary key columns input for table: billing.reports */
 export type Billing_Reports_Pk_Columns_Input = {
   id: Scalars['uuid'];
+};
+
+/** columns and relationships of "billing.reports_resources" */
+export type Billing_Reports_Resources = {
+  __typename?: 'billing_reports_resources';
+  app_ids: Array<Scalars['uuid']>;
+  created_at: Scalars['timestamptz'];
+  id: Scalars['uuid'];
+  organization_id: Scalars['uuid'];
+  pending: Scalars['Boolean'];
+  report_ends: Scalars['timestamptz'];
+  report_starts: Scalars['timestamptz'];
+  stripeSubscriptionID: Scalars['String'];
+  type: Billing_Report_Resource_Type_Enum;
+  updated_at: Scalars['timestamptz'];
+  value: Scalars['Int'];
+};
+
+/** aggregated selection of "billing.reports_resources" */
+export type Billing_Reports_Resources_Aggregate = {
+  __typename?: 'billing_reports_resources_aggregate';
+  aggregate?: Maybe<Billing_Reports_Resources_Aggregate_Fields>;
+  nodes: Array<Billing_Reports_Resources>;
+};
+
+/** aggregate fields of "billing.reports_resources" */
+export type Billing_Reports_Resources_Aggregate_Fields = {
+  __typename?: 'billing_reports_resources_aggregate_fields';
+  avg?: Maybe<Billing_Reports_Resources_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Billing_Reports_Resources_Max_Fields>;
+  min?: Maybe<Billing_Reports_Resources_Min_Fields>;
+  stddev?: Maybe<Billing_Reports_Resources_Stddev_Fields>;
+  stddev_pop?: Maybe<Billing_Reports_Resources_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Billing_Reports_Resources_Stddev_Samp_Fields>;
+  sum?: Maybe<Billing_Reports_Resources_Sum_Fields>;
+  var_pop?: Maybe<Billing_Reports_Resources_Var_Pop_Fields>;
+  var_samp?: Maybe<Billing_Reports_Resources_Var_Samp_Fields>;
+  variance?: Maybe<Billing_Reports_Resources_Variance_Fields>;
+};
+
+
+/** aggregate fields of "billing.reports_resources" */
+export type Billing_Reports_Resources_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Billing_Reports_Resources_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Billing_Reports_Resources_Avg_Fields = {
+  __typename?: 'billing_reports_resources_avg_fields';
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "billing.reports_resources". All fields are combined with a logical 'AND'. */
+export type Billing_Reports_Resources_Bool_Exp = {
+  _and?: InputMaybe<Array<Billing_Reports_Resources_Bool_Exp>>;
+  _not?: InputMaybe<Billing_Reports_Resources_Bool_Exp>;
+  _or?: InputMaybe<Array<Billing_Reports_Resources_Bool_Exp>>;
+  app_ids?: InputMaybe<Uuid_Array_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  organization_id?: InputMaybe<Uuid_Comparison_Exp>;
+  pending?: InputMaybe<Boolean_Comparison_Exp>;
+  report_ends?: InputMaybe<Timestamptz_Comparison_Exp>;
+  report_starts?: InputMaybe<Timestamptz_Comparison_Exp>;
+  stripeSubscriptionID?: InputMaybe<String_Comparison_Exp>;
+  type?: InputMaybe<Billing_Report_Resource_Type_Enum_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  value?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "billing.reports_resources" */
+export enum Billing_Reports_Resources_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  ReportsResourcesPkey = 'reports_resources_pkey'
+}
+
+/** input type for incrementing numeric columns in table "billing.reports_resources" */
+export type Billing_Reports_Resources_Inc_Input = {
+  value?: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "billing.reports_resources" */
+export type Billing_Reports_Resources_Insert_Input = {
+  app_ids?: InputMaybe<Array<Scalars['uuid']>>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organization_id?: InputMaybe<Scalars['uuid']>;
+  pending?: InputMaybe<Scalars['Boolean']>;
+  report_ends?: InputMaybe<Scalars['timestamptz']>;
+  report_starts?: InputMaybe<Scalars['timestamptz']>;
+  stripeSubscriptionID?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Billing_Report_Resource_Type_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  value?: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Billing_Reports_Resources_Max_Fields = {
+  __typename?: 'billing_reports_resources_max_fields';
+  app_ids?: Maybe<Array<Scalars['uuid']>>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  organization_id?: Maybe<Scalars['uuid']>;
+  report_ends?: Maybe<Scalars['timestamptz']>;
+  report_starts?: Maybe<Scalars['timestamptz']>;
+  stripeSubscriptionID?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  value?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Billing_Reports_Resources_Min_Fields = {
+  __typename?: 'billing_reports_resources_min_fields';
+  app_ids?: Maybe<Array<Scalars['uuid']>>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  organization_id?: Maybe<Scalars['uuid']>;
+  report_ends?: Maybe<Scalars['timestamptz']>;
+  report_starts?: Maybe<Scalars['timestamptz']>;
+  stripeSubscriptionID?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  value?: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "billing.reports_resources" */
+export type Billing_Reports_Resources_Mutation_Response = {
+  __typename?: 'billing_reports_resources_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Billing_Reports_Resources>;
+};
+
+/** on_conflict condition type for table "billing.reports_resources" */
+export type Billing_Reports_Resources_On_Conflict = {
+  constraint: Billing_Reports_Resources_Constraint;
+  update_columns?: Array<Billing_Reports_Resources_Update_Column>;
+  where?: InputMaybe<Billing_Reports_Resources_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "billing.reports_resources". */
+export type Billing_Reports_Resources_Order_By = {
+  app_ids?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organization_id?: InputMaybe<Order_By>;
+  pending?: InputMaybe<Order_By>;
+  report_ends?: InputMaybe<Order_By>;
+  report_starts?: InputMaybe<Order_By>;
+  stripeSubscriptionID?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: billing.reports_resources */
+export type Billing_Reports_Resources_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "billing.reports_resources" */
+export enum Billing_Reports_Resources_Select_Column {
+  /** column name */
+  AppIds = 'app_ids',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizationId = 'organization_id',
+  /** column name */
+  Pending = 'pending',
+  /** column name */
+  ReportEnds = 'report_ends',
+  /** column name */
+  ReportStarts = 'report_starts',
+  /** column name */
+  StripeSubscriptionId = 'stripeSubscriptionID',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "billing.reports_resources" */
+export type Billing_Reports_Resources_Set_Input = {
+  app_ids?: InputMaybe<Array<Scalars['uuid']>>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organization_id?: InputMaybe<Scalars['uuid']>;
+  pending?: InputMaybe<Scalars['Boolean']>;
+  report_ends?: InputMaybe<Scalars['timestamptz']>;
+  report_starts?: InputMaybe<Scalars['timestamptz']>;
+  stripeSubscriptionID?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Billing_Report_Resource_Type_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  value?: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Billing_Reports_Resources_Stddev_Fields = {
+  __typename?: 'billing_reports_resources_stddev_fields';
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Billing_Reports_Resources_Stddev_Pop_Fields = {
+  __typename?: 'billing_reports_resources_stddev_pop_fields';
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Billing_Reports_Resources_Stddev_Samp_Fields = {
+  __typename?: 'billing_reports_resources_stddev_samp_fields';
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "billing_reports_resources" */
+export type Billing_Reports_Resources_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Billing_Reports_Resources_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Billing_Reports_Resources_Stream_Cursor_Value_Input = {
+  app_ids?: InputMaybe<Array<Scalars['uuid']>>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organization_id?: InputMaybe<Scalars['uuid']>;
+  pending?: InputMaybe<Scalars['Boolean']>;
+  report_ends?: InputMaybe<Scalars['timestamptz']>;
+  report_starts?: InputMaybe<Scalars['timestamptz']>;
+  stripeSubscriptionID?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Billing_Report_Resource_Type_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  value?: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate sum on columns */
+export type Billing_Reports_Resources_Sum_Fields = {
+  __typename?: 'billing_reports_resources_sum_fields';
+  value?: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "billing.reports_resources" */
+export enum Billing_Reports_Resources_Update_Column {
+  /** column name */
+  AppIds = 'app_ids',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizationId = 'organization_id',
+  /** column name */
+  Pending = 'pending',
+  /** column name */
+  ReportEnds = 'report_ends',
+  /** column name */
+  ReportStarts = 'report_starts',
+  /** column name */
+  StripeSubscriptionId = 'stripeSubscriptionID',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  Value = 'value'
+}
+
+export type Billing_Reports_Resources_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Billing_Reports_Resources_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Billing_Reports_Resources_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Billing_Reports_Resources_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Billing_Reports_Resources_Var_Pop_Fields = {
+  __typename?: 'billing_reports_resources_var_pop_fields';
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Billing_Reports_Resources_Var_Samp_Fields = {
+  __typename?: 'billing_reports_resources_var_samp_fields';
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Billing_Reports_Resources_Variance_Fields = {
+  __typename?: 'billing_reports_resources_variance_fields';
+  value?: Maybe<Scalars['Float']>;
 };
 
 /** select columns of table "billing.reports" */
@@ -6919,11 +8721,15 @@ export enum Billing_Reports_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  OrganizationId = 'organizationID',
+  /** column name */
   Pending = 'pending',
   /** column name */
   ReportEnds = 'reportEnds',
   /** column name */
   ReportStarts = 'reportStarts',
+  /** column name */
+  StripeSubscriptionId = 'stripeSubscriptionID',
   /** column name */
   Type = 'type',
   /** column name */
@@ -6949,9 +8755,11 @@ export type Billing_Reports_Set_Input = {
   appID?: InputMaybe<Scalars['uuid']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
   id?: InputMaybe<Scalars['uuid']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
   pending?: InputMaybe<Scalars['Boolean']>;
   reportEnds?: InputMaybe<Scalars['timestamptz']>;
   reportStarts?: InputMaybe<Scalars['timestamptz']>;
+  stripeSubscriptionID?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Billing_Report_Type_Enum>;
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
   value?: InputMaybe<Scalars['Int']>;
@@ -7003,9 +8811,11 @@ export type Billing_Reports_Stream_Cursor_Value_Input = {
   appID?: InputMaybe<Scalars['uuid']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
   id?: InputMaybe<Scalars['uuid']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
   pending?: InputMaybe<Scalars['Boolean']>;
   reportEnds?: InputMaybe<Scalars['timestamptz']>;
   reportStarts?: InputMaybe<Scalars['timestamptz']>;
+  stripeSubscriptionID?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Billing_Report_Type_Enum>;
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
   value?: InputMaybe<Scalars['Int']>;
@@ -7031,11 +8841,15 @@ export enum Billing_Reports_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  OrganizationId = 'organizationID',
+  /** column name */
   Pending = 'pending',
   /** column name */
   ReportEnds = 'reportEnds',
   /** column name */
   ReportStarts = 'reportStarts',
+  /** column name */
+  StripeSubscriptionId = 'stripeSubscriptionID',
   /** column name */
   Type = 'type',
   /** column name */
@@ -7086,6 +8900,532 @@ export type Billing_Reports_Variance_Order_By = {
   value?: InputMaybe<Order_By>;
 };
 
+/** columns and relationships of "billing.resources" */
+export type Billing_Resources = {
+  __typename?: 'billing_resources';
+  appID: Scalars['uuid'];
+  createdAt: Scalars['timestamptz'];
+  customDomains: Scalars['Int'];
+  functionsAmount: Scalars['Int'];
+  id: Scalars['uuid'];
+  organizationID?: Maybe<Scalars['uuid']>;
+  persistentVolume: Scalars['Int'];
+  updatedAt: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "billing.resources" */
+export type Billing_Resources_Aggregate = {
+  __typename?: 'billing_resources_aggregate';
+  aggregate?: Maybe<Billing_Resources_Aggregate_Fields>;
+  nodes: Array<Billing_Resources>;
+};
+
+/** aggregate fields of "billing.resources" */
+export type Billing_Resources_Aggregate_Fields = {
+  __typename?: 'billing_resources_aggregate_fields';
+  avg?: Maybe<Billing_Resources_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Billing_Resources_Max_Fields>;
+  min?: Maybe<Billing_Resources_Min_Fields>;
+  stddev?: Maybe<Billing_Resources_Stddev_Fields>;
+  stddev_pop?: Maybe<Billing_Resources_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Billing_Resources_Stddev_Samp_Fields>;
+  sum?: Maybe<Billing_Resources_Sum_Fields>;
+  var_pop?: Maybe<Billing_Resources_Var_Pop_Fields>;
+  var_samp?: Maybe<Billing_Resources_Var_Samp_Fields>;
+  variance?: Maybe<Billing_Resources_Variance_Fields>;
+};
+
+
+/** aggregate fields of "billing.resources" */
+export type Billing_Resources_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Billing_Resources_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Billing_Resources_Avg_Fields = {
+  __typename?: 'billing_resources_avg_fields';
+  customDomains?: Maybe<Scalars['Float']>;
+  functionsAmount?: Maybe<Scalars['Float']>;
+  persistentVolume?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "billing.resources". All fields are combined with a logical 'AND'. */
+export type Billing_Resources_Bool_Exp = {
+  _and?: InputMaybe<Array<Billing_Resources_Bool_Exp>>;
+  _not?: InputMaybe<Billing_Resources_Bool_Exp>;
+  _or?: InputMaybe<Array<Billing_Resources_Bool_Exp>>;
+  appID?: InputMaybe<Uuid_Comparison_Exp>;
+  createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  customDomains?: InputMaybe<Int_Comparison_Exp>;
+  functionsAmount?: InputMaybe<Int_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  organizationID?: InputMaybe<Uuid_Comparison_Exp>;
+  persistentVolume?: InputMaybe<Int_Comparison_Exp>;
+  updatedAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "billing.resources" */
+export enum Billing_Resources_Constraint {
+  /** unique or primary key constraint on columns "app_id" */
+  ResourcesAppIdKey = 'resources_app_id_key',
+  /** unique or primary key constraint on columns "id" */
+  ResourcesPkey = 'resources_pkey'
+}
+
+/** input type for incrementing numeric columns in table "billing.resources" */
+export type Billing_Resources_Inc_Input = {
+  customDomains?: InputMaybe<Scalars['Int']>;
+  functionsAmount?: InputMaybe<Scalars['Int']>;
+  persistentVolume?: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "billing.resources" */
+export type Billing_Resources_Insert_Input = {
+  appID?: InputMaybe<Scalars['uuid']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  customDomains?: InputMaybe<Scalars['Int']>;
+  functionsAmount?: InputMaybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
+  persistentVolume?: InputMaybe<Scalars['Int']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Billing_Resources_Max_Fields = {
+  __typename?: 'billing_resources_max_fields';
+  appID?: Maybe<Scalars['uuid']>;
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  customDomains?: Maybe<Scalars['Int']>;
+  functionsAmount?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['uuid']>;
+  organizationID?: Maybe<Scalars['uuid']>;
+  persistentVolume?: Maybe<Scalars['Int']>;
+  updatedAt?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type Billing_Resources_Min_Fields = {
+  __typename?: 'billing_resources_min_fields';
+  appID?: Maybe<Scalars['uuid']>;
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  customDomains?: Maybe<Scalars['Int']>;
+  functionsAmount?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['uuid']>;
+  organizationID?: Maybe<Scalars['uuid']>;
+  persistentVolume?: Maybe<Scalars['Int']>;
+  updatedAt?: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "billing.resources" */
+export type Billing_Resources_Mutation_Response = {
+  __typename?: 'billing_resources_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Billing_Resources>;
+};
+
+/** input type for inserting object relation for remote table "billing.resources" */
+export type Billing_Resources_Obj_Rel_Insert_Input = {
+  data: Billing_Resources_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Billing_Resources_On_Conflict>;
+};
+
+/** on_conflict condition type for table "billing.resources" */
+export type Billing_Resources_On_Conflict = {
+  constraint: Billing_Resources_Constraint;
+  update_columns?: Array<Billing_Resources_Update_Column>;
+  where?: InputMaybe<Billing_Resources_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "billing.resources". */
+export type Billing_Resources_Order_By = {
+  appID?: InputMaybe<Order_By>;
+  createdAt?: InputMaybe<Order_By>;
+  customDomains?: InputMaybe<Order_By>;
+  functionsAmount?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizationID?: InputMaybe<Order_By>;
+  persistentVolume?: InputMaybe<Order_By>;
+  updatedAt?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: billing.resources */
+export type Billing_Resources_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "billing.resources" */
+export enum Billing_Resources_Select_Column {
+  /** column name */
+  AppId = 'appID',
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  CustomDomains = 'customDomains',
+  /** column name */
+  FunctionsAmount = 'functionsAmount',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizationId = 'organizationID',
+  /** column name */
+  PersistentVolume = 'persistentVolume',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+/** input type for updating data in table "billing.resources" */
+export type Billing_Resources_Set_Input = {
+  appID?: InputMaybe<Scalars['uuid']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  customDomains?: InputMaybe<Scalars['Int']>;
+  functionsAmount?: InputMaybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
+  persistentVolume?: InputMaybe<Scalars['Int']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type Billing_Resources_Stddev_Fields = {
+  __typename?: 'billing_resources_stddev_fields';
+  customDomains?: Maybe<Scalars['Float']>;
+  functionsAmount?: Maybe<Scalars['Float']>;
+  persistentVolume?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Billing_Resources_Stddev_Pop_Fields = {
+  __typename?: 'billing_resources_stddev_pop_fields';
+  customDomains?: Maybe<Scalars['Float']>;
+  functionsAmount?: Maybe<Scalars['Float']>;
+  persistentVolume?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Billing_Resources_Stddev_Samp_Fields = {
+  __typename?: 'billing_resources_stddev_samp_fields';
+  customDomains?: Maybe<Scalars['Float']>;
+  functionsAmount?: Maybe<Scalars['Float']>;
+  persistentVolume?: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "billing_resources" */
+export type Billing_Resources_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Billing_Resources_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Billing_Resources_Stream_Cursor_Value_Input = {
+  appID?: InputMaybe<Scalars['uuid']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  customDomains?: InputMaybe<Scalars['Int']>;
+  functionsAmount?: InputMaybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
+  persistentVolume?: InputMaybe<Scalars['Int']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate sum on columns */
+export type Billing_Resources_Sum_Fields = {
+  __typename?: 'billing_resources_sum_fields';
+  customDomains?: Maybe<Scalars['Int']>;
+  functionsAmount?: Maybe<Scalars['Int']>;
+  persistentVolume?: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "billing.resources" */
+export enum Billing_Resources_Update_Column {
+  /** column name */
+  AppId = 'appID',
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  CustomDomains = 'customDomains',
+  /** column name */
+  FunctionsAmount = 'functionsAmount',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizationId = 'organizationID',
+  /** column name */
+  PersistentVolume = 'persistentVolume',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+export type Billing_Resources_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Billing_Resources_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Billing_Resources_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Billing_Resources_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Billing_Resources_Var_Pop_Fields = {
+  __typename?: 'billing_resources_var_pop_fields';
+  customDomains?: Maybe<Scalars['Float']>;
+  functionsAmount?: Maybe<Scalars['Float']>;
+  persistentVolume?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Billing_Resources_Var_Samp_Fields = {
+  __typename?: 'billing_resources_var_samp_fields';
+  customDomains?: Maybe<Scalars['Float']>;
+  functionsAmount?: Maybe<Scalars['Float']>;
+  persistentVolume?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Billing_Resources_Variance_Fields = {
+  __typename?: 'billing_resources_variance_fields';
+  customDomains?: Maybe<Scalars['Float']>;
+  functionsAmount?: Maybe<Scalars['Float']>;
+  persistentVolume?: Maybe<Scalars['Float']>;
+};
+
+/** columns and relationships of "billing.subscription_items" */
+export type Billing_Subscription_Items = {
+  __typename?: 'billing_subscription_items';
+  created_at: Scalars['timestamptz'];
+  custom_domains: Scalars['String'];
+  dedicated_compute: Scalars['String'];
+  egress: Scalars['String'];
+  functions_amount: Scalars['String'];
+  functions_usage_seconds: Scalars['String'];
+  id: Scalars['uuid'];
+  persistent_volume: Scalars['String'];
+  subscription: Scalars['String'];
+  updated_at: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "billing.subscription_items" */
+export type Billing_Subscription_Items_Aggregate = {
+  __typename?: 'billing_subscription_items_aggregate';
+  aggregate?: Maybe<Billing_Subscription_Items_Aggregate_Fields>;
+  nodes: Array<Billing_Subscription_Items>;
+};
+
+/** aggregate fields of "billing.subscription_items" */
+export type Billing_Subscription_Items_Aggregate_Fields = {
+  __typename?: 'billing_subscription_items_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Billing_Subscription_Items_Max_Fields>;
+  min?: Maybe<Billing_Subscription_Items_Min_Fields>;
+};
+
+
+/** aggregate fields of "billing.subscription_items" */
+export type Billing_Subscription_Items_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Billing_Subscription_Items_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "billing.subscription_items". All fields are combined with a logical 'AND'. */
+export type Billing_Subscription_Items_Bool_Exp = {
+  _and?: InputMaybe<Array<Billing_Subscription_Items_Bool_Exp>>;
+  _not?: InputMaybe<Billing_Subscription_Items_Bool_Exp>;
+  _or?: InputMaybe<Array<Billing_Subscription_Items_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  custom_domains?: InputMaybe<String_Comparison_Exp>;
+  dedicated_compute?: InputMaybe<String_Comparison_Exp>;
+  egress?: InputMaybe<String_Comparison_Exp>;
+  functions_amount?: InputMaybe<String_Comparison_Exp>;
+  functions_usage_seconds?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  persistent_volume?: InputMaybe<String_Comparison_Exp>;
+  subscription?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "billing.subscription_items" */
+export enum Billing_Subscription_Items_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  SubscriptionItemsPkey = 'subscription_items_pkey'
+}
+
+/** input type for inserting data into table "billing.subscription_items" */
+export type Billing_Subscription_Items_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  custom_domains?: InputMaybe<Scalars['String']>;
+  dedicated_compute?: InputMaybe<Scalars['String']>;
+  egress?: InputMaybe<Scalars['String']>;
+  functions_amount?: InputMaybe<Scalars['String']>;
+  functions_usage_seconds?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  persistent_volume?: InputMaybe<Scalars['String']>;
+  subscription?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Billing_Subscription_Items_Max_Fields = {
+  __typename?: 'billing_subscription_items_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  custom_domains?: Maybe<Scalars['String']>;
+  dedicated_compute?: Maybe<Scalars['String']>;
+  egress?: Maybe<Scalars['String']>;
+  functions_amount?: Maybe<Scalars['String']>;
+  functions_usage_seconds?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  persistent_volume?: Maybe<Scalars['String']>;
+  subscription?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type Billing_Subscription_Items_Min_Fields = {
+  __typename?: 'billing_subscription_items_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  custom_domains?: Maybe<Scalars['String']>;
+  dedicated_compute?: Maybe<Scalars['String']>;
+  egress?: Maybe<Scalars['String']>;
+  functions_amount?: Maybe<Scalars['String']>;
+  functions_usage_seconds?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  persistent_volume?: Maybe<Scalars['String']>;
+  subscription?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "billing.subscription_items" */
+export type Billing_Subscription_Items_Mutation_Response = {
+  __typename?: 'billing_subscription_items_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Billing_Subscription_Items>;
+};
+
+/** on_conflict condition type for table "billing.subscription_items" */
+export type Billing_Subscription_Items_On_Conflict = {
+  constraint: Billing_Subscription_Items_Constraint;
+  update_columns?: Array<Billing_Subscription_Items_Update_Column>;
+  where?: InputMaybe<Billing_Subscription_Items_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "billing.subscription_items". */
+export type Billing_Subscription_Items_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  custom_domains?: InputMaybe<Order_By>;
+  dedicated_compute?: InputMaybe<Order_By>;
+  egress?: InputMaybe<Order_By>;
+  functions_amount?: InputMaybe<Order_By>;
+  functions_usage_seconds?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  persistent_volume?: InputMaybe<Order_By>;
+  subscription?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: billing.subscription_items */
+export type Billing_Subscription_Items_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "billing.subscription_items" */
+export enum Billing_Subscription_Items_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CustomDomains = 'custom_domains',
+  /** column name */
+  DedicatedCompute = 'dedicated_compute',
+  /** column name */
+  Egress = 'egress',
+  /** column name */
+  FunctionsAmount = 'functions_amount',
+  /** column name */
+  FunctionsUsageSeconds = 'functions_usage_seconds',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  PersistentVolume = 'persistent_volume',
+  /** column name */
+  Subscription = 'subscription',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "billing.subscription_items" */
+export type Billing_Subscription_Items_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  custom_domains?: InputMaybe<Scalars['String']>;
+  dedicated_compute?: InputMaybe<Scalars['String']>;
+  egress?: InputMaybe<Scalars['String']>;
+  functions_amount?: InputMaybe<Scalars['String']>;
+  functions_usage_seconds?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  persistent_volume?: InputMaybe<Scalars['String']>;
+  subscription?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** Streaming cursor of the table "billing_subscription_items" */
+export type Billing_Subscription_Items_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Billing_Subscription_Items_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Billing_Subscription_Items_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  custom_domains?: InputMaybe<Scalars['String']>;
+  dedicated_compute?: InputMaybe<Scalars['String']>;
+  egress?: InputMaybe<Scalars['String']>;
+  functions_amount?: InputMaybe<Scalars['String']>;
+  functions_usage_seconds?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  persistent_volume?: InputMaybe<Scalars['String']>;
+  subscription?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** update columns of table "billing.subscription_items" */
+export enum Billing_Subscription_Items_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CustomDomains = 'custom_domains',
+  /** column name */
+  DedicatedCompute = 'dedicated_compute',
+  /** column name */
+  Egress = 'egress',
+  /** column name */
+  FunctionsAmount = 'functions_amount',
+  /** column name */
+  FunctionsUsageSeconds = 'functions_usage_seconds',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  PersistentVolume = 'persistent_volume',
+  /** column name */
+  Subscription = 'subscription',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+export type Billing_Subscription_Items_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Billing_Subscription_Items_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Billing_Subscription_Items_Bool_Exp;
+};
+
 /** columns and relationships of "billing.subscriptions" */
 export type Billing_Subscriptions = {
   __typename?: 'billing_subscriptions';
@@ -7093,14 +9433,19 @@ export type Billing_Subscriptions = {
   app?: Maybe<Apps>;
   appID: Scalars['uuid'];
   createdAt: Scalars['timestamptz'];
+  customDomains?: Maybe<Scalars['String']>;
   dedicatedCompute?: Maybe<Scalars['String']>;
   egress?: Maybe<Scalars['String']>;
   functions?: Maybe<Scalars['String']>;
+  functionsAmount?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
+  persistentVolume?: Maybe<Scalars['String']>;
   /** An array relationship */
   reports: Array<Billing_Reports>;
   /** An aggregate relationship */
   reports_aggregate: Billing_Reports_Aggregate;
+  /** An object relationship */
+  resources?: Maybe<Billing_Resources>;
   updatedAt: Scalars['timestamptz'];
 };
 
@@ -7154,12 +9499,16 @@ export type Billing_Subscriptions_Bool_Exp = {
   app?: InputMaybe<Apps_Bool_Exp>;
   appID?: InputMaybe<Uuid_Comparison_Exp>;
   createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  customDomains?: InputMaybe<String_Comparison_Exp>;
   dedicatedCompute?: InputMaybe<String_Comparison_Exp>;
   egress?: InputMaybe<String_Comparison_Exp>;
   functions?: InputMaybe<String_Comparison_Exp>;
+  functionsAmount?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  persistentVolume?: InputMaybe<String_Comparison_Exp>;
   reports?: InputMaybe<Billing_Reports_Bool_Exp>;
   reports_aggregate?: InputMaybe<Billing_Reports_Aggregate_Bool_Exp>;
+  resources?: InputMaybe<Billing_Resources_Bool_Exp>;
   updatedAt?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
@@ -7167,12 +9516,18 @@ export type Billing_Subscriptions_Bool_Exp = {
 export enum Billing_Subscriptions_Constraint {
   /** unique or primary key constraint on columns "app_id" */
   SubscriptionsAppIdKey = 'subscriptions_app_id_key',
+  /** unique or primary key constraint on columns "custom_domains" */
+  SubscriptionsCustomDomainsKey = 'subscriptions_custom_domains_key',
   /** unique or primary key constraint on columns "dedicated_compute" */
   SubscriptionsDedicatedComputeKey = 'subscriptions_dedicated_compute_key',
   /** unique or primary key constraint on columns "egress" */
   SubscriptionsEgressKey = 'subscriptions_egress_key',
+  /** unique or primary key constraint on columns "functions_amount" */
+  SubscriptionsFunctionsAmountKey = 'subscriptions_functions_amount_key',
   /** unique or primary key constraint on columns "functions" */
   SubscriptionsFunctionsKey = 'subscriptions_functions_key',
+  /** unique or primary key constraint on columns "persistent_volume" */
+  SubscriptionsPersistentVolumeKey = 'subscriptions_persistent_volume_key',
   /** unique or primary key constraint on columns "id" */
   SubscriptionsPkey = 'subscriptions_pkey'
 }
@@ -7182,11 +9537,15 @@ export type Billing_Subscriptions_Insert_Input = {
   app?: InputMaybe<Apps_Obj_Rel_Insert_Input>;
   appID?: InputMaybe<Scalars['uuid']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
+  customDomains?: InputMaybe<Scalars['String']>;
   dedicatedCompute?: InputMaybe<Scalars['String']>;
   egress?: InputMaybe<Scalars['String']>;
   functions?: InputMaybe<Scalars['String']>;
+  functionsAmount?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  persistentVolume?: InputMaybe<Scalars['String']>;
   reports?: InputMaybe<Billing_Reports_Arr_Rel_Insert_Input>;
+  resources?: InputMaybe<Billing_Resources_Obj_Rel_Insert_Input>;
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -7195,10 +9554,13 @@ export type Billing_Subscriptions_Max_Fields = {
   __typename?: 'billing_subscriptions_max_fields';
   appID?: Maybe<Scalars['uuid']>;
   createdAt?: Maybe<Scalars['timestamptz']>;
+  customDomains?: Maybe<Scalars['String']>;
   dedicatedCompute?: Maybe<Scalars['String']>;
   egress?: Maybe<Scalars['String']>;
   functions?: Maybe<Scalars['String']>;
+  functionsAmount?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  persistentVolume?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -7207,10 +9569,13 @@ export type Billing_Subscriptions_Min_Fields = {
   __typename?: 'billing_subscriptions_min_fields';
   appID?: Maybe<Scalars['uuid']>;
   createdAt?: Maybe<Scalars['timestamptz']>;
+  customDomains?: Maybe<Scalars['String']>;
   dedicatedCompute?: Maybe<Scalars['String']>;
   egress?: Maybe<Scalars['String']>;
   functions?: Maybe<Scalars['String']>;
+  functionsAmount?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  persistentVolume?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -7242,11 +9607,15 @@ export type Billing_Subscriptions_Order_By = {
   app?: InputMaybe<Apps_Order_By>;
   appID?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
+  customDomains?: InputMaybe<Order_By>;
   dedicatedCompute?: InputMaybe<Order_By>;
   egress?: InputMaybe<Order_By>;
   functions?: InputMaybe<Order_By>;
+  functionsAmount?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  persistentVolume?: InputMaybe<Order_By>;
   reports_aggregate?: InputMaybe<Billing_Reports_Aggregate_Order_By>;
+  resources?: InputMaybe<Billing_Resources_Order_By>;
   updatedAt?: InputMaybe<Order_By>;
 };
 
@@ -7262,13 +9631,19 @@ export enum Billing_Subscriptions_Select_Column {
   /** column name */
   CreatedAt = 'createdAt',
   /** column name */
+  CustomDomains = 'customDomains',
+  /** column name */
   DedicatedCompute = 'dedicatedCompute',
   /** column name */
   Egress = 'egress',
   /** column name */
   Functions = 'functions',
   /** column name */
+  FunctionsAmount = 'functionsAmount',
+  /** column name */
   Id = 'id',
+  /** column name */
+  PersistentVolume = 'persistentVolume',
   /** column name */
   UpdatedAt = 'updatedAt'
 }
@@ -7277,10 +9652,13 @@ export enum Billing_Subscriptions_Select_Column {
 export type Billing_Subscriptions_Set_Input = {
   appID?: InputMaybe<Scalars['uuid']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
+  customDomains?: InputMaybe<Scalars['String']>;
   dedicatedCompute?: InputMaybe<Scalars['String']>;
   egress?: InputMaybe<Scalars['String']>;
   functions?: InputMaybe<Scalars['String']>;
+  functionsAmount?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  persistentVolume?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -7296,10 +9674,13 @@ export type Billing_Subscriptions_Stream_Cursor_Input = {
 export type Billing_Subscriptions_Stream_Cursor_Value_Input = {
   appID?: InputMaybe<Scalars['uuid']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
+  customDomains?: InputMaybe<Scalars['String']>;
   dedicatedCompute?: InputMaybe<Scalars['String']>;
   egress?: InputMaybe<Scalars['String']>;
   functions?: InputMaybe<Scalars['String']>;
+  functionsAmount?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  persistentVolume?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -7310,13 +9691,19 @@ export enum Billing_Subscriptions_Update_Column {
   /** column name */
   CreatedAt = 'createdAt',
   /** column name */
+  CustomDomains = 'customDomains',
+  /** column name */
   DedicatedCompute = 'dedicatedCompute',
   /** column name */
   Egress = 'egress',
   /** column name */
   Functions = 'functions',
   /** column name */
+  FunctionsAmount = 'functionsAmount',
+  /** column name */
   Id = 'id',
+  /** column name */
+  PersistentVolume = 'persistentVolume',
   /** column name */
   UpdatedAt = 'updatedAt'
 }
@@ -9470,321 +11857,6 @@ export type FeatureFlags_Updates = {
   where: FeatureFlags_Bool_Exp;
 };
 
-/** columns and relationships of "feedback" */
-export type Feedback = {
-  __typename?: 'feedback';
-  createdAt: Scalars['timestamptz'];
-  feedback: Scalars['String'];
-  id: Scalars['Int'];
-  sentBy: Scalars['uuid'];
-  /** An object relationship */
-  user: Users;
-};
-
-/** aggregated selection of "feedback" */
-export type Feedback_Aggregate = {
-  __typename?: 'feedback_aggregate';
-  aggregate?: Maybe<Feedback_Aggregate_Fields>;
-  nodes: Array<Feedback>;
-};
-
-export type Feedback_Aggregate_Bool_Exp = {
-  count?: InputMaybe<Feedback_Aggregate_Bool_Exp_Count>;
-};
-
-export type Feedback_Aggregate_Bool_Exp_Count = {
-  arguments?: InputMaybe<Array<Feedback_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
-  filter?: InputMaybe<Feedback_Bool_Exp>;
-  predicate: Int_Comparison_Exp;
-};
-
-/** aggregate fields of "feedback" */
-export type Feedback_Aggregate_Fields = {
-  __typename?: 'feedback_aggregate_fields';
-  avg?: Maybe<Feedback_Avg_Fields>;
-  count: Scalars['Int'];
-  max?: Maybe<Feedback_Max_Fields>;
-  min?: Maybe<Feedback_Min_Fields>;
-  stddev?: Maybe<Feedback_Stddev_Fields>;
-  stddev_pop?: Maybe<Feedback_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Feedback_Stddev_Samp_Fields>;
-  sum?: Maybe<Feedback_Sum_Fields>;
-  var_pop?: Maybe<Feedback_Var_Pop_Fields>;
-  var_samp?: Maybe<Feedback_Var_Samp_Fields>;
-  variance?: Maybe<Feedback_Variance_Fields>;
-};
-
-
-/** aggregate fields of "feedback" */
-export type Feedback_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Feedback_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "feedback" */
-export type Feedback_Aggregate_Order_By = {
-  avg?: InputMaybe<Feedback_Avg_Order_By>;
-  count?: InputMaybe<Order_By>;
-  max?: InputMaybe<Feedback_Max_Order_By>;
-  min?: InputMaybe<Feedback_Min_Order_By>;
-  stddev?: InputMaybe<Feedback_Stddev_Order_By>;
-  stddev_pop?: InputMaybe<Feedback_Stddev_Pop_Order_By>;
-  stddev_samp?: InputMaybe<Feedback_Stddev_Samp_Order_By>;
-  sum?: InputMaybe<Feedback_Sum_Order_By>;
-  var_pop?: InputMaybe<Feedback_Var_Pop_Order_By>;
-  var_samp?: InputMaybe<Feedback_Var_Samp_Order_By>;
-  variance?: InputMaybe<Feedback_Variance_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "feedback" */
-export type Feedback_Arr_Rel_Insert_Input = {
-  data: Array<Feedback_Insert_Input>;
-  /** upsert condition */
-  on_conflict?: InputMaybe<Feedback_On_Conflict>;
-};
-
-/** aggregate avg on columns */
-export type Feedback_Avg_Fields = {
-  __typename?: 'feedback_avg_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "feedback" */
-export type Feedback_Avg_Order_By = {
-  id?: InputMaybe<Order_By>;
-};
-
-/** Boolean expression to filter rows from the table "feedback". All fields are combined with a logical 'AND'. */
-export type Feedback_Bool_Exp = {
-  _and?: InputMaybe<Array<Feedback_Bool_Exp>>;
-  _not?: InputMaybe<Feedback_Bool_Exp>;
-  _or?: InputMaybe<Array<Feedback_Bool_Exp>>;
-  createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
-  feedback?: InputMaybe<String_Comparison_Exp>;
-  id?: InputMaybe<Int_Comparison_Exp>;
-  sentBy?: InputMaybe<Uuid_Comparison_Exp>;
-  user?: InputMaybe<Users_Bool_Exp>;
-};
-
-/** unique or primary key constraints on table "feedback" */
-export enum Feedback_Constraint {
-  /** unique or primary key constraint on columns "id" */
-  FeedbackPkey = 'feedback_pkey'
-}
-
-/** input type for incrementing numeric columns in table "feedback" */
-export type Feedback_Inc_Input = {
-  id?: InputMaybe<Scalars['Int']>;
-};
-
-/** input type for inserting data into table "feedback" */
-export type Feedback_Insert_Input = {
-  createdAt?: InputMaybe<Scalars['timestamptz']>;
-  feedback?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['Int']>;
-  sentBy?: InputMaybe<Scalars['uuid']>;
-  user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
-};
-
-/** aggregate max on columns */
-export type Feedback_Max_Fields = {
-  __typename?: 'feedback_max_fields';
-  createdAt?: Maybe<Scalars['timestamptz']>;
-  feedback?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  sentBy?: Maybe<Scalars['uuid']>;
-};
-
-/** order by max() on columns of table "feedback" */
-export type Feedback_Max_Order_By = {
-  createdAt?: InputMaybe<Order_By>;
-  feedback?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  sentBy?: InputMaybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type Feedback_Min_Fields = {
-  __typename?: 'feedback_min_fields';
-  createdAt?: Maybe<Scalars['timestamptz']>;
-  feedback?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  sentBy?: Maybe<Scalars['uuid']>;
-};
-
-/** order by min() on columns of table "feedback" */
-export type Feedback_Min_Order_By = {
-  createdAt?: InputMaybe<Order_By>;
-  feedback?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  sentBy?: InputMaybe<Order_By>;
-};
-
-/** response of any mutation on the table "feedback" */
-export type Feedback_Mutation_Response = {
-  __typename?: 'feedback_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Feedback>;
-};
-
-/** on_conflict condition type for table "feedback" */
-export type Feedback_On_Conflict = {
-  constraint: Feedback_Constraint;
-  update_columns?: Array<Feedback_Update_Column>;
-  where?: InputMaybe<Feedback_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "feedback". */
-export type Feedback_Order_By = {
-  createdAt?: InputMaybe<Order_By>;
-  feedback?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  sentBy?: InputMaybe<Order_By>;
-  user?: InputMaybe<Users_Order_By>;
-};
-
-/** primary key columns input for table: feedback */
-export type Feedback_Pk_Columns_Input = {
-  id: Scalars['Int'];
-};
-
-/** select columns of table "feedback" */
-export enum Feedback_Select_Column {
-  /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
-  Feedback = 'feedback',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  SentBy = 'sentBy'
-}
-
-/** input type for updating data in table "feedback" */
-export type Feedback_Set_Input = {
-  createdAt?: InputMaybe<Scalars['timestamptz']>;
-  feedback?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['Int']>;
-  sentBy?: InputMaybe<Scalars['uuid']>;
-};
-
-/** aggregate stddev on columns */
-export type Feedback_Stddev_Fields = {
-  __typename?: 'feedback_stddev_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev() on columns of table "feedback" */
-export type Feedback_Stddev_Order_By = {
-  id?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Feedback_Stddev_Pop_Fields = {
-  __typename?: 'feedback_stddev_pop_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "feedback" */
-export type Feedback_Stddev_Pop_Order_By = {
-  id?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Feedback_Stddev_Samp_Fields = {
-  __typename?: 'feedback_stddev_samp_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "feedback" */
-export type Feedback_Stddev_Samp_Order_By = {
-  id?: InputMaybe<Order_By>;
-};
-
-/** Streaming cursor of the table "feedback" */
-export type Feedback_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: Feedback_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering?: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Feedback_Stream_Cursor_Value_Input = {
-  createdAt?: InputMaybe<Scalars['timestamptz']>;
-  feedback?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['Int']>;
-  sentBy?: InputMaybe<Scalars['uuid']>;
-};
-
-/** aggregate sum on columns */
-export type Feedback_Sum_Fields = {
-  __typename?: 'feedback_sum_fields';
-  id?: Maybe<Scalars['Int']>;
-};
-
-/** order by sum() on columns of table "feedback" */
-export type Feedback_Sum_Order_By = {
-  id?: InputMaybe<Order_By>;
-};
-
-/** update columns of table "feedback" */
-export enum Feedback_Update_Column {
-  /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
-  Feedback = 'feedback',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  SentBy = 'sentBy'
-}
-
-export type Feedback_Updates = {
-  /** increments the numeric columns with given value of the filtered values */
-  _inc?: InputMaybe<Feedback_Inc_Input>;
-  /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<Feedback_Set_Input>;
-  /** filter the rows which have to be updated */
-  where: Feedback_Bool_Exp;
-};
-
-/** aggregate var_pop on columns */
-export type Feedback_Var_Pop_Fields = {
-  __typename?: 'feedback_var_pop_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_pop() on columns of table "feedback" */
-export type Feedback_Var_Pop_Order_By = {
-  id?: InputMaybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type Feedback_Var_Samp_Fields = {
-  __typename?: 'feedback_var_samp_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "feedback" */
-export type Feedback_Var_Samp_Order_By = {
-  id?: InputMaybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type Feedback_Variance_Fields = {
-  __typename?: 'feedback_variance_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "feedback" */
-export type Feedback_Variance_Order_By = {
-  id?: InputMaybe<Order_By>;
-};
-
 /** columns and relationships of "storage.files" */
 export type Files = {
   __typename?: 'files';
@@ -9795,11 +11867,18 @@ export type Files = {
   etag?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
   isUploaded?: Maybe<Scalars['Boolean']>;
+  metadata?: Maybe<Scalars['jsonb']>;
   mimeType?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   size?: Maybe<Scalars['Int']>;
   updatedAt: Scalars['timestamptz'];
   uploadedByUserId?: Maybe<Scalars['uuid']>;
+};
+
+
+/** columns and relationships of "storage.files" */
+export type FilesMetadataArgs = {
+  path?: InputMaybe<Scalars['String']>;
 };
 
 /** aggregated selection of "storage.files" */
@@ -9874,6 +11953,11 @@ export type Files_Aggregate_Order_By = {
   variance?: InputMaybe<Files_Variance_Order_By>;
 };
 
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Files_Append_Input = {
+  metadata?: InputMaybe<Scalars['jsonb']>;
+};
+
 /** input type for inserting array relation for remote table "storage.files" */
 export type Files_Arr_Rel_Insert_Input = {
   data: Array<Files_Insert_Input>;
@@ -9903,6 +11987,7 @@ export type Files_Bool_Exp = {
   etag?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   isUploaded?: InputMaybe<Boolean_Comparison_Exp>;
+  metadata?: InputMaybe<Jsonb_Comparison_Exp>;
   mimeType?: InputMaybe<String_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   size?: InputMaybe<Int_Comparison_Exp>;
@@ -9915,6 +12000,21 @@ export enum Files_Constraint {
   /** unique or primary key constraint on columns "id" */
   FilesPkey = 'files_pkey'
 }
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Files_Delete_At_Path_Input = {
+  metadata?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Files_Delete_Elem_Input = {
+  metadata?: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Files_Delete_Key_Input = {
+  metadata?: InputMaybe<Scalars['String']>;
+};
 
 /** input type for incrementing numeric columns in table "storage.files" */
 export type Files_Inc_Input = {
@@ -9929,6 +12029,7 @@ export type Files_Insert_Input = {
   etag?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   isUploaded?: InputMaybe<Scalars['Boolean']>;
+  metadata?: InputMaybe<Scalars['jsonb']>;
   mimeType?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   size?: InputMaybe<Scalars['Int']>;
@@ -9999,6 +12100,13 @@ export type Files_Mutation_Response = {
   returning: Array<Files>;
 };
 
+/** input type for inserting object relation for remote table "storage.files" */
+export type Files_Obj_Rel_Insert_Input = {
+  data: Files_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Files_On_Conflict>;
+};
+
 /** on_conflict condition type for table "storage.files" */
 export type Files_On_Conflict = {
   constraint: Files_Constraint;
@@ -10014,6 +12122,7 @@ export type Files_Order_By = {
   etag?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   isUploaded?: InputMaybe<Order_By>;
+  metadata?: InputMaybe<Order_By>;
   mimeType?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   size?: InputMaybe<Order_By>;
@@ -10024,6 +12133,11 @@ export type Files_Order_By = {
 /** primary key columns input for table: storage.files */
 export type Files_Pk_Columns_Input = {
   id: Scalars['uuid'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Files_Prepend_Input = {
+  metadata?: InputMaybe<Scalars['jsonb']>;
 };
 
 /** select columns of table "storage.files" */
@@ -10038,6 +12152,8 @@ export enum Files_Select_Column {
   Id = 'id',
   /** column name */
   IsUploaded = 'isUploaded',
+  /** column name */
+  Metadata = 'metadata',
   /** column name */
   MimeType = 'mimeType',
   /** column name */
@@ -10069,6 +12185,7 @@ export type Files_Set_Input = {
   etag?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   isUploaded?: InputMaybe<Scalars['Boolean']>;
+  metadata?: InputMaybe<Scalars['jsonb']>;
   mimeType?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   size?: InputMaybe<Scalars['Int']>;
@@ -10124,6 +12241,7 @@ export type Files_Stream_Cursor_Value_Input = {
   etag?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   isUploaded?: InputMaybe<Scalars['Boolean']>;
+  metadata?: InputMaybe<Scalars['jsonb']>;
   mimeType?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   size?: InputMaybe<Scalars['Int']>;
@@ -10155,6 +12273,8 @@ export enum Files_Update_Column {
   /** column name */
   IsUploaded = 'isUploaded',
   /** column name */
+  Metadata = 'metadata',
+  /** column name */
   MimeType = 'mimeType',
   /** column name */
   Name = 'name',
@@ -10167,8 +12287,18 @@ export enum Files_Update_Column {
 }
 
 export type Files_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<Files_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<Files_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<Files_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<Files_Delete_Key_Input>;
   /** increments the numeric columns with given value of the filtered values */
   _inc?: InputMaybe<Files_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<Files_Prepend_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Files_Set_Input>;
   /** filter the rows which have to be updated */
@@ -11033,12 +13163,29 @@ export type Mutation_Root = {
   __typename?: 'mutation_root';
   backupAllApplicationsDatabase: Array<Maybe<BackupResultsItem>>;
   backupApplicationDatabase: BackupResult;
+  billingChangeOrganizationPlan: Scalars['Boolean'];
+  billingCreateOrganizationRequest: Scalars['String'];
+  billingDeleteApp: Scalars['Boolean'];
+  billingDeleteOrganization: Scalars['Boolean'];
   billingFinishSubscription: Scalars['Boolean'];
+  billingFixSubscriptionItems: Scalars['Boolean'];
   billingFixSubscriptions: Scalars['Boolean'];
   billingFullReportWorkflow: Scalars['Boolean'];
+  billingMigrateProjectToOrganization: Scalars['Boolean'];
+  billingPostOrganizationRequest: PostOrganizationRequestResponse;
+  billingTransferApp: Scalars['Boolean'];
+  billingUpdateCustomDomains: Scalars['Boolean'];
   billingUpdateDedicatedCompute: Scalars['Boolean'];
+  billingUpdateFunctionsAmount: Scalars['Boolean'];
+  billingUpdateOrganizationThresholds: Scalars['Boolean'];
+  billingUpdatePersistentVolume: Scalars['Boolean'];
   billingUpdateReports: Scalars['Boolean'];
   billingUploadReports: Scalars['Boolean'];
+  changeDatabaseVersion: Scalars['Boolean'];
+  /** delete single row from the table: "announcements_read" */
+  deleteAnnouncementRead?: Maybe<Announcements_Read>;
+  /** delete data from the table: "announcements_read" */
+  deleteAnnouncementsRead?: Maybe<Announcements_Read_Mutation_Response>;
   /** delete single row from the table: "apps" */
   deleteApp?: Maybe<Apps>;
   /** delete single row from the table: "app_states" */
@@ -11095,6 +13242,10 @@ export type Mutation_Root = {
   deleteBillingReport?: Maybe<Billing_Reports>;
   /** delete data from the table: "billing.reports" */
   deleteBillingReports?: Maybe<Billing_Reports_Mutation_Response>;
+  /** delete single row from the table: "billing.resources" */
+  deleteBillingResource?: Maybe<Billing_Resources>;
+  /** delete data from the table: "billing.resources" */
+  deleteBillingResources?: Maybe<Billing_Resources_Mutation_Response>;
   /** delete data from the table: "billing.subscriptions" */
   deleteBillingSubscription?: Maybe<Billing_Subscriptions_Mutation_Response>;
   /** delete single row from the table: "billing.subscriptions" */
@@ -11120,10 +13271,6 @@ export type Mutation_Root = {
   deleteFeatureFlag?: Maybe<FeatureFlags>;
   /** delete data from the table: "feature_flags" */
   deleteFeatureFlags?: Maybe<FeatureFlags_Mutation_Response>;
-  /** delete data from the table: "feedback" */
-  deleteFeedback?: Maybe<Feedback_Mutation_Response>;
-  /** delete single row from the table: "feedback" */
-  deleteFeedbackOne?: Maybe<Feedback>;
   /** delete single row from the table: "storage.files" */
   deleteFile?: Maybe<Files>;
   /** delete data from the table: "storage.files" */
@@ -11136,6 +13283,22 @@ export type Mutation_Root = {
   deleteGithubRepositories?: Maybe<GithubRepositories_Mutation_Response>;
   /** delete single row from the table: "github_repositories" */
   deleteGithubRepository?: Maybe<GithubRepositories>;
+  /** delete single row from the table: "organizations" */
+  deleteOrganization?: Maybe<Organizations>;
+  /** delete single row from the table: "organization_members" */
+  deleteOrganizationMember?: Maybe<Organization_Members>;
+  /** delete single row from the table: "organization_member_invites" */
+  deleteOrganizationMemberInvite?: Maybe<Organization_Member_Invites>;
+  /** delete data from the table: "organization_member_invites" */
+  deleteOrganizationMemberInvites?: Maybe<Organization_Member_Invites_Mutation_Response>;
+  /** delete data from the table: "organization_members" */
+  deleteOrganizationMembers?: Maybe<Organization_Members_Mutation_Response>;
+  /** delete single row from the table: "organization_new_request" */
+  deleteOrganizationNewRequest?: Maybe<Organization_New_Request>;
+  /** delete data from the table: "organization_new_request" */
+  deleteOrganizationNewRequests?: Maybe<Organization_New_Request_Mutation_Response>;
+  /** delete data from the table: "organizations" */
+  deleteOrganizations?: Maybe<Organizations_Mutation_Response>;
   /** delete single row from the table: "payment_methods" */
   deletePaymentMethod?: Maybe<PaymentMethods>;
   /** delete data from the table: "payment_methods" */
@@ -11144,6 +13307,10 @@ export type Mutation_Root = {
   deletePlan?: Maybe<Plans>;
   /** delete data from the table: "plans" */
   deletePlans?: Maybe<Plans_Mutation_Response>;
+  /** delete single row from the table: "regions_allowed_organization" */
+  deleteRegionsAllowedOrganization?: Maybe<Regions_Allowed_Organization>;
+  /** delete data from the table: "regions_allowed_organization" */
+  deleteRegionsAllowedOrganizations?: Maybe<Regions_Allowed_Organization_Mutation_Response>;
   /** delete single row from the table: "regions_allowed_workspace" */
   deleteRegionsAllowedWorkspace?: Maybe<Regions_Allowed_Workspace>;
   /** delete data from the table: "regions_allowed_workspace" */
@@ -11166,10 +13333,10 @@ export type Mutation_Root = {
   deleteUser?: Maybe<Users>;
   /** delete data from the table: "auth.users" */
   deleteUsers?: Maybe<Users_Mutation_Response>;
-  /** delete single row from the table: "users_usage" */
-  deleteUsersUsage?: Maybe<Users_Usage>;
-  /** delete data from the table: "users_usage" */
-  deleteUsersUsages?: Maybe<Users_Usage_Mutation_Response>;
+  /** delete single row from the table: "storage.virus" */
+  deleteVirus?: Maybe<Virus>;
+  /** delete data from the table: "storage.virus" */
+  deleteViruses?: Maybe<Virus_Mutation_Response>;
   /** delete single row from the table: "workspaces" */
   deleteWorkspace?: Maybe<Workspaces>;
   /** delete single row from the table: "workspace_members" */
@@ -11182,14 +13349,30 @@ export type Mutation_Root = {
   deleteWorkspaceMembers?: Maybe<WorkspaceMembers_Mutation_Response>;
   /** delete data from the table: "workspaces" */
   deleteWorkspaces?: Maybe<Workspaces_Mutation_Response>;
+  /** delete data from the table: "announcements" */
+  delete_announcements?: Maybe<Announcements_Mutation_Response>;
+  /** delete single row from the table: "announcements" */
+  delete_announcements_by_pk?: Maybe<Announcements>;
   /** delete data from the table: "auth.migrations" */
   delete_auth_migrations?: Maybe<Auth_Migrations_Mutation_Response>;
   /** delete single row from the table: "auth.migrations" */
   delete_auth_migrations_by_pk?: Maybe<Auth_Migrations>;
+  /** delete data from the table: "billing.report_resource_type" */
+  delete_billing_report_resource_type?: Maybe<Billing_Report_Resource_Type_Mutation_Response>;
+  /** delete single row from the table: "billing.report_resource_type" */
+  delete_billing_report_resource_type_by_pk?: Maybe<Billing_Report_Resource_Type>;
   /** delete data from the table: "billing.report_type" */
   delete_billing_report_type?: Maybe<Billing_Report_Type_Mutation_Response>;
   /** delete single row from the table: "billing.report_type" */
   delete_billing_report_type_by_pk?: Maybe<Billing_Report_Type>;
+  /** delete data from the table: "billing.reports_resources" */
+  delete_billing_reports_resources?: Maybe<Billing_Reports_Resources_Mutation_Response>;
+  /** delete single row from the table: "billing.reports_resources" */
+  delete_billing_reports_resources_by_pk?: Maybe<Billing_Reports_Resources>;
+  /** delete data from the table: "billing.subscription_items" */
+  delete_billing_subscription_items?: Maybe<Billing_Subscription_Items_Mutation_Response>;
+  /** delete single row from the table: "billing.subscription_items" */
+  delete_billing_subscription_items_by_pk?: Maybe<Billing_Subscription_Items>;
   /** delete data from the table: "continents" */
   delete_continents?: Maybe<Continents_Mutation_Response>;
   /** delete single row from the table: "continents" */
@@ -11198,6 +13381,18 @@ export type Mutation_Root = {
   delete_countries?: Maybe<Countries_Mutation_Response>;
   /** delete single row from the table: "countries" */
   delete_countries_by_pk?: Maybe<Countries>;
+  /** delete data from the table: "organization_costs_thresholds" */
+  delete_organization_costs_thresholds?: Maybe<Organization_Costs_Thresholds_Mutation_Response>;
+  /** delete single row from the table: "organization_costs_thresholds" */
+  delete_organization_costs_thresholds_by_pk?: Maybe<Organization_Costs_Thresholds>;
+  /** delete data from the table: "organization_members_role" */
+  delete_organization_members_role?: Maybe<Organization_Members_Role_Mutation_Response>;
+  /** delete single row from the table: "organization_members_role" */
+  delete_organization_members_role_by_pk?: Maybe<Organization_Members_Role>;
+  /** delete data from the table: "organization_status" */
+  delete_organization_status?: Maybe<Organization_Status_Mutation_Response>;
+  /** delete single row from the table: "organization_status" */
+  delete_organization_status_by_pk?: Maybe<Organization_Status>;
   /** delete data from the table: "region_type" */
   delete_region_type?: Maybe<Region_Type_Mutation_Response>;
   /** delete single row from the table: "region_type" */
@@ -11206,6 +13401,10 @@ export type Mutation_Root = {
   delete_regions?: Maybe<Regions_Mutation_Response>;
   /** delete single row from the table: "regions" */
   delete_regions_by_pk?: Maybe<Regions>;
+  /** insert a single row into the table: "announcements_read" */
+  insertAnnouncementRead?: Maybe<Announcements_Read>;
+  /** insert data into the table: "announcements_read" */
+  insertAnnouncementsRead?: Maybe<Announcements_Read_Mutation_Response>;
   /** insert a single row into the table: "apps" */
   insertApp?: Maybe<Apps>;
   /** insert a single row into the table: "app_states" */
@@ -11262,6 +13461,10 @@ export type Mutation_Root = {
   insertBillingReport?: Maybe<Billing_Reports>;
   /** insert data into the table: "billing.reports" */
   insertBillingReports?: Maybe<Billing_Reports_Mutation_Response>;
+  /** insert a single row into the table: "billing.resources" */
+  insertBillingResource?: Maybe<Billing_Resources>;
+  /** insert data into the table: "billing.resources" */
+  insertBillingResources?: Maybe<Billing_Resources_Mutation_Response>;
   /** insert data into the table: "billing.subscriptions" */
   insertBillingSubscription?: Maybe<Billing_Subscriptions_Mutation_Response>;
   /** insert a single row into the table: "billing.subscriptions" */
@@ -11287,10 +13490,6 @@ export type Mutation_Root = {
   insertFeatureFlag?: Maybe<FeatureFlags>;
   /** insert data into the table: "feature_flags" */
   insertFeatureFlags?: Maybe<FeatureFlags_Mutation_Response>;
-  /** insert data into the table: "feedback" */
-  insertFeedback?: Maybe<Feedback_Mutation_Response>;
-  /** insert a single row into the table: "feedback" */
-  insertFeedbackOne?: Maybe<Feedback>;
   /** insert a single row into the table: "storage.files" */
   insertFile?: Maybe<Files>;
   /** insert data into the table: "storage.files" */
@@ -11303,6 +13502,22 @@ export type Mutation_Root = {
   insertGithubRepositories?: Maybe<GithubRepositories_Mutation_Response>;
   /** insert a single row into the table: "github_repositories" */
   insertGithubRepository?: Maybe<GithubRepositories>;
+  /** insert a single row into the table: "organizations" */
+  insertOrganization?: Maybe<Organizations>;
+  /** insert a single row into the table: "organization_members" */
+  insertOrganizationMember?: Maybe<Organization_Members>;
+  /** insert a single row into the table: "organization_member_invites" */
+  insertOrganizationMemberInvite?: Maybe<Organization_Member_Invites>;
+  /** insert data into the table: "organization_member_invites" */
+  insertOrganizationMemberInvites?: Maybe<Organization_Member_Invites_Mutation_Response>;
+  /** insert data into the table: "organization_members" */
+  insertOrganizationMembers?: Maybe<Organization_Members_Mutation_Response>;
+  /** insert a single row into the table: "organization_new_request" */
+  insertOrganizationNewRequest?: Maybe<Organization_New_Request>;
+  /** insert data into the table: "organization_new_request" */
+  insertOrganizationNewRequests?: Maybe<Organization_New_Request_Mutation_Response>;
+  /** insert data into the table: "organizations" */
+  insertOrganizations?: Maybe<Organizations_Mutation_Response>;
   /** insert a single row into the table: "payment_methods" */
   insertPaymentMethod?: Maybe<PaymentMethods>;
   /** insert data into the table: "payment_methods" */
@@ -11311,13 +13526,17 @@ export type Mutation_Root = {
   insertPlan?: Maybe<Plans>;
   /** insert data into the table: "plans" */
   insertPlans?: Maybe<Plans_Mutation_Response>;
+  /** insert a single row into the table: "regions_allowed_organization" */
+  insertRegionsAllowedOrganization?: Maybe<Regions_Allowed_Organization>;
+  /** insert data into the table: "regions_allowed_organization" */
+  insertRegionsAllowedOrganizations?: Maybe<Regions_Allowed_Organization_Mutation_Response>;
   /** insert a single row into the table: "regions_allowed_workspace" */
   insertRegionsAllowedWorkspace?: Maybe<Regions_Allowed_Workspace>;
   /** insert data into the table: "regions_allowed_workspace" */
   insertRegionsAllowedWorkspaces?: Maybe<Regions_Allowed_Workspace_Mutation_Response>;
   /** insert a single row into the table: "run_service" */
   insertRunService?: Maybe<Run_Service>;
-  insertRunServiceConfig: ConfigRunServiceConfig;
+  insertRunServiceConfig: InsertRunServiceConfigResponse;
   /** insert data into the table: "run_service" */
   insertRunServices?: Maybe<Run_Service_Mutation_Response>;
   insertSecret: ConfigEnvironmentVariable;
@@ -11333,10 +13552,10 @@ export type Mutation_Root = {
   insertUser?: Maybe<Users>;
   /** insert data into the table: "auth.users" */
   insertUsers?: Maybe<Users_Mutation_Response>;
-  /** insert a single row into the table: "users_usage" */
-  insertUsersUsage?: Maybe<Users_Usage>;
-  /** insert data into the table: "users_usage" */
-  insertUsersUsages?: Maybe<Users_Usage_Mutation_Response>;
+  /** insert a single row into the table: "storage.virus" */
+  insertVirus?: Maybe<Virus>;
+  /** insert data into the table: "storage.virus" */
+  insertViruses?: Maybe<Virus_Mutation_Response>;
   /** insert a single row into the table: "workspaces" */
   insertWorkspace?: Maybe<Workspaces>;
   /** insert a single row into the table: "workspace_members" */
@@ -11349,14 +13568,30 @@ export type Mutation_Root = {
   insertWorkspaceMembers?: Maybe<WorkspaceMembers_Mutation_Response>;
   /** insert data into the table: "workspaces" */
   insertWorkspaces?: Maybe<Workspaces_Mutation_Response>;
+  /** insert data into the table: "announcements" */
+  insert_announcements?: Maybe<Announcements_Mutation_Response>;
+  /** insert a single row into the table: "announcements" */
+  insert_announcements_one?: Maybe<Announcements>;
   /** insert data into the table: "auth.migrations" */
   insert_auth_migrations?: Maybe<Auth_Migrations_Mutation_Response>;
   /** insert a single row into the table: "auth.migrations" */
   insert_auth_migrations_one?: Maybe<Auth_Migrations>;
+  /** insert data into the table: "billing.report_resource_type" */
+  insert_billing_report_resource_type?: Maybe<Billing_Report_Resource_Type_Mutation_Response>;
+  /** insert a single row into the table: "billing.report_resource_type" */
+  insert_billing_report_resource_type_one?: Maybe<Billing_Report_Resource_Type>;
   /** insert data into the table: "billing.report_type" */
   insert_billing_report_type?: Maybe<Billing_Report_Type_Mutation_Response>;
   /** insert a single row into the table: "billing.report_type" */
   insert_billing_report_type_one?: Maybe<Billing_Report_Type>;
+  /** insert data into the table: "billing.reports_resources" */
+  insert_billing_reports_resources?: Maybe<Billing_Reports_Resources_Mutation_Response>;
+  /** insert a single row into the table: "billing.reports_resources" */
+  insert_billing_reports_resources_one?: Maybe<Billing_Reports_Resources>;
+  /** insert data into the table: "billing.subscription_items" */
+  insert_billing_subscription_items?: Maybe<Billing_Subscription_Items_Mutation_Response>;
+  /** insert a single row into the table: "billing.subscription_items" */
+  insert_billing_subscription_items_one?: Maybe<Billing_Subscription_Items>;
   /** insert data into the table: "continents" */
   insert_continents?: Maybe<Continents_Mutation_Response>;
   /** insert a single row into the table: "continents" */
@@ -11365,6 +13600,18 @@ export type Mutation_Root = {
   insert_countries?: Maybe<Countries_Mutation_Response>;
   /** insert a single row into the table: "countries" */
   insert_countries_one?: Maybe<Countries>;
+  /** insert data into the table: "organization_costs_thresholds" */
+  insert_organization_costs_thresholds?: Maybe<Organization_Costs_Thresholds_Mutation_Response>;
+  /** insert a single row into the table: "organization_costs_thresholds" */
+  insert_organization_costs_thresholds_one?: Maybe<Organization_Costs_Thresholds>;
+  /** insert data into the table: "organization_members_role" */
+  insert_organization_members_role?: Maybe<Organization_Members_Role_Mutation_Response>;
+  /** insert a single row into the table: "organization_members_role" */
+  insert_organization_members_role_one?: Maybe<Organization_Members_Role>;
+  /** insert data into the table: "organization_status" */
+  insert_organization_status?: Maybe<Organization_Status_Mutation_Response>;
+  /** insert a single row into the table: "organization_status" */
+  insert_organization_status_one?: Maybe<Organization_Status>;
   /** insert data into the table: "region_type" */
   insert_region_type?: Maybe<Region_Type_Mutation_Response>;
   /** insert a single row into the table: "region_type" */
@@ -11373,13 +13620,25 @@ export type Mutation_Root = {
   insert_regions?: Maybe<Regions_Mutation_Response>;
   /** insert a single row into the table: "regions" */
   insert_regions_one?: Maybe<Regions>;
-  pauseAppsExceedUsage: Array<Scalars['String']>;
+  /** execute VOLATILE function "organization_member_invite_accept" which returns "organization_members" */
+  organizationMemberInviteAccept: Array<Organization_Members>;
   pauseInactiveApps: Array<Scalars['String']>;
+  pauseOrganizationsExceedUsage: Array<Scalars['String']>;
   replaceConfig: ConfigConfig;
+  replaceConfigRawJSON: Scalars['String'];
   replaceRunServiceConfig: ConfigRunServiceConfig;
   resetPostgresPassword: Scalars['Boolean'];
   restoreApplicationDatabase: Scalars['Boolean'];
+  sendEmailInvite: Scalars['Boolean'];
+  sendEmailOrganizationStatusChange: Scalars['Boolean'];
+  sendEmailOrganizationThreshold: Scalars['Boolean'];
   sendEmailTemplate: Scalars['Boolean'];
+  /** update single row of the table: "announcements_read" */
+  updateAnnouncementRead?: Maybe<Announcements_Read>;
+  /** update data of the table: "announcements_read" */
+  updateAnnouncementsRead?: Maybe<Announcements_Read_Mutation_Response>;
+  /** update multiples rows of table: "announcements_read" */
+  updateAnnouncementsReadMany?: Maybe<Array<Maybe<Announcements_Read_Mutation_Response>>>;
   /** update single row of the table: "apps" */
   updateApp?: Maybe<Apps>;
   /** update single row of the table: "app_states" */
@@ -11436,6 +13695,10 @@ export type Mutation_Root = {
   updateBillingReport?: Maybe<Billing_Reports>;
   /** update data of the table: "billing.reports" */
   updateBillingReports?: Maybe<Billing_Reports_Mutation_Response>;
+  /** update single row of the table: "billing.resources" */
+  updateBillingResource?: Maybe<Billing_Resources>;
+  /** update data of the table: "billing.resources" */
+  updateBillingResources?: Maybe<Billing_Resources_Mutation_Response>;
   /** update single row of the table: "billing.subscriptions" */
   updateBillingSubscription?: Maybe<Billing_Subscriptions>;
   /** update data of the table: "billing.subscriptions" */
@@ -11461,10 +13724,6 @@ export type Mutation_Root = {
   updateFeatureFlag?: Maybe<FeatureFlags>;
   /** update data of the table: "feature_flags" */
   updateFeatureFlags?: Maybe<FeatureFlags_Mutation_Response>;
-  /** update data of the table: "feedback" */
-  updateFeedback?: Maybe<Feedback_Mutation_Response>;
-  /** update single row of the table: "feedback" */
-  updateFeedbackOne?: Maybe<Feedback>;
   /** update single row of the table: "storage.files" */
   updateFile?: Maybe<Files>;
   /** update data of the table: "storage.files" */
@@ -11479,10 +13738,36 @@ export type Mutation_Root = {
   updateGithubRepository?: Maybe<GithubRepositories>;
   /** update multiples rows of table: "billing.reports" */
   updateManyBillingReports?: Maybe<Array<Maybe<Billing_Reports_Mutation_Response>>>;
+  /** update multiples rows of table: "billing.resources" */
+  updateManyBillingResources?: Maybe<Array<Maybe<Billing_Resources_Mutation_Response>>>;
   /** update multiples rows of table: "software_type" */
   updateManySoftwareType?: Maybe<Array<Maybe<Software_Type_Mutation_Response>>>;
   /** update multiples rows of table: "software_versions" */
   updateManySoftwareVersions?: Maybe<Array<Maybe<Software_Versions_Mutation_Response>>>;
+  /** update single row of the table: "organizations" */
+  updateOrganization?: Maybe<Organizations>;
+  /** update single row of the table: "organization_members" */
+  updateOrganizationMember?: Maybe<Organization_Members>;
+  /** update single row of the table: "organization_member_invites" */
+  updateOrganizationMemberInvite?: Maybe<Organization_Member_Invites>;
+  /** update data of the table: "organization_member_invites" */
+  updateOrganizationMemberInvites?: Maybe<Organization_Member_Invites_Mutation_Response>;
+  /** update multiples rows of table: "organization_member_invites" */
+  updateOrganizationMemberInvitesMany?: Maybe<Array<Maybe<Organization_Member_Invites_Mutation_Response>>>;
+  /** update data of the table: "organization_members" */
+  updateOrganizationMembers?: Maybe<Organization_Members_Mutation_Response>;
+  /** update multiples rows of table: "organization_members" */
+  updateOrganizationMembersMany?: Maybe<Array<Maybe<Organization_Members_Mutation_Response>>>;
+  /** update single row of the table: "organization_new_request" */
+  updateOrganizationNewRequest?: Maybe<Organization_New_Request>;
+  /** update data of the table: "organization_new_request" */
+  updateOrganizationNewRequests?: Maybe<Organization_New_Request_Mutation_Response>;
+  /** update multiples rows of table: "organization_new_request" */
+  updateOrganizationNewRequestsMany?: Maybe<Array<Maybe<Organization_New_Request_Mutation_Response>>>;
+  /** update data of the table: "organizations" */
+  updateOrganizations?: Maybe<Organizations_Mutation_Response>;
+  /** update multiples rows of table: "organizations" */
+  updateOrganizationsMany?: Maybe<Array<Maybe<Organizations_Mutation_Response>>>;
   /** update single row of the table: "payment_methods" */
   updatePaymentMethod?: Maybe<PaymentMethods>;
   /** update data of the table: "payment_methods" */
@@ -11491,6 +13776,12 @@ export type Mutation_Root = {
   updatePlan?: Maybe<Plans>;
   /** update data of the table: "plans" */
   updatePlans?: Maybe<Plans_Mutation_Response>;
+  /** update single row of the table: "regions_allowed_organization" */
+  updateRegionsAllowedOrganization?: Maybe<Regions_Allowed_Organization>;
+  /** update data of the table: "regions_allowed_organization" */
+  updateRegionsAllowedOrganizations?: Maybe<Regions_Allowed_Organization_Mutation_Response>;
+  /** update multiples rows of table: "regions_allowed_organization" */
+  updateRegionsAllowedOrganizationsMany?: Maybe<Array<Maybe<Regions_Allowed_Organization_Mutation_Response>>>;
   /** update single row of the table: "regions_allowed_workspace" */
   updateRegionsAllowedWorkspace?: Maybe<Regions_Allowed_Workspace>;
   /** update data of the table: "regions_allowed_workspace" */
@@ -11514,10 +13805,10 @@ export type Mutation_Root = {
   updateUser?: Maybe<Users>;
   /** update data of the table: "auth.users" */
   updateUsers?: Maybe<Users_Mutation_Response>;
-  /** update single row of the table: "users_usage" */
-  updateUsersUsage?: Maybe<Users_Usage>;
-  /** update data of the table: "users_usage" */
-  updateUsersUsages?: Maybe<Users_Usage_Mutation_Response>;
+  /** update single row of the table: "storage.virus" */
+  updateVirus?: Maybe<Virus>;
+  /** update data of the table: "storage.virus" */
+  updateViruses?: Maybe<Virus_Mutation_Response>;
   /** update single row of the table: "workspaces" */
   updateWorkspace?: Maybe<Workspaces>;
   /** update single row of the table: "workspace_members" */
@@ -11530,6 +13821,12 @@ export type Mutation_Root = {
   updateWorkspaceMembers?: Maybe<WorkspaceMembers_Mutation_Response>;
   /** update data of the table: "workspaces" */
   updateWorkspaces?: Maybe<Workspaces_Mutation_Response>;
+  /** update data of the table: "announcements" */
+  update_announcements?: Maybe<Announcements_Mutation_Response>;
+  /** update single row of the table: "announcements" */
+  update_announcements_by_pk?: Maybe<Announcements>;
+  /** update multiples rows of table: "announcements" */
+  update_announcements_many?: Maybe<Array<Maybe<Announcements_Mutation_Response>>>;
   /** update multiples rows of table: "app_state_history" */
   update_appStateHistory_many?: Maybe<Array<Maybe<AppStateHistory_Mutation_Response>>>;
   /** update multiples rows of table: "app_states" */
@@ -11562,12 +13859,30 @@ export type Mutation_Root = {
   update_backups_many?: Maybe<Array<Maybe<Backups_Mutation_Response>>>;
   /** update multiples rows of table: "billing.dedicated_compute" */
   update_billing_dedicated_compute_many?: Maybe<Array<Maybe<Billing_Dedicated_Compute_Mutation_Response>>>;
+  /** update data of the table: "billing.report_resource_type" */
+  update_billing_report_resource_type?: Maybe<Billing_Report_Resource_Type_Mutation_Response>;
+  /** update single row of the table: "billing.report_resource_type" */
+  update_billing_report_resource_type_by_pk?: Maybe<Billing_Report_Resource_Type>;
+  /** update multiples rows of table: "billing.report_resource_type" */
+  update_billing_report_resource_type_many?: Maybe<Array<Maybe<Billing_Report_Resource_Type_Mutation_Response>>>;
   /** update data of the table: "billing.report_type" */
   update_billing_report_type?: Maybe<Billing_Report_Type_Mutation_Response>;
   /** update single row of the table: "billing.report_type" */
   update_billing_report_type_by_pk?: Maybe<Billing_Report_Type>;
   /** update multiples rows of table: "billing.report_type" */
   update_billing_report_type_many?: Maybe<Array<Maybe<Billing_Report_Type_Mutation_Response>>>;
+  /** update data of the table: "billing.reports_resources" */
+  update_billing_reports_resources?: Maybe<Billing_Reports_Resources_Mutation_Response>;
+  /** update single row of the table: "billing.reports_resources" */
+  update_billing_reports_resources_by_pk?: Maybe<Billing_Reports_Resources>;
+  /** update multiples rows of table: "billing.reports_resources" */
+  update_billing_reports_resources_many?: Maybe<Array<Maybe<Billing_Reports_Resources_Mutation_Response>>>;
+  /** update data of the table: "billing.subscription_items" */
+  update_billing_subscription_items?: Maybe<Billing_Subscription_Items_Mutation_Response>;
+  /** update single row of the table: "billing.subscription_items" */
+  update_billing_subscription_items_by_pk?: Maybe<Billing_Subscription_Items>;
+  /** update multiples rows of table: "billing.subscription_items" */
+  update_billing_subscription_items_many?: Maybe<Array<Maybe<Billing_Subscription_Items_Mutation_Response>>>;
   /** update multiples rows of table: "storage.buckets" */
   update_buckets_many?: Maybe<Array<Maybe<Buckets_Mutation_Response>>>;
   /** update multiples rows of table: "cli_tokens" */
@@ -11590,8 +13905,6 @@ export type Mutation_Root = {
   update_deployments_many?: Maybe<Array<Maybe<Deployments_Mutation_Response>>>;
   /** update multiples rows of table: "feature_flags" */
   update_featureFlags_many?: Maybe<Array<Maybe<FeatureFlags_Mutation_Response>>>;
-  /** update multiples rows of table: "feedback" */
-  update_feedback_many?: Maybe<Array<Maybe<Feedback_Mutation_Response>>>;
   /** update multiples rows of table: "storage.files" */
   update_files_many?: Maybe<Array<Maybe<Files_Mutation_Response>>>;
   /** update multiples rows of table: "github_app_installations" */
@@ -11600,6 +13913,24 @@ export type Mutation_Root = {
   update_githubRepositories_many?: Maybe<Array<Maybe<GithubRepositories_Mutation_Response>>>;
   /** update multiples rows of table: "billing.subscriptions" */
   update_many_billing_subscriptions?: Maybe<Array<Maybe<Billing_Subscriptions_Mutation_Response>>>;
+  /** update data of the table: "organization_costs_thresholds" */
+  update_organization_costs_thresholds?: Maybe<Organization_Costs_Thresholds_Mutation_Response>;
+  /** update single row of the table: "organization_costs_thresholds" */
+  update_organization_costs_thresholds_by_pk?: Maybe<Organization_Costs_Thresholds>;
+  /** update multiples rows of table: "organization_costs_thresholds" */
+  update_organization_costs_thresholds_many?: Maybe<Array<Maybe<Organization_Costs_Thresholds_Mutation_Response>>>;
+  /** update data of the table: "organization_members_role" */
+  update_organization_members_role?: Maybe<Organization_Members_Role_Mutation_Response>;
+  /** update single row of the table: "organization_members_role" */
+  update_organization_members_role_by_pk?: Maybe<Organization_Members_Role>;
+  /** update multiples rows of table: "organization_members_role" */
+  update_organization_members_role_many?: Maybe<Array<Maybe<Organization_Members_Role_Mutation_Response>>>;
+  /** update data of the table: "organization_status" */
+  update_organization_status?: Maybe<Organization_Status_Mutation_Response>;
+  /** update single row of the table: "organization_status" */
+  update_organization_status_by_pk?: Maybe<Organization_Status>;
+  /** update multiples rows of table: "organization_status" */
+  update_organization_status_many?: Maybe<Array<Maybe<Organization_Status_Mutation_Response>>>;
   /** update multiples rows of table: "payment_methods" */
   update_paymentMethods_many?: Maybe<Array<Maybe<PaymentMethods_Mutation_Response>>>;
   /** update multiples rows of table: "plans" */
@@ -11622,34 +13953,14 @@ export type Mutation_Root = {
   update_run_service_many?: Maybe<Array<Maybe<Run_Service_Mutation_Response>>>;
   /** update multiples rows of table: "auth.users" */
   update_users_many?: Maybe<Array<Maybe<Users_Mutation_Response>>>;
-  /** update multiples rows of table: "users_usage" */
-  update_users_usage_many?: Maybe<Array<Maybe<Users_Usage_Mutation_Response>>>;
+  /** update multiples rows of table: "storage.virus" */
+  update_virus_many?: Maybe<Array<Maybe<Virus_Mutation_Response>>>;
   /** update multiples rows of table: "workspace_member_invites" */
   update_workspaceMemberInvites_many?: Maybe<Array<Maybe<WorkspaceMemberInvites_Mutation_Response>>>;
   /** update multiples rows of table: "workspace_members" */
   update_workspaceMembers_many?: Maybe<Array<Maybe<WorkspaceMembers_Mutation_Response>>>;
   /** update multiples rows of table: "workspaces" */
   update_workspaces_many?: Maybe<Array<Maybe<Workspaces_Mutation_Response>>>;
-  /** delete single row from the table: "billing.dedicated_compute_reports" */
-  zzzDONOTUSE_delete_billing_dedicated_compute_report?: Maybe<Billing_Dedicated_Compute_Reports>;
-  /** delete data from the table: "billing.dedicated_compute_reports" */
-  zzzDONOTUSE_delete_billing_dedicated_compute_reports?: Maybe<Billing_Dedicated_Compute_Reports_Mutation_Response>;
-  /** insert a single row into the table: "billing.dedicated_compute_reports" */
-  zzzDONOTUSE_insert_billing_dedicated_compute_report?: Maybe<Billing_Dedicated_Compute_Reports>;
-  /** insert data into the table: "billing.dedicated_compute_reports" */
-  zzzDONOTUSE_insert_billing_dedicated_compute_reports?: Maybe<Billing_Dedicated_Compute_Reports_Mutation_Response>;
-  /** update single row of the table: "billing.dedicated_compute_reports" */
-  zzzDONOTUSE_update_billing_dedicated_compute_report?: Maybe<Billing_Dedicated_Compute_Reports>;
-  /** update data of the table: "billing.dedicated_compute_reports" */
-  zzzDONOTUSE_update_billing_dedicated_compute_reports?: Maybe<Billing_Dedicated_Compute_Reports_Mutation_Response>;
-  /** update multiples rows of table: "billing.dedicated_compute_reports" */
-  zzzDONOTUSE_update_many_billing_dedicated_compute_reports?: Maybe<Array<Maybe<Billing_Dedicated_Compute_Reports_Mutation_Response>>>;
-};
-
-
-/** mutation root */
-export type Mutation_RootBackupAllApplicationsDatabaseArgs = {
-  expireInDays?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -11661,30 +13972,112 @@ export type Mutation_RootBackupApplicationDatabaseArgs = {
 
 
 /** mutation root */
+export type Mutation_RootBillingChangeOrganizationPlanArgs = {
+  organizationID: Scalars['uuid'];
+  planID: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootBillingCreateOrganizationRequestArgs = {
+  organizationName: Scalars['String'];
+  planID: Scalars['uuid'];
+  redirectURL: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootBillingDeleteAppArgs = {
+  appID: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootBillingDeleteOrganizationArgs = {
+  organizationID: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootBillingFinishSubscriptionArgs = {
   appID: Scalars['uuid'];
   appName: Scalars['String'];
+  organizationID?: InputMaybe<Scalars['uuid']>;
+  planID: Scalars['uuid'];
   subdomain: Scalars['String'];
   subscriptionID: Scalars['String'];
 };
 
 
 /** mutation root */
-export type Mutation_RootBillingFullReportWorkflowArgs = {
-  reportTime?: InputMaybe<Scalars['Timestamp']>;
+export type Mutation_RootBillingMigrateProjectToOrganizationArgs = {
+  appID: Scalars['uuid'];
+  organizationID: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootBillingPostOrganizationRequestArgs = {
+  sessionID: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootBillingTransferAppArgs = {
+  appID: Scalars['uuid'];
+  organizationID: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootBillingUpdateCustomDomainsArgs = {
+  amount: Scalars['Int'];
+  appID: Scalars['uuid'];
+  organizationID?: InputMaybe<Scalars['uuid']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootBillingUpdateDedicatedComputeArgs = {
   appID: Scalars['uuid'];
+  organizationID?: InputMaybe<Scalars['uuid']>;
   totalMillicores: Scalars['Int'];
 };
 
 
 /** mutation root */
-export type Mutation_RootBillingUpdateReportsArgs = {
-  reportTime?: InputMaybe<Scalars['Timestamp']>;
+export type Mutation_RootBillingUpdateFunctionsAmountArgs = {
+  amount: Scalars['Int'];
+  appID: Scalars['uuid'];
+  organizationID?: InputMaybe<Scalars['uuid']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootBillingUpdatePersistentVolumeArgs = {
+  amount: Scalars['Int'];
+  appID: Scalars['uuid'];
+  organizationID?: InputMaybe<Scalars['uuid']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootChangeDatabaseVersionArgs = {
+  appID: Scalars['uuid'];
+  force?: InputMaybe<Scalars['Boolean']>;
+  version: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteAnnouncementReadArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteAnnouncementsReadArgs = {
+  where: Announcements_Read_Bool_Exp;
 };
 
 
@@ -11857,6 +14250,18 @@ export type Mutation_RootDeleteBillingReportsArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDeleteBillingResourceArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteBillingResourcesArgs = {
+  where: Billing_Resources_Bool_Exp;
+};
+
+
+/** mutation root */
 export type Mutation_RootDeleteBillingSubscriptionArgs = {
   where: Billing_Subscriptions_Bool_Exp;
 };
@@ -11935,18 +14340,6 @@ export type Mutation_RootDeleteFeatureFlagsArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDeleteFeedbackArgs = {
-  where: Feedback_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteFeedbackOneArgs = {
-  id: Scalars['Int'];
-};
-
-
-/** mutation root */
 export type Mutation_RootDeleteFileArgs = {
   id: Scalars['uuid'];
 };
@@ -11983,6 +14376,54 @@ export type Mutation_RootDeleteGithubRepositoryArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDeleteOrganizationArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteOrganizationMemberArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteOrganizationMemberInviteArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteOrganizationMemberInvitesArgs = {
+  where: Organization_Member_Invites_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteOrganizationMembersArgs = {
+  where: Organization_Members_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteOrganizationNewRequestArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteOrganizationNewRequestsArgs = {
+  where: Organization_New_Request_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteOrganizationsArgs = {
+  where: Organizations_Bool_Exp;
+};
+
+
+/** mutation root */
 export type Mutation_RootDeletePaymentMethodArgs = {
   id: Scalars['uuid'];
 };
@@ -12003,6 +14444,18 @@ export type Mutation_RootDeletePlanArgs = {
 /** mutation root */
 export type Mutation_RootDeletePlansArgs = {
   where: Plans_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteRegionsAllowedOrganizationArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteRegionsAllowedOrganizationsArgs = {
+  where: Regions_Allowed_Organization_Bool_Exp;
 };
 
 
@@ -12081,14 +14534,14 @@ export type Mutation_RootDeleteUsersArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDeleteUsersUsageArgs = {
+export type Mutation_RootDeleteVirusArgs = {
   id: Scalars['uuid'];
 };
 
 
 /** mutation root */
-export type Mutation_RootDeleteUsersUsagesArgs = {
-  where: Users_Usage_Bool_Exp;
+export type Mutation_RootDeleteVirusesArgs = {
+  where: Virus_Bool_Exp;
 };
 
 
@@ -12129,6 +14582,18 @@ export type Mutation_RootDeleteWorkspacesArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_AnnouncementsArgs = {
+  where: Announcements_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Announcements_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_Auth_MigrationsArgs = {
   where: Auth_Migrations_Bool_Exp;
 };
@@ -12141,6 +14606,18 @@ export type Mutation_RootDelete_Auth_Migrations_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Billing_Report_Resource_TypeArgs = {
+  where: Billing_Report_Resource_Type_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Billing_Report_Resource_Type_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_Billing_Report_TypeArgs = {
   where: Billing_Report_Type_Bool_Exp;
 };
@@ -12149,6 +14626,30 @@ export type Mutation_RootDelete_Billing_Report_TypeArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Billing_Report_Type_By_PkArgs = {
   value: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Billing_Reports_ResourcesArgs = {
+  where: Billing_Reports_Resources_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Billing_Reports_Resources_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Billing_Subscription_ItemsArgs = {
+  where: Billing_Subscription_Items_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Billing_Subscription_Items_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -12177,6 +14678,42 @@ export type Mutation_RootDelete_Countries_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Organization_Costs_ThresholdsArgs = {
+  where: Organization_Costs_Thresholds_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Organization_Costs_Thresholds_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Organization_Members_RoleArgs = {
+  where: Organization_Members_Role_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Organization_Members_Role_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Organization_StatusArgs = {
+  where: Organization_Status_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Organization_Status_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_Region_TypeArgs = {
   where: Region_Type_Bool_Exp;
 };
@@ -12197,6 +14734,20 @@ export type Mutation_RootDelete_RegionsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Regions_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertAnnouncementReadArgs = {
+  object: Announcements_Read_Insert_Input;
+  on_conflict?: InputMaybe<Announcements_Read_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertAnnouncementsReadArgs = {
+  objects: Array<Announcements_Read_Insert_Input>;
+  on_conflict?: InputMaybe<Announcements_Read_On_Conflict>;
 };
 
 
@@ -12397,6 +14948,20 @@ export type Mutation_RootInsertBillingReportsArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsertBillingResourceArgs = {
+  object: Billing_Resources_Insert_Input;
+  on_conflict?: InputMaybe<Billing_Resources_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertBillingResourcesArgs = {
+  objects: Array<Billing_Resources_Insert_Input>;
+  on_conflict?: InputMaybe<Billing_Resources_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsertBillingSubscriptionArgs = {
   objects: Array<Billing_Subscriptions_Insert_Input>;
   on_conflict?: InputMaybe<Billing_Subscriptions_On_Conflict>;
@@ -12490,20 +15055,6 @@ export type Mutation_RootInsertFeatureFlagsArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsertFeedbackArgs = {
-  objects: Array<Feedback_Insert_Input>;
-  on_conflict?: InputMaybe<Feedback_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertFeedbackOneArgs = {
-  object: Feedback_Insert_Input;
-  on_conflict?: InputMaybe<Feedback_On_Conflict>;
-};
-
-
-/** mutation root */
 export type Mutation_RootInsertFileArgs = {
   object: Files_Insert_Input;
   on_conflict?: InputMaybe<Files_On_Conflict>;
@@ -12546,6 +15097,62 @@ export type Mutation_RootInsertGithubRepositoryArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsertOrganizationArgs = {
+  object: Organizations_Insert_Input;
+  on_conflict?: InputMaybe<Organizations_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertOrganizationMemberArgs = {
+  object: Organization_Members_Insert_Input;
+  on_conflict?: InputMaybe<Organization_Members_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertOrganizationMemberInviteArgs = {
+  object: Organization_Member_Invites_Insert_Input;
+  on_conflict?: InputMaybe<Organization_Member_Invites_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertOrganizationMemberInvitesArgs = {
+  objects: Array<Organization_Member_Invites_Insert_Input>;
+  on_conflict?: InputMaybe<Organization_Member_Invites_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertOrganizationMembersArgs = {
+  objects: Array<Organization_Members_Insert_Input>;
+  on_conflict?: InputMaybe<Organization_Members_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertOrganizationNewRequestArgs = {
+  object: Organization_New_Request_Insert_Input;
+  on_conflict?: InputMaybe<Organization_New_Request_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertOrganizationNewRequestsArgs = {
+  objects: Array<Organization_New_Request_Insert_Input>;
+  on_conflict?: InputMaybe<Organization_New_Request_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertOrganizationsArgs = {
+  objects: Array<Organizations_Insert_Input>;
+  on_conflict?: InputMaybe<Organizations_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsertPaymentMethodArgs = {
   object: PaymentMethods_Insert_Input;
   on_conflict?: InputMaybe<PaymentMethods_On_Conflict>;
@@ -12574,6 +15181,20 @@ export type Mutation_RootInsertPlansArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsertRegionsAllowedOrganizationArgs = {
+  object: Regions_Allowed_Organization_Insert_Input;
+  on_conflict?: InputMaybe<Regions_Allowed_Organization_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertRegionsAllowedOrganizationsArgs = {
+  objects: Array<Regions_Allowed_Organization_Insert_Input>;
+  on_conflict?: InputMaybe<Regions_Allowed_Organization_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsertRegionsAllowedWorkspaceArgs = {
   object: Regions_Allowed_Workspace_Insert_Input;
   on_conflict?: InputMaybe<Regions_Allowed_Workspace_On_Conflict>;
@@ -12598,7 +15219,6 @@ export type Mutation_RootInsertRunServiceArgs = {
 export type Mutation_RootInsertRunServiceConfigArgs = {
   appID: Scalars['uuid'];
   config: ConfigRunServiceConfigInsertInput;
-  serviceID: Scalars['uuid'];
 };
 
 
@@ -12659,16 +15279,16 @@ export type Mutation_RootInsertUsersArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsertUsersUsageArgs = {
-  object: Users_Usage_Insert_Input;
-  on_conflict?: InputMaybe<Users_Usage_On_Conflict>;
+export type Mutation_RootInsertVirusArgs = {
+  object: Virus_Insert_Input;
+  on_conflict?: InputMaybe<Virus_On_Conflict>;
 };
 
 
 /** mutation root */
-export type Mutation_RootInsertUsersUsagesArgs = {
-  objects: Array<Users_Usage_Insert_Input>;
-  on_conflict?: InputMaybe<Users_Usage_On_Conflict>;
+export type Mutation_RootInsertVirusesArgs = {
+  objects: Array<Virus_Insert_Input>;
+  on_conflict?: InputMaybe<Virus_On_Conflict>;
 };
 
 
@@ -12715,6 +15335,20 @@ export type Mutation_RootInsertWorkspacesArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_AnnouncementsArgs = {
+  objects: Array<Announcements_Insert_Input>;
+  on_conflict?: InputMaybe<Announcements_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Announcements_OneArgs = {
+  object: Announcements_Insert_Input;
+  on_conflict?: InputMaybe<Announcements_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_Auth_MigrationsArgs = {
   objects: Array<Auth_Migrations_Insert_Input>;
   on_conflict?: InputMaybe<Auth_Migrations_On_Conflict>;
@@ -12729,6 +15363,20 @@ export type Mutation_RootInsert_Auth_Migrations_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Billing_Report_Resource_TypeArgs = {
+  objects: Array<Billing_Report_Resource_Type_Insert_Input>;
+  on_conflict?: InputMaybe<Billing_Report_Resource_Type_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Billing_Report_Resource_Type_OneArgs = {
+  object: Billing_Report_Resource_Type_Insert_Input;
+  on_conflict?: InputMaybe<Billing_Report_Resource_Type_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_Billing_Report_TypeArgs = {
   objects: Array<Billing_Report_Type_Insert_Input>;
   on_conflict?: InputMaybe<Billing_Report_Type_On_Conflict>;
@@ -12739,6 +15387,34 @@ export type Mutation_RootInsert_Billing_Report_TypeArgs = {
 export type Mutation_RootInsert_Billing_Report_Type_OneArgs = {
   object: Billing_Report_Type_Insert_Input;
   on_conflict?: InputMaybe<Billing_Report_Type_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Billing_Reports_ResourcesArgs = {
+  objects: Array<Billing_Reports_Resources_Insert_Input>;
+  on_conflict?: InputMaybe<Billing_Reports_Resources_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Billing_Reports_Resources_OneArgs = {
+  object: Billing_Reports_Resources_Insert_Input;
+  on_conflict?: InputMaybe<Billing_Reports_Resources_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Billing_Subscription_ItemsArgs = {
+  objects: Array<Billing_Subscription_Items_Insert_Input>;
+  on_conflict?: InputMaybe<Billing_Subscription_Items_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Billing_Subscription_Items_OneArgs = {
+  object: Billing_Subscription_Items_Insert_Input;
+  on_conflict?: InputMaybe<Billing_Subscription_Items_On_Conflict>;
 };
 
 
@@ -12771,6 +15447,48 @@ export type Mutation_RootInsert_Countries_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Organization_Costs_ThresholdsArgs = {
+  objects: Array<Organization_Costs_Thresholds_Insert_Input>;
+  on_conflict?: InputMaybe<Organization_Costs_Thresholds_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Organization_Costs_Thresholds_OneArgs = {
+  object: Organization_Costs_Thresholds_Insert_Input;
+  on_conflict?: InputMaybe<Organization_Costs_Thresholds_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Organization_Members_RoleArgs = {
+  objects: Array<Organization_Members_Role_Insert_Input>;
+  on_conflict?: InputMaybe<Organization_Members_Role_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Organization_Members_Role_OneArgs = {
+  object: Organization_Members_Role_Insert_Input;
+  on_conflict?: InputMaybe<Organization_Members_Role_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Organization_StatusArgs = {
+  objects: Array<Organization_Status_Insert_Input>;
+  on_conflict?: InputMaybe<Organization_Status_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Organization_Status_OneArgs = {
+  object: Organization_Status_Insert_Input;
+  on_conflict?: InputMaybe<Organization_Status_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_Region_TypeArgs = {
   objects: Array<Region_Type_Insert_Input>;
   on_conflict?: InputMaybe<Region_Type_On_Conflict>;
@@ -12799,9 +15517,27 @@ export type Mutation_RootInsert_Regions_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootOrganizationMemberInviteAcceptArgs = {
+  args: OrganizationMemberInviteAccept_Args;
+  distinct_on?: InputMaybe<Array<Organization_Members_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Members_Order_By>>;
+  where?: InputMaybe<Organization_Members_Bool_Exp>;
+};
+
+
+/** mutation root */
 export type Mutation_RootReplaceConfigArgs = {
   appID: Scalars['uuid'];
   config: ConfigConfigInsertInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootReplaceConfigRawJsonArgs = {
+  appID: Scalars['uuid'];
+  rawJSON: Scalars['String'];
 };
 
 
@@ -12828,11 +15564,52 @@ export type Mutation_RootRestoreApplicationDatabaseArgs = {
 
 
 /** mutation root */
+export type Mutation_RootSendEmailInviteArgs = {
+  inviteID: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootSendEmailOrganizationStatusChangeArgs = {
+  newStatus: Scalars['String'];
+  oldStatus: Scalars['String'];
+  organizationID: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootSendEmailOrganizationThresholdArgs = {
+  organizationID: Scalars['uuid'];
+  threshold: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootSendEmailTemplateArgs = {
   from: Scalars['String'];
   templateAlias: Scalars['String'];
   templateModel?: InputMaybe<Scalars['map']>;
   to: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateAnnouncementReadArgs = {
+  _set?: InputMaybe<Announcements_Read_Set_Input>;
+  pk_columns: Announcements_Read_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateAnnouncementsReadArgs = {
+  _set?: InputMaybe<Announcements_Read_Set_Input>;
+  where: Announcements_Read_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateAnnouncementsReadManyArgs = {
+  updates: Array<Announcements_Read_Updates>;
 };
 
 
@@ -13077,6 +15854,22 @@ export type Mutation_RootUpdateBillingReportsArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateBillingResourceArgs = {
+  _inc?: InputMaybe<Billing_Resources_Inc_Input>;
+  _set?: InputMaybe<Billing_Resources_Set_Input>;
+  pk_columns: Billing_Resources_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateBillingResourcesArgs = {
+  _inc?: InputMaybe<Billing_Resources_Inc_Input>;
+  _set?: InputMaybe<Billing_Resources_Set_Input>;
+  where: Billing_Resources_Bool_Exp;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdateBillingSubscriptionArgs = {
   _set?: InputMaybe<Billing_Subscriptions_Set_Input>;
   pk_columns: Billing_Subscriptions_Pk_Columns_Input;
@@ -13170,24 +15963,13 @@ export type Mutation_RootUpdateFeatureFlagsArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdateFeedbackArgs = {
-  _inc?: InputMaybe<Feedback_Inc_Input>;
-  _set?: InputMaybe<Feedback_Set_Input>;
-  where: Feedback_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateFeedbackOneArgs = {
-  _inc?: InputMaybe<Feedback_Inc_Input>;
-  _set?: InputMaybe<Feedback_Set_Input>;
-  pk_columns: Feedback_Pk_Columns_Input;
-};
-
-
-/** mutation root */
 export type Mutation_RootUpdateFileArgs = {
+  _append?: InputMaybe<Files_Append_Input>;
+  _delete_at_path?: InputMaybe<Files_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Files_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Files_Delete_Key_Input>;
   _inc?: InputMaybe<Files_Inc_Input>;
+  _prepend?: InputMaybe<Files_Prepend_Input>;
   _set?: InputMaybe<Files_Set_Input>;
   pk_columns: Files_Pk_Columns_Input;
 };
@@ -13195,7 +15977,12 @@ export type Mutation_RootUpdateFileArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateFilesArgs = {
+  _append?: InputMaybe<Files_Append_Input>;
+  _delete_at_path?: InputMaybe<Files_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Files_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Files_Delete_Key_Input>;
   _inc?: InputMaybe<Files_Inc_Input>;
+  _prepend?: InputMaybe<Files_Prepend_Input>;
   _set?: InputMaybe<Files_Set_Input>;
   where: Files_Bool_Exp;
 };
@@ -13248,6 +16035,12 @@ export type Mutation_RootUpdateManyBillingReportsArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateManyBillingResourcesArgs = {
+  updates: Array<Billing_Resources_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdateManySoftwareTypeArgs = {
   updates: Array<Software_Type_Updates>;
 };
@@ -13256,6 +16049,88 @@ export type Mutation_RootUpdateManySoftwareTypeArgs = {
 /** mutation root */
 export type Mutation_RootUpdateManySoftwareVersionsArgs = {
   updates: Array<Software_Versions_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOrganizationArgs = {
+  _inc?: InputMaybe<Organizations_Inc_Input>;
+  _set?: InputMaybe<Organizations_Set_Input>;
+  pk_columns: Organizations_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOrganizationMemberArgs = {
+  _set?: InputMaybe<Organization_Members_Set_Input>;
+  pk_columns: Organization_Members_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOrganizationMemberInviteArgs = {
+  _set?: InputMaybe<Organization_Member_Invites_Set_Input>;
+  pk_columns: Organization_Member_Invites_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOrganizationMemberInvitesArgs = {
+  _set?: InputMaybe<Organization_Member_Invites_Set_Input>;
+  where: Organization_Member_Invites_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOrganizationMemberInvitesManyArgs = {
+  updates: Array<Organization_Member_Invites_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOrganizationMembersArgs = {
+  _set?: InputMaybe<Organization_Members_Set_Input>;
+  where: Organization_Members_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOrganizationMembersManyArgs = {
+  updates: Array<Organization_Members_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOrganizationNewRequestArgs = {
+  _set?: InputMaybe<Organization_New_Request_Set_Input>;
+  pk_columns: Organization_New_Request_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOrganizationNewRequestsArgs = {
+  _set?: InputMaybe<Organization_New_Request_Set_Input>;
+  where: Organization_New_Request_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOrganizationNewRequestsManyArgs = {
+  updates: Array<Organization_New_Request_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOrganizationsArgs = {
+  _inc?: InputMaybe<Organizations_Inc_Input>;
+  _set?: InputMaybe<Organizations_Set_Input>;
+  where: Organizations_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateOrganizationsManyArgs = {
+  updates: Array<Organizations_Updates>;
 };
 
 
@@ -13288,6 +16163,26 @@ export type Mutation_RootUpdatePlansArgs = {
   _inc?: InputMaybe<Plans_Inc_Input>;
   _set?: InputMaybe<Plans_Set_Input>;
   where: Plans_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateRegionsAllowedOrganizationArgs = {
+  _set?: InputMaybe<Regions_Allowed_Organization_Set_Input>;
+  pk_columns: Regions_Allowed_Organization_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateRegionsAllowedOrganizationsArgs = {
+  _set?: InputMaybe<Regions_Allowed_Organization_Set_Input>;
+  where: Regions_Allowed_Organization_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateRegionsAllowedOrganizationsManyArgs = {
+  updates: Array<Regions_Allowed_Organization_Updates>;
 };
 
 
@@ -13394,16 +16289,26 @@ export type Mutation_RootUpdateUsersArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdateUsersUsageArgs = {
-  _set?: InputMaybe<Users_Usage_Set_Input>;
-  pk_columns: Users_Usage_Pk_Columns_Input;
+export type Mutation_RootUpdateVirusArgs = {
+  _append?: InputMaybe<Virus_Append_Input>;
+  _delete_at_path?: InputMaybe<Virus_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Virus_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Virus_Delete_Key_Input>;
+  _prepend?: InputMaybe<Virus_Prepend_Input>;
+  _set?: InputMaybe<Virus_Set_Input>;
+  pk_columns: Virus_Pk_Columns_Input;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdateUsersUsagesArgs = {
-  _set?: InputMaybe<Users_Usage_Set_Input>;
-  where: Users_Usage_Bool_Exp;
+export type Mutation_RootUpdateVirusesArgs = {
+  _append?: InputMaybe<Virus_Append_Input>;
+  _delete_at_path?: InputMaybe<Virus_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Virus_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Virus_Delete_Key_Input>;
+  _prepend?: InputMaybe<Virus_Prepend_Input>;
+  _set?: InputMaybe<Virus_Set_Input>;
+  where: Virus_Bool_Exp;
 };
 
 
@@ -13446,6 +16351,26 @@ export type Mutation_RootUpdateWorkspaceMembersArgs = {
 export type Mutation_RootUpdateWorkspacesArgs = {
   _set?: InputMaybe<Workspaces_Set_Input>;
   where: Workspaces_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_AnnouncementsArgs = {
+  _set?: InputMaybe<Announcements_Set_Input>;
+  where: Announcements_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Announcements_By_PkArgs = {
+  _set?: InputMaybe<Announcements_Set_Input>;
+  pk_columns: Announcements_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Announcements_ManyArgs = {
+  updates: Array<Announcements_Updates>;
 };
 
 
@@ -13550,6 +16475,26 @@ export type Mutation_RootUpdate_Billing_Dedicated_Compute_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Billing_Report_Resource_TypeArgs = {
+  _set?: InputMaybe<Billing_Report_Resource_Type_Set_Input>;
+  where: Billing_Report_Resource_Type_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Billing_Report_Resource_Type_By_PkArgs = {
+  _set?: InputMaybe<Billing_Report_Resource_Type_Set_Input>;
+  pk_columns: Billing_Report_Resource_Type_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Billing_Report_Resource_Type_ManyArgs = {
+  updates: Array<Billing_Report_Resource_Type_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Billing_Report_TypeArgs = {
   _set?: InputMaybe<Billing_Report_Type_Set_Input>;
   where: Billing_Report_Type_Bool_Exp;
@@ -13566,6 +16511,48 @@ export type Mutation_RootUpdate_Billing_Report_Type_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Billing_Report_Type_ManyArgs = {
   updates: Array<Billing_Report_Type_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Billing_Reports_ResourcesArgs = {
+  _inc?: InputMaybe<Billing_Reports_Resources_Inc_Input>;
+  _set?: InputMaybe<Billing_Reports_Resources_Set_Input>;
+  where: Billing_Reports_Resources_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Billing_Reports_Resources_By_PkArgs = {
+  _inc?: InputMaybe<Billing_Reports_Resources_Inc_Input>;
+  _set?: InputMaybe<Billing_Reports_Resources_Set_Input>;
+  pk_columns: Billing_Reports_Resources_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Billing_Reports_Resources_ManyArgs = {
+  updates: Array<Billing_Reports_Resources_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Billing_Subscription_ItemsArgs = {
+  _set?: InputMaybe<Billing_Subscription_Items_Set_Input>;
+  where: Billing_Subscription_Items_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Billing_Subscription_Items_By_PkArgs = {
+  _set?: InputMaybe<Billing_Subscription_Items_Set_Input>;
+  pk_columns: Billing_Subscription_Items_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Billing_Subscription_Items_ManyArgs = {
+  updates: Array<Billing_Subscription_Items_Updates>;
 };
 
 
@@ -13642,12 +16629,6 @@ export type Mutation_RootUpdate_FeatureFlags_ManyArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_Feedback_ManyArgs = {
-  updates: Array<Feedback_Updates>;
-};
-
-
-/** mutation root */
 export type Mutation_RootUpdate_Files_ManyArgs = {
   updates: Array<Files_Updates>;
 };
@@ -13668,6 +16649,66 @@ export type Mutation_RootUpdate_GithubRepositories_ManyArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Many_Billing_SubscriptionsArgs = {
   updates: Array<Billing_Subscriptions_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Organization_Costs_ThresholdsArgs = {
+  _set?: InputMaybe<Organization_Costs_Thresholds_Set_Input>;
+  where: Organization_Costs_Thresholds_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Organization_Costs_Thresholds_By_PkArgs = {
+  _set?: InputMaybe<Organization_Costs_Thresholds_Set_Input>;
+  pk_columns: Organization_Costs_Thresholds_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Organization_Costs_Thresholds_ManyArgs = {
+  updates: Array<Organization_Costs_Thresholds_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Organization_Members_RoleArgs = {
+  _set?: InputMaybe<Organization_Members_Role_Set_Input>;
+  where: Organization_Members_Role_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Organization_Members_Role_By_PkArgs = {
+  _set?: InputMaybe<Organization_Members_Role_Set_Input>;
+  pk_columns: Organization_Members_Role_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Organization_Members_Role_ManyArgs = {
+  updates: Array<Organization_Members_Role_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Organization_StatusArgs = {
+  _set?: InputMaybe<Organization_Status_Set_Input>;
+  where: Organization_Status_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Organization_Status_By_PkArgs = {
+  _set?: InputMaybe<Organization_Status_Set_Input>;
+  pk_columns: Organization_Status_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Organization_Status_ManyArgs = {
+  updates: Array<Organization_Status_Updates>;
 };
 
 
@@ -13742,8 +16783,8 @@ export type Mutation_RootUpdate_Users_ManyArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_Users_Usage_ManyArgs = {
-  updates: Array<Users_Usage_Updates>;
+export type Mutation_RootUpdate_Virus_ManyArgs = {
+  updates: Array<Virus_Updates>;
 };
 
 
@@ -13764,54 +16805,6 @@ export type Mutation_RootUpdate_Workspaces_ManyArgs = {
   updates: Array<Workspaces_Updates>;
 };
 
-
-/** mutation root */
-export type Mutation_RootZzzDonotuse_Delete_Billing_Dedicated_Compute_ReportArgs = {
-  id: Scalars['uuid'];
-};
-
-
-/** mutation root */
-export type Mutation_RootZzzDonotuse_Delete_Billing_Dedicated_Compute_ReportsArgs = {
-  where: Billing_Dedicated_Compute_Reports_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootZzzDonotuse_Insert_Billing_Dedicated_Compute_ReportArgs = {
-  object: Billing_Dedicated_Compute_Reports_Insert_Input;
-  on_conflict?: InputMaybe<Billing_Dedicated_Compute_Reports_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootZzzDonotuse_Insert_Billing_Dedicated_Compute_ReportsArgs = {
-  objects: Array<Billing_Dedicated_Compute_Reports_Insert_Input>;
-  on_conflict?: InputMaybe<Billing_Dedicated_Compute_Reports_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootZzzDonotuse_Update_Billing_Dedicated_Compute_ReportArgs = {
-  _inc?: InputMaybe<Billing_Dedicated_Compute_Reports_Inc_Input>;
-  _set?: InputMaybe<Billing_Dedicated_Compute_Reports_Set_Input>;
-  pk_columns: Billing_Dedicated_Compute_Reports_Pk_Columns_Input;
-};
-
-
-/** mutation root */
-export type Mutation_RootZzzDonotuse_Update_Billing_Dedicated_Compute_ReportsArgs = {
-  _inc?: InputMaybe<Billing_Dedicated_Compute_Reports_Inc_Input>;
-  _set?: InputMaybe<Billing_Dedicated_Compute_Reports_Set_Input>;
-  where: Billing_Dedicated_Compute_Reports_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootZzzDonotuse_Update_Many_Billing_Dedicated_Compute_ReportsArgs = {
-  updates: Array<Billing_Dedicated_Compute_Reports_Updates>;
-};
-
 /** column ordering options */
 export enum Order_By {
   /** in ascending order, nulls last */
@@ -13827,6 +16820,1686 @@ export enum Order_By {
   /** in descending order, nulls last */
   DescNullsLast = 'desc_nulls_last'
 }
+
+export type OrganizationMemberInviteAccept_Args = {
+  id?: InputMaybe<Scalars['uuid']>;
+};
+
+/** columns and relationships of "organization_costs_thresholds" */
+export type Organization_Costs_Thresholds = {
+  __typename?: 'organization_costs_thresholds';
+  comment?: Maybe<Scalars['String']>;
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "organization_costs_thresholds" */
+export type Organization_Costs_Thresholds_Aggregate = {
+  __typename?: 'organization_costs_thresholds_aggregate';
+  aggregate?: Maybe<Organization_Costs_Thresholds_Aggregate_Fields>;
+  nodes: Array<Organization_Costs_Thresholds>;
+};
+
+/** aggregate fields of "organization_costs_thresholds" */
+export type Organization_Costs_Thresholds_Aggregate_Fields = {
+  __typename?: 'organization_costs_thresholds_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Organization_Costs_Thresholds_Max_Fields>;
+  min?: Maybe<Organization_Costs_Thresholds_Min_Fields>;
+};
+
+
+/** aggregate fields of "organization_costs_thresholds" */
+export type Organization_Costs_Thresholds_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Organization_Costs_Thresholds_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "organization_costs_thresholds". All fields are combined with a logical 'AND'. */
+export type Organization_Costs_Thresholds_Bool_Exp = {
+  _and?: InputMaybe<Array<Organization_Costs_Thresholds_Bool_Exp>>;
+  _not?: InputMaybe<Organization_Costs_Thresholds_Bool_Exp>;
+  _or?: InputMaybe<Array<Organization_Costs_Thresholds_Bool_Exp>>;
+  comment?: InputMaybe<String_Comparison_Exp>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "organization_costs_thresholds" */
+export enum Organization_Costs_Thresholds_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  OrganizationCostsThresholdsPkey = 'organization_costs_thresholds_pkey'
+}
+
+export enum Organization_Costs_Thresholds_Enum {
+  /** No threshold reached */
+  None = 'NONE',
+  /** 75% of cost usage reached */
+  Percent_075 = 'PERCENT_075',
+  /** 90% of cost usage reached */
+  Percent_090 = 'PERCENT_090',
+  /** 100% of cost usage reached */
+  Percent_100 = 'PERCENT_100'
+}
+
+/** Boolean expression to compare columns of type "organization_costs_thresholds_enum". All fields are combined with logical 'AND'. */
+export type Organization_Costs_Thresholds_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<Organization_Costs_Thresholds_Enum>;
+  _in?: InputMaybe<Array<Organization_Costs_Thresholds_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<Organization_Costs_Thresholds_Enum>;
+  _nin?: InputMaybe<Array<Organization_Costs_Thresholds_Enum>>;
+};
+
+/** input type for inserting data into table "organization_costs_thresholds" */
+export type Organization_Costs_Thresholds_Insert_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Organization_Costs_Thresholds_Max_Fields = {
+  __typename?: 'organization_costs_thresholds_max_fields';
+  comment?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Organization_Costs_Thresholds_Min_Fields = {
+  __typename?: 'organization_costs_thresholds_min_fields';
+  comment?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "organization_costs_thresholds" */
+export type Organization_Costs_Thresholds_Mutation_Response = {
+  __typename?: 'organization_costs_thresholds_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Organization_Costs_Thresholds>;
+};
+
+/** on_conflict condition type for table "organization_costs_thresholds" */
+export type Organization_Costs_Thresholds_On_Conflict = {
+  constraint: Organization_Costs_Thresholds_Constraint;
+  update_columns?: Array<Organization_Costs_Thresholds_Update_Column>;
+  where?: InputMaybe<Organization_Costs_Thresholds_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "organization_costs_thresholds". */
+export type Organization_Costs_Thresholds_Order_By = {
+  comment?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: organization_costs_thresholds */
+export type Organization_Costs_Thresholds_Pk_Columns_Input = {
+  value: Scalars['String'];
+};
+
+/** select columns of table "organization_costs_thresholds" */
+export enum Organization_Costs_Thresholds_Select_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "organization_costs_thresholds" */
+export type Organization_Costs_Thresholds_Set_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "organization_costs_thresholds" */
+export type Organization_Costs_Thresholds_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Organization_Costs_Thresholds_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Organization_Costs_Thresholds_Stream_Cursor_Value_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "organization_costs_thresholds" */
+export enum Organization_Costs_Thresholds_Update_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+export type Organization_Costs_Thresholds_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Organization_Costs_Thresholds_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Organization_Costs_Thresholds_Bool_Exp;
+};
+
+/** columns and relationships of "organization_member_invites" */
+export type Organization_Member_Invites = {
+  __typename?: 'organization_member_invites';
+  createdAt: Scalars['timestamptz'];
+  email: Scalars['citext'];
+  id: Scalars['uuid'];
+  /** An object relationship */
+  organization: Organizations;
+  organizationID: Scalars['uuid'];
+  role: Organization_Members_Role_Enum;
+  updateAt: Scalars['timestamptz'];
+  /** An object relationship */
+  user?: Maybe<Users>;
+};
+
+/** aggregated selection of "organization_member_invites" */
+export type Organization_Member_Invites_Aggregate = {
+  __typename?: 'organization_member_invites_aggregate';
+  aggregate?: Maybe<Organization_Member_Invites_Aggregate_Fields>;
+  nodes: Array<Organization_Member_Invites>;
+};
+
+export type Organization_Member_Invites_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Organization_Member_Invites_Aggregate_Bool_Exp_Count>;
+};
+
+export type Organization_Member_Invites_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Organization_Member_Invites_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Organization_Member_Invites_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "organization_member_invites" */
+export type Organization_Member_Invites_Aggregate_Fields = {
+  __typename?: 'organization_member_invites_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Organization_Member_Invites_Max_Fields>;
+  min?: Maybe<Organization_Member_Invites_Min_Fields>;
+};
+
+
+/** aggregate fields of "organization_member_invites" */
+export type Organization_Member_Invites_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Organization_Member_Invites_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "organization_member_invites" */
+export type Organization_Member_Invites_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Organization_Member_Invites_Max_Order_By>;
+  min?: InputMaybe<Organization_Member_Invites_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "organization_member_invites" */
+export type Organization_Member_Invites_Arr_Rel_Insert_Input = {
+  data: Array<Organization_Member_Invites_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Organization_Member_Invites_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "organization_member_invites". All fields are combined with a logical 'AND'. */
+export type Organization_Member_Invites_Bool_Exp = {
+  _and?: InputMaybe<Array<Organization_Member_Invites_Bool_Exp>>;
+  _not?: InputMaybe<Organization_Member_Invites_Bool_Exp>;
+  _or?: InputMaybe<Array<Organization_Member_Invites_Bool_Exp>>;
+  createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  email?: InputMaybe<Citext_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  organization?: InputMaybe<Organizations_Bool_Exp>;
+  organizationID?: InputMaybe<Uuid_Comparison_Exp>;
+  role?: InputMaybe<Organization_Members_Role_Enum_Comparison_Exp>;
+  updateAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  user?: InputMaybe<Users_Bool_Exp>;
+};
+
+/** unique or primary key constraints on table "organization_member_invites" */
+export enum Organization_Member_Invites_Constraint {
+  /** unique or primary key constraint on columns "email", "organization_id" */
+  OrganizationMemberInvitesOrganizationIdEmailKey = 'organization_member_invites_organization_id_email_key',
+  /** unique or primary key constraint on columns "id" */
+  OrganizationMemberInvitesPkey = 'organization_member_invites_pkey'
+}
+
+/** input type for inserting data into table "organization_member_invites" */
+export type Organization_Member_Invites_Insert_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  email?: InputMaybe<Scalars['citext']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organization?: InputMaybe<Organizations_Obj_Rel_Insert_Input>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
+  role?: InputMaybe<Organization_Members_Role_Enum>;
+  updateAt?: InputMaybe<Scalars['timestamptz']>;
+  user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type Organization_Member_Invites_Max_Fields = {
+  __typename?: 'organization_member_invites_max_fields';
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['citext']>;
+  id?: Maybe<Scalars['uuid']>;
+  organizationID?: Maybe<Scalars['uuid']>;
+  updateAt?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by max() on columns of table "organization_member_invites" */
+export type Organization_Member_Invites_Max_Order_By = {
+  createdAt?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizationID?: InputMaybe<Order_By>;
+  updateAt?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Organization_Member_Invites_Min_Fields = {
+  __typename?: 'organization_member_invites_min_fields';
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['citext']>;
+  id?: Maybe<Scalars['uuid']>;
+  organizationID?: Maybe<Scalars['uuid']>;
+  updateAt?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "organization_member_invites" */
+export type Organization_Member_Invites_Min_Order_By = {
+  createdAt?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizationID?: InputMaybe<Order_By>;
+  updateAt?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "organization_member_invites" */
+export type Organization_Member_Invites_Mutation_Response = {
+  __typename?: 'organization_member_invites_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Organization_Member_Invites>;
+};
+
+/** on_conflict condition type for table "organization_member_invites" */
+export type Organization_Member_Invites_On_Conflict = {
+  constraint: Organization_Member_Invites_Constraint;
+  update_columns?: Array<Organization_Member_Invites_Update_Column>;
+  where?: InputMaybe<Organization_Member_Invites_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "organization_member_invites". */
+export type Organization_Member_Invites_Order_By = {
+  createdAt?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organization?: InputMaybe<Organizations_Order_By>;
+  organizationID?: InputMaybe<Order_By>;
+  role?: InputMaybe<Order_By>;
+  updateAt?: InputMaybe<Order_By>;
+  user?: InputMaybe<Users_Order_By>;
+};
+
+/** primary key columns input for table: organization_member_invites */
+export type Organization_Member_Invites_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "organization_member_invites" */
+export enum Organization_Member_Invites_Select_Column {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Email = 'email',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizationId = 'organizationID',
+  /** column name */
+  Role = 'role',
+  /** column name */
+  UpdateAt = 'updateAt'
+}
+
+/** input type for updating data in table "organization_member_invites" */
+export type Organization_Member_Invites_Set_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  email?: InputMaybe<Scalars['citext']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
+  role?: InputMaybe<Organization_Members_Role_Enum>;
+  updateAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** Streaming cursor of the table "organization_member_invites" */
+export type Organization_Member_Invites_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Organization_Member_Invites_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Organization_Member_Invites_Stream_Cursor_Value_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  email?: InputMaybe<Scalars['citext']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
+  role?: InputMaybe<Organization_Members_Role_Enum>;
+  updateAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** update columns of table "organization_member_invites" */
+export enum Organization_Member_Invites_Update_Column {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Email = 'email',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizationId = 'organizationID',
+  /** column name */
+  Role = 'role',
+  /** column name */
+  UpdateAt = 'updateAt'
+}
+
+export type Organization_Member_Invites_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Organization_Member_Invites_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Organization_Member_Invites_Bool_Exp;
+};
+
+/** columns and relationships of "organization_members" */
+export type Organization_Members = {
+  __typename?: 'organization_members';
+  createdAt: Scalars['timestamptz'];
+  id: Scalars['uuid'];
+  /** An object relationship */
+  organization: Organizations;
+  organizatonID: Scalars['uuid'];
+  role: Organization_Members_Role_Enum;
+  updatedAt: Scalars['timestamptz'];
+  /** An object relationship */
+  user: Users;
+  userID: Scalars['uuid'];
+};
+
+/** aggregated selection of "organization_members" */
+export type Organization_Members_Aggregate = {
+  __typename?: 'organization_members_aggregate';
+  aggregate?: Maybe<Organization_Members_Aggregate_Fields>;
+  nodes: Array<Organization_Members>;
+};
+
+export type Organization_Members_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Organization_Members_Aggregate_Bool_Exp_Count>;
+};
+
+export type Organization_Members_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Organization_Members_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Organization_Members_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "organization_members" */
+export type Organization_Members_Aggregate_Fields = {
+  __typename?: 'organization_members_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Organization_Members_Max_Fields>;
+  min?: Maybe<Organization_Members_Min_Fields>;
+};
+
+
+/** aggregate fields of "organization_members" */
+export type Organization_Members_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Organization_Members_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "organization_members" */
+export type Organization_Members_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Organization_Members_Max_Order_By>;
+  min?: InputMaybe<Organization_Members_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "organization_members" */
+export type Organization_Members_Arr_Rel_Insert_Input = {
+  data: Array<Organization_Members_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Organization_Members_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "organization_members". All fields are combined with a logical 'AND'. */
+export type Organization_Members_Bool_Exp = {
+  _and?: InputMaybe<Array<Organization_Members_Bool_Exp>>;
+  _not?: InputMaybe<Organization_Members_Bool_Exp>;
+  _or?: InputMaybe<Array<Organization_Members_Bool_Exp>>;
+  createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  organization?: InputMaybe<Organizations_Bool_Exp>;
+  organizatonID?: InputMaybe<Uuid_Comparison_Exp>;
+  role?: InputMaybe<Organization_Members_Role_Enum_Comparison_Exp>;
+  updatedAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  user?: InputMaybe<Users_Bool_Exp>;
+  userID?: InputMaybe<Uuid_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "organization_members" */
+export enum Organization_Members_Constraint {
+  /** unique or primary key constraint on columns "user_id", "organization_id" */
+  OrganizationMembersOrganizationIdUserIdKey = 'organization_members_organization_id_user_id_key',
+  /** unique or primary key constraint on columns "id" */
+  OrganizationMembersPkey = 'organization_members_pkey'
+}
+
+/** input type for inserting data into table "organization_members" */
+export type Organization_Members_Insert_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organization?: InputMaybe<Organizations_Obj_Rel_Insert_Input>;
+  organizatonID?: InputMaybe<Scalars['uuid']>;
+  role?: InputMaybe<Organization_Members_Role_Enum>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+  user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  userID?: InputMaybe<Scalars['uuid']>;
+};
+
+/** aggregate max on columns */
+export type Organization_Members_Max_Fields = {
+  __typename?: 'organization_members_max_fields';
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  organizatonID?: Maybe<Scalars['uuid']>;
+  updatedAt?: Maybe<Scalars['timestamptz']>;
+  userID?: Maybe<Scalars['uuid']>;
+};
+
+/** order by max() on columns of table "organization_members" */
+export type Organization_Members_Max_Order_By = {
+  createdAt?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizatonID?: InputMaybe<Order_By>;
+  updatedAt?: InputMaybe<Order_By>;
+  userID?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Organization_Members_Min_Fields = {
+  __typename?: 'organization_members_min_fields';
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  organizatonID?: Maybe<Scalars['uuid']>;
+  updatedAt?: Maybe<Scalars['timestamptz']>;
+  userID?: Maybe<Scalars['uuid']>;
+};
+
+/** order by min() on columns of table "organization_members" */
+export type Organization_Members_Min_Order_By = {
+  createdAt?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizatonID?: InputMaybe<Order_By>;
+  updatedAt?: InputMaybe<Order_By>;
+  userID?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "organization_members" */
+export type Organization_Members_Mutation_Response = {
+  __typename?: 'organization_members_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Organization_Members>;
+};
+
+/** on_conflict condition type for table "organization_members" */
+export type Organization_Members_On_Conflict = {
+  constraint: Organization_Members_Constraint;
+  update_columns?: Array<Organization_Members_Update_Column>;
+  where?: InputMaybe<Organization_Members_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "organization_members". */
+export type Organization_Members_Order_By = {
+  createdAt?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organization?: InputMaybe<Organizations_Order_By>;
+  organizatonID?: InputMaybe<Order_By>;
+  role?: InputMaybe<Order_By>;
+  updatedAt?: InputMaybe<Order_By>;
+  user?: InputMaybe<Users_Order_By>;
+  userID?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: organization_members */
+export type Organization_Members_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** columns and relationships of "organization_members_role" */
+export type Organization_Members_Role = {
+  __typename?: 'organization_members_role';
+  comment: Scalars['String'];
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "organization_members_role" */
+export type Organization_Members_Role_Aggregate = {
+  __typename?: 'organization_members_role_aggregate';
+  aggregate?: Maybe<Organization_Members_Role_Aggregate_Fields>;
+  nodes: Array<Organization_Members_Role>;
+};
+
+/** aggregate fields of "organization_members_role" */
+export type Organization_Members_Role_Aggregate_Fields = {
+  __typename?: 'organization_members_role_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Organization_Members_Role_Max_Fields>;
+  min?: Maybe<Organization_Members_Role_Min_Fields>;
+};
+
+
+/** aggregate fields of "organization_members_role" */
+export type Organization_Members_Role_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Organization_Members_Role_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "organization_members_role". All fields are combined with a logical 'AND'. */
+export type Organization_Members_Role_Bool_Exp = {
+  _and?: InputMaybe<Array<Organization_Members_Role_Bool_Exp>>;
+  _not?: InputMaybe<Organization_Members_Role_Bool_Exp>;
+  _or?: InputMaybe<Array<Organization_Members_Role_Bool_Exp>>;
+  comment?: InputMaybe<String_Comparison_Exp>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "organization_members_role" */
+export enum Organization_Members_Role_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  OrganizationMembersRolePkey = 'organization_members_role_pkey'
+}
+
+export enum Organization_Members_Role_Enum {
+  /** Administrator */
+  Admin = 'ADMIN',
+  /** User */
+  User = 'USER'
+}
+
+/** Boolean expression to compare columns of type "organization_members_role_enum". All fields are combined with logical 'AND'. */
+export type Organization_Members_Role_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<Organization_Members_Role_Enum>;
+  _in?: InputMaybe<Array<Organization_Members_Role_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<Organization_Members_Role_Enum>;
+  _nin?: InputMaybe<Array<Organization_Members_Role_Enum>>;
+};
+
+/** input type for inserting data into table "organization_members_role" */
+export type Organization_Members_Role_Insert_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Organization_Members_Role_Max_Fields = {
+  __typename?: 'organization_members_role_max_fields';
+  comment?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Organization_Members_Role_Min_Fields = {
+  __typename?: 'organization_members_role_min_fields';
+  comment?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "organization_members_role" */
+export type Organization_Members_Role_Mutation_Response = {
+  __typename?: 'organization_members_role_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Organization_Members_Role>;
+};
+
+/** on_conflict condition type for table "organization_members_role" */
+export type Organization_Members_Role_On_Conflict = {
+  constraint: Organization_Members_Role_Constraint;
+  update_columns?: Array<Organization_Members_Role_Update_Column>;
+  where?: InputMaybe<Organization_Members_Role_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "organization_members_role". */
+export type Organization_Members_Role_Order_By = {
+  comment?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: organization_members_role */
+export type Organization_Members_Role_Pk_Columns_Input = {
+  value: Scalars['String'];
+};
+
+/** select columns of table "organization_members_role" */
+export enum Organization_Members_Role_Select_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "organization_members_role" */
+export type Organization_Members_Role_Set_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "organization_members_role" */
+export type Organization_Members_Role_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Organization_Members_Role_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Organization_Members_Role_Stream_Cursor_Value_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "organization_members_role" */
+export enum Organization_Members_Role_Update_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+export type Organization_Members_Role_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Organization_Members_Role_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Organization_Members_Role_Bool_Exp;
+};
+
+/** select columns of table "organization_members" */
+export enum Organization_Members_Select_Column {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizatonId = 'organizatonID',
+  /** column name */
+  Role = 'role',
+  /** column name */
+  UpdatedAt = 'updatedAt',
+  /** column name */
+  UserId = 'userID'
+}
+
+/** input type for updating data in table "organization_members" */
+export type Organization_Members_Set_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizatonID?: InputMaybe<Scalars['uuid']>;
+  role?: InputMaybe<Organization_Members_Role_Enum>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+  userID?: InputMaybe<Scalars['uuid']>;
+};
+
+/** Streaming cursor of the table "organization_members" */
+export type Organization_Members_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Organization_Members_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Organization_Members_Stream_Cursor_Value_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizatonID?: InputMaybe<Scalars['uuid']>;
+  role?: InputMaybe<Organization_Members_Role_Enum>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+  userID?: InputMaybe<Scalars['uuid']>;
+};
+
+/** update columns of table "organization_members" */
+export enum Organization_Members_Update_Column {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizatonId = 'organizatonID',
+  /** column name */
+  Role = 'role',
+  /** column name */
+  UpdatedAt = 'updatedAt',
+  /** column name */
+  UserId = 'userID'
+}
+
+export type Organization_Members_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Organization_Members_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Organization_Members_Bool_Exp;
+};
+
+/** columns and relationships of "organization_new_request" */
+export type Organization_New_Request = {
+  __typename?: 'organization_new_request';
+  createdAt: Scalars['timestamptz'];
+  id: Scalars['uuid'];
+  name: Scalars['String'];
+  /** An object relationship */
+  plan: Plans;
+  planID: Scalars['uuid'];
+  sessionID: Scalars['String'];
+  slug: Scalars['String'];
+  /** An object relationship */
+  user: Users;
+  userID: Scalars['uuid'];
+};
+
+/** aggregated selection of "organization_new_request" */
+export type Organization_New_Request_Aggregate = {
+  __typename?: 'organization_new_request_aggregate';
+  aggregate?: Maybe<Organization_New_Request_Aggregate_Fields>;
+  nodes: Array<Organization_New_Request>;
+};
+
+/** aggregate fields of "organization_new_request" */
+export type Organization_New_Request_Aggregate_Fields = {
+  __typename?: 'organization_new_request_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Organization_New_Request_Max_Fields>;
+  min?: Maybe<Organization_New_Request_Min_Fields>;
+};
+
+
+/** aggregate fields of "organization_new_request" */
+export type Organization_New_Request_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Organization_New_Request_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "organization_new_request". All fields are combined with a logical 'AND'. */
+export type Organization_New_Request_Bool_Exp = {
+  _and?: InputMaybe<Array<Organization_New_Request_Bool_Exp>>;
+  _not?: InputMaybe<Organization_New_Request_Bool_Exp>;
+  _or?: InputMaybe<Array<Organization_New_Request_Bool_Exp>>;
+  createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  plan?: InputMaybe<Plans_Bool_Exp>;
+  planID?: InputMaybe<Uuid_Comparison_Exp>;
+  sessionID?: InputMaybe<String_Comparison_Exp>;
+  slug?: InputMaybe<String_Comparison_Exp>;
+  user?: InputMaybe<Users_Bool_Exp>;
+  userID?: InputMaybe<Uuid_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "organization_new_request" */
+export enum Organization_New_Request_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  OrganizationNewRequestPkey = 'organization_new_request_pkey',
+  /** unique or primary key constraint on columns "session_id" */
+  OrganizationNewRequestSessionIdKey = 'organization_new_request_session_id_key'
+}
+
+/** input type for inserting data into table "organization_new_request" */
+export type Organization_New_Request_Insert_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  name?: InputMaybe<Scalars['String']>;
+  plan?: InputMaybe<Plans_Obj_Rel_Insert_Input>;
+  planID?: InputMaybe<Scalars['uuid']>;
+  sessionID?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  userID?: InputMaybe<Scalars['uuid']>;
+};
+
+/** aggregate max on columns */
+export type Organization_New_Request_Max_Fields = {
+  __typename?: 'organization_new_request_max_fields';
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  planID?: Maybe<Scalars['uuid']>;
+  sessionID?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
+  userID?: Maybe<Scalars['uuid']>;
+};
+
+/** aggregate min on columns */
+export type Organization_New_Request_Min_Fields = {
+  __typename?: 'organization_new_request_min_fields';
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  planID?: Maybe<Scalars['uuid']>;
+  sessionID?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
+  userID?: Maybe<Scalars['uuid']>;
+};
+
+/** response of any mutation on the table "organization_new_request" */
+export type Organization_New_Request_Mutation_Response = {
+  __typename?: 'organization_new_request_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Organization_New_Request>;
+};
+
+/** on_conflict condition type for table "organization_new_request" */
+export type Organization_New_Request_On_Conflict = {
+  constraint: Organization_New_Request_Constraint;
+  update_columns?: Array<Organization_New_Request_Update_Column>;
+  where?: InputMaybe<Organization_New_Request_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "organization_new_request". */
+export type Organization_New_Request_Order_By = {
+  createdAt?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  plan?: InputMaybe<Plans_Order_By>;
+  planID?: InputMaybe<Order_By>;
+  sessionID?: InputMaybe<Order_By>;
+  slug?: InputMaybe<Order_By>;
+  user?: InputMaybe<Users_Order_By>;
+  userID?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: organization_new_request */
+export type Organization_New_Request_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "organization_new_request" */
+export enum Organization_New_Request_Select_Column {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  PlanId = 'planID',
+  /** column name */
+  SessionId = 'sessionID',
+  /** column name */
+  Slug = 'slug',
+  /** column name */
+  UserId = 'userID'
+}
+
+/** input type for updating data in table "organization_new_request" */
+export type Organization_New_Request_Set_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  name?: InputMaybe<Scalars['String']>;
+  planID?: InputMaybe<Scalars['uuid']>;
+  sessionID?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']>;
+  userID?: InputMaybe<Scalars['uuid']>;
+};
+
+/** Streaming cursor of the table "organization_new_request" */
+export type Organization_New_Request_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Organization_New_Request_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Organization_New_Request_Stream_Cursor_Value_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  name?: InputMaybe<Scalars['String']>;
+  planID?: InputMaybe<Scalars['uuid']>;
+  sessionID?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']>;
+  userID?: InputMaybe<Scalars['uuid']>;
+};
+
+/** update columns of table "organization_new_request" */
+export enum Organization_New_Request_Update_Column {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  PlanId = 'planID',
+  /** column name */
+  SessionId = 'sessionID',
+  /** column name */
+  Slug = 'slug',
+  /** column name */
+  UserId = 'userID'
+}
+
+export type Organization_New_Request_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Organization_New_Request_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Organization_New_Request_Bool_Exp;
+};
+
+/** columns and relationships of "organization_status" */
+export type Organization_Status = {
+  __typename?: 'organization_status';
+  comment: Scalars['String'];
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "organization_status" */
+export type Organization_Status_Aggregate = {
+  __typename?: 'organization_status_aggregate';
+  aggregate?: Maybe<Organization_Status_Aggregate_Fields>;
+  nodes: Array<Organization_Status>;
+};
+
+/** aggregate fields of "organization_status" */
+export type Organization_Status_Aggregate_Fields = {
+  __typename?: 'organization_status_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Organization_Status_Max_Fields>;
+  min?: Maybe<Organization_Status_Min_Fields>;
+};
+
+
+/** aggregate fields of "organization_status" */
+export type Organization_Status_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Organization_Status_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "organization_status". All fields are combined with a logical 'AND'. */
+export type Organization_Status_Bool_Exp = {
+  _and?: InputMaybe<Array<Organization_Status_Bool_Exp>>;
+  _not?: InputMaybe<Organization_Status_Bool_Exp>;
+  _or?: InputMaybe<Array<Organization_Status_Bool_Exp>>;
+  comment?: InputMaybe<String_Comparison_Exp>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "organization_status" */
+export enum Organization_Status_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  OrganizationStatusPkey = 'organization_status_pkey'
+}
+
+export enum Organization_Status_Enum {
+  /** Allowance for the organization has been exceeded. Allowance will be reset at the end of the month. */
+  AllowanceExceeded = 'ALLOWANCE_EXCEEDED',
+  /** Organization is cancelled. Contact support. */
+  Cancelled = 'CANCELLED',
+  /** Organization is disabled and all resources have been suspended */
+  Disabled = 'DISABLED',
+  /** Organization is locked and changes to resources are not allowed */
+  Locked = 'LOCKED',
+  /** Organization is healthy */
+  Ok = 'OK'
+}
+
+/** Boolean expression to compare columns of type "organization_status_enum". All fields are combined with logical 'AND'. */
+export type Organization_Status_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<Organization_Status_Enum>;
+  _in?: InputMaybe<Array<Organization_Status_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<Organization_Status_Enum>;
+  _nin?: InputMaybe<Array<Organization_Status_Enum>>;
+};
+
+/** input type for inserting data into table "organization_status" */
+export type Organization_Status_Insert_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Organization_Status_Max_Fields = {
+  __typename?: 'organization_status_max_fields';
+  comment?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Organization_Status_Min_Fields = {
+  __typename?: 'organization_status_min_fields';
+  comment?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "organization_status" */
+export type Organization_Status_Mutation_Response = {
+  __typename?: 'organization_status_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Organization_Status>;
+};
+
+/** on_conflict condition type for table "organization_status" */
+export type Organization_Status_On_Conflict = {
+  constraint: Organization_Status_Constraint;
+  update_columns?: Array<Organization_Status_Update_Column>;
+  where?: InputMaybe<Organization_Status_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "organization_status". */
+export type Organization_Status_Order_By = {
+  comment?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: organization_status */
+export type Organization_Status_Pk_Columns_Input = {
+  value: Scalars['String'];
+};
+
+/** select columns of table "organization_status" */
+export enum Organization_Status_Select_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "organization_status" */
+export type Organization_Status_Set_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "organization_status" */
+export type Organization_Status_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Organization_Status_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Organization_Status_Stream_Cursor_Value_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "organization_status" */
+export enum Organization_Status_Update_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+export type Organization_Status_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Organization_Status_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Organization_Status_Bool_Exp;
+};
+
+/** columns and relationships of "organizations" */
+export type Organizations = {
+  __typename?: 'organizations';
+  /** An array relationship */
+  allowedPrivateRegions: Array<Regions_Allowed_Organization>;
+  /** An aggregate relationship */
+  allowedPrivateRegions_aggregate: Regions_Allowed_Organization_Aggregate;
+  /** An array relationship */
+  apps: Array<Apps>;
+  /** An aggregate relationship */
+  apps_aggregate: Apps_Aggregate;
+  createdAt: Scalars['timestamptz'];
+  current_threshold: Organization_Costs_Thresholds_Enum;
+  id: Scalars['uuid'];
+  /** An array relationship */
+  invites: Array<Organization_Member_Invites>;
+  /** An aggregate relationship */
+  invites_aggregate: Organization_Member_Invites_Aggregate;
+  /** An array relationship */
+  members: Array<Organization_Members>;
+  /** An aggregate relationship */
+  members_aggregate: Organization_Members_Aggregate;
+  name: Scalars['String'];
+  /** An object relationship */
+  plan: Plans;
+  planID: Scalars['uuid'];
+  slug: Scalars['String'];
+  status: Organization_Status_Enum;
+  status_comment?: Maybe<Scalars['String']>;
+  stripeCustomerID?: Maybe<Scalars['String']>;
+  stripeSubscriptionID?: Maybe<Scalars['String']>;
+  threshold: Scalars['Int'];
+  updatedAt: Scalars['timestamptz'];
+};
+
+
+/** columns and relationships of "organizations" */
+export type OrganizationsAllowedPrivateRegionsArgs = {
+  distinct_on?: InputMaybe<Array<Regions_Allowed_Organization_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Regions_Allowed_Organization_Order_By>>;
+  where?: InputMaybe<Regions_Allowed_Organization_Bool_Exp>;
+};
+
+
+/** columns and relationships of "organizations" */
+export type OrganizationsAllowedPrivateRegions_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Regions_Allowed_Organization_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Regions_Allowed_Organization_Order_By>>;
+  where?: InputMaybe<Regions_Allowed_Organization_Bool_Exp>;
+};
+
+
+/** columns and relationships of "organizations" */
+export type OrganizationsAppsArgs = {
+  distinct_on?: InputMaybe<Array<Apps_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Apps_Order_By>>;
+  where?: InputMaybe<Apps_Bool_Exp>;
+};
+
+
+/** columns and relationships of "organizations" */
+export type OrganizationsApps_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Apps_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Apps_Order_By>>;
+  where?: InputMaybe<Apps_Bool_Exp>;
+};
+
+
+/** columns and relationships of "organizations" */
+export type OrganizationsInvitesArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Member_Invites_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Member_Invites_Order_By>>;
+  where?: InputMaybe<Organization_Member_Invites_Bool_Exp>;
+};
+
+
+/** columns and relationships of "organizations" */
+export type OrganizationsInvites_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Member_Invites_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Member_Invites_Order_By>>;
+  where?: InputMaybe<Organization_Member_Invites_Bool_Exp>;
+};
+
+
+/** columns and relationships of "organizations" */
+export type OrganizationsMembersArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Members_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Members_Order_By>>;
+  where?: InputMaybe<Organization_Members_Bool_Exp>;
+};
+
+
+/** columns and relationships of "organizations" */
+export type OrganizationsMembers_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Members_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Members_Order_By>>;
+  where?: InputMaybe<Organization_Members_Bool_Exp>;
+};
+
+/** aggregated selection of "organizations" */
+export type Organizations_Aggregate = {
+  __typename?: 'organizations_aggregate';
+  aggregate?: Maybe<Organizations_Aggregate_Fields>;
+  nodes: Array<Organizations>;
+};
+
+export type Organizations_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Organizations_Aggregate_Bool_Exp_Count>;
+};
+
+export type Organizations_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Organizations_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Organizations_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "organizations" */
+export type Organizations_Aggregate_Fields = {
+  __typename?: 'organizations_aggregate_fields';
+  avg?: Maybe<Organizations_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Organizations_Max_Fields>;
+  min?: Maybe<Organizations_Min_Fields>;
+  stddev?: Maybe<Organizations_Stddev_Fields>;
+  stddev_pop?: Maybe<Organizations_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Organizations_Stddev_Samp_Fields>;
+  sum?: Maybe<Organizations_Sum_Fields>;
+  var_pop?: Maybe<Organizations_Var_Pop_Fields>;
+  var_samp?: Maybe<Organizations_Var_Samp_Fields>;
+  variance?: Maybe<Organizations_Variance_Fields>;
+};
+
+
+/** aggregate fields of "organizations" */
+export type Organizations_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Organizations_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "organizations" */
+export type Organizations_Aggregate_Order_By = {
+  avg?: InputMaybe<Organizations_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Organizations_Max_Order_By>;
+  min?: InputMaybe<Organizations_Min_Order_By>;
+  stddev?: InputMaybe<Organizations_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Organizations_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Organizations_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Organizations_Sum_Order_By>;
+  var_pop?: InputMaybe<Organizations_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Organizations_Var_Samp_Order_By>;
+  variance?: InputMaybe<Organizations_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "organizations" */
+export type Organizations_Arr_Rel_Insert_Input = {
+  data: Array<Organizations_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Organizations_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Organizations_Avg_Fields = {
+  __typename?: 'organizations_avg_fields';
+  threshold?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "organizations" */
+export type Organizations_Avg_Order_By = {
+  threshold?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "organizations". All fields are combined with a logical 'AND'. */
+export type Organizations_Bool_Exp = {
+  _and?: InputMaybe<Array<Organizations_Bool_Exp>>;
+  _not?: InputMaybe<Organizations_Bool_Exp>;
+  _or?: InputMaybe<Array<Organizations_Bool_Exp>>;
+  allowedPrivateRegions?: InputMaybe<Regions_Allowed_Organization_Bool_Exp>;
+  allowedPrivateRegions_aggregate?: InputMaybe<Regions_Allowed_Organization_Aggregate_Bool_Exp>;
+  apps?: InputMaybe<Apps_Bool_Exp>;
+  apps_aggregate?: InputMaybe<Apps_Aggregate_Bool_Exp>;
+  createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  current_threshold?: InputMaybe<Organization_Costs_Thresholds_Enum_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  invites?: InputMaybe<Organization_Member_Invites_Bool_Exp>;
+  invites_aggregate?: InputMaybe<Organization_Member_Invites_Aggregate_Bool_Exp>;
+  members?: InputMaybe<Organization_Members_Bool_Exp>;
+  members_aggregate?: InputMaybe<Organization_Members_Aggregate_Bool_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  plan?: InputMaybe<Plans_Bool_Exp>;
+  planID?: InputMaybe<Uuid_Comparison_Exp>;
+  slug?: InputMaybe<String_Comparison_Exp>;
+  status?: InputMaybe<Organization_Status_Enum_Comparison_Exp>;
+  status_comment?: InputMaybe<String_Comparison_Exp>;
+  stripeCustomerID?: InputMaybe<String_Comparison_Exp>;
+  stripeSubscriptionID?: InputMaybe<String_Comparison_Exp>;
+  threshold?: InputMaybe<Int_Comparison_Exp>;
+  updatedAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "organizations" */
+export enum Organizations_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  OrganizationsPkey = 'organizations_pkey',
+  /** unique or primary key constraint on columns "slug" */
+  OrganizationsSlugKey = 'organizations_slug_key'
+}
+
+/** input type for incrementing numeric columns in table "organizations" */
+export type Organizations_Inc_Input = {
+  threshold?: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "organizations" */
+export type Organizations_Insert_Input = {
+  allowedPrivateRegions?: InputMaybe<Regions_Allowed_Organization_Arr_Rel_Insert_Input>;
+  apps?: InputMaybe<Apps_Arr_Rel_Insert_Input>;
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  current_threshold?: InputMaybe<Organization_Costs_Thresholds_Enum>;
+  id?: InputMaybe<Scalars['uuid']>;
+  invites?: InputMaybe<Organization_Member_Invites_Arr_Rel_Insert_Input>;
+  members?: InputMaybe<Organization_Members_Arr_Rel_Insert_Input>;
+  name?: InputMaybe<Scalars['String']>;
+  plan?: InputMaybe<Plans_Obj_Rel_Insert_Input>;
+  planID?: InputMaybe<Scalars['uuid']>;
+  slug?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<Organization_Status_Enum>;
+  status_comment?: InputMaybe<Scalars['String']>;
+  stripeCustomerID?: InputMaybe<Scalars['String']>;
+  stripeSubscriptionID?: InputMaybe<Scalars['String']>;
+  threshold?: InputMaybe<Scalars['Int']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Organizations_Max_Fields = {
+  __typename?: 'organizations_max_fields';
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  planID?: Maybe<Scalars['uuid']>;
+  slug?: Maybe<Scalars['String']>;
+  status_comment?: Maybe<Scalars['String']>;
+  stripeCustomerID?: Maybe<Scalars['String']>;
+  stripeSubscriptionID?: Maybe<Scalars['String']>;
+  threshold?: Maybe<Scalars['Int']>;
+  updatedAt?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by max() on columns of table "organizations" */
+export type Organizations_Max_Order_By = {
+  createdAt?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  planID?: InputMaybe<Order_By>;
+  slug?: InputMaybe<Order_By>;
+  status_comment?: InputMaybe<Order_By>;
+  stripeCustomerID?: InputMaybe<Order_By>;
+  stripeSubscriptionID?: InputMaybe<Order_By>;
+  threshold?: InputMaybe<Order_By>;
+  updatedAt?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Organizations_Min_Fields = {
+  __typename?: 'organizations_min_fields';
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  planID?: Maybe<Scalars['uuid']>;
+  slug?: Maybe<Scalars['String']>;
+  status_comment?: Maybe<Scalars['String']>;
+  stripeCustomerID?: Maybe<Scalars['String']>;
+  stripeSubscriptionID?: Maybe<Scalars['String']>;
+  threshold?: Maybe<Scalars['Int']>;
+  updatedAt?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "organizations" */
+export type Organizations_Min_Order_By = {
+  createdAt?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  planID?: InputMaybe<Order_By>;
+  slug?: InputMaybe<Order_By>;
+  status_comment?: InputMaybe<Order_By>;
+  stripeCustomerID?: InputMaybe<Order_By>;
+  stripeSubscriptionID?: InputMaybe<Order_By>;
+  threshold?: InputMaybe<Order_By>;
+  updatedAt?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "organizations" */
+export type Organizations_Mutation_Response = {
+  __typename?: 'organizations_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Organizations>;
+};
+
+/** input type for inserting object relation for remote table "organizations" */
+export type Organizations_Obj_Rel_Insert_Input = {
+  data: Organizations_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Organizations_On_Conflict>;
+};
+
+/** on_conflict condition type for table "organizations" */
+export type Organizations_On_Conflict = {
+  constraint: Organizations_Constraint;
+  update_columns?: Array<Organizations_Update_Column>;
+  where?: InputMaybe<Organizations_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "organizations". */
+export type Organizations_Order_By = {
+  allowedPrivateRegions_aggregate?: InputMaybe<Regions_Allowed_Organization_Aggregate_Order_By>;
+  apps_aggregate?: InputMaybe<Apps_Aggregate_Order_By>;
+  createdAt?: InputMaybe<Order_By>;
+  current_threshold?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  invites_aggregate?: InputMaybe<Organization_Member_Invites_Aggregate_Order_By>;
+  members_aggregate?: InputMaybe<Organization_Members_Aggregate_Order_By>;
+  name?: InputMaybe<Order_By>;
+  plan?: InputMaybe<Plans_Order_By>;
+  planID?: InputMaybe<Order_By>;
+  slug?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
+  status_comment?: InputMaybe<Order_By>;
+  stripeCustomerID?: InputMaybe<Order_By>;
+  stripeSubscriptionID?: InputMaybe<Order_By>;
+  threshold?: InputMaybe<Order_By>;
+  updatedAt?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: organizations */
+export type Organizations_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "organizations" */
+export enum Organizations_Select_Column {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  CurrentThreshold = 'current_threshold',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  PlanId = 'planID',
+  /** column name */
+  Slug = 'slug',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  StatusComment = 'status_comment',
+  /** column name */
+  StripeCustomerId = 'stripeCustomerID',
+  /** column name */
+  StripeSubscriptionId = 'stripeSubscriptionID',
+  /** column name */
+  Threshold = 'threshold',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+/** input type for updating data in table "organizations" */
+export type Organizations_Set_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  current_threshold?: InputMaybe<Organization_Costs_Thresholds_Enum>;
+  id?: InputMaybe<Scalars['uuid']>;
+  name?: InputMaybe<Scalars['String']>;
+  planID?: InputMaybe<Scalars['uuid']>;
+  slug?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<Organization_Status_Enum>;
+  status_comment?: InputMaybe<Scalars['String']>;
+  stripeCustomerID?: InputMaybe<Scalars['String']>;
+  stripeSubscriptionID?: InputMaybe<Scalars['String']>;
+  threshold?: InputMaybe<Scalars['Int']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type Organizations_Stddev_Fields = {
+  __typename?: 'organizations_stddev_fields';
+  threshold?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "organizations" */
+export type Organizations_Stddev_Order_By = {
+  threshold?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Organizations_Stddev_Pop_Fields = {
+  __typename?: 'organizations_stddev_pop_fields';
+  threshold?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "organizations" */
+export type Organizations_Stddev_Pop_Order_By = {
+  threshold?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Organizations_Stddev_Samp_Fields = {
+  __typename?: 'organizations_stddev_samp_fields';
+  threshold?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "organizations" */
+export type Organizations_Stddev_Samp_Order_By = {
+  threshold?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "organizations" */
+export type Organizations_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Organizations_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Organizations_Stream_Cursor_Value_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  current_threshold?: InputMaybe<Organization_Costs_Thresholds_Enum>;
+  id?: InputMaybe<Scalars['uuid']>;
+  name?: InputMaybe<Scalars['String']>;
+  planID?: InputMaybe<Scalars['uuid']>;
+  slug?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<Organization_Status_Enum>;
+  status_comment?: InputMaybe<Scalars['String']>;
+  stripeCustomerID?: InputMaybe<Scalars['String']>;
+  stripeSubscriptionID?: InputMaybe<Scalars['String']>;
+  threshold?: InputMaybe<Scalars['Int']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate sum on columns */
+export type Organizations_Sum_Fields = {
+  __typename?: 'organizations_sum_fields';
+  threshold?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "organizations" */
+export type Organizations_Sum_Order_By = {
+  threshold?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "organizations" */
+export enum Organizations_Update_Column {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  CurrentThreshold = 'current_threshold',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  PlanId = 'planID',
+  /** column name */
+  Slug = 'slug',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  StatusComment = 'status_comment',
+  /** column name */
+  StripeCustomerId = 'stripeCustomerID',
+  /** column name */
+  StripeSubscriptionId = 'stripeSubscriptionID',
+  /** column name */
+  Threshold = 'threshold',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+export type Organizations_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Organizations_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Organizations_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Organizations_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Organizations_Var_Pop_Fields = {
+  __typename?: 'organizations_var_pop_fields';
+  threshold?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "organizations" */
+export type Organizations_Var_Pop_Order_By = {
+  threshold?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Organizations_Var_Samp_Fields = {
+  __typename?: 'organizations_var_samp_fields';
+  threshold?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "organizations" */
+export type Organizations_Var_Samp_Order_By = {
+  threshold?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Organizations_Variance_Fields = {
+  __typename?: 'organizations_variance_fields';
+  threshold?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "organizations" */
+export type Organizations_Variance_Order_By = {
+  threshold?: InputMaybe<Order_By>;
+};
 
 /** columns and relationships of "payment_methods" */
 export type PaymentMethods = {
@@ -14288,7 +18961,10 @@ export type Plans = {
   /** An aggregate relationship */
   apps_aggregate: Apps_Aggregate;
   createdAt: Scalars['timestamptz'];
+  deprecated: Scalars['Boolean'];
+  featureAdvancedGraphql: Scalars['Boolean'];
   featureBackupEnabled: Scalars['Boolean'];
+  featureBackupRetentionDays: Scalars['Int'];
   featureCustomDomainsEnabled: Scalars['Boolean'];
   featureCustomEmailTemplatesEnabled: Scalars['Boolean'];
   featureCustomResources: Scalars['Boolean'];
@@ -14301,12 +18977,23 @@ export type Plans = {
   /** Max number of functions to deploy per git deployment */
   featureMaxNumberOfFunctionsPerDeployment: Scalars['Int'];
   id: Scalars['uuid'];
+  individual: Scalars['Boolean'];
   isDefault: Scalars['Boolean'];
   isFree: Scalars['Boolean'];
   isPublic: Scalars['Boolean'];
   name: Scalars['String'];
+  /** An array relationship */
+  organizations: Array<Organizations>;
+  /** An aggregate relationship */
+  organizations_aggregate: Organizations_Aggregate;
   price: Scalars['Int'];
   sort: Scalars['Int'];
+  stripePriceIDCustomDomains: Scalars['String'];
+  stripePriceIDDedicatedCompute: Scalars['String'];
+  stripePriceIDEgressUsageMB: Scalars['String'];
+  stripePriceIDFunctionsAmount: Scalars['String'];
+  stripePriceIDFunctionsUsageSeconds: Scalars['String'];
+  stripePriceIDPersistentVolumesGB: Scalars['String'];
   stripePriceId: Scalars['String'];
   upatedAt: Scalars['timestamptz'];
 };
@@ -14329,6 +19016,26 @@ export type PlansApps_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Apps_Order_By>>;
   where?: InputMaybe<Apps_Bool_Exp>;
+};
+
+
+/** columns and relationships of "plans" */
+export type PlansOrganizationsArgs = {
+  distinct_on?: InputMaybe<Array<Organizations_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organizations_Order_By>>;
+  where?: InputMaybe<Organizations_Bool_Exp>;
+};
+
+
+/** columns and relationships of "plans" */
+export type PlansOrganizations_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organizations_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organizations_Order_By>>;
+  where?: InputMaybe<Organizations_Bool_Exp>;
 };
 
 /** aggregated selection of "plans" */
@@ -14364,6 +19071,7 @@ export type Plans_Aggregate_FieldsCountArgs = {
 /** aggregate avg on columns */
 export type Plans_Avg_Fields = {
   __typename?: 'plans_avg_fields';
+  featureBackupRetentionDays?: Maybe<Scalars['Float']>;
   /** Function execution timeout in seconds */
   featureFunctionExecutionTimeout?: Maybe<Scalars['Float']>;
   featureMaxDbSize?: Maybe<Scalars['Float']>;
@@ -14382,7 +19090,10 @@ export type Plans_Bool_Exp = {
   apps?: InputMaybe<Apps_Bool_Exp>;
   apps_aggregate?: InputMaybe<Apps_Aggregate_Bool_Exp>;
   createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  deprecated?: InputMaybe<Boolean_Comparison_Exp>;
+  featureAdvancedGraphql?: InputMaybe<Boolean_Comparison_Exp>;
   featureBackupEnabled?: InputMaybe<Boolean_Comparison_Exp>;
+  featureBackupRetentionDays?: InputMaybe<Int_Comparison_Exp>;
   featureCustomDomainsEnabled?: InputMaybe<Boolean_Comparison_Exp>;
   featureCustomEmailTemplatesEnabled?: InputMaybe<Boolean_Comparison_Exp>;
   featureCustomResources?: InputMaybe<Boolean_Comparison_Exp>;
@@ -14392,12 +19103,21 @@ export type Plans_Bool_Exp = {
   featureMaxFilesSize?: InputMaybe<Int_Comparison_Exp>;
   featureMaxNumberOfFunctionsPerDeployment?: InputMaybe<Int_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  individual?: InputMaybe<Boolean_Comparison_Exp>;
   isDefault?: InputMaybe<Boolean_Comparison_Exp>;
   isFree?: InputMaybe<Boolean_Comparison_Exp>;
   isPublic?: InputMaybe<Boolean_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
+  organizations?: InputMaybe<Organizations_Bool_Exp>;
+  organizations_aggregate?: InputMaybe<Organizations_Aggregate_Bool_Exp>;
   price?: InputMaybe<Int_Comparison_Exp>;
   sort?: InputMaybe<Int_Comparison_Exp>;
+  stripePriceIDCustomDomains?: InputMaybe<String_Comparison_Exp>;
+  stripePriceIDDedicatedCompute?: InputMaybe<String_Comparison_Exp>;
+  stripePriceIDEgressUsageMB?: InputMaybe<String_Comparison_Exp>;
+  stripePriceIDFunctionsAmount?: InputMaybe<String_Comparison_Exp>;
+  stripePriceIDFunctionsUsageSeconds?: InputMaybe<String_Comparison_Exp>;
+  stripePriceIDPersistentVolumesGB?: InputMaybe<String_Comparison_Exp>;
   stripePriceId?: InputMaybe<String_Comparison_Exp>;
   upatedAt?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
@@ -14410,6 +19130,7 @@ export enum Plans_Constraint {
 
 /** input type for incrementing numeric columns in table "plans" */
 export type Plans_Inc_Input = {
+  featureBackupRetentionDays?: InputMaybe<Scalars['Int']>;
   /** Function execution timeout in seconds */
   featureFunctionExecutionTimeout?: InputMaybe<Scalars['Int']>;
   featureMaxDbSize?: InputMaybe<Scalars['Int']>;
@@ -14424,7 +19145,10 @@ export type Plans_Inc_Input = {
 export type Plans_Insert_Input = {
   apps?: InputMaybe<Apps_Arr_Rel_Insert_Input>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
+  deprecated?: InputMaybe<Scalars['Boolean']>;
+  featureAdvancedGraphql?: InputMaybe<Scalars['Boolean']>;
   featureBackupEnabled?: InputMaybe<Scalars['Boolean']>;
+  featureBackupRetentionDays?: InputMaybe<Scalars['Int']>;
   featureCustomDomainsEnabled?: InputMaybe<Scalars['Boolean']>;
   featureCustomEmailTemplatesEnabled?: InputMaybe<Scalars['Boolean']>;
   featureCustomResources?: InputMaybe<Scalars['Boolean']>;
@@ -14437,12 +19161,20 @@ export type Plans_Insert_Input = {
   /** Max number of functions to deploy per git deployment */
   featureMaxNumberOfFunctionsPerDeployment?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['uuid']>;
+  individual?: InputMaybe<Scalars['Boolean']>;
   isDefault?: InputMaybe<Scalars['Boolean']>;
   isFree?: InputMaybe<Scalars['Boolean']>;
   isPublic?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
+  organizations?: InputMaybe<Organizations_Arr_Rel_Insert_Input>;
   price?: InputMaybe<Scalars['Int']>;
   sort?: InputMaybe<Scalars['Int']>;
+  stripePriceIDCustomDomains?: InputMaybe<Scalars['String']>;
+  stripePriceIDDedicatedCompute?: InputMaybe<Scalars['String']>;
+  stripePriceIDEgressUsageMB?: InputMaybe<Scalars['String']>;
+  stripePriceIDFunctionsAmount?: InputMaybe<Scalars['String']>;
+  stripePriceIDFunctionsUsageSeconds?: InputMaybe<Scalars['String']>;
+  stripePriceIDPersistentVolumesGB?: InputMaybe<Scalars['String']>;
   stripePriceId?: InputMaybe<Scalars['String']>;
   upatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
@@ -14451,6 +19183,7 @@ export type Plans_Insert_Input = {
 export type Plans_Max_Fields = {
   __typename?: 'plans_max_fields';
   createdAt?: Maybe<Scalars['timestamptz']>;
+  featureBackupRetentionDays?: Maybe<Scalars['Int']>;
   /** Function execution timeout in seconds */
   featureFunctionExecutionTimeout?: Maybe<Scalars['Int']>;
   featureMaxDbSize?: Maybe<Scalars['Int']>;
@@ -14461,6 +19194,12 @@ export type Plans_Max_Fields = {
   name?: Maybe<Scalars['String']>;
   price?: Maybe<Scalars['Int']>;
   sort?: Maybe<Scalars['Int']>;
+  stripePriceIDCustomDomains?: Maybe<Scalars['String']>;
+  stripePriceIDDedicatedCompute?: Maybe<Scalars['String']>;
+  stripePriceIDEgressUsageMB?: Maybe<Scalars['String']>;
+  stripePriceIDFunctionsAmount?: Maybe<Scalars['String']>;
+  stripePriceIDFunctionsUsageSeconds?: Maybe<Scalars['String']>;
+  stripePriceIDPersistentVolumesGB?: Maybe<Scalars['String']>;
   stripePriceId?: Maybe<Scalars['String']>;
   upatedAt?: Maybe<Scalars['timestamptz']>;
 };
@@ -14469,6 +19208,7 @@ export type Plans_Max_Fields = {
 export type Plans_Min_Fields = {
   __typename?: 'plans_min_fields';
   createdAt?: Maybe<Scalars['timestamptz']>;
+  featureBackupRetentionDays?: Maybe<Scalars['Int']>;
   /** Function execution timeout in seconds */
   featureFunctionExecutionTimeout?: Maybe<Scalars['Int']>;
   featureMaxDbSize?: Maybe<Scalars['Int']>;
@@ -14479,6 +19219,12 @@ export type Plans_Min_Fields = {
   name?: Maybe<Scalars['String']>;
   price?: Maybe<Scalars['Int']>;
   sort?: Maybe<Scalars['Int']>;
+  stripePriceIDCustomDomains?: Maybe<Scalars['String']>;
+  stripePriceIDDedicatedCompute?: Maybe<Scalars['String']>;
+  stripePriceIDEgressUsageMB?: Maybe<Scalars['String']>;
+  stripePriceIDFunctionsAmount?: Maybe<Scalars['String']>;
+  stripePriceIDFunctionsUsageSeconds?: Maybe<Scalars['String']>;
+  stripePriceIDPersistentVolumesGB?: Maybe<Scalars['String']>;
   stripePriceId?: Maybe<Scalars['String']>;
   upatedAt?: Maybe<Scalars['timestamptz']>;
 };
@@ -14510,7 +19256,10 @@ export type Plans_On_Conflict = {
 export type Plans_Order_By = {
   apps_aggregate?: InputMaybe<Apps_Aggregate_Order_By>;
   createdAt?: InputMaybe<Order_By>;
+  deprecated?: InputMaybe<Order_By>;
+  featureAdvancedGraphql?: InputMaybe<Order_By>;
   featureBackupEnabled?: InputMaybe<Order_By>;
+  featureBackupRetentionDays?: InputMaybe<Order_By>;
   featureCustomDomainsEnabled?: InputMaybe<Order_By>;
   featureCustomEmailTemplatesEnabled?: InputMaybe<Order_By>;
   featureCustomResources?: InputMaybe<Order_By>;
@@ -14520,12 +19269,20 @@ export type Plans_Order_By = {
   featureMaxFilesSize?: InputMaybe<Order_By>;
   featureMaxNumberOfFunctionsPerDeployment?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  individual?: InputMaybe<Order_By>;
   isDefault?: InputMaybe<Order_By>;
   isFree?: InputMaybe<Order_By>;
   isPublic?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  organizations_aggregate?: InputMaybe<Organizations_Aggregate_Order_By>;
   price?: InputMaybe<Order_By>;
   sort?: InputMaybe<Order_By>;
+  stripePriceIDCustomDomains?: InputMaybe<Order_By>;
+  stripePriceIDDedicatedCompute?: InputMaybe<Order_By>;
+  stripePriceIDEgressUsageMB?: InputMaybe<Order_By>;
+  stripePriceIDFunctionsAmount?: InputMaybe<Order_By>;
+  stripePriceIDFunctionsUsageSeconds?: InputMaybe<Order_By>;
+  stripePriceIDPersistentVolumesGB?: InputMaybe<Order_By>;
   stripePriceId?: InputMaybe<Order_By>;
   upatedAt?: InputMaybe<Order_By>;
 };
@@ -14540,7 +19297,13 @@ export enum Plans_Select_Column {
   /** column name */
   CreatedAt = 'createdAt',
   /** column name */
+  Deprecated = 'deprecated',
+  /** column name */
+  FeatureAdvancedGraphql = 'featureAdvancedGraphql',
+  /** column name */
   FeatureBackupEnabled = 'featureBackupEnabled',
+  /** column name */
+  FeatureBackupRetentionDays = 'featureBackupRetentionDays',
   /** column name */
   FeatureCustomDomainsEnabled = 'featureCustomDomainsEnabled',
   /** column name */
@@ -14560,6 +19323,8 @@ export enum Plans_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Individual = 'individual',
+  /** column name */
   IsDefault = 'isDefault',
   /** column name */
   IsFree = 'isFree',
@@ -14572,6 +19337,18 @@ export enum Plans_Select_Column {
   /** column name */
   Sort = 'sort',
   /** column name */
+  StripePriceIdCustomDomains = 'stripePriceIDCustomDomains',
+  /** column name */
+  StripePriceIdDedicatedCompute = 'stripePriceIDDedicatedCompute',
+  /** column name */
+  StripePriceIdEgressUsageMb = 'stripePriceIDEgressUsageMB',
+  /** column name */
+  StripePriceIdFunctionsAmount = 'stripePriceIDFunctionsAmount',
+  /** column name */
+  StripePriceIdFunctionsUsageSeconds = 'stripePriceIDFunctionsUsageSeconds',
+  /** column name */
+  StripePriceIdPersistentVolumesGb = 'stripePriceIDPersistentVolumesGB',
+  /** column name */
   StripePriceId = 'stripePriceId',
   /** column name */
   UpatedAt = 'upatedAt'
@@ -14580,7 +19357,10 @@ export enum Plans_Select_Column {
 /** input type for updating data in table "plans" */
 export type Plans_Set_Input = {
   createdAt?: InputMaybe<Scalars['timestamptz']>;
+  deprecated?: InputMaybe<Scalars['Boolean']>;
+  featureAdvancedGraphql?: InputMaybe<Scalars['Boolean']>;
   featureBackupEnabled?: InputMaybe<Scalars['Boolean']>;
+  featureBackupRetentionDays?: InputMaybe<Scalars['Int']>;
   featureCustomDomainsEnabled?: InputMaybe<Scalars['Boolean']>;
   featureCustomEmailTemplatesEnabled?: InputMaybe<Scalars['Boolean']>;
   featureCustomResources?: InputMaybe<Scalars['Boolean']>;
@@ -14593,12 +19373,19 @@ export type Plans_Set_Input = {
   /** Max number of functions to deploy per git deployment */
   featureMaxNumberOfFunctionsPerDeployment?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['uuid']>;
+  individual?: InputMaybe<Scalars['Boolean']>;
   isDefault?: InputMaybe<Scalars['Boolean']>;
   isFree?: InputMaybe<Scalars['Boolean']>;
   isPublic?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   price?: InputMaybe<Scalars['Int']>;
   sort?: InputMaybe<Scalars['Int']>;
+  stripePriceIDCustomDomains?: InputMaybe<Scalars['String']>;
+  stripePriceIDDedicatedCompute?: InputMaybe<Scalars['String']>;
+  stripePriceIDEgressUsageMB?: InputMaybe<Scalars['String']>;
+  stripePriceIDFunctionsAmount?: InputMaybe<Scalars['String']>;
+  stripePriceIDFunctionsUsageSeconds?: InputMaybe<Scalars['String']>;
+  stripePriceIDPersistentVolumesGB?: InputMaybe<Scalars['String']>;
   stripePriceId?: InputMaybe<Scalars['String']>;
   upatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
@@ -14606,6 +19393,7 @@ export type Plans_Set_Input = {
 /** aggregate stddev on columns */
 export type Plans_Stddev_Fields = {
   __typename?: 'plans_stddev_fields';
+  featureBackupRetentionDays?: Maybe<Scalars['Float']>;
   /** Function execution timeout in seconds */
   featureFunctionExecutionTimeout?: Maybe<Scalars['Float']>;
   featureMaxDbSize?: Maybe<Scalars['Float']>;
@@ -14619,6 +19407,7 @@ export type Plans_Stddev_Fields = {
 /** aggregate stddev_pop on columns */
 export type Plans_Stddev_Pop_Fields = {
   __typename?: 'plans_stddev_pop_fields';
+  featureBackupRetentionDays?: Maybe<Scalars['Float']>;
   /** Function execution timeout in seconds */
   featureFunctionExecutionTimeout?: Maybe<Scalars['Float']>;
   featureMaxDbSize?: Maybe<Scalars['Float']>;
@@ -14632,6 +19421,7 @@ export type Plans_Stddev_Pop_Fields = {
 /** aggregate stddev_samp on columns */
 export type Plans_Stddev_Samp_Fields = {
   __typename?: 'plans_stddev_samp_fields';
+  featureBackupRetentionDays?: Maybe<Scalars['Float']>;
   /** Function execution timeout in seconds */
   featureFunctionExecutionTimeout?: Maybe<Scalars['Float']>;
   featureMaxDbSize?: Maybe<Scalars['Float']>;
@@ -14653,7 +19443,10 @@ export type Plans_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Plans_Stream_Cursor_Value_Input = {
   createdAt?: InputMaybe<Scalars['timestamptz']>;
+  deprecated?: InputMaybe<Scalars['Boolean']>;
+  featureAdvancedGraphql?: InputMaybe<Scalars['Boolean']>;
   featureBackupEnabled?: InputMaybe<Scalars['Boolean']>;
+  featureBackupRetentionDays?: InputMaybe<Scalars['Int']>;
   featureCustomDomainsEnabled?: InputMaybe<Scalars['Boolean']>;
   featureCustomEmailTemplatesEnabled?: InputMaybe<Scalars['Boolean']>;
   featureCustomResources?: InputMaybe<Scalars['Boolean']>;
@@ -14666,12 +19459,19 @@ export type Plans_Stream_Cursor_Value_Input = {
   /** Max number of functions to deploy per git deployment */
   featureMaxNumberOfFunctionsPerDeployment?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['uuid']>;
+  individual?: InputMaybe<Scalars['Boolean']>;
   isDefault?: InputMaybe<Scalars['Boolean']>;
   isFree?: InputMaybe<Scalars['Boolean']>;
   isPublic?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   price?: InputMaybe<Scalars['Int']>;
   sort?: InputMaybe<Scalars['Int']>;
+  stripePriceIDCustomDomains?: InputMaybe<Scalars['String']>;
+  stripePriceIDDedicatedCompute?: InputMaybe<Scalars['String']>;
+  stripePriceIDEgressUsageMB?: InputMaybe<Scalars['String']>;
+  stripePriceIDFunctionsAmount?: InputMaybe<Scalars['String']>;
+  stripePriceIDFunctionsUsageSeconds?: InputMaybe<Scalars['String']>;
+  stripePriceIDPersistentVolumesGB?: InputMaybe<Scalars['String']>;
   stripePriceId?: InputMaybe<Scalars['String']>;
   upatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
@@ -14679,6 +19479,7 @@ export type Plans_Stream_Cursor_Value_Input = {
 /** aggregate sum on columns */
 export type Plans_Sum_Fields = {
   __typename?: 'plans_sum_fields';
+  featureBackupRetentionDays?: Maybe<Scalars['Int']>;
   /** Function execution timeout in seconds */
   featureFunctionExecutionTimeout?: Maybe<Scalars['Int']>;
   featureMaxDbSize?: Maybe<Scalars['Int']>;
@@ -14694,7 +19495,13 @@ export enum Plans_Update_Column {
   /** column name */
   CreatedAt = 'createdAt',
   /** column name */
+  Deprecated = 'deprecated',
+  /** column name */
+  FeatureAdvancedGraphql = 'featureAdvancedGraphql',
+  /** column name */
   FeatureBackupEnabled = 'featureBackupEnabled',
+  /** column name */
+  FeatureBackupRetentionDays = 'featureBackupRetentionDays',
   /** column name */
   FeatureCustomDomainsEnabled = 'featureCustomDomainsEnabled',
   /** column name */
@@ -14714,6 +19521,8 @@ export enum Plans_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Individual = 'individual',
+  /** column name */
   IsDefault = 'isDefault',
   /** column name */
   IsFree = 'isFree',
@@ -14725,6 +19534,18 @@ export enum Plans_Update_Column {
   Price = 'price',
   /** column name */
   Sort = 'sort',
+  /** column name */
+  StripePriceIdCustomDomains = 'stripePriceIDCustomDomains',
+  /** column name */
+  StripePriceIdDedicatedCompute = 'stripePriceIDDedicatedCompute',
+  /** column name */
+  StripePriceIdEgressUsageMb = 'stripePriceIDEgressUsageMB',
+  /** column name */
+  StripePriceIdFunctionsAmount = 'stripePriceIDFunctionsAmount',
+  /** column name */
+  StripePriceIdFunctionsUsageSeconds = 'stripePriceIDFunctionsUsageSeconds',
+  /** column name */
+  StripePriceIdPersistentVolumesGb = 'stripePriceIDPersistentVolumesGB',
   /** column name */
   StripePriceId = 'stripePriceId',
   /** column name */
@@ -14743,6 +19564,7 @@ export type Plans_Updates = {
 /** aggregate var_pop on columns */
 export type Plans_Var_Pop_Fields = {
   __typename?: 'plans_var_pop_fields';
+  featureBackupRetentionDays?: Maybe<Scalars['Float']>;
   /** Function execution timeout in seconds */
   featureFunctionExecutionTimeout?: Maybe<Scalars['Float']>;
   featureMaxDbSize?: Maybe<Scalars['Float']>;
@@ -14756,6 +19578,7 @@ export type Plans_Var_Pop_Fields = {
 /** aggregate var_samp on columns */
 export type Plans_Var_Samp_Fields = {
   __typename?: 'plans_var_samp_fields';
+  featureBackupRetentionDays?: Maybe<Scalars['Float']>;
   /** Function execution timeout in seconds */
   featureFunctionExecutionTimeout?: Maybe<Scalars['Float']>;
   featureMaxDbSize?: Maybe<Scalars['Float']>;
@@ -14769,6 +19592,7 @@ export type Plans_Var_Samp_Fields = {
 /** aggregate variance on columns */
 export type Plans_Variance_Fields = {
   __typename?: 'plans_variance_fields';
+  featureBackupRetentionDays?: Maybe<Scalars['Float']>;
   /** Function execution timeout in seconds */
   featureFunctionExecutionTimeout?: Maybe<Scalars['Float']>;
   featureMaxDbSize?: Maybe<Scalars['Float']>;
@@ -14781,6 +19605,18 @@ export type Plans_Variance_Fields = {
 
 export type Query_Root = {
   __typename?: 'query_root';
+  /** fetch data from the table: "announcements_read" using primary key columns */
+  announcementRead?: Maybe<Announcements_Read>;
+  /** fetch data from the table: "announcements" */
+  announcements: Array<Announcements>;
+  /** fetch data from the table: "announcements_read" */
+  announcementsRead: Array<Announcements_Read>;
+  /** fetch aggregated fields from the table: "announcements_read" */
+  announcementsReadAggregate: Announcements_Read_Aggregate;
+  /** fetch aggregated fields from the table: "announcements" */
+  announcements_aggregate: Announcements_Aggregate;
+  /** fetch data from the table: "announcements" using primary key columns */
+  announcements_by_pk?: Maybe<Announcements>;
   /** fetch data from the table: "apps" using primary key columns */
   app?: Maybe<Apps>;
   appSecrets: Array<ConfigEnvironmentVariable>;
@@ -14865,33 +19701,53 @@ export type Query_Root = {
   billingDedicatedCompute?: Maybe<Billing_Dedicated_Compute>;
   /** fetch aggregated fields from the table: "billing.dedicated_compute" */
   billingDedicatedComputeAggregate: Billing_Dedicated_Compute_Aggregate;
-  /** fetch data from the table: "billing.dedicated_compute_reports" using primary key columns */
-  billingDedicatedComputeReport?: Maybe<Billing_Dedicated_Compute_Reports>;
-  /** fetch data from the table: "billing.dedicated_compute_reports" */
-  billingDedicatedComputeReports: Array<Billing_Dedicated_Compute_Reports>;
-  /** fetch aggregated fields from the table: "billing.dedicated_compute_reports" */
-  billingDedicatedComputeReportsAggregate: Billing_Dedicated_Compute_Reports_Aggregate;
   /** fetch data from the table: "billing.dedicated_compute" */
   billingDedicatedComputes: Array<Billing_Dedicated_Compute>;
   billingGetNextInvoice?: Maybe<InvoiceSummary>;
+  billingOrganizationCustomePortal: Scalars['String'];
   /** fetch data from the table: "billing.reports" using primary key columns */
   billingReport?: Maybe<Billing_Reports>;
   /** fetch data from the table: "billing.reports" */
   billingReports: Array<Billing_Reports>;
   /** fetch aggregated fields from the table: "billing.reports" */
   billingReportsAggregate: Billing_Reports_Aggregate;
+  /** fetch data from the table: "billing.resources" using primary key columns */
+  billingResource?: Maybe<Billing_Resources>;
+  /** fetch data from the table: "billing.resources" */
+  billingResources: Array<Billing_Resources>;
+  /** fetch aggregated fields from the table: "billing.resources" */
+  billingResourcesAggregate: Billing_Resources_Aggregate;
   /** fetch data from the table: "billing.subscriptions" using primary key columns */
   billingSubscription?: Maybe<Billing_Subscriptions>;
   /** fetch data from the table: "billing.subscriptions" */
   billingSubscriptions: Array<Billing_Subscriptions>;
   /** fetch aggregated fields from the table: "billing.subscriptions" */
   billingSubscriptionsAggregate: Billing_Subscriptions_Aggregate;
+  billingVerifySubscriptions: VerifySubscriptionsResponse;
+  /** fetch data from the table: "billing.report_resource_type" */
+  billing_report_resource_type: Array<Billing_Report_Resource_Type>;
+  /** fetch aggregated fields from the table: "billing.report_resource_type" */
+  billing_report_resource_type_aggregate: Billing_Report_Resource_Type_Aggregate;
+  /** fetch data from the table: "billing.report_resource_type" using primary key columns */
+  billing_report_resource_type_by_pk?: Maybe<Billing_Report_Resource_Type>;
   /** fetch data from the table: "billing.report_type" */
   billing_report_type: Array<Billing_Report_Type>;
   /** fetch aggregated fields from the table: "billing.report_type" */
   billing_report_type_aggregate: Billing_Report_Type_Aggregate;
   /** fetch data from the table: "billing.report_type" using primary key columns */
   billing_report_type_by_pk?: Maybe<Billing_Report_Type>;
+  /** fetch data from the table: "billing.reports_resources" */
+  billing_reports_resources: Array<Billing_Reports_Resources>;
+  /** fetch aggregated fields from the table: "billing.reports_resources" */
+  billing_reports_resources_aggregate: Billing_Reports_Resources_Aggregate;
+  /** fetch data from the table: "billing.reports_resources" using primary key columns */
+  billing_reports_resources_by_pk?: Maybe<Billing_Reports_Resources>;
+  /** fetch data from the table: "billing.subscription_items" */
+  billing_subscription_items: Array<Billing_Subscription_Items>;
+  /** fetch aggregated fields from the table: "billing.subscription_items" */
+  billing_subscription_items_aggregate: Billing_Subscription_Items_Aggregate;
+  /** fetch data from the table: "billing.subscription_items" using primary key columns */
+  billing_subscription_items_by_pk?: Maybe<Billing_Subscription_Items>;
   /** fetch data from the table: "storage.buckets" using primary key columns */
   bucket?: Maybe<Buckets>;
   /** fetch data from the table: "storage.buckets" */
@@ -14931,18 +19787,17 @@ export type Query_Root = {
   deployments: Array<Deployments>;
   /** fetch aggregated fields from the table: "deployments" */
   deploymentsAggregate: Deployments_Aggregate;
+  /**
+   * Returns the CNAME the hostname resolves to.
+   * If the hostname cannot be resolved or isn't a CNAME, returns empty
+   */
+  dnsLookupCNAME: Scalars['String'];
   /** fetch data from the table: "feature_flags" using primary key columns */
   featureFlag?: Maybe<FeatureFlags>;
   /** An array relationship */
   featureFlags: Array<FeatureFlags>;
   /** fetch aggregated fields from the table: "feature_flags" */
   featureFlagsAggregate: FeatureFlags_Aggregate;
-  /** fetch data from the table: "feedback" */
-  feedback: Array<Feedback>;
-  /** fetch aggregated fields from the table: "feedback" */
-  feedbackAggreggate: Feedback_Aggregate;
-  /** fetch data from the table: "feedback" using primary key columns */
-  feedbackOne?: Maybe<Feedback>;
   /** fetch data from the table: "storage.files" using primary key columns */
   file?: Maybe<Files>;
   /** An array relationship */
@@ -14957,8 +19812,16 @@ export type Query_Root = {
   getLogsVolume: Metrics;
   getPostgresVolumeCapacity: Metrics;
   getPostgresVolumeUsage: Metrics;
+  getProjectStatus: ProjectStatusResponse;
+  /**
+   * Returns list of label values for a given label within a range of time.
+   *
+   * If `from` and `to` are not provided, they default to 6 hour ago and now, respectively.
+   */
+  getServiceLabelValues: Array<Scalars['String']>;
   getTotalRequests: Metrics;
-  getUsageAll: Array<UsageSummary>;
+  getUsageForApp: UsageSummary;
+  getUsageForOrganization: UsageSummary;
   /** fetch data from the table: "github_app_installations" using primary key columns */
   githubAppInstallation?: Maybe<GithubAppInstallations>;
   /** fetch data from the table: "github_app_installations" */
@@ -14976,6 +19839,48 @@ export type Query_Root = {
    * If `from` and `to` are not provided, they default to an hour ago and now, respectively.
    */
   logs: Array<Log>;
+  /** fetch data from the table: "organizations" using primary key columns */
+  organization?: Maybe<Organizations>;
+  /** fetch data from the table: "organization_members" using primary key columns */
+  organizationMember?: Maybe<Organization_Members>;
+  /** fetch data from the table: "organization_member_invites" using primary key columns */
+  organizationMemberInvite?: Maybe<Organization_Member_Invites>;
+  /** fetch data from the table: "organization_member_invites" */
+  organizationMemberInvites: Array<Organization_Member_Invites>;
+  /** fetch aggregated fields from the table: "organization_member_invites" */
+  organizationMemberInvitesAggregate: Organization_Member_Invites_Aggregate;
+  /** fetch data from the table: "organization_members" */
+  organizationMembers: Array<Organization_Members>;
+  /** fetch aggregated fields from the table: "organization_members" */
+  organizationMembersAggregate: Organization_Members_Aggregate;
+  /** fetch data from the table: "organization_new_request" using primary key columns */
+  organizationNewRequest?: Maybe<Organization_New_Request>;
+  /** fetch data from the table: "organization_new_request" */
+  organizationNewRequests: Array<Organization_New_Request>;
+  /** fetch aggregated fields from the table: "organization_new_request" */
+  organizationNewRequestsAggregate: Organization_New_Request_Aggregate;
+  /** fetch data from the table: "organization_costs_thresholds" */
+  organization_costs_thresholds: Array<Organization_Costs_Thresholds>;
+  /** fetch aggregated fields from the table: "organization_costs_thresholds" */
+  organization_costs_thresholds_aggregate: Organization_Costs_Thresholds_Aggregate;
+  /** fetch data from the table: "organization_costs_thresholds" using primary key columns */
+  organization_costs_thresholds_by_pk?: Maybe<Organization_Costs_Thresholds>;
+  /** fetch data from the table: "organization_members_role" */
+  organization_members_role: Array<Organization_Members_Role>;
+  /** fetch aggregated fields from the table: "organization_members_role" */
+  organization_members_role_aggregate: Organization_Members_Role_Aggregate;
+  /** fetch data from the table: "organization_members_role" using primary key columns */
+  organization_members_role_by_pk?: Maybe<Organization_Members_Role>;
+  /** fetch data from the table: "organization_status" */
+  organization_status: Array<Organization_Status>;
+  /** fetch aggregated fields from the table: "organization_status" */
+  organization_status_aggregate: Organization_Status_Aggregate;
+  /** fetch data from the table: "organization_status" using primary key columns */
+  organization_status_by_pk?: Maybe<Organization_Status>;
+  /** An array relationship */
+  organizations: Array<Organizations>;
+  /** fetch aggregated fields from the table: "organizations" */
+  organizationsAggregate: Organizations_Aggregate;
   /** fetch data from the table: "payment_methods" using primary key columns */
   paymentMethod?: Maybe<PaymentMethods>;
   /** An array relationship */
@@ -14996,6 +19901,12 @@ export type Query_Root = {
   region_type_by_pk?: Maybe<Region_Type>;
   /** An array relationship */
   regions: Array<Regions>;
+  /** fetch data from the table: "regions_allowed_organization" using primary key columns */
+  regionsAllowedOrganization?: Maybe<Regions_Allowed_Organization>;
+  /** fetch data from the table: "regions_allowed_organization" */
+  regionsAllowedOrganizations: Array<Regions_Allowed_Organization>;
+  /** fetch aggregated fields from the table: "regions_allowed_organization" */
+  regionsAllowedOrganizationsAggregate: Regions_Allowed_Organization_Aggregate;
   /** An aggregate relationship */
   regions_aggregate: Regions_Aggregate;
   /** fetch data from the table: "regions" using primary key columns */
@@ -15005,6 +19916,7 @@ export type Query_Root = {
   runServiceConfig?: Maybe<ConfigRunServiceConfig>;
   runServiceConfigRawJSON: Scalars['String'];
   runServiceConfigs: Array<ConfigRunServiceConfigWithId>;
+  runServiceConfigsAll: Array<ConfigRunServiceConfigWithId>;
   /** An array relationship */
   runServices: Array<Run_Service>;
   /** fetch aggregated fields from the table: "run_service" */
@@ -15036,18 +19948,20 @@ export type Query_Root = {
   statsLiveApps: StatsLiveApps;
   systemConfig?: Maybe<ConfigSystemConfig>;
   systemConfigs: Array<ConfigAppSystemConfig>;
+  /** Returns system logs for a given application */
+  systemLogs: Array<Log>;
   /** fetch data from the table: "auth.users" using primary key columns */
   user?: Maybe<Users>;
   /** fetch data from the table: "auth.users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "auth.users" */
   usersAggregate: Users_Aggregate;
-  /** fetch data from the table: "users_usage" using primary key columns */
-  usersUsage?: Maybe<Users_Usage>;
-  /** fetch data from the table: "users_usage" */
-  usersUsages: Array<Users_Usage>;
-  /** fetch aggregated fields from the table: "users_usage" */
-  usersUsagesAggregate: Users_Usage_Aggregate;
+  /** fetch data from the table: "storage.virus" using primary key columns */
+  virus?: Maybe<Virus>;
+  /** fetch data from the table: "storage.virus" */
+  viruses: Array<Virus>;
+  /** fetch aggregated fields from the table: "storage.virus" */
+  virusesAggregate: Virus_Aggregate;
   /** fetch data from the table: "workspaces" using primary key columns */
   workspace?: Maybe<Workspaces>;
   /** fetch data from the table: "workspace_members" using primary key columns */
@@ -15066,6 +19980,52 @@ export type Query_Root = {
   workspaces: Array<Workspaces>;
   /** fetch aggregated fields from the table: "workspaces" */
   workspacesAggregate: Workspaces_Aggregate;
+};
+
+
+export type Query_RootAnnouncementReadArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootAnnouncementsArgs = {
+  distinct_on?: InputMaybe<Array<Announcements_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Announcements_Order_By>>;
+  where?: InputMaybe<Announcements_Bool_Exp>;
+};
+
+
+export type Query_RootAnnouncementsReadArgs = {
+  distinct_on?: InputMaybe<Array<Announcements_Read_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Announcements_Read_Order_By>>;
+  where?: InputMaybe<Announcements_Read_Bool_Exp>;
+};
+
+
+export type Query_RootAnnouncementsReadAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Announcements_Read_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Announcements_Read_Order_By>>;
+  where?: InputMaybe<Announcements_Read_Bool_Exp>;
+};
+
+
+export type Query_RootAnnouncements_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Announcements_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Announcements_Order_By>>;
+  where?: InputMaybe<Announcements_Bool_Exp>;
+};
+
+
+export type Query_RootAnnouncements_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -15387,29 +20347,6 @@ export type Query_RootBillingDedicatedComputeAggregateArgs = {
 };
 
 
-export type Query_RootBillingDedicatedComputeReportArgs = {
-  id: Scalars['uuid'];
-};
-
-
-export type Query_RootBillingDedicatedComputeReportsArgs = {
-  distinct_on?: InputMaybe<Array<Billing_Dedicated_Compute_Reports_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Billing_Dedicated_Compute_Reports_Order_By>>;
-  where?: InputMaybe<Billing_Dedicated_Compute_Reports_Bool_Exp>;
-};
-
-
-export type Query_RootBillingDedicatedComputeReportsAggregateArgs = {
-  distinct_on?: InputMaybe<Array<Billing_Dedicated_Compute_Reports_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Billing_Dedicated_Compute_Reports_Order_By>>;
-  where?: InputMaybe<Billing_Dedicated_Compute_Reports_Bool_Exp>;
-};
-
-
 export type Query_RootBillingDedicatedComputesArgs = {
   distinct_on?: InputMaybe<Array<Billing_Dedicated_Compute_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -15420,7 +20357,12 @@ export type Query_RootBillingDedicatedComputesArgs = {
 
 
 export type Query_RootBillingGetNextInvoiceArgs = {
-  appID: Scalars['uuid'];
+  organizationID: Scalars['uuid'];
+};
+
+
+export type Query_RootBillingOrganizationCustomePortalArgs = {
+  organizationID: Scalars['uuid'];
 };
 
 
@@ -15447,6 +20389,29 @@ export type Query_RootBillingReportsAggregateArgs = {
 };
 
 
+export type Query_RootBillingResourceArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootBillingResourcesArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Resources_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Resources_Order_By>>;
+  where?: InputMaybe<Billing_Resources_Bool_Exp>;
+};
+
+
+export type Query_RootBillingResourcesAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Resources_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Resources_Order_By>>;
+  where?: InputMaybe<Billing_Resources_Bool_Exp>;
+};
+
+
 export type Query_RootBillingSubscriptionArgs = {
   id: Scalars['uuid'];
 };
@@ -15470,6 +20435,29 @@ export type Query_RootBillingSubscriptionsAggregateArgs = {
 };
 
 
+export type Query_RootBilling_Report_Resource_TypeArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Report_Resource_Type_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Report_Resource_Type_Order_By>>;
+  where?: InputMaybe<Billing_Report_Resource_Type_Bool_Exp>;
+};
+
+
+export type Query_RootBilling_Report_Resource_Type_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Report_Resource_Type_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Report_Resource_Type_Order_By>>;
+  where?: InputMaybe<Billing_Report_Resource_Type_Bool_Exp>;
+};
+
+
+export type Query_RootBilling_Report_Resource_Type_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
 export type Query_RootBilling_Report_TypeArgs = {
   distinct_on?: InputMaybe<Array<Billing_Report_Type_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -15490,6 +20478,52 @@ export type Query_RootBilling_Report_Type_AggregateArgs = {
 
 export type Query_RootBilling_Report_Type_By_PkArgs = {
   value: Scalars['String'];
+};
+
+
+export type Query_RootBilling_Reports_ResourcesArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Reports_Resources_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Reports_Resources_Order_By>>;
+  where?: InputMaybe<Billing_Reports_Resources_Bool_Exp>;
+};
+
+
+export type Query_RootBilling_Reports_Resources_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Reports_Resources_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Reports_Resources_Order_By>>;
+  where?: InputMaybe<Billing_Reports_Resources_Bool_Exp>;
+};
+
+
+export type Query_RootBilling_Reports_Resources_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootBilling_Subscription_ItemsArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Subscription_Items_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Subscription_Items_Order_By>>;
+  where?: InputMaybe<Billing_Subscription_Items_Bool_Exp>;
+};
+
+
+export type Query_RootBilling_Subscription_Items_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Subscription_Items_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Subscription_Items_Order_By>>;
+  where?: InputMaybe<Billing_Subscription_Items_Bool_Exp>;
+};
+
+
+export type Query_RootBilling_Subscription_Items_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -15649,6 +20683,11 @@ export type Query_RootDeploymentsAggregateArgs = {
 };
 
 
+export type Query_RootDnsLookupCnameArgs = {
+  hostname: Scalars['String'];
+};
+
+
 export type Query_RootFeatureFlagArgs = {
   id: Scalars['uuid'];
 };
@@ -15669,29 +20708,6 @@ export type Query_RootFeatureFlagsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<FeatureFlags_Order_By>>;
   where?: InputMaybe<FeatureFlags_Bool_Exp>;
-};
-
-
-export type Query_RootFeedbackArgs = {
-  distinct_on?: InputMaybe<Array<Feedback_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Feedback_Order_By>>;
-  where?: InputMaybe<Feedback_Bool_Exp>;
-};
-
-
-export type Query_RootFeedbackAggreggateArgs = {
-  distinct_on?: InputMaybe<Array<Feedback_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Feedback_Order_By>>;
-  where?: InputMaybe<Feedback_Bool_Exp>;
-};
-
-
-export type Query_RootFeedbackOneArgs = {
-  id: Scalars['Int'];
 };
 
 
@@ -15773,6 +20789,16 @@ export type Query_RootGetPostgresVolumeUsageArgs = {
 };
 
 
+export type Query_RootGetProjectStatusArgs = {
+  appID: Scalars['String'];
+};
+
+
+export type Query_RootGetServiceLabelValuesArgs = {
+  appID: Scalars['String'];
+};
+
+
 export type Query_RootGetTotalRequestsArgs = {
   appID: Scalars['String'];
   from?: InputMaybe<Scalars['Timestamp']>;
@@ -15780,9 +20806,17 @@ export type Query_RootGetTotalRequestsArgs = {
 };
 
 
-export type Query_RootGetUsageAllArgs = {
-  from: Scalars['Timestamp'];
-  to: Scalars['Timestamp'];
+export type Query_RootGetUsageForAppArgs = {
+  appID: Scalars['String'];
+  from?: InputMaybe<Scalars['Timestamp']>;
+  to?: InputMaybe<Scalars['Timestamp']>;
+};
+
+
+export type Query_RootGetUsageForOrganizationArgs = {
+  from?: InputMaybe<Scalars['Timestamp']>;
+  organizationID: Scalars['String'];
+  to?: InputMaybe<Scalars['Timestamp']>;
 };
 
 
@@ -15835,8 +20869,170 @@ export type Query_RootGithubRepositoryArgs = {
 export type Query_RootLogsArgs = {
   appID: Scalars['String'];
   from?: InputMaybe<Scalars['Timestamp']>;
+  regexFilter?: InputMaybe<Scalars['String']>;
   service?: InputMaybe<Scalars['String']>;
   to?: InputMaybe<Scalars['Timestamp']>;
+};
+
+
+export type Query_RootOrganizationArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootOrganizationMemberArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootOrganizationMemberInviteArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootOrganizationMemberInvitesArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Member_Invites_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Member_Invites_Order_By>>;
+  where?: InputMaybe<Organization_Member_Invites_Bool_Exp>;
+};
+
+
+export type Query_RootOrganizationMemberInvitesAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Member_Invites_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Member_Invites_Order_By>>;
+  where?: InputMaybe<Organization_Member_Invites_Bool_Exp>;
+};
+
+
+export type Query_RootOrganizationMembersArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Members_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Members_Order_By>>;
+  where?: InputMaybe<Organization_Members_Bool_Exp>;
+};
+
+
+export type Query_RootOrganizationMembersAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Members_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Members_Order_By>>;
+  where?: InputMaybe<Organization_Members_Bool_Exp>;
+};
+
+
+export type Query_RootOrganizationNewRequestArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootOrganizationNewRequestsArgs = {
+  distinct_on?: InputMaybe<Array<Organization_New_Request_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_New_Request_Order_By>>;
+  where?: InputMaybe<Organization_New_Request_Bool_Exp>;
+};
+
+
+export type Query_RootOrganizationNewRequestsAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_New_Request_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_New_Request_Order_By>>;
+  where?: InputMaybe<Organization_New_Request_Bool_Exp>;
+};
+
+
+export type Query_RootOrganization_Costs_ThresholdsArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Costs_Thresholds_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Costs_Thresholds_Order_By>>;
+  where?: InputMaybe<Organization_Costs_Thresholds_Bool_Exp>;
+};
+
+
+export type Query_RootOrganization_Costs_Thresholds_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Costs_Thresholds_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Costs_Thresholds_Order_By>>;
+  where?: InputMaybe<Organization_Costs_Thresholds_Bool_Exp>;
+};
+
+
+export type Query_RootOrganization_Costs_Thresholds_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Query_RootOrganization_Members_RoleArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Members_Role_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Members_Role_Order_By>>;
+  where?: InputMaybe<Organization_Members_Role_Bool_Exp>;
+};
+
+
+export type Query_RootOrganization_Members_Role_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Members_Role_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Members_Role_Order_By>>;
+  where?: InputMaybe<Organization_Members_Role_Bool_Exp>;
+};
+
+
+export type Query_RootOrganization_Members_Role_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Query_RootOrganization_StatusArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Status_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Status_Order_By>>;
+  where?: InputMaybe<Organization_Status_Bool_Exp>;
+};
+
+
+export type Query_RootOrganization_Status_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Status_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Status_Order_By>>;
+  where?: InputMaybe<Organization_Status_Bool_Exp>;
+};
+
+
+export type Query_RootOrganization_Status_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Query_RootOrganizationsArgs = {
+  distinct_on?: InputMaybe<Array<Organizations_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organizations_Order_By>>;
+  where?: InputMaybe<Organizations_Bool_Exp>;
+};
+
+
+export type Query_RootOrganizationsAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organizations_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organizations_Order_By>>;
+  where?: InputMaybe<Organizations_Bool_Exp>;
 };
 
 
@@ -15918,6 +21114,29 @@ export type Query_RootRegionsArgs = {
 };
 
 
+export type Query_RootRegionsAllowedOrganizationArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootRegionsAllowedOrganizationsArgs = {
+  distinct_on?: InputMaybe<Array<Regions_Allowed_Organization_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Regions_Allowed_Organization_Order_By>>;
+  where?: InputMaybe<Regions_Allowed_Organization_Bool_Exp>;
+};
+
+
+export type Query_RootRegionsAllowedOrganizationsAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Regions_Allowed_Organization_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Regions_Allowed_Organization_Order_By>>;
+  where?: InputMaybe<Regions_Allowed_Organization_Bool_Exp>;
+};
+
+
 export type Query_RootRegions_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Regions_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -15952,6 +21171,12 @@ export type Query_RootRunServiceConfigRawJsonArgs = {
 
 
 export type Query_RootRunServiceConfigsArgs = {
+  appID: Scalars['uuid'];
+  resolve: Scalars['Boolean'];
+};
+
+
+export type Query_RootRunServiceConfigsAllArgs = {
   resolve: Scalars['Boolean'];
   where?: InputMaybe<ConfigRunServiceConfigComparisonExp>;
 };
@@ -16060,6 +21285,14 @@ export type Query_RootSystemConfigsArgs = {
 };
 
 
+export type Query_RootSystemLogsArgs = {
+  action: Scalars['String'];
+  appID: Scalars['String'];
+  from?: InputMaybe<Scalars['Timestamp']>;
+  to?: InputMaybe<Scalars['Timestamp']>;
+};
+
+
 export type Query_RootUserArgs = {
   id: Scalars['uuid'];
 };
@@ -16083,26 +21316,26 @@ export type Query_RootUsersAggregateArgs = {
 };
 
 
-export type Query_RootUsersUsageArgs = {
+export type Query_RootVirusArgs = {
   id: Scalars['uuid'];
 };
 
 
-export type Query_RootUsersUsagesArgs = {
-  distinct_on?: InputMaybe<Array<Users_Usage_Select_Column>>;
+export type Query_RootVirusesArgs = {
+  distinct_on?: InputMaybe<Array<Virus_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Users_Usage_Order_By>>;
-  where?: InputMaybe<Users_Usage_Bool_Exp>;
+  order_by?: InputMaybe<Array<Virus_Order_By>>;
+  where?: InputMaybe<Virus_Bool_Exp>;
 };
 
 
-export type Query_RootUsersUsagesAggregateArgs = {
-  distinct_on?: InputMaybe<Array<Users_Usage_Select_Column>>;
+export type Query_RootVirusesAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Virus_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Users_Usage_Order_By>>;
-  where?: InputMaybe<Users_Usage_Bool_Exp>;
+  order_by?: InputMaybe<Array<Virus_Order_By>>;
+  where?: InputMaybe<Virus_Bool_Exp>;
 };
 
 
@@ -16363,6 +21596,10 @@ export type Region_Type_Updates = {
 export type Regions = {
   __typename?: 'regions';
   active: Scalars['Boolean'];
+  /** An array relationship */
+  allowedOrganizations: Array<Regions_Allowed_Organization>;
+  /** An aggregate relationship */
+  allowedOrganizations_aggregate: Regions_Allowed_Organization_Aggregate;
   /** An object relationship */
   allowedWorkspaces?: Maybe<Regions_Allowed_Workspace>;
   /** An array relationship */
@@ -16379,6 +21616,7 @@ export type Regions = {
   domain: Scalars['String'];
   id: Scalars['uuid'];
   isGdprCompliant: Scalars['Boolean'];
+  name: Scalars['String'];
   /** An object relationship */
   region_type: Region_Type;
   /** An array relationship */
@@ -16387,6 +21625,26 @@ export type Regions = {
   regions_allowed_workspaces_aggregate: Regions_Allowed_Workspace_Aggregate;
   type: Region_Type_Enum;
   updatedAt: Scalars['timestamptz'];
+};
+
+
+/** columns and relationships of "regions" */
+export type RegionsAllowedOrganizationsArgs = {
+  distinct_on?: InputMaybe<Array<Regions_Allowed_Organization_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Regions_Allowed_Organization_Order_By>>;
+  where?: InputMaybe<Regions_Allowed_Organization_Bool_Exp>;
+};
+
+
+/** columns and relationships of "regions" */
+export type RegionsAllowedOrganizations_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Regions_Allowed_Organization_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Regions_Allowed_Organization_Order_By>>;
+  where?: InputMaybe<Regions_Allowed_Organization_Bool_Exp>;
 };
 
 
@@ -16483,6 +21741,245 @@ export type Regions_Aggregate_Order_By = {
   count?: InputMaybe<Order_By>;
   max?: InputMaybe<Regions_Max_Order_By>;
   min?: InputMaybe<Regions_Min_Order_By>;
+};
+
+/** columns and relationships of "regions_allowed_organization" */
+export type Regions_Allowed_Organization = {
+  __typename?: 'regions_allowed_organization';
+  createdAt: Scalars['timestamptz'];
+  description: Scalars['String'];
+  id: Scalars['uuid'];
+  /** An object relationship */
+  organization: Organizations;
+  organizationID: Scalars['uuid'];
+  /** An object relationship */
+  region: Regions;
+  regionID: Scalars['uuid'];
+  updatedAt: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "regions_allowed_organization" */
+export type Regions_Allowed_Organization_Aggregate = {
+  __typename?: 'regions_allowed_organization_aggregate';
+  aggregate?: Maybe<Regions_Allowed_Organization_Aggregate_Fields>;
+  nodes: Array<Regions_Allowed_Organization>;
+};
+
+export type Regions_Allowed_Organization_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Regions_Allowed_Organization_Aggregate_Bool_Exp_Count>;
+};
+
+export type Regions_Allowed_Organization_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Regions_Allowed_Organization_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<Regions_Allowed_Organization_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "regions_allowed_organization" */
+export type Regions_Allowed_Organization_Aggregate_Fields = {
+  __typename?: 'regions_allowed_organization_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Regions_Allowed_Organization_Max_Fields>;
+  min?: Maybe<Regions_Allowed_Organization_Min_Fields>;
+};
+
+
+/** aggregate fields of "regions_allowed_organization" */
+export type Regions_Allowed_Organization_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Regions_Allowed_Organization_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "regions_allowed_organization" */
+export type Regions_Allowed_Organization_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Regions_Allowed_Organization_Max_Order_By>;
+  min?: InputMaybe<Regions_Allowed_Organization_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "regions_allowed_organization" */
+export type Regions_Allowed_Organization_Arr_Rel_Insert_Input = {
+  data: Array<Regions_Allowed_Organization_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Regions_Allowed_Organization_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "regions_allowed_organization". All fields are combined with a logical 'AND'. */
+export type Regions_Allowed_Organization_Bool_Exp = {
+  _and?: InputMaybe<Array<Regions_Allowed_Organization_Bool_Exp>>;
+  _not?: InputMaybe<Regions_Allowed_Organization_Bool_Exp>;
+  _or?: InputMaybe<Array<Regions_Allowed_Organization_Bool_Exp>>;
+  createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  description?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  organization?: InputMaybe<Organizations_Bool_Exp>;
+  organizationID?: InputMaybe<Uuid_Comparison_Exp>;
+  region?: InputMaybe<Regions_Bool_Exp>;
+  regionID?: InputMaybe<Uuid_Comparison_Exp>;
+  updatedAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "regions_allowed_organization" */
+export enum Regions_Allowed_Organization_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  RegionsAllowedOrganizationPkey = 'regions_allowed_organization_pkey',
+  /** unique or primary key constraint on columns "region_id", "organization_id" */
+  RegionsAllowedOrganizationRegionIdOrganizationIdKey = 'regions_allowed_organization_region_id_organization_id_key'
+}
+
+/** input type for inserting data into table "regions_allowed_organization" */
+export type Regions_Allowed_Organization_Insert_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organization?: InputMaybe<Organizations_Obj_Rel_Insert_Input>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
+  region?: InputMaybe<Regions_Obj_Rel_Insert_Input>;
+  regionID?: InputMaybe<Scalars['uuid']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Regions_Allowed_Organization_Max_Fields = {
+  __typename?: 'regions_allowed_organization_max_fields';
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  organizationID?: Maybe<Scalars['uuid']>;
+  regionID?: Maybe<Scalars['uuid']>;
+  updatedAt?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by max() on columns of table "regions_allowed_organization" */
+export type Regions_Allowed_Organization_Max_Order_By = {
+  createdAt?: InputMaybe<Order_By>;
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizationID?: InputMaybe<Order_By>;
+  regionID?: InputMaybe<Order_By>;
+  updatedAt?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Regions_Allowed_Organization_Min_Fields = {
+  __typename?: 'regions_allowed_organization_min_fields';
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  organizationID?: Maybe<Scalars['uuid']>;
+  regionID?: Maybe<Scalars['uuid']>;
+  updatedAt?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "regions_allowed_organization" */
+export type Regions_Allowed_Organization_Min_Order_By = {
+  createdAt?: InputMaybe<Order_By>;
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizationID?: InputMaybe<Order_By>;
+  regionID?: InputMaybe<Order_By>;
+  updatedAt?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "regions_allowed_organization" */
+export type Regions_Allowed_Organization_Mutation_Response = {
+  __typename?: 'regions_allowed_organization_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Regions_Allowed_Organization>;
+};
+
+/** on_conflict condition type for table "regions_allowed_organization" */
+export type Regions_Allowed_Organization_On_Conflict = {
+  constraint: Regions_Allowed_Organization_Constraint;
+  update_columns?: Array<Regions_Allowed_Organization_Update_Column>;
+  where?: InputMaybe<Regions_Allowed_Organization_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "regions_allowed_organization". */
+export type Regions_Allowed_Organization_Order_By = {
+  createdAt?: InputMaybe<Order_By>;
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organization?: InputMaybe<Organizations_Order_By>;
+  organizationID?: InputMaybe<Order_By>;
+  region?: InputMaybe<Regions_Order_By>;
+  regionID?: InputMaybe<Order_By>;
+  updatedAt?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: regions_allowed_organization */
+export type Regions_Allowed_Organization_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "regions_allowed_organization" */
+export enum Regions_Allowed_Organization_Select_Column {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizationId = 'organizationID',
+  /** column name */
+  RegionId = 'regionID',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+/** input type for updating data in table "regions_allowed_organization" */
+export type Regions_Allowed_Organization_Set_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
+  regionID?: InputMaybe<Scalars['uuid']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** Streaming cursor of the table "regions_allowed_organization" */
+export type Regions_Allowed_Organization_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Regions_Allowed_Organization_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Regions_Allowed_Organization_Stream_Cursor_Value_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizationID?: InputMaybe<Scalars['uuid']>;
+  regionID?: InputMaybe<Scalars['uuid']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** update columns of table "regions_allowed_organization" */
+export enum Regions_Allowed_Organization_Update_Column {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizationId = 'organizationID',
+  /** column name */
+  RegionId = 'regionID',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+export type Regions_Allowed_Organization_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Regions_Allowed_Organization_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Regions_Allowed_Organization_Bool_Exp;
 };
 
 /** columns and relationships of "regions_allowed_workspace" */
@@ -16744,6 +22241,8 @@ export type Regions_Bool_Exp = {
   _not?: InputMaybe<Regions_Bool_Exp>;
   _or?: InputMaybe<Array<Regions_Bool_Exp>>;
   active?: InputMaybe<Boolean_Comparison_Exp>;
+  allowedOrganizations?: InputMaybe<Regions_Allowed_Organization_Bool_Exp>;
+  allowedOrganizations_aggregate?: InputMaybe<Regions_Allowed_Organization_Aggregate_Bool_Exp>;
   allowedWorkspaces?: InputMaybe<Regions_Allowed_Workspace_Bool_Exp>;
   apps?: InputMaybe<Apps_Bool_Exp>;
   apps_aggregate?: InputMaybe<Apps_Aggregate_Bool_Exp>;
@@ -16756,6 +22255,7 @@ export type Regions_Bool_Exp = {
   domain?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   isGdprCompliant?: InputMaybe<Boolean_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
   region_type?: InputMaybe<Region_Type_Bool_Exp>;
   regions_allowed_workspaces?: InputMaybe<Regions_Allowed_Workspace_Bool_Exp>;
   regions_allowed_workspaces_aggregate?: InputMaybe<Regions_Allowed_Workspace_Aggregate_Bool_Exp>;
@@ -16772,6 +22272,7 @@ export enum Regions_Constraint {
 /** input type for inserting data into table "regions" */
 export type Regions_Insert_Input = {
   active?: InputMaybe<Scalars['Boolean']>;
+  allowedOrganizations?: InputMaybe<Regions_Allowed_Organization_Arr_Rel_Insert_Input>;
   allowedWorkspaces?: InputMaybe<Regions_Allowed_Workspace_Obj_Rel_Insert_Input>;
   apps?: InputMaybe<Apps_Arr_Rel_Insert_Input>;
   awsName?: InputMaybe<Scalars['String']>;
@@ -16783,6 +22284,7 @@ export type Regions_Insert_Input = {
   domain?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   isGdprCompliant?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
   region_type?: InputMaybe<Region_Type_Obj_Rel_Insert_Input>;
   regions_allowed_workspaces?: InputMaybe<Regions_Allowed_Workspace_Arr_Rel_Insert_Input>;
   type?: InputMaybe<Region_Type_Enum>;
@@ -16799,6 +22301,7 @@ export type Regions_Max_Fields = {
   description?: Maybe<Scalars['String']>;
   domain?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -16811,6 +22314,7 @@ export type Regions_Max_Order_By = {
   description?: InputMaybe<Order_By>;
   domain?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
   updatedAt?: InputMaybe<Order_By>;
 };
 
@@ -16824,6 +22328,7 @@ export type Regions_Min_Fields = {
   description?: Maybe<Scalars['String']>;
   domain?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -16836,6 +22341,7 @@ export type Regions_Min_Order_By = {
   description?: InputMaybe<Order_By>;
   domain?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
   updatedAt?: InputMaybe<Order_By>;
 };
 
@@ -16865,6 +22371,7 @@ export type Regions_On_Conflict = {
 /** Ordering options when selecting data from "regions". */
 export type Regions_Order_By = {
   active?: InputMaybe<Order_By>;
+  allowedOrganizations_aggregate?: InputMaybe<Regions_Allowed_Organization_Aggregate_Order_By>;
   allowedWorkspaces?: InputMaybe<Regions_Allowed_Workspace_Order_By>;
   apps_aggregate?: InputMaybe<Apps_Aggregate_Order_By>;
   awsName?: InputMaybe<Order_By>;
@@ -16876,6 +22383,7 @@ export type Regions_Order_By = {
   domain?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   isGdprCompliant?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
   region_type?: InputMaybe<Region_Type_Order_By>;
   regions_allowed_workspaces_aggregate?: InputMaybe<Regions_Allowed_Workspace_Aggregate_Order_By>;
   type?: InputMaybe<Order_By>;
@@ -16907,6 +22415,8 @@ export enum Regions_Select_Column {
   Id = 'id',
   /** column name */
   IsGdprCompliant = 'isGdprCompliant',
+  /** column name */
+  Name = 'name',
   /** column name */
   Type = 'type',
   /** column name */
@@ -16940,6 +22450,7 @@ export type Regions_Set_Input = {
   domain?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   isGdprCompliant?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Region_Type_Enum>;
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
@@ -16963,6 +22474,7 @@ export type Regions_Stream_Cursor_Value_Input = {
   domain?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   isGdprCompliant?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Region_Type_Enum>;
   updatedAt?: InputMaybe<Scalars['timestamptz']>;
 };
@@ -16988,6 +22500,8 @@ export enum Regions_Update_Column {
   /** column name */
   IsGdprCompliant = 'isGdprCompliant',
   /** column name */
+  Name = 'name',
+  /** column name */
   Type = 'type',
   /** column name */
   UpdatedAt = 'updatedAt'
@@ -17008,9 +22522,6 @@ export type Run_Service = {
   appID: Scalars['uuid'];
   config?: Maybe<ConfigRunServiceConfig>;
   createdAt: Scalars['timestamptz'];
-  /** An object relationship */
-  creator: Users;
-  creatorUserId: Scalars['uuid'];
   id: Scalars['uuid'];
   mimirConfigEnc?: Maybe<Scalars['String']>;
   subdomain: Scalars['String'];
@@ -17078,8 +22589,6 @@ export type Run_Service_Bool_Exp = {
   app?: InputMaybe<Apps_Bool_Exp>;
   appID?: InputMaybe<Uuid_Comparison_Exp>;
   createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
-  creator?: InputMaybe<Users_Bool_Exp>;
-  creatorUserId?: InputMaybe<Uuid_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   mimirConfigEnc?: InputMaybe<String_Comparison_Exp>;
   subdomain?: InputMaybe<String_Comparison_Exp>;
@@ -17099,8 +22608,6 @@ export type Run_Service_Insert_Input = {
   app?: InputMaybe<Apps_Obj_Rel_Insert_Input>;
   appID?: InputMaybe<Scalars['uuid']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
-  creator?: InputMaybe<Users_Obj_Rel_Insert_Input>;
-  creatorUserId?: InputMaybe<Scalars['uuid']>;
   id?: InputMaybe<Scalars['uuid']>;
   mimirConfigEnc?: InputMaybe<Scalars['String']>;
   subdomain?: InputMaybe<Scalars['String']>;
@@ -17112,7 +22619,6 @@ export type Run_Service_Max_Fields = {
   __typename?: 'run_service_max_fields';
   appID?: Maybe<Scalars['uuid']>;
   createdAt?: Maybe<Scalars['timestamptz']>;
-  creatorUserId?: Maybe<Scalars['uuid']>;
   id?: Maybe<Scalars['uuid']>;
   mimirConfigEnc?: Maybe<Scalars['String']>;
   subdomain?: Maybe<Scalars['String']>;
@@ -17123,7 +22629,6 @@ export type Run_Service_Max_Fields = {
 export type Run_Service_Max_Order_By = {
   appID?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
-  creatorUserId?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   mimirConfigEnc?: InputMaybe<Order_By>;
   subdomain?: InputMaybe<Order_By>;
@@ -17135,7 +22640,6 @@ export type Run_Service_Min_Fields = {
   __typename?: 'run_service_min_fields';
   appID?: Maybe<Scalars['uuid']>;
   createdAt?: Maybe<Scalars['timestamptz']>;
-  creatorUserId?: Maybe<Scalars['uuid']>;
   id?: Maybe<Scalars['uuid']>;
   mimirConfigEnc?: Maybe<Scalars['String']>;
   subdomain?: Maybe<Scalars['String']>;
@@ -17146,7 +22650,6 @@ export type Run_Service_Min_Fields = {
 export type Run_Service_Min_Order_By = {
   appID?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
-  creatorUserId?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   mimirConfigEnc?: InputMaybe<Order_By>;
   subdomain?: InputMaybe<Order_By>;
@@ -17174,8 +22677,6 @@ export type Run_Service_Order_By = {
   app?: InputMaybe<Apps_Order_By>;
   appID?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
-  creator?: InputMaybe<Users_Order_By>;
-  creatorUserId?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   mimirConfigEnc?: InputMaybe<Order_By>;
   subdomain?: InputMaybe<Order_By>;
@@ -17194,8 +22695,6 @@ export enum Run_Service_Select_Column {
   /** column name */
   CreatedAt = 'createdAt',
   /** column name */
-  CreatorUserId = 'creatorUserId',
-  /** column name */
   Id = 'id',
   /** column name */
   MimirConfigEnc = 'mimirConfigEnc',
@@ -17209,7 +22708,6 @@ export enum Run_Service_Select_Column {
 export type Run_Service_Set_Input = {
   appID?: InputMaybe<Scalars['uuid']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
-  creatorUserId?: InputMaybe<Scalars['uuid']>;
   id?: InputMaybe<Scalars['uuid']>;
   mimirConfigEnc?: InputMaybe<Scalars['String']>;
   subdomain?: InputMaybe<Scalars['String']>;
@@ -17228,7 +22726,6 @@ export type Run_Service_Stream_Cursor_Input = {
 export type Run_Service_Stream_Cursor_Value_Input = {
   appID?: InputMaybe<Scalars['uuid']>;
   createdAt?: InputMaybe<Scalars['timestamptz']>;
-  creatorUserId?: InputMaybe<Scalars['uuid']>;
   id?: InputMaybe<Scalars['uuid']>;
   mimirConfigEnc?: InputMaybe<Scalars['String']>;
   subdomain?: InputMaybe<Scalars['String']>;
@@ -17241,8 +22738,6 @@ export enum Run_Service_Update_Column {
   AppId = 'appID',
   /** column name */
   CreatedAt = 'createdAt',
-  /** column name */
-  CreatorUserId = 'creatorUserId',
   /** column name */
   Id = 'id',
   /** column name */
@@ -17346,6 +22841,8 @@ export enum Software_Type_Constraint {
 export enum Software_Type_Enum {
   /** Hasura Auth */
   Auth = 'Auth',
+  /** Nhost AI service */
+  Graphite = 'Graphite',
   /** Hasura GraphQL Engine */
   Hasura = 'Hasura',
   /** PostgreSQL Database */
@@ -17650,6 +23147,22 @@ export type Software_Versions_Updates = {
 
 export type Subscription_Root = {
   __typename?: 'subscription_root';
+  /** fetch data from the table: "announcements_read" using primary key columns */
+  announcementRead?: Maybe<Announcements_Read>;
+  /** fetch data from the table: "announcements" */
+  announcements: Array<Announcements>;
+  /** fetch data from the table: "announcements_read" */
+  announcementsRead: Array<Announcements_Read>;
+  /** fetch aggregated fields from the table: "announcements_read" */
+  announcementsReadAggregate: Announcements_Read_Aggregate;
+  /** fetch data from the table in a streaming manner: "announcements_read" */
+  announcementsReadStream: Array<Announcements_Read>;
+  /** fetch aggregated fields from the table: "announcements" */
+  announcements_aggregate: Announcements_Aggregate;
+  /** fetch data from the table: "announcements" using primary key columns */
+  announcements_by_pk?: Maybe<Announcements>;
+  /** fetch data from the table in a streaming manner: "announcements" */
+  announcements_stream: Array<Announcements>;
   /** fetch data from the table: "apps" using primary key columns */
   app?: Maybe<Apps>;
   /** fetch data from the table: "app_states" using primary key columns */
@@ -17758,12 +23271,6 @@ export type Subscription_Root = {
   billingDedicatedCompute?: Maybe<Billing_Dedicated_Compute>;
   /** fetch aggregated fields from the table: "billing.dedicated_compute" */
   billingDedicatedComputeAggregate: Billing_Dedicated_Compute_Aggregate;
-  /** fetch data from the table: "billing.dedicated_compute_reports" using primary key columns */
-  billingDedicatedComputeReport?: Maybe<Billing_Dedicated_Compute_Reports>;
-  /** fetch data from the table: "billing.dedicated_compute_reports" */
-  billingDedicatedComputeReports: Array<Billing_Dedicated_Compute_Reports>;
-  /** fetch aggregated fields from the table: "billing.dedicated_compute_reports" */
-  billingDedicatedComputeReportsAggregate: Billing_Dedicated_Compute_Reports_Aggregate;
   /** fetch data from the table: "billing.dedicated_compute" */
   billingDedicatedComputes: Array<Billing_Dedicated_Compute>;
   /** fetch data from the table: "billing.reports" using primary key columns */
@@ -17774,16 +23281,30 @@ export type Subscription_Root = {
   billingReportsAggregate: Billing_Reports_Aggregate;
   /** fetch data from the table in a streaming manner: "billing.reports" */
   billingReportsStream: Array<Billing_Reports>;
+  /** fetch data from the table: "billing.resources" using primary key columns */
+  billingResource?: Maybe<Billing_Resources>;
+  /** fetch data from the table: "billing.resources" */
+  billingResources: Array<Billing_Resources>;
+  /** fetch aggregated fields from the table: "billing.resources" */
+  billingResourcesAggregate: Billing_Resources_Aggregate;
+  /** fetch data from the table in a streaming manner: "billing.resources" */
+  billingResourcesStream: Array<Billing_Resources>;
   /** fetch data from the table: "billing.subscriptions" using primary key columns */
   billingSubscription?: Maybe<Billing_Subscriptions>;
   /** fetch data from the table: "billing.subscriptions" */
   billingSubscriptions: Array<Billing_Subscriptions>;
   /** fetch aggregated fields from the table: "billing.subscriptions" */
   billingSubscriptionsAggregate: Billing_Subscriptions_Aggregate;
-  /** fetch data from the table in a streaming manner: "billing.dedicated_compute_reports" */
-  billing_dedicated_compute_reports_stream: Array<Billing_Dedicated_Compute_Reports>;
   /** fetch data from the table in a streaming manner: "billing.dedicated_compute" */
   billing_dedicated_compute_stream: Array<Billing_Dedicated_Compute>;
+  /** fetch data from the table: "billing.report_resource_type" */
+  billing_report_resource_type: Array<Billing_Report_Resource_Type>;
+  /** fetch aggregated fields from the table: "billing.report_resource_type" */
+  billing_report_resource_type_aggregate: Billing_Report_Resource_Type_Aggregate;
+  /** fetch data from the table: "billing.report_resource_type" using primary key columns */
+  billing_report_resource_type_by_pk?: Maybe<Billing_Report_Resource_Type>;
+  /** fetch data from the table in a streaming manner: "billing.report_resource_type" */
+  billing_report_resource_type_stream: Array<Billing_Report_Resource_Type>;
   /** fetch data from the table: "billing.report_type" */
   billing_report_type: Array<Billing_Report_Type>;
   /** fetch aggregated fields from the table: "billing.report_type" */
@@ -17792,6 +23313,22 @@ export type Subscription_Root = {
   billing_report_type_by_pk?: Maybe<Billing_Report_Type>;
   /** fetch data from the table in a streaming manner: "billing.report_type" */
   billing_report_type_stream: Array<Billing_Report_Type>;
+  /** fetch data from the table: "billing.reports_resources" */
+  billing_reports_resources: Array<Billing_Reports_Resources>;
+  /** fetch aggregated fields from the table: "billing.reports_resources" */
+  billing_reports_resources_aggregate: Billing_Reports_Resources_Aggregate;
+  /** fetch data from the table: "billing.reports_resources" using primary key columns */
+  billing_reports_resources_by_pk?: Maybe<Billing_Reports_Resources>;
+  /** fetch data from the table in a streaming manner: "billing.reports_resources" */
+  billing_reports_resources_stream: Array<Billing_Reports_Resources>;
+  /** fetch data from the table: "billing.subscription_items" */
+  billing_subscription_items: Array<Billing_Subscription_Items>;
+  /** fetch aggregated fields from the table: "billing.subscription_items" */
+  billing_subscription_items_aggregate: Billing_Subscription_Items_Aggregate;
+  /** fetch data from the table: "billing.subscription_items" using primary key columns */
+  billing_subscription_items_by_pk?: Maybe<Billing_Subscription_Items>;
+  /** fetch data from the table in a streaming manner: "billing.subscription_items" */
+  billing_subscription_items_stream: Array<Billing_Subscription_Items>;
   /** fetch data from the table in a streaming manner: "billing.subscriptions" */
   billing_subscriptions_stream: Array<Billing_Subscriptions>;
   /** fetch data from the table: "storage.buckets" using primary key columns */
@@ -17850,14 +23387,6 @@ export type Subscription_Root = {
   featureFlagsAggregate: FeatureFlags_Aggregate;
   /** fetch data from the table in a streaming manner: "feature_flags" */
   featureFlags_stream: Array<FeatureFlags>;
-  /** fetch data from the table: "feedback" */
-  feedback: Array<Feedback>;
-  /** fetch aggregated fields from the table: "feedback" */
-  feedbackAggreggate: Feedback_Aggregate;
-  /** fetch data from the table: "feedback" using primary key columns */
-  feedbackOne?: Maybe<Feedback>;
-  /** fetch data from the table in a streaming manner: "feedback" */
-  feedback_stream: Array<Feedback>;
   /** fetch data from the table: "storage.files" using primary key columns */
   file?: Maybe<Files>;
   /** An array relationship */
@@ -17887,6 +23416,62 @@ export type Subscription_Root = {
    * If `from` is not provided, it defaults to an hour ago.
    */
   logs: Array<Log>;
+  /** fetch data from the table: "organizations" using primary key columns */
+  organization?: Maybe<Organizations>;
+  /** fetch data from the table: "organization_members" using primary key columns */
+  organizationMember?: Maybe<Organization_Members>;
+  /** fetch data from the table: "organization_member_invites" using primary key columns */
+  organizationMemberInvite?: Maybe<Organization_Member_Invites>;
+  /** fetch data from the table: "organization_member_invites" */
+  organizationMemberInvites: Array<Organization_Member_Invites>;
+  /** fetch aggregated fields from the table: "organization_member_invites" */
+  organizationMemberInvitesAggregate: Organization_Member_Invites_Aggregate;
+  /** fetch data from the table in a streaming manner: "organization_member_invites" */
+  organizationMemberInvitesStream: Array<Organization_Member_Invites>;
+  /** fetch data from the table: "organization_members" */
+  organizationMembers: Array<Organization_Members>;
+  /** fetch aggregated fields from the table: "organization_members" */
+  organizationMembersAggregate: Organization_Members_Aggregate;
+  /** fetch data from the table in a streaming manner: "organization_members" */
+  organizationMembersStream: Array<Organization_Members>;
+  /** fetch data from the table: "organization_new_request" using primary key columns */
+  organizationNewRequest?: Maybe<Organization_New_Request>;
+  /** fetch data from the table: "organization_new_request" */
+  organizationNewRequests: Array<Organization_New_Request>;
+  /** fetch aggregated fields from the table: "organization_new_request" */
+  organizationNewRequestsAggregate: Organization_New_Request_Aggregate;
+  /** fetch data from the table in a streaming manner: "organization_new_request" */
+  organizationNewRequestsStream: Array<Organization_New_Request>;
+  /** fetch data from the table: "organization_costs_thresholds" */
+  organization_costs_thresholds: Array<Organization_Costs_Thresholds>;
+  /** fetch aggregated fields from the table: "organization_costs_thresholds" */
+  organization_costs_thresholds_aggregate: Organization_Costs_Thresholds_Aggregate;
+  /** fetch data from the table: "organization_costs_thresholds" using primary key columns */
+  organization_costs_thresholds_by_pk?: Maybe<Organization_Costs_Thresholds>;
+  /** fetch data from the table in a streaming manner: "organization_costs_thresholds" */
+  organization_costs_thresholds_stream: Array<Organization_Costs_Thresholds>;
+  /** fetch data from the table: "organization_members_role" */
+  organization_members_role: Array<Organization_Members_Role>;
+  /** fetch aggregated fields from the table: "organization_members_role" */
+  organization_members_role_aggregate: Organization_Members_Role_Aggregate;
+  /** fetch data from the table: "organization_members_role" using primary key columns */
+  organization_members_role_by_pk?: Maybe<Organization_Members_Role>;
+  /** fetch data from the table in a streaming manner: "organization_members_role" */
+  organization_members_role_stream: Array<Organization_Members_Role>;
+  /** fetch data from the table: "organization_status" */
+  organization_status: Array<Organization_Status>;
+  /** fetch aggregated fields from the table: "organization_status" */
+  organization_status_aggregate: Organization_Status_Aggregate;
+  /** fetch data from the table: "organization_status" using primary key columns */
+  organization_status_by_pk?: Maybe<Organization_Status>;
+  /** fetch data from the table in a streaming manner: "organization_status" */
+  organization_status_stream: Array<Organization_Status>;
+  /** An array relationship */
+  organizations: Array<Organizations>;
+  /** fetch aggregated fields from the table: "organizations" */
+  organizationsAggregate: Organizations_Aggregate;
+  /** fetch data from the table in a streaming manner: "organizations" */
+  organizationsSteam: Array<Organizations>;
   /** fetch data from the table: "payment_methods" using primary key columns */
   paymentMethod?: Maybe<PaymentMethods>;
   /** An array relationship */
@@ -17913,6 +23498,14 @@ export type Subscription_Root = {
   region_type_stream: Array<Region_Type>;
   /** An array relationship */
   regions: Array<Regions>;
+  /** fetch data from the table: "regions_allowed_organization" using primary key columns */
+  regionsAllowedOrganization?: Maybe<Regions_Allowed_Organization>;
+  /** fetch data from the table: "regions_allowed_organization" */
+  regionsAllowedOrganizations: Array<Regions_Allowed_Organization>;
+  /** fetch aggregated fields from the table: "regions_allowed_organization" */
+  regionsAllowedOrganizationsAggregate: Regions_Allowed_Organization_Aggregate;
+  /** fetch data from the table in a streaming manner: "regions_allowed_organization" */
+  regionsAllowedOrganizationsStream: Array<Regions_Allowed_Organization>;
   /** An aggregate relationship */
   regions_aggregate: Regions_Aggregate;
   /** fetch data from the table in a streaming manner: "regions_allowed_workspace" */
@@ -17957,16 +23550,16 @@ export type Subscription_Root = {
   users: Array<Users>;
   /** fetch aggregated fields from the table: "auth.users" */
   usersAggregate: Users_Aggregate;
-  /** fetch data from the table: "users_usage" using primary key columns */
-  usersUsage?: Maybe<Users_Usage>;
-  /** fetch data from the table: "users_usage" */
-  usersUsages: Array<Users_Usage>;
-  /** fetch aggregated fields from the table: "users_usage" */
-  usersUsagesAggregate: Users_Usage_Aggregate;
   /** fetch data from the table in a streaming manner: "auth.users" */
   users_stream: Array<Users>;
-  /** fetch data from the table in a streaming manner: "users_usage" */
-  users_usage_stream: Array<Users_Usage>;
+  /** fetch data from the table: "storage.virus" using primary key columns */
+  virus?: Maybe<Virus>;
+  /** fetch data from the table in a streaming manner: "storage.virus" */
+  virus_stream: Array<Virus>;
+  /** fetch data from the table: "storage.virus" */
+  viruses: Array<Virus>;
+  /** fetch aggregated fields from the table: "storage.virus" */
+  virusesAggregate: Virus_Aggregate;
   /** fetch data from the table: "workspaces" using primary key columns */
   workspace?: Maybe<Workspaces>;
   /** fetch data from the table: "workspace_members" using primary key columns */
@@ -17991,6 +23584,66 @@ export type Subscription_Root = {
   workspacesAggregate: Workspaces_Aggregate;
   /** fetch data from the table in a streaming manner: "workspaces" */
   workspaces_stream: Array<Workspaces>;
+};
+
+
+export type Subscription_RootAnnouncementReadArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootAnnouncementsArgs = {
+  distinct_on?: InputMaybe<Array<Announcements_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Announcements_Order_By>>;
+  where?: InputMaybe<Announcements_Bool_Exp>;
+};
+
+
+export type Subscription_RootAnnouncementsReadArgs = {
+  distinct_on?: InputMaybe<Array<Announcements_Read_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Announcements_Read_Order_By>>;
+  where?: InputMaybe<Announcements_Read_Bool_Exp>;
+};
+
+
+export type Subscription_RootAnnouncementsReadAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Announcements_Read_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Announcements_Read_Order_By>>;
+  where?: InputMaybe<Announcements_Read_Bool_Exp>;
+};
+
+
+export type Subscription_RootAnnouncementsReadStreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Announcements_Read_Stream_Cursor_Input>>;
+  where?: InputMaybe<Announcements_Read_Bool_Exp>;
+};
+
+
+export type Subscription_RootAnnouncements_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Announcements_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Announcements_Order_By>>;
+  where?: InputMaybe<Announcements_Bool_Exp>;
+};
+
+
+export type Subscription_RootAnnouncements_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootAnnouncements_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Announcements_Stream_Cursor_Input>>;
+  where?: InputMaybe<Announcements_Bool_Exp>;
 };
 
 
@@ -18398,29 +24051,6 @@ export type Subscription_RootBillingDedicatedComputeAggregateArgs = {
 };
 
 
-export type Subscription_RootBillingDedicatedComputeReportArgs = {
-  id: Scalars['uuid'];
-};
-
-
-export type Subscription_RootBillingDedicatedComputeReportsArgs = {
-  distinct_on?: InputMaybe<Array<Billing_Dedicated_Compute_Reports_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Billing_Dedicated_Compute_Reports_Order_By>>;
-  where?: InputMaybe<Billing_Dedicated_Compute_Reports_Bool_Exp>;
-};
-
-
-export type Subscription_RootBillingDedicatedComputeReportsAggregateArgs = {
-  distinct_on?: InputMaybe<Array<Billing_Dedicated_Compute_Reports_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Billing_Dedicated_Compute_Reports_Order_By>>;
-  where?: InputMaybe<Billing_Dedicated_Compute_Reports_Bool_Exp>;
-};
-
-
 export type Subscription_RootBillingDedicatedComputesArgs = {
   distinct_on?: InputMaybe<Array<Billing_Dedicated_Compute_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -18460,6 +24090,36 @@ export type Subscription_RootBillingReportsStreamArgs = {
 };
 
 
+export type Subscription_RootBillingResourceArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootBillingResourcesArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Resources_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Resources_Order_By>>;
+  where?: InputMaybe<Billing_Resources_Bool_Exp>;
+};
+
+
+export type Subscription_RootBillingResourcesAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Resources_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Resources_Order_By>>;
+  where?: InputMaybe<Billing_Resources_Bool_Exp>;
+};
+
+
+export type Subscription_RootBillingResourcesStreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Billing_Resources_Stream_Cursor_Input>>;
+  where?: InputMaybe<Billing_Resources_Bool_Exp>;
+};
+
+
 export type Subscription_RootBillingSubscriptionArgs = {
   id: Scalars['uuid'];
 };
@@ -18483,17 +24143,40 @@ export type Subscription_RootBillingSubscriptionsAggregateArgs = {
 };
 
 
-export type Subscription_RootBilling_Dedicated_Compute_Reports_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<Billing_Dedicated_Compute_Reports_Stream_Cursor_Input>>;
-  where?: InputMaybe<Billing_Dedicated_Compute_Reports_Bool_Exp>;
-};
-
-
 export type Subscription_RootBilling_Dedicated_Compute_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<Billing_Dedicated_Compute_Stream_Cursor_Input>>;
   where?: InputMaybe<Billing_Dedicated_Compute_Bool_Exp>;
+};
+
+
+export type Subscription_RootBilling_Report_Resource_TypeArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Report_Resource_Type_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Report_Resource_Type_Order_By>>;
+  where?: InputMaybe<Billing_Report_Resource_Type_Bool_Exp>;
+};
+
+
+export type Subscription_RootBilling_Report_Resource_Type_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Report_Resource_Type_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Report_Resource_Type_Order_By>>;
+  where?: InputMaybe<Billing_Report_Resource_Type_Bool_Exp>;
+};
+
+
+export type Subscription_RootBilling_Report_Resource_Type_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Subscription_RootBilling_Report_Resource_Type_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Billing_Report_Resource_Type_Stream_Cursor_Input>>;
+  where?: InputMaybe<Billing_Report_Resource_Type_Bool_Exp>;
 };
 
 
@@ -18524,6 +24207,66 @@ export type Subscription_RootBilling_Report_Type_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<Billing_Report_Type_Stream_Cursor_Input>>;
   where?: InputMaybe<Billing_Report_Type_Bool_Exp>;
+};
+
+
+export type Subscription_RootBilling_Reports_ResourcesArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Reports_Resources_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Reports_Resources_Order_By>>;
+  where?: InputMaybe<Billing_Reports_Resources_Bool_Exp>;
+};
+
+
+export type Subscription_RootBilling_Reports_Resources_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Reports_Resources_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Reports_Resources_Order_By>>;
+  where?: InputMaybe<Billing_Reports_Resources_Bool_Exp>;
+};
+
+
+export type Subscription_RootBilling_Reports_Resources_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootBilling_Reports_Resources_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Billing_Reports_Resources_Stream_Cursor_Input>>;
+  where?: InputMaybe<Billing_Reports_Resources_Bool_Exp>;
+};
+
+
+export type Subscription_RootBilling_Subscription_ItemsArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Subscription_Items_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Subscription_Items_Order_By>>;
+  where?: InputMaybe<Billing_Subscription_Items_Bool_Exp>;
+};
+
+
+export type Subscription_RootBilling_Subscription_Items_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Billing_Subscription_Items_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Billing_Subscription_Items_Order_By>>;
+  where?: InputMaybe<Billing_Subscription_Items_Bool_Exp>;
+};
+
+
+export type Subscription_RootBilling_Subscription_Items_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootBilling_Subscription_Items_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Billing_Subscription_Items_Stream_Cursor_Input>>;
+  where?: InputMaybe<Billing_Subscription_Items_Bool_Exp>;
 };
 
 
@@ -18744,36 +24487,6 @@ export type Subscription_RootFeatureFlags_StreamArgs = {
 };
 
 
-export type Subscription_RootFeedbackArgs = {
-  distinct_on?: InputMaybe<Array<Feedback_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Feedback_Order_By>>;
-  where?: InputMaybe<Feedback_Bool_Exp>;
-};
-
-
-export type Subscription_RootFeedbackAggreggateArgs = {
-  distinct_on?: InputMaybe<Array<Feedback_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Feedback_Order_By>>;
-  where?: InputMaybe<Feedback_Bool_Exp>;
-};
-
-
-export type Subscription_RootFeedbackOneArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type Subscription_RootFeedback_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<Feedback_Stream_Cursor_Input>>;
-  where?: InputMaybe<Feedback_Bool_Exp>;
-};
-
-
 export type Subscription_RootFileArgs = {
   id: Scalars['uuid'];
 };
@@ -18867,7 +24580,218 @@ export type Subscription_RootGithubRepositoryArgs = {
 export type Subscription_RootLogsArgs = {
   appID: Scalars['String'];
   from?: InputMaybe<Scalars['Timestamp']>;
+  regexFilter?: InputMaybe<Scalars['String']>;
   service?: InputMaybe<Scalars['String']>;
+};
+
+
+export type Subscription_RootOrganizationArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootOrganizationMemberArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootOrganizationMemberInviteArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootOrganizationMemberInvitesArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Member_Invites_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Member_Invites_Order_By>>;
+  where?: InputMaybe<Organization_Member_Invites_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganizationMemberInvitesAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Member_Invites_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Member_Invites_Order_By>>;
+  where?: InputMaybe<Organization_Member_Invites_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganizationMemberInvitesStreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Organization_Member_Invites_Stream_Cursor_Input>>;
+  where?: InputMaybe<Organization_Member_Invites_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganizationMembersArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Members_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Members_Order_By>>;
+  where?: InputMaybe<Organization_Members_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganizationMembersAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Members_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Members_Order_By>>;
+  where?: InputMaybe<Organization_Members_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganizationMembersStreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Organization_Members_Stream_Cursor_Input>>;
+  where?: InputMaybe<Organization_Members_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganizationNewRequestArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootOrganizationNewRequestsArgs = {
+  distinct_on?: InputMaybe<Array<Organization_New_Request_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_New_Request_Order_By>>;
+  where?: InputMaybe<Organization_New_Request_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganizationNewRequestsAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_New_Request_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_New_Request_Order_By>>;
+  where?: InputMaybe<Organization_New_Request_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganizationNewRequestsStreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Organization_New_Request_Stream_Cursor_Input>>;
+  where?: InputMaybe<Organization_New_Request_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganization_Costs_ThresholdsArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Costs_Thresholds_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Costs_Thresholds_Order_By>>;
+  where?: InputMaybe<Organization_Costs_Thresholds_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganization_Costs_Thresholds_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Costs_Thresholds_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Costs_Thresholds_Order_By>>;
+  where?: InputMaybe<Organization_Costs_Thresholds_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganization_Costs_Thresholds_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Subscription_RootOrganization_Costs_Thresholds_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Organization_Costs_Thresholds_Stream_Cursor_Input>>;
+  where?: InputMaybe<Organization_Costs_Thresholds_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganization_Members_RoleArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Members_Role_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Members_Role_Order_By>>;
+  where?: InputMaybe<Organization_Members_Role_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganization_Members_Role_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Members_Role_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Members_Role_Order_By>>;
+  where?: InputMaybe<Organization_Members_Role_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganization_Members_Role_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Subscription_RootOrganization_Members_Role_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Organization_Members_Role_Stream_Cursor_Input>>;
+  where?: InputMaybe<Organization_Members_Role_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganization_StatusArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Status_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Status_Order_By>>;
+  where?: InputMaybe<Organization_Status_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganization_Status_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Status_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Status_Order_By>>;
+  where?: InputMaybe<Organization_Status_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganization_Status_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Subscription_RootOrganization_Status_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Organization_Status_Stream_Cursor_Input>>;
+  where?: InputMaybe<Organization_Status_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganizationsArgs = {
+  distinct_on?: InputMaybe<Array<Organizations_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organizations_Order_By>>;
+  where?: InputMaybe<Organizations_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganizationsAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organizations_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organizations_Order_By>>;
+  where?: InputMaybe<Organizations_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganizationsSteamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Organizations_Stream_Cursor_Input>>;
+  where?: InputMaybe<Organizations_Bool_Exp>;
 };
 
 
@@ -18967,6 +24891,36 @@ export type Subscription_RootRegionsArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Regions_Order_By>>;
   where?: InputMaybe<Regions_Bool_Exp>;
+};
+
+
+export type Subscription_RootRegionsAllowedOrganizationArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootRegionsAllowedOrganizationsArgs = {
+  distinct_on?: InputMaybe<Array<Regions_Allowed_Organization_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Regions_Allowed_Organization_Order_By>>;
+  where?: InputMaybe<Regions_Allowed_Organization_Bool_Exp>;
+};
+
+
+export type Subscription_RootRegionsAllowedOrganizationsAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Regions_Allowed_Organization_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Regions_Allowed_Organization_Order_By>>;
+  where?: InputMaybe<Regions_Allowed_Organization_Bool_Exp>;
+};
+
+
+export type Subscription_RootRegionsAllowedOrganizationsStreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Regions_Allowed_Organization_Stream_Cursor_Input>>;
+  where?: InputMaybe<Regions_Allowed_Organization_Bool_Exp>;
 };
 
 
@@ -19134,29 +25088,6 @@ export type Subscription_RootUsersAggregateArgs = {
 };
 
 
-export type Subscription_RootUsersUsageArgs = {
-  id: Scalars['uuid'];
-};
-
-
-export type Subscription_RootUsersUsagesArgs = {
-  distinct_on?: InputMaybe<Array<Users_Usage_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Users_Usage_Order_By>>;
-  where?: InputMaybe<Users_Usage_Bool_Exp>;
-};
-
-
-export type Subscription_RootUsersUsagesAggregateArgs = {
-  distinct_on?: InputMaybe<Array<Users_Usage_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Users_Usage_Order_By>>;
-  where?: InputMaybe<Users_Usage_Bool_Exp>;
-};
-
-
 export type Subscription_RootUsers_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<Users_Stream_Cursor_Input>>;
@@ -19164,10 +25095,33 @@ export type Subscription_RootUsers_StreamArgs = {
 };
 
 
-export type Subscription_RootUsers_Usage_StreamArgs = {
+export type Subscription_RootVirusArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootVirus_StreamArgs = {
   batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<Users_Usage_Stream_Cursor_Input>>;
-  where?: InputMaybe<Users_Usage_Bool_Exp>;
+  cursor: Array<InputMaybe<Virus_Stream_Cursor_Input>>;
+  where?: InputMaybe<Virus_Bool_Exp>;
+};
+
+
+export type Subscription_RootVirusesArgs = {
+  distinct_on?: InputMaybe<Array<Virus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Virus_Order_By>>;
+  where?: InputMaybe<Virus_Bool_Exp>;
+};
+
+
+export type Subscription_RootVirusesAggregateArgs = {
+  distinct_on?: InputMaybe<Array<Virus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Virus_Order_By>>;
+  where?: InputMaybe<Virus_Bool_Exp>;
 };
 
 
@@ -19313,10 +25267,6 @@ export type Users = {
   email?: Maybe<Scalars['citext']>;
   emailVerified: Scalars['Boolean'];
   /** An array relationship */
-  feedbacks: Array<Feedback>;
-  /** An aggregate relationship */
-  feedbacks_aggregate: Feedback_Aggregate;
-  /** An array relationship */
   github_app_installations: Array<GithubAppInstallations>;
   /** An aggregate relationship */
   github_app_installations_aggregate: GithubAppInstallations_Aggregate;
@@ -19326,6 +25276,10 @@ export type Users = {
   locale: Scalars['String'];
   metadata?: Maybe<Scalars['jsonb']>;
   newEmail?: Maybe<Scalars['citext']>;
+  /** An array relationship */
+  organizationMembership: Array<Organization_Members>;
+  /** An aggregate relationship */
+  organizationMembership_aggregate: Organization_Members_Aggregate;
   otpHash?: Maybe<Scalars['String']>;
   otpHashExpiresAt: Scalars['timestamptz'];
   otpMethodLastUsed?: Maybe<Scalars['String']>;
@@ -19346,10 +25300,6 @@ export type Users = {
   roles: Array<AuthUserRoles>;
   /** An aggregate relationship */
   roles_aggregate: AuthUserRoles_Aggregate;
-  /** An array relationship */
-  runServices: Array<Run_Service>;
-  /** An aggregate relationship */
-  runServices_aggregate: Run_Service_Aggregate;
   /** An array relationship */
   securityKeys: Array<AuthUserSecurityKeys>;
   /** An aggregate relationship */
@@ -19438,26 +25388,6 @@ export type UsersCreatorOfWorkspaces_AggregateArgs = {
 
 
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
-export type UsersFeedbacksArgs = {
-  distinct_on?: InputMaybe<Array<Feedback_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Feedback_Order_By>>;
-  where?: InputMaybe<Feedback_Bool_Exp>;
-};
-
-
-/** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
-export type UsersFeedbacks_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Feedback_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Feedback_Order_By>>;
-  where?: InputMaybe<Feedback_Bool_Exp>;
-};
-
-
-/** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type UsersGithub_App_InstallationsArgs = {
   distinct_on?: InputMaybe<Array<GithubAppInstallations_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -19480,6 +25410,26 @@ export type UsersGithub_App_Installations_AggregateArgs = {
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type UsersMetadataArgs = {
   path?: InputMaybe<Scalars['String']>;
+};
+
+
+/** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
+export type UsersOrganizationMembershipArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Members_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Members_Order_By>>;
+  where?: InputMaybe<Organization_Members_Bool_Exp>;
+};
+
+
+/** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
+export type UsersOrganizationMembership_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Organization_Members_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Organization_Members_Order_By>>;
+  where?: InputMaybe<Organization_Members_Bool_Exp>;
 };
 
 
@@ -19540,26 +25490,6 @@ export type UsersRoles_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<AuthUserRoles_Order_By>>;
   where?: InputMaybe<AuthUserRoles_Bool_Exp>;
-};
-
-
-/** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
-export type UsersRunServicesArgs = {
-  distinct_on?: InputMaybe<Array<Run_Service_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Run_Service_Order_By>>;
-  where?: InputMaybe<Run_Service_Bool_Exp>;
-};
-
-
-/** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
-export type UsersRunServices_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Run_Service_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Run_Service_Order_By>>;
-  where?: InputMaybe<Run_Service_Bool_Exp>;
 };
 
 
@@ -19751,8 +25681,6 @@ export type Users_Bool_Exp = {
   displayName?: InputMaybe<String_Comparison_Exp>;
   email?: InputMaybe<Citext_Comparison_Exp>;
   emailVerified?: InputMaybe<Boolean_Comparison_Exp>;
-  feedbacks?: InputMaybe<Feedback_Bool_Exp>;
-  feedbacks_aggregate?: InputMaybe<Feedback_Aggregate_Bool_Exp>;
   github_app_installations?: InputMaybe<GithubAppInstallations_Bool_Exp>;
   github_app_installations_aggregate?: InputMaybe<GithubAppInstallations_Aggregate_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -19761,6 +25689,8 @@ export type Users_Bool_Exp = {
   locale?: InputMaybe<String_Comparison_Exp>;
   metadata?: InputMaybe<Jsonb_Comparison_Exp>;
   newEmail?: InputMaybe<Citext_Comparison_Exp>;
+  organizationMembership?: InputMaybe<Organization_Members_Bool_Exp>;
+  organizationMembership_aggregate?: InputMaybe<Organization_Members_Aggregate_Bool_Exp>;
   otpHash?: InputMaybe<String_Comparison_Exp>;
   otpHashExpiresAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   otpMethodLastUsed?: InputMaybe<String_Comparison_Exp>;
@@ -19774,8 +25704,6 @@ export type Users_Bool_Exp = {
   role?: InputMaybe<AuthRoles_Bool_Exp>;
   roles?: InputMaybe<AuthUserRoles_Bool_Exp>;
   roles_aggregate?: InputMaybe<AuthUserRoles_Aggregate_Bool_Exp>;
-  runServices?: InputMaybe<Run_Service_Bool_Exp>;
-  runServices_aggregate?: InputMaybe<Run_Service_Aggregate_Bool_Exp>;
   securityKeys?: InputMaybe<AuthUserSecurityKeys_Bool_Exp>;
   securityKeys_aggregate?: InputMaybe<AuthUserSecurityKeys_Aggregate_Bool_Exp>;
   ticket?: InputMaybe<String_Comparison_Exp>;
@@ -19832,7 +25760,6 @@ export type Users_Insert_Input = {
   displayName?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['citext']>;
   emailVerified?: InputMaybe<Scalars['Boolean']>;
-  feedbacks?: InputMaybe<Feedback_Arr_Rel_Insert_Input>;
   github_app_installations?: InputMaybe<GithubAppInstallations_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
   isAnonymous?: InputMaybe<Scalars['Boolean']>;
@@ -19840,6 +25767,7 @@ export type Users_Insert_Input = {
   locale?: InputMaybe<Scalars['String']>;
   metadata?: InputMaybe<Scalars['jsonb']>;
   newEmail?: InputMaybe<Scalars['citext']>;
+  organizationMembership?: InputMaybe<Organization_Members_Arr_Rel_Insert_Input>;
   otpHash?: InputMaybe<Scalars['String']>;
   otpHashExpiresAt?: InputMaybe<Scalars['timestamptz']>;
   otpMethodLastUsed?: InputMaybe<Scalars['String']>;
@@ -19850,7 +25778,6 @@ export type Users_Insert_Input = {
   refreshTokens?: InputMaybe<AuthRefreshTokens_Arr_Rel_Insert_Input>;
   role?: InputMaybe<AuthRoles_Obj_Rel_Insert_Input>;
   roles?: InputMaybe<AuthUserRoles_Arr_Rel_Insert_Input>;
-  runServices?: InputMaybe<Run_Service_Arr_Rel_Insert_Input>;
   securityKeys?: InputMaybe<AuthUserSecurityKeys_Arr_Rel_Insert_Input>;
   ticket?: InputMaybe<Scalars['String']>;
   ticketExpiresAt?: InputMaybe<Scalars['timestamptz']>;
@@ -19998,7 +25925,6 @@ export type Users_Order_By = {
   displayName?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
   emailVerified?: InputMaybe<Order_By>;
-  feedbacks_aggregate?: InputMaybe<Feedback_Aggregate_Order_By>;
   github_app_installations_aggregate?: InputMaybe<GithubAppInstallations_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
   isAnonymous?: InputMaybe<Order_By>;
@@ -20006,6 +25932,7 @@ export type Users_Order_By = {
   locale?: InputMaybe<Order_By>;
   metadata?: InputMaybe<Order_By>;
   newEmail?: InputMaybe<Order_By>;
+  organizationMembership_aggregate?: InputMaybe<Organization_Members_Aggregate_Order_By>;
   otpHash?: InputMaybe<Order_By>;
   otpHashExpiresAt?: InputMaybe<Order_By>;
   otpMethodLastUsed?: InputMaybe<Order_By>;
@@ -20016,7 +25943,6 @@ export type Users_Order_By = {
   refreshTokens_aggregate?: InputMaybe<AuthRefreshTokens_Aggregate_Order_By>;
   role?: InputMaybe<AuthRoles_Order_By>;
   roles_aggregate?: InputMaybe<AuthUserRoles_Aggregate_Order_By>;
-  runServices_aggregate?: InputMaybe<Run_Service_Aggregate_Order_By>;
   securityKeys_aggregate?: InputMaybe<AuthUserSecurityKeys_Aggregate_Order_By>;
   ticket?: InputMaybe<Order_By>;
   ticketExpiresAt?: InputMaybe<Order_By>;
@@ -20253,174 +26179,21 @@ export type Users_Updates = {
   where: Users_Bool_Exp;
 };
 
-/** columns and relationships of "users_usage" */
-export type Users_Usage = {
-  __typename?: 'users_usage';
-  created_at: Scalars['timestamptz'];
-  free_allowance_exceeded: Scalars['Boolean'];
-  id: Scalars['uuid'];
-  updated_at: Scalars['timestamptz'];
-  user_id: Scalars['uuid'];
-};
-
-/** aggregated selection of "users_usage" */
-export type Users_Usage_Aggregate = {
-  __typename?: 'users_usage_aggregate';
-  aggregate?: Maybe<Users_Usage_Aggregate_Fields>;
-  nodes: Array<Users_Usage>;
-};
-
-/** aggregate fields of "users_usage" */
-export type Users_Usage_Aggregate_Fields = {
-  __typename?: 'users_usage_aggregate_fields';
-  count: Scalars['Int'];
-  max?: Maybe<Users_Usage_Max_Fields>;
-  min?: Maybe<Users_Usage_Min_Fields>;
-};
-
-
-/** aggregate fields of "users_usage" */
-export type Users_Usage_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Users_Usage_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
-};
-
-/** Boolean expression to filter rows from the table "users_usage". All fields are combined with a logical 'AND'. */
-export type Users_Usage_Bool_Exp = {
-  _and?: InputMaybe<Array<Users_Usage_Bool_Exp>>;
-  _not?: InputMaybe<Users_Usage_Bool_Exp>;
-  _or?: InputMaybe<Array<Users_Usage_Bool_Exp>>;
-  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  free_allowance_exceeded?: InputMaybe<Boolean_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  user_id?: InputMaybe<Uuid_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "users_usage" */
-export enum Users_Usage_Constraint {
-  /** unique or primary key constraint on columns "id" */
-  UsersUsagePkey = 'users_usage_pkey',
-  /** unique or primary key constraint on columns "user_id" */
-  UsersUsageUserIdKey = 'users_usage_user_id_key'
-}
-
-/** input type for inserting data into table "users_usage" */
-export type Users_Usage_Insert_Input = {
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  free_allowance_exceeded?: InputMaybe<Scalars['Boolean']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
-  user_id?: InputMaybe<Scalars['uuid']>;
-};
-
-/** aggregate max on columns */
-export type Users_Usage_Max_Fields = {
-  __typename?: 'users_usage_max_fields';
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['uuid']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-  user_id?: Maybe<Scalars['uuid']>;
-};
-
-/** aggregate min on columns */
-export type Users_Usage_Min_Fields = {
-  __typename?: 'users_usage_min_fields';
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['uuid']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-  user_id?: Maybe<Scalars['uuid']>;
-};
-
-/** response of any mutation on the table "users_usage" */
-export type Users_Usage_Mutation_Response = {
-  __typename?: 'users_usage_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Users_Usage>;
-};
-
-/** on_conflict condition type for table "users_usage" */
-export type Users_Usage_On_Conflict = {
-  constraint: Users_Usage_Constraint;
-  update_columns?: Array<Users_Usage_Update_Column>;
-  where?: InputMaybe<Users_Usage_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "users_usage". */
-export type Users_Usage_Order_By = {
-  created_at?: InputMaybe<Order_By>;
-  free_allowance_exceeded?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
-  user_id?: InputMaybe<Order_By>;
-};
-
-/** primary key columns input for table: users_usage */
-export type Users_Usage_Pk_Columns_Input = {
-  id: Scalars['uuid'];
-};
-
-/** select columns of table "users_usage" */
-export enum Users_Usage_Select_Column {
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  FreeAllowanceExceeded = 'free_allowance_exceeded',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
-  UserId = 'user_id'
-}
-
-/** input type for updating data in table "users_usage" */
-export type Users_Usage_Set_Input = {
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  free_allowance_exceeded?: InputMaybe<Scalars['Boolean']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
-  user_id?: InputMaybe<Scalars['uuid']>;
-};
-
-/** Streaming cursor of the table "users_usage" */
-export type Users_Usage_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: Users_Usage_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering?: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Users_Usage_Stream_Cursor_Value_Input = {
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  free_allowance_exceeded?: InputMaybe<Scalars['Boolean']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
-  user_id?: InputMaybe<Scalars['uuid']>;
-};
-
-/** update columns of table "users_usage" */
-export enum Users_Usage_Update_Column {
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  FreeAllowanceExceeded = 'free_allowance_exceeded',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
-  UserId = 'user_id'
-}
-
-export type Users_Usage_Updates = {
-  /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<Users_Usage_Set_Input>;
-  /** filter the rows which have to be updated */
-  where: Users_Usage_Bool_Exp;
+/** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
+export type Uuid_Array_Comparison_Exp = {
+  /** is the array contained in the given array value */
+  _contained_in?: InputMaybe<Array<Scalars['uuid']>>;
+  /** does the array contain the given value */
+  _contains?: InputMaybe<Array<Scalars['uuid']>>;
+  _eq?: InputMaybe<Array<Scalars['uuid']>>;
+  _gt?: InputMaybe<Array<Scalars['uuid']>>;
+  _gte?: InputMaybe<Array<Scalars['uuid']>>;
+  _in?: InputMaybe<Array<Array<Scalars['uuid']>>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Array<Scalars['uuid']>>;
+  _lte?: InputMaybe<Array<Scalars['uuid']>>;
+  _neq?: InputMaybe<Array<Scalars['uuid']>>;
+  _nin?: InputMaybe<Array<Array<Scalars['uuid']>>>;
 };
 
 /** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
@@ -20434,6 +26207,244 @@ export type Uuid_Comparison_Exp = {
   _lte?: InputMaybe<Scalars['uuid']>;
   _neq?: InputMaybe<Scalars['uuid']>;
   _nin?: InputMaybe<Array<Scalars['uuid']>>;
+};
+
+/** columns and relationships of "storage.virus" */
+export type Virus = {
+  __typename?: 'virus';
+  createdAt: Scalars['timestamptz'];
+  /** An object relationship */
+  file: Files;
+  fileId: Scalars['uuid'];
+  filename: Scalars['String'];
+  id: Scalars['uuid'];
+  updatedAt: Scalars['timestamptz'];
+  userSession: Scalars['jsonb'];
+  virus: Scalars['String'];
+};
+
+
+/** columns and relationships of "storage.virus" */
+export type VirusUserSessionArgs = {
+  path?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregated selection of "storage.virus" */
+export type Virus_Aggregate = {
+  __typename?: 'virus_aggregate';
+  aggregate?: Maybe<Virus_Aggregate_Fields>;
+  nodes: Array<Virus>;
+};
+
+/** aggregate fields of "storage.virus" */
+export type Virus_Aggregate_Fields = {
+  __typename?: 'virus_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Virus_Max_Fields>;
+  min?: Maybe<Virus_Min_Fields>;
+};
+
+
+/** aggregate fields of "storage.virus" */
+export type Virus_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Virus_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Virus_Append_Input = {
+  userSession?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** Boolean expression to filter rows from the table "storage.virus". All fields are combined with a logical 'AND'. */
+export type Virus_Bool_Exp = {
+  _and?: InputMaybe<Array<Virus_Bool_Exp>>;
+  _not?: InputMaybe<Virus_Bool_Exp>;
+  _or?: InputMaybe<Array<Virus_Bool_Exp>>;
+  createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  file?: InputMaybe<Files_Bool_Exp>;
+  fileId?: InputMaybe<Uuid_Comparison_Exp>;
+  filename?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  updatedAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  userSession?: InputMaybe<Jsonb_Comparison_Exp>;
+  virus?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "storage.virus" */
+export enum Virus_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  VirusPkey = 'virus_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Virus_Delete_At_Path_Input = {
+  userSession?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Virus_Delete_Elem_Input = {
+  userSession?: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Virus_Delete_Key_Input = {
+  userSession?: InputMaybe<Scalars['String']>;
+};
+
+/** input type for inserting data into table "storage.virus" */
+export type Virus_Insert_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  file?: InputMaybe<Files_Obj_Rel_Insert_Input>;
+  fileId?: InputMaybe<Scalars['uuid']>;
+  filename?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+  userSession?: InputMaybe<Scalars['jsonb']>;
+  virus?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Virus_Max_Fields = {
+  __typename?: 'virus_max_fields';
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  fileId?: Maybe<Scalars['uuid']>;
+  filename?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  updatedAt?: Maybe<Scalars['timestamptz']>;
+  virus?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Virus_Min_Fields = {
+  __typename?: 'virus_min_fields';
+  createdAt?: Maybe<Scalars['timestamptz']>;
+  fileId?: Maybe<Scalars['uuid']>;
+  filename?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  updatedAt?: Maybe<Scalars['timestamptz']>;
+  virus?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "storage.virus" */
+export type Virus_Mutation_Response = {
+  __typename?: 'virus_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Virus>;
+};
+
+/** on_conflict condition type for table "storage.virus" */
+export type Virus_On_Conflict = {
+  constraint: Virus_Constraint;
+  update_columns?: Array<Virus_Update_Column>;
+  where?: InputMaybe<Virus_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "storage.virus". */
+export type Virus_Order_By = {
+  createdAt?: InputMaybe<Order_By>;
+  file?: InputMaybe<Files_Order_By>;
+  fileId?: InputMaybe<Order_By>;
+  filename?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  updatedAt?: InputMaybe<Order_By>;
+  userSession?: InputMaybe<Order_By>;
+  virus?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: storage.virus */
+export type Virus_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Virus_Prepend_Input = {
+  userSession?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "storage.virus" */
+export enum Virus_Select_Column {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  FileId = 'fileId',
+  /** column name */
+  Filename = 'filename',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UpdatedAt = 'updatedAt',
+  /** column name */
+  UserSession = 'userSession',
+  /** column name */
+  Virus = 'virus'
+}
+
+/** input type for updating data in table "storage.virus" */
+export type Virus_Set_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  fileId?: InputMaybe<Scalars['uuid']>;
+  filename?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+  userSession?: InputMaybe<Scalars['jsonb']>;
+  virus?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "virus" */
+export type Virus_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Virus_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Virus_Stream_Cursor_Value_Input = {
+  createdAt?: InputMaybe<Scalars['timestamptz']>;
+  fileId?: InputMaybe<Scalars['uuid']>;
+  filename?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']>;
+  userSession?: InputMaybe<Scalars['jsonb']>;
+  virus?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "storage.virus" */
+export enum Virus_Update_Column {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  FileId = 'fileId',
+  /** column name */
+  Filename = 'filename',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UpdatedAt = 'updatedAt',
+  /** column name */
+  UserSession = 'userSession',
+  /** column name */
+  Virus = 'virus'
+}
+
+export type Virus_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<Virus_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<Virus_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<Virus_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<Virus_Delete_Key_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<Virus_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Virus_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Virus_Bool_Exp;
 };
 
 /** columns and relationships of "workspace_member_invites" */
@@ -20539,7 +26550,7 @@ export type WorkspaceMemberInvites_Bool_Exp = {
 
 /** unique or primary key constraints on table "workspace_member_invites" */
 export enum WorkspaceMemberInvites_Constraint {
-  /** unique or primary key constraint on columns "email", "workspace_id" */
+  /** unique or primary key constraint on columns "workspace_id", "email" */
   WorkspaceMemberInvitesEmailWorkspaceIdKey = 'workspace_member_invites_email_workspace_id_key',
   /** unique or primary key constraint on columns "id" */
   WorkspaceMemberInvitesPkey = 'workspace_member_invites_pkey'
@@ -21585,6 +27596,18 @@ export type Workspaces_Updates = {
   where: Workspaces_Bool_Exp;
 };
 
+export type DeleteUserAccountMutationVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type DeleteUserAccountMutation = { __typename?: 'mutation_root', deleteUser?: { __typename: 'users' } | null };
+
+export type GetAuthUserProvidersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAuthUserProvidersQuery = { __typename?: 'query_root', authUserProviders: Array<{ __typename?: 'authUserProviders', id: any, providerId: string }> };
+
 export type GetPersonalAccessTokensQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -21597,19 +27620,34 @@ export type DeletePersonalAccessTokenMutationVariables = Exact<{
 
 export type DeletePersonalAccessTokenMutation = { __typename?: 'mutation_root', deletePersonalAccessToken?: { __typename?: 'authRefreshTokens', id: any, metadata?: any | null } | null };
 
+export type UpdateUserDisplayNameMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  displayName: Scalars['String'];
+}>;
+
+
+export type UpdateUserDisplayNameMutation = { __typename?: 'mutation_root', updateUser?: { __typename?: 'users', id: any, displayName: string } | null };
+
+export type GetAiSettingsQueryVariables = Exact<{
+  appId: Scalars['uuid'];
+}>;
+
+
+export type GetAiSettingsQuery = { __typename?: 'query_root', config?: { __typename?: 'ConfigConfig', postgres: { __typename?: 'ConfigPostgres', version?: string | null }, ai?: { __typename?: 'ConfigAI', version?: string | null, webhookSecret: string, autoEmbeddings?: { __typename?: 'ConfigAIAutoEmbeddings', synchPeriodMinutes?: any | null } | null, openai: { __typename?: 'ConfigAIOpenai', apiKey: string, organization?: string | null }, resources: { __typename?: 'ConfigAIResources', compute: { __typename?: 'ConfigComputeResources', cpu: any, memory: any } } } | null } | null };
+
 export type GetAuthenticationSettingsQueryVariables = Exact<{
   appId: Scalars['uuid'];
 }>;
 
 
-export type GetAuthenticationSettingsQuery = { __typename?: 'query_root', config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', auth?: { __typename: 'ConfigAuth', version?: string | null, id: 'ConfigAuth', redirections?: { __typename?: 'ConfigAuthRedirections', clientUrl?: any | null, allowedUrls?: Array<string> | null } | null, totp?: { __typename?: 'ConfigAuthTotp', enabled?: boolean | null, issuer?: string | null } | null, signUp?: { __typename?: 'ConfigAuthSignUp', enabled?: boolean | null } | null, session?: { __typename?: 'ConfigAuthSession', accessToken?: { __typename?: 'ConfigAuthSessionAccessToken', expiresIn?: any | null } | null, refreshToken?: { __typename?: 'ConfigAuthSessionRefreshToken', expiresIn?: any | null } | null } | null, user?: { __typename?: 'ConfigAuthUser', email?: { __typename?: 'ConfigAuthUserEmail', allowed?: Array<any> | null, blocked?: Array<any> | null } | null, emailDomains?: { __typename?: 'ConfigAuthUserEmailDomains', allowed?: Array<string> | null, blocked?: Array<string> | null } | null, gravatar?: { __typename?: 'ConfigAuthUserGravatar', enabled?: boolean | null, default?: string | null, rating?: string | null } | null, locale?: { __typename?: 'ConfigAuthUserLocale', allowed?: Array<any> | null, default?: any | null } | null } | null } | null } | null };
+export type GetAuthenticationSettingsQuery = { __typename?: 'query_root', config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', auth?: { __typename: 'ConfigAuth', version?: string | null, id: 'ConfigAuth', redirections?: { __typename?: 'ConfigAuthRedirections', clientUrl?: any | null, allowedUrls?: Array<string> | null } | null, totp?: { __typename?: 'ConfigAuthTotp', enabled?: boolean | null, issuer?: string | null } | null, signUp?: { __typename?: 'ConfigAuthSignUp', enabled?: boolean | null, disableNewUsers?: boolean | null } | null, session?: { __typename?: 'ConfigAuthSession', accessToken?: { __typename?: 'ConfigAuthSessionAccessToken', expiresIn?: any | null } | null, refreshToken?: { __typename?: 'ConfigAuthSessionRefreshToken', expiresIn?: any | null } | null } | null, resources?: { __typename?: 'ConfigResources', networking?: { __typename?: 'ConfigNetworking', ingresses?: Array<{ __typename?: 'ConfigIngress', fqdn?: Array<string> | null }> | null } | null } | null, user?: { __typename?: 'ConfigAuthUser', email?: { __typename?: 'ConfigAuthUserEmail', allowed?: Array<any> | null, blocked?: Array<any> | null } | null, emailDomains?: { __typename?: 'ConfigAuthUserEmailDomains', allowed?: Array<string> | null, blocked?: Array<string> | null } | null, gravatar?: { __typename?: 'ConfigAuthUserGravatar', enabled?: boolean | null, default?: string | null, rating?: string | null } | null, locale?: { __typename?: 'ConfigAuthUserLocale', allowed?: Array<any> | null, default?: any | null } | null } | null, misc?: { __typename?: 'ConfigAuthMisc', concealErrors?: boolean | null } | null } | null } | null };
 
 export type GetPostgresSettingsQueryVariables = Exact<{
   appId: Scalars['uuid'];
 }>;
 
 
-export type GetPostgresSettingsQuery = { __typename?: 'query_root', systemConfig?: { __typename?: 'ConfigSystemConfig', postgres: { __typename?: 'ConfigSystemConfigPostgres', database: string } } | null, config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', postgres?: { __typename?: 'ConfigPostgres', version?: string | null } | null } | null };
+export type GetPostgresSettingsQuery = { __typename?: 'query_root', systemConfig?: { __typename?: 'ConfigSystemConfig', postgres: { __typename?: 'ConfigSystemConfigPostgres', database: string } } | null, config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', postgres: { __typename?: 'ConfigPostgres', version?: string | null, resources: { __typename?: 'ConfigPostgresResources', enablePublicAccess?: boolean | null, storage: { __typename?: 'ConfigPostgresStorage', capacity: any } } } } | null };
 
 export type ResetDatabasePasswordMutationVariables = Exact<{
   appId: Scalars['String'];
@@ -21624,7 +27662,7 @@ export type GetHasuraSettingsQueryVariables = Exact<{
 }>;
 
 
-export type GetHasuraSettingsQuery = { __typename?: 'query_root', config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', hasura: { __typename?: 'ConfigHasura', version?: string | null, settings?: { __typename?: 'ConfigHasuraSettings', enableAllowList?: boolean | null, enableRemoteSchemaPermissions?: boolean | null, enableConsole?: boolean | null, devMode?: boolean | null, corsDomain?: Array<any> | null, enabledAPIs?: Array<any> | null } | null, logs?: { __typename?: 'ConfigHasuraLogs', level?: string | null } | null, events?: { __typename?: 'ConfigHasuraEvents', httpPoolSize?: any | null } | null } } | null };
+export type GetHasuraSettingsQuery = { __typename?: 'query_root', config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', hasura: { __typename?: 'ConfigHasura', version?: string | null, settings?: { __typename?: 'ConfigHasuraSettings', enableAllowList?: boolean | null, enableRemoteSchemaPermissions?: boolean | null, enableConsole?: boolean | null, devMode?: boolean | null, corsDomain?: Array<any> | null, enabledAPIs?: Array<any> | null, inferFunctionPermissions?: boolean | null } | null, logs?: { __typename?: 'ConfigHasuraLogs', level?: string | null } | null, events?: { __typename?: 'ConfigHasuraEvents', httpPoolSize?: any | null } | null, resources?: { __typename?: 'ConfigResources', networking?: { __typename?: 'ConfigNetworking', ingresses?: Array<{ __typename?: 'ConfigIngress', fqdn?: Array<string> | null }> | null } | null } | null } } | null };
 
 export type BackupFragment = { __typename?: 'backups', id: any, size: any, createdAt: any, completedAt?: any | null };
 
@@ -21644,14 +27682,35 @@ export type GetBackupPresignedUrlQueryVariables = Exact<{
 
 export type GetBackupPresignedUrlQuery = { __typename?: 'query_root', getBackupPresignedUrl: { __typename?: 'BackupPresignedURL', url: string, expiresAt: any } };
 
-export type ServiceResourcesFragment = { __typename?: 'ConfigConfig', auth?: { __typename?: 'ConfigAuth', resources?: { __typename?: 'ConfigResources', replicas: any, compute: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } } | null } | null, hasura: { __typename?: 'ConfigHasura', resources?: { __typename?: 'ConfigResources', replicas: any, compute: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } } | null }, postgres?: { __typename?: 'ConfigPostgres', resources?: { __typename?: 'ConfigResources', replicas: any, compute: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } } | null } | null, storage?: { __typename?: 'ConfigStorage', resources?: { __typename?: 'ConfigResources', replicas: any, compute: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } } | null } | null };
+export type GetPersistentVolumesEncryptedQueryVariables = Exact<{
+  appId: Scalars['uuid'];
+}>;
+
+
+export type GetPersistentVolumesEncryptedQuery = { __typename?: 'query_root', systemConfig?: { __typename?: 'ConfigSystemConfig', persistentVolumesEncrypted?: boolean | null } | null };
+
+export type GetJwtSecretsQueryVariables = Exact<{
+  appId: Scalars['uuid'];
+}>;
+
+
+export type GetJwtSecretsQuery = { __typename?: 'query_root', config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', hasura: { __typename?: 'ConfigHasura', jwtSecrets?: Array<{ __typename?: 'ConfigJWTSecret', type?: string | null, key?: string | null, signingKey?: string | null, kid?: string | null, jwk_url?: any | null, allowed_skew?: any | null, audience?: string | null, claims_format?: string | null, claims_namespace?: string | null, claims_namespace_path?: string | null, header?: string | null, issuer?: string | null, claims_map?: Array<{ __typename?: 'ConfigClaimMap', claim: string, default?: string | null, path?: string | null, value?: string | null }> | null }> | null } } | null };
+
+export type GetObservabilitySettingsQueryVariables = Exact<{
+  appId: Scalars['uuid'];
+}>;
+
+
+export type GetObservabilitySettingsQuery = { __typename?: 'query_root', config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', observability: { __typename?: 'ConfigObservability', grafana: { __typename?: 'ConfigGrafana', alerting?: { __typename?: 'ConfigGrafanaAlerting', enabled?: boolean | null } | null, smtp?: { __typename?: 'ConfigGrafanaSmtp', host: string, password: string, port: any, sender: string, user: string } | null, contacts?: { __typename?: 'ConfigGrafanaContacts', emails?: Array<string> | null, discord?: Array<{ __typename?: 'ConfigGrafanacontactsDiscord', avatarUrl: string, url: string }> | null, pagerduty?: Array<{ __typename?: 'ConfigGrafanacontactsPagerduty', integrationKey: string, severity: string, class: string, component: string, group: string }> | null, slack?: Array<{ __typename?: 'ConfigGrafanacontactsSlack', recipient: string, token: string, username: string, iconEmoji: string, iconURL: string, mentionUsers: Array<string>, mentionGroups: Array<string>, mentionChannel: string, url: string, endpointURL: string }> | null, webhook?: Array<{ __typename?: 'ConfigGrafanacontactsWebhook', url: string, httpMethod: string, username: string, password: string, authorizationScheme: string, authorizationCredentials: string, maxAlerts: number }> | null } | null } } } | null };
+
+export type ServiceResourcesFragment = { __typename?: 'ConfigConfig', auth?: { __typename?: 'ConfigAuth', resources?: { __typename?: 'ConfigResources', replicas?: any | null, compute?: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } | null, autoscaler?: { __typename?: 'ConfigAutoscaler', maxReplicas: any } | null, networking?: { __typename?: 'ConfigNetworking', ingresses?: Array<{ __typename?: 'ConfigIngress', fqdn?: Array<string> | null }> | null } | null } | null } | null, hasura: { __typename?: 'ConfigHasura', resources?: { __typename?: 'ConfigResources', replicas?: any | null, compute?: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } | null, autoscaler?: { __typename?: 'ConfigAutoscaler', maxReplicas: any } | null, networking?: { __typename?: 'ConfigNetworking', ingresses?: Array<{ __typename?: 'ConfigIngress', fqdn?: Array<string> | null }> | null } | null } | null }, postgres: { __typename?: 'ConfigPostgres', resources: { __typename?: 'ConfigPostgresResources', enablePublicAccess?: boolean | null, replicas?: any | null, storage: { __typename?: 'ConfigPostgresStorage', capacity: any }, compute?: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } | null, autoscaler?: { __typename?: 'ConfigAutoscaler', maxReplicas: any } | null } }, storage?: { __typename?: 'ConfigStorage', resources?: { __typename?: 'ConfigResources', replicas?: any | null, compute?: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } | null, autoscaler?: { __typename?: 'ConfigAutoscaler', maxReplicas: any } | null } | null } | null };
 
 export type GetResourcesQueryVariables = Exact<{
   appId: Scalars['uuid'];
 }>;
 
 
-export type GetResourcesQuery = { __typename?: 'query_root', config?: { __typename?: 'ConfigConfig', auth?: { __typename?: 'ConfigAuth', resources?: { __typename?: 'ConfigResources', replicas: any, compute: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } } | null } | null, hasura: { __typename?: 'ConfigHasura', resources?: { __typename?: 'ConfigResources', replicas: any, compute: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } } | null }, postgres?: { __typename?: 'ConfigPostgres', resources?: { __typename?: 'ConfigResources', replicas: any, compute: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } } | null } | null, storage?: { __typename?: 'ConfigStorage', resources?: { __typename?: 'ConfigResources', replicas: any, compute: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } } | null } | null } | null };
+export type GetResourcesQuery = { __typename?: 'query_root', config?: { __typename?: 'ConfigConfig', auth?: { __typename?: 'ConfigAuth', resources?: { __typename?: 'ConfigResources', replicas?: any | null, compute?: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } | null, autoscaler?: { __typename?: 'ConfigAutoscaler', maxReplicas: any } | null, networking?: { __typename?: 'ConfigNetworking', ingresses?: Array<{ __typename?: 'ConfigIngress', fqdn?: Array<string> | null }> | null } | null } | null } | null, hasura: { __typename?: 'ConfigHasura', resources?: { __typename?: 'ConfigResources', replicas?: any | null, compute?: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } | null, autoscaler?: { __typename?: 'ConfigAutoscaler', maxReplicas: any } | null, networking?: { __typename?: 'ConfigNetworking', ingresses?: Array<{ __typename?: 'ConfigIngress', fqdn?: Array<string> | null }> | null } | null } | null }, postgres: { __typename?: 'ConfigPostgres', resources: { __typename?: 'ConfigPostgresResources', enablePublicAccess?: boolean | null, replicas?: any | null, storage: { __typename?: 'ConfigPostgresStorage', capacity: any }, compute?: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } | null, autoscaler?: { __typename?: 'ConfigAutoscaler', maxReplicas: any } | null } }, storage?: { __typename?: 'ConfigStorage', resources?: { __typename?: 'ConfigResources', replicas?: any | null, compute?: { __typename?: 'ConfigResourcesCompute', cpu: any, memory: any } | null, autoscaler?: { __typename?: 'ConfigAutoscaler', maxReplicas: any } | null } | null } | null } | null };
 
 export type GetStorageSettingsQueryVariables = Exact<{
   appId: Scalars['uuid'];
@@ -21659,6 +27718,13 @@ export type GetStorageSettingsQueryVariables = Exact<{
 
 
 export type GetStorageSettingsQuery = { __typename?: 'query_root', config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', storage?: { __typename?: 'ConfigStorage', version?: string | null, antivirus?: { __typename?: 'ConfigStorageAntivirus', server?: string | null } | null } | null } | null };
+
+export type GetServerlessFunctionsSettingsQueryVariables = Exact<{
+  appId: Scalars['uuid'];
+}>;
+
+
+export type GetServerlessFunctionsSettingsQuery = { __typename?: 'query_root', config?: { __typename?: 'ConfigConfig', functions?: { __typename?: 'ConfigFunctions', resources?: { __typename?: 'ConfigFunctionsResources', networking?: { __typename?: 'ConfigNetworking', ingresses?: Array<{ __typename?: 'ConfigIngress', fqdn?: Array<string> | null }> | null } | null } | null } | null } | null };
 
 export type DeleteApplicationMutationVariables = Exact<{
   appId: Scalars['uuid'];
@@ -21670,19 +27736,19 @@ export type DeleteApplicationMutation = { __typename?: 'mutation_root', deleteAp
 export type GetAllWorkspacesAndProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllWorkspacesAndProjectsQuery = { __typename?: 'query_root', workspaces: Array<{ __typename?: 'workspaces', id: any, name: string, slug: string, creatorUserId?: any | null, workspaceMembers: Array<{ __typename?: 'workspaceMembers', id: any, type: string, user: { __typename?: 'users', id: any, email?: any | null, displayName: string } }>, projects: Array<{ __typename?: 'apps', id: any, slug: string, name: string, repositoryProductionBranch: string, subdomain: string, isProvisioned: boolean, createdAt: any, desiredState: number, nhostBaseFolder: string, providersUpdated?: boolean | null, config?: { __typename?: 'ConfigConfig', observability: { __typename?: 'ConfigObservability', grafana: { __typename?: 'ConfigGrafana', adminPassword: string } }, hasura: { __typename?: 'ConfigHasura', adminSecret: string, settings?: { __typename?: 'ConfigHasuraSettings', enableConsole?: boolean | null } | null } } | null, featureFlags: Array<{ __typename?: 'featureFlags', description: string, id: any, name: string, value: string }>, appStates: Array<{ __typename?: 'appStateHistory', id: any, appId: any, message?: string | null, stateId: number, createdAt: any }>, region: { __typename?: 'regions', id: any, countryCode: string, awsName: string, domain: string, city: string }, plan: { __typename?: 'plans', id: any, name: string, price: number, isFree: boolean }, githubRepository?: { __typename?: 'githubRepositories', fullName: string } | null, deployments: Array<{ __typename?: 'deployments', id: any, commitSHA: string, commitMessage?: string | null, commitUserName?: string | null, deploymentStartedAt?: any | null, deploymentEndedAt?: any | null, commitUserAvatarUrl?: string | null, deploymentStatus?: string | null }>, creator?: { __typename?: 'users', id: any, email?: any | null, displayName: string } | null }> }> };
+export type GetAllWorkspacesAndProjectsQuery = { __typename?: 'query_root', workspaces: Array<{ __typename?: 'workspaces', id: any, name: string, slug: string, creatorUserId?: any | null, workspaceMembers: Array<{ __typename?: 'workspaceMembers', id: any, type: string, user: { __typename?: 'users', id: any, email?: any | null, displayName: string } }>, projects: Array<{ __typename?: 'apps', id: any, slug: string, name: string, repositoryProductionBranch: string, subdomain: string, createdAt: any, desiredState: number, nhostBaseFolder: string, config?: { __typename?: 'ConfigConfig', observability: { __typename?: 'ConfigObservability', grafana: { __typename?: 'ConfigGrafana', adminPassword: string } }, hasura: { __typename?: 'ConfigHasura', adminSecret: string, settings?: { __typename?: 'ConfigHasuraSettings', enableConsole?: boolean | null } | null }, ai?: { __typename?: 'ConfigAI', version?: string | null } | null } | null, featureFlags: Array<{ __typename?: 'featureFlags', description: string, id: any, name: string, value: string }>, appStates: Array<{ __typename?: 'appStateHistory', id: any, appId: any, message?: string | null, stateId: number, createdAt: any }>, region: { __typename?: 'regions', id: any, countryCode: string, name: string, domain: string, city: string }, legacyPlan?: { __typename?: 'plans', id: any, name: string, price: number, isFree: boolean, featureMaxDbSize: number } | null, githubRepository?: { __typename?: 'githubRepositories', fullName: string } | null, deployments: Array<{ __typename?: 'deployments', id: any, commitSHA: string, commitMessage?: string | null, commitUserName?: string | null, deploymentStartedAt?: any | null, deploymentEndedAt?: any | null, commitUserAvatarUrl?: string | null, deploymentStatus?: string | null }>, creator?: { __typename?: 'users', id: any, email?: any | null, displayName: string } | null }> }> };
 
-export type GetAppPlanAndGlobalPlansAppFragment = { __typename?: 'apps', id: any, subdomain: string, workspace: { __typename?: 'workspaces', id: any, paymentMethods: Array<{ __typename?: 'paymentMethods', id: any }> }, plan: { __typename?: 'plans', id: any, name: string } };
+export type GetAppPlanAndGlobalPlansAppFragment = { __typename?: 'apps', id: any, subdomain: string, workspace?: { __typename?: 'workspaces', id: any, paymentMethods: Array<{ __typename?: 'paymentMethods', id: any }> } | null, legacyPlan?: { __typename?: 'plans', id: any, name: string } | null };
 
 export type GetAppPlanAndGlobalPlansPlanFragment = { __typename?: 'plans', id: any, name: string, isFree: boolean, price: number, featureMaxDbSize: number };
 
 export type GetAppPlanAndGlobalPlansQueryVariables = Exact<{
   workspaceSlug: Scalars['String'];
-  appSlug: Scalars['String'];
+  appSubdomain: Scalars['String'];
 }>;
 
 
-export type GetAppPlanAndGlobalPlansQuery = { __typename?: 'query_root', apps: Array<{ __typename?: 'apps', id: any, subdomain: string, workspace: { __typename?: 'workspaces', id: any, paymentMethods: Array<{ __typename?: 'paymentMethods', id: any }> }, plan: { __typename?: 'plans', id: any, name: string } }>, plans: Array<{ __typename?: 'plans', id: any, name: string, isFree: boolean, price: number, featureMaxDbSize: number }> };
+export type GetAppPlanAndGlobalPlansQuery = { __typename?: 'query_root', apps: Array<{ __typename?: 'apps', id: any, subdomain: string, workspace?: { __typename?: 'workspaces', id: any, paymentMethods: Array<{ __typename?: 'paymentMethods', id: any }> } | null, legacyPlan?: { __typename?: 'plans', id: any, name: string } | null }>, plans: Array<{ __typename?: 'plans', id: any, name: string, isFree: boolean, price: number, featureMaxDbSize: number }> };
 
 export type GetApplicationPlanQueryVariables = Exact<{
   workspace: Scalars['String'];
@@ -21690,7 +27756,7 @@ export type GetApplicationPlanQueryVariables = Exact<{
 }>;
 
 
-export type GetApplicationPlanQuery = { __typename?: 'query_root', apps: Array<{ __typename?: 'apps', id: any, subdomain: string, plan: { __typename?: 'plans', name: string, price: number, upatedAt: any, featureMaxDbSize: number } }> };
+export type GetApplicationPlanQuery = { __typename?: 'query_root', apps: Array<{ __typename?: 'apps', id: any, subdomain: string, legacyPlan?: { __typename?: 'plans', name: string, price: number, upatedAt: any, featureMaxDbSize: number } | null }> };
 
 export type GetApplicationStateQueryVariables = Exact<{
   appId: Scalars['uuid'];
@@ -21698,6 +27764,20 @@ export type GetApplicationStateQueryVariables = Exact<{
 
 
 export type GetApplicationStateQuery = { __typename?: 'query_root', app?: { __typename?: 'apps', id: any, name: string, appStates: Array<{ __typename?: 'appStateHistory', id: any, appId: any, message?: string | null, stateId: number, createdAt: any }> } | null };
+
+export type GetConfiguredVersionsQueryVariables = Exact<{
+  appId: Scalars['uuid'];
+}>;
+
+
+export type GetConfiguredVersionsQuery = { __typename?: 'query_root', config?: { __typename?: 'ConfigConfig', auth?: { __typename?: 'ConfigAuth', version?: string | null } | null, postgres: { __typename?: 'ConfigPostgres', version?: string | null }, hasura: { __typename?: 'ConfigHasura', version?: string | null }, ai?: { __typename?: 'ConfigAI', version?: string | null } | null, storage?: { __typename?: 'ConfigStorage', version?: string | null } | null } | null };
+
+export type GetProjectIsLockedQueryVariables = Exact<{
+  appId: Scalars['uuid'];
+}>;
+
+
+export type GetProjectIsLockedQuery = { __typename?: 'query_root', app?: { __typename?: 'apps', isLocked?: boolean | null, isLockedReason?: string | null } | null };
 
 export type GetProjectLocalesQueryVariables = Exact<{
   appId: Scalars['uuid'];
@@ -21716,6 +27796,22 @@ export type GetProjectMetricsQueryVariables = Exact<{
 
 export type GetProjectMetricsQuery = { __typename?: 'query_root', logsVolume: { __typename?: 'Metrics', value: any }, cpuSecondsUsage: { __typename?: 'Metrics', value: any }, functionInvocations: { __typename?: 'Metrics', value: any }, functionsDuration: { __typename?: 'Metrics', value: any }, postgresVolumeCapacity: { __typename?: 'Metrics', value: any }, postgresVolumeUsage: { __typename?: 'Metrics', value: any }, totalRequests: { __typename?: 'Metrics', value: any }, egressVolume: { __typename?: 'Metrics', value: any } };
 
+export type GetProjectRequestsMetricQueryVariables = Exact<{
+  appId: Scalars['String'];
+  from?: InputMaybe<Scalars['Timestamp']>;
+  to?: InputMaybe<Scalars['Timestamp']>;
+}>;
+
+
+export type GetProjectRequestsMetricQuery = { __typename?: 'query_root', totalRequests: { __typename?: 'Metrics', value: any } };
+
+export type GetProjectServicesHealthQueryVariables = Exact<{
+  appId: Scalars['String'];
+}>;
+
+
+export type GetProjectServicesHealthQuery = { __typename?: 'query_root', getProjectStatus: { __typename?: 'ProjectStatusResponse', services: Array<{ __typename?: 'ServiceStatus', name: string, state: ServiceState, replicas: Array<{ __typename?: 'ReplicaStatus', ready: boolean, date: any, errors: Array<{ __typename?: 'ContainerError', name: string, lastError: { __typename?: 'LastError', reason: string, exitCode: number, message: string } }> }> }> } };
+
 export type GetRemoteAppRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -21727,14 +27823,22 @@ export type GetWorkspaceAndProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetWorkspaceAndProjectQuery = { __typename?: 'query_root', workspaces: Array<{ __typename?: 'workspaces', id: any, name: string, slug: string, creatorUserId?: any | null, workspaceMembers: Array<{ __typename?: 'workspaceMembers', id: any, type: string, user: { __typename?: 'users', id: any, email?: any | null, displayName: string } }>, projects: Array<{ __typename?: 'apps', id: any, slug: string, name: string, repositoryProductionBranch: string, subdomain: string, isProvisioned: boolean, createdAt: any, desiredState: number, nhostBaseFolder: string, providersUpdated?: boolean | null, config?: { __typename?: 'ConfigConfig', observability: { __typename?: 'ConfigObservability', grafana: { __typename?: 'ConfigGrafana', adminPassword: string } }, hasura: { __typename?: 'ConfigHasura', adminSecret: string, settings?: { __typename?: 'ConfigHasuraSettings', enableConsole?: boolean | null } | null } } | null, featureFlags: Array<{ __typename?: 'featureFlags', description: string, id: any, name: string, value: string }>, appStates: Array<{ __typename?: 'appStateHistory', id: any, appId: any, message?: string | null, stateId: number, createdAt: any }>, region: { __typename?: 'regions', id: any, countryCode: string, awsName: string, domain: string, city: string }, plan: { __typename?: 'plans', id: any, name: string, price: number, isFree: boolean }, githubRepository?: { __typename?: 'githubRepositories', fullName: string } | null, deployments: Array<{ __typename?: 'deployments', id: any, commitSHA: string, commitMessage?: string | null, commitUserName?: string | null, deploymentStartedAt?: any | null, deploymentEndedAt?: any | null, commitUserAvatarUrl?: string | null, deploymentStatus?: string | null }>, creator?: { __typename?: 'users', id: any, email?: any | null, displayName: string } | null }> }> };
+export type GetWorkspaceAndProjectQuery = { __typename?: 'query_root', workspaces: Array<{ __typename?: 'workspaces', id: any, name: string, slug: string, creatorUserId?: any | null, workspaceMembers: Array<{ __typename?: 'workspaceMembers', id: any, type: string, user: { __typename?: 'users', id: any, email?: any | null, displayName: string } }>, projects: Array<{ __typename?: 'apps', id: any, slug: string, name: string, repositoryProductionBranch: string, subdomain: string, createdAt: any, desiredState: number, nhostBaseFolder: string, config?: { __typename?: 'ConfigConfig', observability: { __typename?: 'ConfigObservability', grafana: { __typename?: 'ConfigGrafana', adminPassword: string } }, hasura: { __typename?: 'ConfigHasura', adminSecret: string, settings?: { __typename?: 'ConfigHasuraSettings', enableConsole?: boolean | null } | null }, ai?: { __typename?: 'ConfigAI', version?: string | null } | null } | null, featureFlags: Array<{ __typename?: 'featureFlags', description: string, id: any, name: string, value: string }>, appStates: Array<{ __typename?: 'appStateHistory', id: any, appId: any, message?: string | null, stateId: number, createdAt: any }>, region: { __typename?: 'regions', id: any, countryCode: string, name: string, domain: string, city: string }, legacyPlan?: { __typename?: 'plans', id: any, name: string, price: number, isFree: boolean, featureMaxDbSize: number } | null, githubRepository?: { __typename?: 'githubRepositories', fullName: string } | null, deployments: Array<{ __typename?: 'deployments', id: any, commitSHA: string, commitMessage?: string | null, commitUserName?: string | null, deploymentStartedAt?: any | null, deploymentEndedAt?: any | null, commitUserAvatarUrl?: string | null, deploymentStatus?: string | null }>, creator?: { __typename?: 'users', id: any, email?: any | null, displayName: string } | null }> }> };
+
+export type GetWorkspacesAppPlansAndGlobalPlansQueryVariables = Exact<{
+  workspaceSlug: Scalars['String'];
+  slug: Scalars['String'];
+}>;
+
+
+export type GetWorkspacesAppPlansAndGlobalPlansQuery = { __typename?: 'query_root', apps: Array<{ __typename?: 'apps', id: any, subdomain: string, workspace?: { __typename?: 'workspaces', id: any, paymentMethods: Array<{ __typename?: 'paymentMethods', id: any }> } | null, legacyPlan?: { __typename?: 'plans', id: any, name: string } | null }>, plans: Array<{ __typename?: 'plans', id: any, name: string, isFree: boolean, price: number, featureMaxDbSize: number }> };
 
 export type InsertApplicationMutationVariables = Exact<{
   app: Apps_Insert_Input;
 }>;
 
 
-export type InsertApplicationMutation = { __typename?: 'mutation_root', insertApp?: { __typename?: 'apps', id: any, name: string, slug: string, workspace: { __typename?: 'workspaces', id: any, name: string, slug: string } } | null };
+export type InsertApplicationMutation = { __typename?: 'mutation_root', insertApp?: { __typename?: 'apps', id: any, name: string, slug: string, workspace?: { __typename?: 'workspaces', id: any, name: string, slug: string } | null } | null };
 
 export type PauseApplicationMutationVariables = Exact<{
   appId: Scalars['uuid'];
@@ -21754,16 +27858,54 @@ export type PrefetchNewAppQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type PrefetchNewAppQuery = { __typename?: 'query_root', regions: Array<{ __typename?: 'regions', id: any, city: string, active: boolean, country: { __typename?: 'countries', code: any, name: string } }>, plans: Array<{ __typename?: 'plans', id: any, name: string, isDefault: boolean, isFree: boolean, price: number, featureBackupEnabled: boolean, featureCustomDomainsEnabled: boolean, featureMaxDbSize: number }>, workspaces: Array<{ __typename?: 'workspaces', id: any, name: string, slug: string, paymentMethods: Array<{ __typename?: 'paymentMethods', id: any }> }> };
 
-export type EnvironmentVariableFragment = { __typename?: 'ConfigEnvironmentVariable', name: string, value: string, id: string };
+export type DnsLookupCnameQueryVariables = Exact<{
+  hostname: Scalars['String'];
+}>;
 
-export type JwtSecretFragment = { __typename?: 'ConfigJWTSecret', issuer?: string | null, key?: string | null, type?: string | null, jwk_url?: any | null, header?: string | null, claims_namespace_path?: string | null, claims_namespace?: string | null, claims_format?: string | null, audience?: string | null, allowed_skew?: any | null };
+
+export type DnsLookupCnameQuery = { __typename?: 'query_root', dnsLookupCNAME: string };
+
+export type EnvironmentVariableFragment = { __typename?: 'ConfigGlobalEnvironmentVariable', name: string, value: string, id: string };
+
+export type JwtSecretFragment = { __typename?: 'ConfigJWTSecret', issuer?: string | null, key?: string | null, type?: string | null, signingKey?: string | null, kid?: string | null, jwk_url?: any | null, header?: string | null, claims_namespace_path?: string | null, claims_namespace?: string | null, claims_format?: string | null, audience?: string | null, allowed_skew?: any | null, claims_map?: Array<{ __typename?: 'ConfigClaimMap', claim: string, default?: string | null, path?: string | null, value?: string | null }> | null };
 
 export type GetEnvironmentVariablesQueryVariables = Exact<{
   appId: Scalars['uuid'];
 }>;
 
 
-export type GetEnvironmentVariablesQuery = { __typename?: 'query_root', config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', global?: { __typename?: 'ConfigGlobal', environment?: Array<{ __typename?: 'ConfigEnvironmentVariable', name: string, value: string, id: string }> | null } | null, hasura: { __typename?: 'ConfigHasura', adminSecret: string, webhookSecret: string, jwtSecrets?: Array<{ __typename?: 'ConfigJWTSecret', issuer?: string | null, key?: string | null, type?: string | null, jwk_url?: any | null, header?: string | null, claims_namespace_path?: string | null, claims_namespace?: string | null, claims_format?: string | null, audience?: string | null, allowed_skew?: any | null }> | null } } | null };
+export type GetEnvironmentVariablesQuery = { __typename?: 'query_root', config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', global?: { __typename?: 'ConfigGlobal', environment?: Array<{ __typename?: 'ConfigGlobalEnvironmentVariable', name: string, value: string, id: string }> | null } | null, hasura: { __typename?: 'ConfigHasura', adminSecret: string, webhookSecret: string, jwtSecrets?: Array<{ __typename?: 'ConfigJWTSecret', issuer?: string | null, key?: string | null, type?: string | null, signingKey?: string | null, kid?: string | null, jwk_url?: any | null, header?: string | null, claims_namespace_path?: string | null, claims_namespace?: string | null, claims_format?: string | null, audience?: string | null, allowed_skew?: any | null, claims_map?: Array<{ __typename?: 'ConfigClaimMap', claim: string, default?: string | null, path?: string | null, value?: string | null }> | null }> | null } } | null };
+
+export type GetConfigRawJsonQueryVariables = Exact<{
+  appID: Scalars['uuid'];
+}>;
+
+
+export type GetConfigRawJsonQuery = { __typename?: 'query_root', configRawJSON: string };
+
+export type GetRateLimitConfigQueryVariables = Exact<{
+  appId: Scalars['uuid'];
+  resolve: Scalars['Boolean'];
+}>;
+
+
+export type GetRateLimitConfigQuery = { __typename?: 'query_root', config?: { __typename?: 'ConfigConfig', hasura: { __typename?: 'ConfigHasura', rateLimit?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null }, storage?: { __typename?: 'ConfigStorage', rateLimit?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null } | null, functions?: { __typename?: 'ConfigFunctions', rateLimit?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null } | null, auth?: { __typename?: 'ConfigAuth', rateLimit?: { __typename?: 'ConfigAuthRateLimit', bruteForce?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null, emails?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null, global?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null, signups?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null, sms?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null } | null } | null } | null };
+
+export type UpdateRateLimitConfigMutationVariables = Exact<{
+  appId: Scalars['uuid'];
+  config: ConfigConfigUpdateInput;
+}>;
+
+
+export type UpdateRateLimitConfigMutation = { __typename?: 'mutation_root', updateConfig: { __typename?: 'ConfigConfig', hasura: { __typename?: 'ConfigHasura', rateLimit?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null }, storage?: { __typename?: 'ConfigStorage', rateLimit?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null } | null, functions?: { __typename?: 'ConfigFunctions', rateLimit?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null } | null, auth?: { __typename?: 'ConfigAuth', rateLimit?: { __typename?: 'ConfigAuthRateLimit', bruteForce?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null, emails?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null, global?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null, signups?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null, sms?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null } | null } | null } };
+
+export type ReplaceConfigRawJsonMutationVariables = Exact<{
+  appID: Scalars['uuid'];
+  rawJSON: Scalars['String'];
+}>;
+
+
+export type ReplaceConfigRawJsonMutation = { __typename?: 'mutation_root', replaceConfigRawJSON: string };
 
 export type PermissionVariableFragment = { __typename?: 'ConfigAuthsessionaccessTokenCustomClaims', key: string, value: string, id: string };
 
@@ -21812,14 +27954,14 @@ export type GetSignInMethodsQueryVariables = Exact<{
 }>;
 
 
-export type GetSignInMethodsQuery = { __typename?: 'query_root', config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', provider?: { __typename: 'ConfigProvider', id: 'ConfigProvider', sms?: { __typename?: 'ConfigSms', accountSid: string, authToken: string, messagingServiceId: string, provider?: string | null } | null } | null, auth?: { __typename: 'ConfigAuth', id: 'ConfigAuth', method?: { __typename?: 'ConfigAuthMethod', emailPassword?: { __typename?: 'ConfigAuthMethodEmailPassword', emailVerificationRequired?: boolean | null, hibpEnabled?: boolean | null, passwordMinLength?: any | null } | null, emailPasswordless?: { __typename?: 'ConfigAuthMethodEmailPasswordless', enabled?: boolean | null } | null, smsPasswordless?: { __typename?: 'ConfigAuthMethodSmsPasswordless', enabled?: boolean | null } | null, anonymous?: { __typename?: 'ConfigAuthMethodAnonymous', enabled?: boolean | null } | null, webauthn?: { __typename?: 'ConfigAuthMethodWebauthn', enabled?: boolean | null } | null, oauth?: { __typename?: 'ConfigAuthMethodOauth', apple?: { __typename?: 'ConfigAuthMethodOauthApple', enabled?: boolean | null, clientId?: string | null, keyId?: string | null, teamId?: string | null, privateKey?: string | null } | null, bitbucket?: { __typename?: 'ConfigStandardOauthProvider', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null } | null, gitlab?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, strava?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, discord?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, facebook?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, github?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, google?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, linkedin?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, spotify?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, twitch?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, twitter?: { __typename?: 'ConfigAuthMethodOauthTwitter', enabled?: boolean | null, consumerKey?: string | null, consumerSecret?: string | null } | null, windowslive?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, workos?: { __typename?: 'ConfigAuthMethodOauthWorkos', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, connection?: string | null, organization?: string | null } | null, azuread?: { __typename?: 'ConfigAuthMethodOauthAzuread', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, tenant?: string | null } | null } | null } | null } | null } | null };
+export type GetSignInMethodsQuery = { __typename?: 'query_root', config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', provider?: { __typename: 'ConfigProvider', id: 'ConfigProvider', sms?: { __typename?: 'ConfigSms', accountSid: string, authToken: string, messagingServiceId: string, provider?: string | null } | null } | null, auth?: { __typename: 'ConfigAuth', id: 'ConfigAuth', method?: { __typename?: 'ConfigAuthMethod', otp?: { __typename?: 'ConfigAuthMethodOtp', email?: { __typename?: 'ConfigAuthMethodOtpEmail', enabled?: boolean | null } | null } | null, emailPassword?: { __typename?: 'ConfigAuthMethodEmailPassword', emailVerificationRequired?: boolean | null, hibpEnabled?: boolean | null, passwordMinLength?: any | null } | null, emailPasswordless?: { __typename?: 'ConfigAuthMethodEmailPasswordless', enabled?: boolean | null } | null, smsPasswordless?: { __typename?: 'ConfigAuthMethodSmsPasswordless', enabled?: boolean | null } | null, anonymous?: { __typename?: 'ConfigAuthMethodAnonymous', enabled?: boolean | null } | null, webauthn?: { __typename?: 'ConfigAuthMethodWebauthn', enabled?: boolean | null } | null, oauth?: { __typename?: 'ConfigAuthMethodOauth', apple?: { __typename?: 'ConfigAuthMethodOauthApple', enabled?: boolean | null, clientId?: string | null, keyId?: string | null, teamId?: string | null, privateKey?: string | null, audience?: string | null } | null, bitbucket?: { __typename?: 'ConfigStandardOauthProvider', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null } | null, gitlab?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, strava?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, discord?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, facebook?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, github?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, google?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null, audience?: string | null } | null, linkedin?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, spotify?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, twitch?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, twitter?: { __typename?: 'ConfigAuthMethodOauthTwitter', enabled?: boolean | null, consumerKey?: string | null, consumerSecret?: string | null } | null, windowslive?: { __typename?: 'ConfigStandardOauthProviderWithScope', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, scope?: Array<string> | null } | null, workos?: { __typename?: 'ConfigAuthMethodOauthWorkos', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, connection?: string | null, organization?: string | null } | null, azuread?: { __typename?: 'ConfigAuthMethodOauthAzuread', enabled?: boolean | null, clientId?: string | null, clientSecret?: string | null, tenant?: string | null } | null } | null } | null } | null } | null };
 
 export type GetSmtpSettingsQueryVariables = Exact<{
   appId: Scalars['uuid'];
 }>;
 
 
-export type GetSmtpSettingsQuery = { __typename?: 'query_root', config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', provider?: { __typename: 'ConfigProvider', id: 'ConfigProvider', smtp?: { __typename?: 'ConfigSmtp', host: string, method: string, port: any, secure: boolean, sender: string, user: string } | null } | null } | null };
+export type GetSmtpSettingsQuery = { __typename?: 'query_root', config?: { __typename: 'ConfigConfig', id: 'ConfigConfig', provider?: { __typename: 'ConfigProvider', id: 'ConfigProvider', smtp?: { __typename?: 'ConfigSmtp', host: string, method: string, port: any, secure: boolean, sender: string, user: string, password: string } | null } | null } | null };
 
 export type UpdateConfigMutationVariables = Exact<{
   appId: Scalars['uuid'];
@@ -21827,7 +27969,15 @@ export type UpdateConfigMutationVariables = Exact<{
 }>;
 
 
-export type UpdateConfigMutation = { __typename?: 'mutation_root', updateConfig: { __typename?: 'ConfigConfig', id: 'ConfigConfig' } };
+export type UpdateConfigMutation = { __typename?: 'mutation_root', updateConfig: { __typename?: 'ConfigConfig', id: 'ConfigConfig', postgres: { __typename?: 'ConfigPostgres', resources: { __typename?: 'ConfigPostgresResources', enablePublicAccess?: boolean | null, storage: { __typename?: 'ConfigPostgresStorage', capacity: any } } }, ai?: { __typename?: 'ConfigAI', version?: string | null, webhookSecret: string, autoEmbeddings?: { __typename?: 'ConfigAIAutoEmbeddings', synchPeriodMinutes?: any | null } | null, openai: { __typename?: 'ConfigAIOpenai', organization?: string | null, apiKey: string }, resources: { __typename?: 'ConfigAIResources', compute: { __typename?: 'ConfigComputeResources', cpu: any, memory: any } } } | null } };
+
+export type UpdateDatabaseVersionMutationVariables = Exact<{
+  appId: Scalars['uuid'];
+  version: Scalars['String'];
+}>;
+
+
+export type UpdateDatabaseVersionMutation = { __typename?: 'mutation_root', changeDatabaseVersion: boolean };
 
 export type UnpauseApplicationMutationVariables = Exact<{
   appId: Scalars['uuid'];
@@ -21842,7 +27992,7 @@ export type UpdateApplicationMutationVariables = Exact<{
 }>;
 
 
-export type UpdateApplicationMutation = { __typename?: 'mutation_root', updateApp?: { __typename?: 'apps', name: string, id: any, slug: string } | null };
+export type UpdateApplicationMutation = { __typename?: 'mutation_root', updateApp?: { __typename?: 'apps', name: string, id: any, slug: string, subdomain: string } | null };
 
 export type GetCountriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -21912,9 +28062,9 @@ export type GetFilesAggregateQuery = { __typename?: 'query_root', filesAggregate
 
 export type AppStateHistoryFragment = { __typename?: 'appStateHistory', id: any, appId: any, message?: string | null, stateId: number, createdAt: any };
 
-export type ProjectFragment = { __typename?: 'apps', id: any, slug: string, name: string, repositoryProductionBranch: string, subdomain: string, isProvisioned: boolean, createdAt: any, desiredState: number, nhostBaseFolder: string, providersUpdated?: boolean | null, config?: { __typename?: 'ConfigConfig', observability: { __typename?: 'ConfigObservability', grafana: { __typename?: 'ConfigGrafana', adminPassword: string } }, hasura: { __typename?: 'ConfigHasura', adminSecret: string, settings?: { __typename?: 'ConfigHasuraSettings', enableConsole?: boolean | null } | null } } | null, featureFlags: Array<{ __typename?: 'featureFlags', description: string, id: any, name: string, value: string }>, appStates: Array<{ __typename?: 'appStateHistory', id: any, appId: any, message?: string | null, stateId: number, createdAt: any }>, region: { __typename?: 'regions', id: any, countryCode: string, awsName: string, domain: string, city: string }, plan: { __typename?: 'plans', id: any, name: string, price: number, isFree: boolean }, githubRepository?: { __typename?: 'githubRepositories', fullName: string } | null, deployments: Array<{ __typename?: 'deployments', id: any, commitSHA: string, commitMessage?: string | null, commitUserName?: string | null, deploymentStartedAt?: any | null, deploymentEndedAt?: any | null, commitUserAvatarUrl?: string | null, deploymentStatus?: string | null }>, creator?: { __typename?: 'users', id: any, email?: any | null, displayName: string } | null };
+export type ProjectFragment = { __typename?: 'apps', id: any, slug: string, name: string, repositoryProductionBranch: string, subdomain: string, createdAt: any, desiredState: number, nhostBaseFolder: string, config?: { __typename?: 'ConfigConfig', observability: { __typename?: 'ConfigObservability', grafana: { __typename?: 'ConfigGrafana', adminPassword: string } }, hasura: { __typename?: 'ConfigHasura', adminSecret: string, settings?: { __typename?: 'ConfigHasuraSettings', enableConsole?: boolean | null } | null }, ai?: { __typename?: 'ConfigAI', version?: string | null } | null } | null, featureFlags: Array<{ __typename?: 'featureFlags', description: string, id: any, name: string, value: string }>, appStates: Array<{ __typename?: 'appStateHistory', id: any, appId: any, message?: string | null, stateId: number, createdAt: any }>, region: { __typename?: 'regions', id: any, countryCode: string, name: string, domain: string, city: string }, legacyPlan?: { __typename?: 'plans', id: any, name: string, price: number, isFree: boolean, featureMaxDbSize: number } | null, githubRepository?: { __typename?: 'githubRepositories', fullName: string } | null, deployments: Array<{ __typename?: 'deployments', id: any, commitSHA: string, commitMessage?: string | null, commitUserName?: string | null, deploymentStartedAt?: any | null, deploymentEndedAt?: any | null, commitUserAvatarUrl?: string | null, deploymentStatus?: string | null }>, creator?: { __typename?: 'users', id: any, email?: any | null, displayName: string } | null };
 
-export type WorkspaceFragment = { __typename?: 'workspaces', id: any, name: string, slug: string, creatorUserId?: any | null, workspaceMembers: Array<{ __typename?: 'workspaceMembers', id: any, type: string, user: { __typename?: 'users', id: any, email?: any | null, displayName: string } }>, projects: Array<{ __typename?: 'apps', id: any, slug: string, name: string, repositoryProductionBranch: string, subdomain: string, isProvisioned: boolean, createdAt: any, desiredState: number, nhostBaseFolder: string, providersUpdated?: boolean | null, config?: { __typename?: 'ConfigConfig', observability: { __typename?: 'ConfigObservability', grafana: { __typename?: 'ConfigGrafana', adminPassword: string } }, hasura: { __typename?: 'ConfigHasura', adminSecret: string, settings?: { __typename?: 'ConfigHasuraSettings', enableConsole?: boolean | null } | null } } | null, featureFlags: Array<{ __typename?: 'featureFlags', description: string, id: any, name: string, value: string }>, appStates: Array<{ __typename?: 'appStateHistory', id: any, appId: any, message?: string | null, stateId: number, createdAt: any }>, region: { __typename?: 'regions', id: any, countryCode: string, awsName: string, domain: string, city: string }, plan: { __typename?: 'plans', id: any, name: string, price: number, isFree: boolean }, githubRepository?: { __typename?: 'githubRepositories', fullName: string } | null, deployments: Array<{ __typename?: 'deployments', id: any, commitSHA: string, commitMessage?: string | null, commitUserName?: string | null, deploymentStartedAt?: any | null, deploymentEndedAt?: any | null, commitUserAvatarUrl?: string | null, deploymentStatus?: string | null }>, creator?: { __typename?: 'users', id: any, email?: any | null, displayName: string } | null }> };
+export type WorkspaceFragment = { __typename?: 'workspaces', id: any, name: string, slug: string, creatorUserId?: any | null, workspaceMembers: Array<{ __typename?: 'workspaceMembers', id: any, type: string, user: { __typename?: 'users', id: any, email?: any | null, displayName: string } }>, projects: Array<{ __typename?: 'apps', id: any, slug: string, name: string, repositoryProductionBranch: string, subdomain: string, createdAt: any, desiredState: number, nhostBaseFolder: string, config?: { __typename?: 'ConfigConfig', observability: { __typename?: 'ConfigObservability', grafana: { __typename?: 'ConfigGrafana', adminPassword: string } }, hasura: { __typename?: 'ConfigHasura', adminSecret: string, settings?: { __typename?: 'ConfigHasuraSettings', enableConsole?: boolean | null } | null }, ai?: { __typename?: 'ConfigAI', version?: string | null } | null } | null, featureFlags: Array<{ __typename?: 'featureFlags', description: string, id: any, name: string, value: string }>, appStates: Array<{ __typename?: 'appStateHistory', id: any, appId: any, message?: string | null, stateId: number, createdAt: any }>, region: { __typename?: 'regions', id: any, countryCode: string, name: string, domain: string, city: string }, legacyPlan?: { __typename?: 'plans', id: any, name: string, price: number, isFree: boolean, featureMaxDbSize: number } | null, githubRepository?: { __typename?: 'githubRepositories', fullName: string } | null, deployments: Array<{ __typename?: 'deployments', id: any, commitSHA: string, commitMessage?: string | null, commitUserName?: string | null, deploymentStartedAt?: any | null, deploymentEndedAt?: any | null, commitUserAvatarUrl?: string | null, deploymentStatus?: string | null }>, creator?: { __typename?: 'users', id: any, email?: any | null, displayName: string } | null }> };
 
 export type GithubRepositoryFragment = { __typename?: 'githubRepositories', id: any, name: string, fullName: string, private: boolean, githubAppInstallation: { __typename?: 'githubAppInstallations', id: any, accountLogin?: string | null, accountType?: string | null, accountAvatarUrl?: string | null } };
 
@@ -21928,6 +28078,7 @@ export type GetProjectLogsQueryVariables = Exact<{
   service?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Timestamp']>;
   to?: InputMaybe<Scalars['Timestamp']>;
+  regexFilter?: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -21937,10 +28088,253 @@ export type GetLogsSubscriptionSubscriptionVariables = Exact<{
   appID: Scalars['String'];
   service?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Timestamp']>;
+  regexFilter?: InputMaybe<Scalars['String']>;
 }>;
 
 
 export type GetLogsSubscriptionSubscription = { __typename?: 'subscription_root', logs: Array<{ __typename?: 'Log', log: string, service: string, timestamp: any }> };
+
+export type GetServiceLabelValuesQueryVariables = Exact<{
+  appID: Scalars['String'];
+}>;
+
+
+export type GetServiceLabelValuesQuery = { __typename?: 'query_root', getServiceLabelValues: Array<string> };
+
+export type GetSystemLogsQueryVariables = Exact<{
+  appID: Scalars['String'];
+  action: Scalars['String'];
+  from?: InputMaybe<Scalars['Timestamp']>;
+  to?: InputMaybe<Scalars['Timestamp']>;
+}>;
+
+
+export type GetSystemLogsQuery = { __typename?: 'query_root', systemLogs: Array<{ __typename?: 'Log', timestamp: any, log: string }> };
+
+export type BillingChangeOrganizationPlanMutationVariables = Exact<{
+  organizationID: Scalars['uuid'];
+  planID: Scalars['uuid'];
+}>;
+
+
+export type BillingChangeOrganizationPlanMutation = { __typename?: 'mutation_root', billingChangeOrganizationPlan: boolean };
+
+export type BillingDeleteAppMutationVariables = Exact<{
+  appID: Scalars['uuid'];
+}>;
+
+
+export type BillingDeleteAppMutation = { __typename?: 'mutation_root', billingDeleteApp: boolean };
+
+export type BillingGetNextInvoiceQueryVariables = Exact<{
+  organizationID: Scalars['uuid'];
+}>;
+
+
+export type BillingGetNextInvoiceQuery = { __typename?: 'query_root', billingGetNextInvoice?: { __typename?: 'InvoiceSummary', AmountDue: any, PeriodEnd: any, items: Array<{ __typename?: 'InvoiceItem', Description: string, Amount: any }> } | null };
+
+export type BillingMigrateProjectToOrganizationMutationVariables = Exact<{
+  appID: Scalars['uuid'];
+  organizationID: Scalars['uuid'];
+}>;
+
+
+export type BillingMigrateProjectToOrganizationMutation = { __typename?: 'mutation_root', billingMigrateProjectToOrganization: boolean };
+
+export type BillingOrganizationCustomePortalQueryVariables = Exact<{
+  organizationID: Scalars['uuid'];
+}>;
+
+
+export type BillingOrganizationCustomePortalQuery = { __typename?: 'query_root', billingOrganizationCustomePortal: string };
+
+export type BillingTransferAppMutationVariables = Exact<{
+  appID: Scalars['uuid'];
+  organizationID: Scalars['uuid'];
+}>;
+
+
+export type BillingTransferAppMutation = { __typename?: 'mutation_root', billingTransferApp: boolean };
+
+export type CreateOrganizationRequestMutationVariables = Exact<{
+  organizationName: Scalars['String'];
+  planID: Scalars['uuid'];
+  redirectURL: Scalars['String'];
+}>;
+
+
+export type CreateOrganizationRequestMutation = { __typename?: 'mutation_root', billingCreateOrganizationRequest: string };
+
+export type DeleteOrganizationMemberInviteMutationVariables = Exact<{
+  inviteId: Scalars['uuid'];
+}>;
+
+
+export type DeleteOrganizationMemberInviteMutation = { __typename?: 'mutation_root', deleteOrganizationMemberInvite?: { __typename: 'organization_member_invites' } | null };
+
+export type DeleteOrganizationMutationVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type DeleteOrganizationMutation = { __typename?: 'mutation_root', billingDeleteOrganization: boolean };
+
+export type DeleteOrganizationMemberMutationVariables = Exact<{
+  memberId: Scalars['uuid'];
+}>;
+
+
+export type DeleteOrganizationMemberMutation = { __typename?: 'mutation_root', deleteOrganizationMember?: { __typename: 'organization_members' } | null };
+
+export type GetOrganizationQueryVariables = Exact<{
+  orgSlug: Scalars['String'];
+}>;
+
+
+export type GetOrganizationQuery = { __typename?: 'query_root', organizations: Array<{ __typename?: 'organizations', id: any, name: string, slug: string, status: Organization_Status_Enum, plan: { __typename?: 'plans', id: any, name: string, price: number, deprecated: boolean, individual: boolean, isFree: boolean, featureMaxDbSize: number }, members: Array<{ __typename?: 'organization_members', id: any, role: Organization_Members_Role_Enum, user: { __typename?: 'users', id: any, email?: any | null, displayName: string, avatarUrl: string } }>, apps: Array<{ __typename?: 'apps', id: any, name: string, subdomain: string, slug: string }> }> };
+
+export type GetOrganizationByIdQueryVariables = Exact<{
+  orgId: Scalars['uuid'];
+}>;
+
+
+export type GetOrganizationByIdQuery = { __typename?: 'query_root', organizations: Array<{ __typename?: 'organizations', id: any, name: string, slug: string }> };
+
+export type GetOrganizationInvitesQueryVariables = Exact<{
+  organizationId: Scalars['uuid'];
+}>;
+
+
+export type GetOrganizationInvitesQuery = { __typename?: 'query_root', organizationMemberInvites: Array<{ __typename?: 'organization_member_invites', id: any, email: any, role: Organization_Members_Role_Enum, createdAt: any, updateAt: any }> };
+
+export type GetOrganizationProjectsQueryVariables = Exact<{
+  orgId: Scalars['uuid'];
+}>;
+
+
+export type GetOrganizationProjectsQuery = { __typename?: 'query_root', apps: Array<{ __typename?: 'apps', id: any, slug: string, name: string, repositoryProductionBranch: string, subdomain: string, createdAt: any, desiredState: number, nhostBaseFolder: string, config?: { __typename?: 'ConfigConfig', observability: { __typename?: 'ConfigObservability', grafana: { __typename?: 'ConfigGrafana', adminPassword: string } }, hasura: { __typename?: 'ConfigHasura', adminSecret: string, settings?: { __typename?: 'ConfigHasuraSettings', enableConsole?: boolean | null } | null }, ai?: { __typename?: 'ConfigAI', version?: string | null } | null } | null, featureFlags: Array<{ __typename?: 'featureFlags', description: string, id: any, name: string, value: string }>, appStates: Array<{ __typename?: 'appStateHistory', id: any, appId: any, message?: string | null, stateId: number, createdAt: any }>, region: { __typename?: 'regions', id: any, countryCode: string, name: string, domain: string, city: string }, legacyPlan?: { __typename?: 'plans', id: any, name: string, price: number, isFree: boolean, featureMaxDbSize: number } | null, githubRepository?: { __typename?: 'githubRepositories', fullName: string } | null, deployments: Array<{ __typename?: 'deployments', id: any, commitSHA: string, commitMessage?: string | null, commitUserName?: string | null, deploymentStartedAt?: any | null, deploymentEndedAt?: any | null, commitUserAvatarUrl?: string | null, deploymentStatus?: string | null }>, creator?: { __typename?: 'users', id: any, email?: any | null, displayName: string } | null }> };
+
+export type GetOrganizationSpendingNotificationQueryVariables = Exact<{
+  orgId: Scalars['uuid'];
+}>;
+
+
+export type GetOrganizationSpendingNotificationQuery = { __typename?: 'query_root', organizations: Array<{ __typename?: 'organizations', threshold: number }> };
+
+export type GetOrganizationsQueryVariables = Exact<{
+  userId: Scalars['uuid'];
+}>;
+
+
+export type GetOrganizationsQuery = { __typename?: 'query_root', organizations: Array<{ __typename?: 'organizations', id: any, name: string, slug: string, plan: { __typename?: 'plans', id: any, name: string, price: number, deprecated: boolean, individual: boolean, isFree: boolean, featureMaxDbSize: number }, apps: Array<{ __typename?: 'apps', id: any, name: string, subdomain: string, slug: string }>, members: Array<{ __typename?: 'organization_members', id: any, role: Organization_Members_Role_Enum, user: { __typename?: 'users', id: any, email?: any | null, displayName: string, avatarUrl: string } }> }> };
+
+export type GetOrganizationPlansQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetOrganizationPlansQuery = { __typename?: 'query_root', plans: Array<{ __typename?: 'plans', id: any, name: string, isDefault: boolean, isFree: boolean, price: number, featureBackupEnabled: boolean, featureCustomDomainsEnabled: boolean, featureMaxDbSize: number }> };
+
+export type GetProjectQueryVariables = Exact<{
+  subdomain: Scalars['String'];
+}>;
+
+
+export type GetProjectQuery = { __typename?: 'query_root', apps: Array<{ __typename?: 'apps', id: any, slug: string, name: string, repositoryProductionBranch: string, subdomain: string, createdAt: any, desiredState: number, nhostBaseFolder: string, config?: { __typename?: 'ConfigConfig', observability: { __typename?: 'ConfigObservability', grafana: { __typename?: 'ConfigGrafana', adminPassword: string } }, hasura: { __typename?: 'ConfigHasura', adminSecret: string, settings?: { __typename?: 'ConfigHasuraSettings', enableConsole?: boolean | null } | null }, ai?: { __typename?: 'ConfigAI', version?: string | null } | null } | null, featureFlags: Array<{ __typename?: 'featureFlags', description: string, id: any, name: string, value: string }>, appStates: Array<{ __typename?: 'appStateHistory', id: any, appId: any, message?: string | null, stateId: number, createdAt: any }>, region: { __typename?: 'regions', id: any, countryCode: string, name: string, domain: string, city: string }, legacyPlan?: { __typename?: 'plans', id: any, name: string, price: number, isFree: boolean, featureMaxDbSize: number } | null, githubRepository?: { __typename?: 'githubRepositories', fullName: string } | null, deployments: Array<{ __typename?: 'deployments', id: any, commitSHA: string, commitMessage?: string | null, commitUserName?: string | null, deploymentStartedAt?: any | null, deploymentEndedAt?: any | null, commitUserAvatarUrl?: string | null, deploymentStatus?: string | null }>, creator?: { __typename?: 'users', id: any, email?: any | null, displayName: string } | null }> };
+
+export type GetProjectStateQueryVariables = Exact<{
+  subdomain: Scalars['String'];
+}>;
+
+
+export type GetProjectStateQuery = { __typename?: 'query_root', apps: Array<{ __typename?: 'apps', id: any, name: string, subdomain: string, createdAt: any, desiredState: number, region: { __typename?: 'regions', id: any, countryCode: string, name: string, domain: string, city: string }, appStates: Array<{ __typename?: 'appStateHistory', id: any, appId: any, message?: string | null, stateId: number, createdAt: any }> }> };
+
+export type GetProjectsQueryVariables = Exact<{
+  orgSlug: Scalars['String'];
+}>;
+
+
+export type GetProjectsQuery = { __typename?: 'query_root', apps: Array<{ __typename?: 'apps', id: any, name: string, slug: string, createdAt: any, subdomain: string, region: { __typename?: 'regions', id: any, name: string }, deployments: Array<{ __typename?: 'deployments', id: any, commitSHA: string, commitMessage?: string | null, commitUserName?: string | null, deploymentStartedAt?: any | null, deploymentEndedAt?: any | null, commitUserAvatarUrl?: string | null, deploymentStatus?: string | null }>, creator?: { __typename?: 'users', id: any, email?: any | null, displayName: string } | null, appStates: Array<{ __typename?: 'appStateHistory', id: any, appId: any, message?: string | null, stateId: number, createdAt: any }> }> };
+
+export type GetUserProjectMetricsQueryVariables = Exact<{
+  startOfMonth: Scalars['timestamptz'];
+  today: Scalars['timestamptz'];
+}>;
+
+
+export type GetUserProjectMetricsQuery = { __typename?: 'query_root', monthlyActiveUsers: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null }, dailyActiveUsers: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null }, allUsers: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null }, filesAggregate: { __typename?: 'files_aggregate', aggregate?: { __typename?: 'files_aggregate_fields', count: number, sum?: { __typename?: 'files_sum_fields', size?: number | null } | null } | null } };
+
+export type InsertOrgApplicationMutationVariables = Exact<{
+  app: Apps_Insert_Input;
+}>;
+
+
+export type InsertOrgApplicationMutation = { __typename?: 'mutation_root', insertApp?: { __typename?: 'apps', id: any, name: string, slug: string, subdomain: string } | null };
+
+export type InsertOrganizationMemberInviteMutationVariables = Exact<{
+  organizationMemberInvite: Organization_Member_Invites_Insert_Input;
+}>;
+
+
+export type InsertOrganizationMemberInviteMutation = { __typename?: 'mutation_root', insertOrganizationMemberInvite?: { __typename?: 'organization_member_invites', id: any } | null };
+
+export type OrganizationMemberInviteAcceptMutationVariables = Exact<{
+  inviteId: Scalars['uuid'];
+}>;
+
+
+export type OrganizationMemberInviteAcceptMutation = { __typename?: 'mutation_root', organizationMemberInviteAccept: Array<{ __typename: 'organization_members' }> };
+
+export type OrganizationMemberInvitesQueryVariables = Exact<{
+  userId: Scalars['uuid'];
+}>;
+
+
+export type OrganizationMemberInvitesQuery = { __typename?: 'query_root', organizationMemberInvites: Array<{ __typename?: 'organization_member_invites', id: any, email: any, role: Organization_Members_Role_Enum, createdAt: any, updateAt: any, organization: { __typename?: 'organizations', name: string, slug: string } }> };
+
+export type OrganizationNewRequestsQueryVariables = Exact<{
+  userID: Scalars['uuid'];
+}>;
+
+
+export type OrganizationNewRequestsQuery = { __typename?: 'query_root', organizationNewRequests: Array<{ __typename?: 'organization_new_request', id: any, sessionID: string }> };
+
+export type PostOrganizationRequestMutationVariables = Exact<{
+  sessionID: Scalars['String'];
+}>;
+
+
+export type PostOrganizationRequestMutation = { __typename?: 'mutation_root', billingPostOrganizationRequest: { __typename?: 'PostOrganizationRequestResponse', Status: CheckoutStatus, Slug: string, ClientSecret?: string | null } };
+
+export type UpdateOrganizationMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  organization: Organizations_Set_Input;
+}>;
+
+
+export type UpdateOrganizationMutation = { __typename?: 'mutation_root', updateOrganization?: { __typename?: 'organizations', id: any, name: string } | null };
+
+export type UpdateOrganizationMemberInviteMutationVariables = Exact<{
+  inviteId: Scalars['uuid'];
+  role: Organization_Members_Role_Enum;
+}>;
+
+
+export type UpdateOrganizationMemberInviteMutation = { __typename?: 'mutation_root', updateOrganizationMemberInvite?: { __typename?: 'organization_member_invites', id: any } | null };
+
+export type UpdateOrganizationMemberMutationVariables = Exact<{
+  memberId: Scalars['uuid'];
+  role: Organization_Members_Role_Enum;
+}>;
+
+
+export type UpdateOrganizationMemberMutation = { __typename?: 'mutation_root', updateOrganizationMember?: { __typename?: 'organization_members', id: any } | null };
+
+export type UpdateOrganizationSpendingNotificationMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  threshold: Scalars['Int'];
+}>;
+
+
+export type UpdateOrganizationSpendingNotificationMutation = { __typename?: 'mutation_root', updateOrganization?: { __typename?: 'organizations', threshold: number } | null };
 
 export type DeletePaymentMethodMutationVariables = Exact<{
   paymentMethodId: Scalars['uuid'];
@@ -21949,14 +28343,14 @@ export type DeletePaymentMethodMutationVariables = Exact<{
 
 export type DeletePaymentMethodMutation = { __typename?: 'mutation_root', deletePaymentMethod?: { __typename?: 'paymentMethods', id: any } | null };
 
-export type GetPaymentMethodsFragment = { __typename?: 'paymentMethods', id: any, createdAt: any, cardBrand: string, cardLast4: string, cardExpMonth: number, cardExpYear: number, isDefault: boolean, workspace: { __typename?: 'workspaces', id: any, apps: Array<{ __typename?: 'apps', id: any, plan: { __typename?: 'plans', isFree: boolean } }> } };
+export type GetPaymentMethodsFragment = { __typename?: 'paymentMethods', id: any, createdAt: any, cardBrand: string, cardLast4: string, cardExpMonth: number, cardExpYear: number, isDefault: boolean, workspace: { __typename?: 'workspaces', id: any, apps: Array<{ __typename?: 'apps', id: any, legacyPlan?: { __typename?: 'plans', isFree: boolean } | null }> } };
 
 export type GetPaymentMethodsQueryVariables = Exact<{
   workspaceId: Scalars['uuid'];
 }>;
 
 
-export type GetPaymentMethodsQuery = { __typename?: 'query_root', paymentMethods: Array<{ __typename?: 'paymentMethods', id: any, createdAt: any, cardBrand: string, cardLast4: string, cardExpMonth: number, cardExpYear: number, isDefault: boolean, workspace: { __typename?: 'workspaces', id: any, apps: Array<{ __typename?: 'apps', id: any, plan: { __typename?: 'plans', isFree: boolean } }> } }> };
+export type GetPaymentMethodsQuery = { __typename?: 'query_root', paymentMethods: Array<{ __typename?: 'paymentMethods', id: any, createdAt: any, cardBrand: string, cardLast4: string, cardExpMonth: number, cardExpYear: number, isDefault: boolean, workspace: { __typename?: 'workspaces', id: any, apps: Array<{ __typename?: 'apps', id: any, legacyPlan?: { __typename?: 'plans', isFree: boolean } | null }> } }> };
 
 export type InsertNewPaymentMethodMutationVariables = Exact<{
   workspaceId: Scalars['uuid'];
@@ -21974,6 +28368,18 @@ export type SetNewDefaultPaymentMethodMutationVariables = Exact<{
 
 export type SetNewDefaultPaymentMethodMutation = { __typename?: 'mutation_root', setAllPaymentMethodToDefaultFalse?: { __typename?: 'paymentMethods_mutation_response', affected_rows: number } | null, updatePaymentMethods?: { __typename?: 'paymentMethods_mutation_response', affected_rows: number } | null };
 
+export type DeleteAnnouncementReadMutationVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type DeleteAnnouncementReadMutation = { __typename?: 'mutation_root', deleteAnnouncementRead?: { __typename?: 'announcements_read', announcementID: any } | null };
+
+export type GetAnnouncementsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAnnouncementsQuery = { __typename?: 'query_root', announcements: Array<{ __typename?: 'announcements', id: any, href: string, content: string, createdAt: any, read: Array<{ __typename?: 'announcements_read', id: any }> }> };
+
 export type GetPlansQueryVariables = Exact<{
   where?: InputMaybe<Plans_Bool_Exp>;
 }>;
@@ -21981,12 +28387,24 @@ export type GetPlansQueryVariables = Exact<{
 
 export type GetPlansQuery = { __typename?: 'query_root', plans: Array<{ __typename?: 'plans', id: any, name: string, isFree: boolean, price: number }> };
 
+export type GetRecommendedSoftwareVersionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetRecommendedSoftwareVersionsQuery = { __typename?: 'query_root', softwareVersions: Array<{ __typename?: 'software_versions', software: Software_Type_Enum, version: string }> };
+
 export type GetSoftwareVersionsQueryVariables = Exact<{
   software: Software_Type_Enum;
 }>;
 
 
 export type GetSoftwareVersionsQuery = { __typename?: 'query_root', softwareVersions: Array<{ __typename?: 'software_versions', version: string, software: Software_Type_Enum }> };
+
+export type InsertAnnouncementReadMutationVariables = Exact<{
+  announcementID: Scalars['uuid'];
+}>;
+
+
+export type InsertAnnouncementReadMutation = { __typename?: 'mutation_root', insertAnnouncementRead?: { __typename?: 'announcements_read', id: any } | null };
 
 export type RestoreApplicationDatabaseMutationVariables = Exact<{
   appId: Scalars['String'];
@@ -22015,16 +28433,16 @@ export type GetRemoteAppMetricsQueryVariables = Exact<{ [key: string]: never; }>
 
 export type GetRemoteAppMetricsQuery = { __typename?: 'query_root', filesAggregate: { __typename?: 'files_aggregate', aggregate?: { __typename?: 'files_aggregate_fields', count: number, sum?: { __typename?: 'files_sum_fields', size?: number | null } | null } | null }, usersAggregate: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null } };
 
-export type RemoteAppGetUsersFragment = { __typename?: 'users', id: any, createdAt: any, displayName: string, avatarUrl: string, email?: any | null, emailVerified: boolean, phoneNumber?: string | null, phoneNumberVerified: boolean, disabled: boolean, defaultRole: string, lastSeen?: any | null, locale: string, roles: Array<{ __typename?: 'authUserRoles', id: any, role: string }>, userProviders: Array<{ __typename?: 'authUserProviders', id: any, providerId: string }> };
+export type RemoteAppGetUsersFragment = { __typename?: 'users', id: any, createdAt: any, displayName: string, avatarUrl: string, email?: any | null, emailVerified: boolean, phoneNumber?: string | null, phoneNumberVerified: boolean, disabled: boolean, defaultRole: string, lastSeen?: any | null, locale: string, metadata?: any | null, roles: Array<{ __typename?: 'authUserRoles', id: any, role: string }>, userProviders: Array<{ __typename?: 'authUserProviders', id: any, providerId: string }> };
 
-export type RemoteAppGetUsersQueryVariables = Exact<{
+export type RemoteAppGetUsersAndAuthRolesQueryVariables = Exact<{
   where: Users_Bool_Exp;
   limit: Scalars['Int'];
   offset: Scalars['Int'];
 }>;
 
 
-export type RemoteAppGetUsersQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, createdAt: any, displayName: string, avatarUrl: string, email?: any | null, emailVerified: boolean, phoneNumber?: string | null, phoneNumberVerified: boolean, disabled: boolean, defaultRole: string, lastSeen?: any | null, locale: string, roles: Array<{ __typename?: 'authUserRoles', id: any, role: string }>, userProviders: Array<{ __typename?: 'authUserProviders', id: any, providerId: string }> }>, filteredUsersAggreggate: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null }, usersAggregate: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null } };
+export type RemoteAppGetUsersAndAuthRolesQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, createdAt: any, displayName: string, avatarUrl: string, email?: any | null, emailVerified: boolean, phoneNumber?: string | null, phoneNumberVerified: boolean, disabled: boolean, defaultRole: string, lastSeen?: any | null, locale: string, metadata?: any | null, roles: Array<{ __typename?: 'authUserRoles', id: any, role: string }>, userProviders: Array<{ __typename?: 'authUserProviders', id: any, providerId: string }> }>, filteredUsersAggreggate: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null }, usersAggregate: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null }, authRoles: Array<{ __typename?: 'authRoles', role: string }> };
 
 export type RemoteAppGetUsersCustomQueryVariables = Exact<{
   where: Users_Bool_Exp;
@@ -22041,7 +28459,7 @@ export type RemoteAppGetUsersWholeQueryVariables = Exact<{
 }>;
 
 
-export type RemoteAppGetUsersWholeQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, createdAt: any, displayName: string, avatarUrl: string, email?: any | null, emailVerified: boolean, phoneNumber?: string | null, phoneNumberVerified: boolean, disabled: boolean, defaultRole: string, lastSeen?: any | null, locale: string, roles: Array<{ __typename?: 'authUserRoles', id: any, role: string }>, userProviders: Array<{ __typename?: 'authUserProviders', id: any, providerId: string }> }>, usersAggregate: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null } };
+export type RemoteAppGetUsersWholeQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, createdAt: any, displayName: string, avatarUrl: string, email?: any | null, emailVerified: boolean, phoneNumber?: string | null, phoneNumberVerified: boolean, disabled: boolean, defaultRole: string, lastSeen?: any | null, locale: string, metadata?: any | null, roles: Array<{ __typename?: 'authUserRoles', id: any, role: string }>, userProviders: Array<{ __typename?: 'authUserProviders', id: any, providerId: string }> }>, usersAggregate: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null } };
 
 export type TotalUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -22091,7 +28509,7 @@ export type DeleteRunServiceConfigMutationVariables = Exact<{
 }>;
 
 
-export type DeleteRunServiceConfigMutation = { __typename?: 'mutation_root', deleteRunServiceConfig?: { __typename?: 'ConfigRunServiceConfig', name: string } | null };
+export type DeleteRunServiceConfigMutation = { __typename?: 'mutation_root', deleteRunServiceConfig?: { __typename?: 'ConfigRunServiceConfig', name: any } | null };
 
 export type GetRunServiceQueryVariables = Exact<{
   id: Scalars['uuid'];
@@ -22099,7 +28517,9 @@ export type GetRunServiceQueryVariables = Exact<{
 }>;
 
 
-export type GetRunServiceQuery = { __typename?: 'query_root', runService?: { __typename?: 'run_service', id: any, subdomain: string, config?: { __typename?: 'ConfigRunServiceConfig', name: string, command?: Array<string> | null, image: { __typename?: 'ConfigRunServiceImage', image: string }, resources: { __typename?: 'ConfigRunServiceResources', replicas: any, compute: { __typename?: 'ConfigRunServiceResourcesCompute', cpu: any, memory: any }, storage?: Array<{ __typename?: 'ConfigRunServiceResourcesStorage', name: string, path: string, capacity: any }> | null }, environment?: Array<{ __typename?: 'ConfigEnvironmentVariable', name: string, value: string }> | null, ports?: Array<{ __typename?: 'ConfigRunServicePort', port: any, type: string, publish?: boolean | null }> | null } | null } | null };
+export type GetRunServiceQuery = { __typename?: 'query_root', runService?: { __typename?: 'run_service', id: any, subdomain: string, config?: { __typename?: 'ConfigRunServiceConfig', name: any, command?: Array<string> | null, image: { __typename?: 'ConfigRunServiceImage', image: string, pullCredentials?: string | null }, resources: { __typename?: 'ConfigRunServiceResources', replicas: any, compute: { __typename?: 'ConfigComputeResources', cpu: any, memory: any }, storage?: Array<{ __typename?: 'ConfigRunServiceResourcesStorage', name: any, path: string, capacity: any }> | null, autoscaler?: { __typename?: 'ConfigAutoscaler', maxReplicas: any } | null }, environment?: Array<{ __typename?: 'ConfigEnvironmentVariable', name: string, value: string }> | null, ports?: Array<{ __typename?: 'ConfigRunServicePort', port: any, type: string, publish?: boolean | null }> | null } | null } | null };
+
+export type RunServiceConfigFragment = { __typename?: 'ConfigRunServiceConfig', name: any, command?: Array<string> | null, image: { __typename?: 'ConfigRunServiceImage', image: string, pullCredentials?: string | null }, resources: { __typename?: 'ConfigRunServiceResources', replicas: any, compute: { __typename?: 'ConfigComputeResources', cpu: any, memory: any }, storage?: Array<{ __typename?: 'ConfigRunServiceResourcesStorage', name: any, path: string, capacity: any }> | null, autoscaler?: { __typename?: 'ConfigAutoscaler', maxReplicas: any } | null }, environment?: Array<{ __typename?: 'ConfigEnvironmentVariable', name: string, value: string }> | null, ports?: Array<{ __typename?: 'ConfigRunServicePort', port: any, type: string, publish?: boolean | null, ingresses?: Array<{ __typename?: 'ConfigIngress', fqdn?: Array<string> | null }> | null, rateLimit?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null }> | null, healthCheck?: { __typename?: 'ConfigHealthCheck', port: any, initialDelaySeconds?: number | null, probePeriodSeconds?: number | null } | null };
 
 export type GetRunServicesQueryVariables = Exact<{
   appID: Scalars['uuid'];
@@ -22109,23 +28529,41 @@ export type GetRunServicesQueryVariables = Exact<{
 }>;
 
 
-export type GetRunServicesQuery = { __typename?: 'query_root', app?: { __typename?: 'apps', runServices: Array<{ __typename?: 'run_service', id: any, createdAt: any, updatedAt: any, subdomain: string, config?: { __typename?: 'ConfigRunServiceConfig', name: string, command?: Array<string> | null, image: { __typename?: 'ConfigRunServiceImage', image: string }, resources: { __typename?: 'ConfigRunServiceResources', replicas: any, compute: { __typename?: 'ConfigRunServiceResourcesCompute', cpu: any, memory: any }, storage?: Array<{ __typename?: 'ConfigRunServiceResourcesStorage', name: string, path: string, capacity: any }> | null }, environment?: Array<{ __typename?: 'ConfigEnvironmentVariable', name: string, value: string }> | null, ports?: Array<{ __typename?: 'ConfigRunServicePort', port: any, type: string, publish?: boolean | null }> | null } | null }>, runServices_aggregate: { __typename?: 'run_service_aggregate', aggregate?: { __typename?: 'run_service_aggregate_fields', count: number } | null } } | null };
+export type GetRunServicesQuery = { __typename?: 'query_root', app?: { __typename?: 'apps', runServices: Array<{ __typename?: 'run_service', id: any, createdAt: any, updatedAt: any, subdomain: string, config?: { __typename?: 'ConfigRunServiceConfig', name: any, command?: Array<string> | null, image: { __typename?: 'ConfigRunServiceImage', image: string, pullCredentials?: string | null }, resources: { __typename?: 'ConfigRunServiceResources', replicas: any, compute: { __typename?: 'ConfigComputeResources', cpu: any, memory: any }, storage?: Array<{ __typename?: 'ConfigRunServiceResourcesStorage', name: any, path: string, capacity: any }> | null, autoscaler?: { __typename?: 'ConfigAutoscaler', maxReplicas: any } | null }, environment?: Array<{ __typename?: 'ConfigEnvironmentVariable', name: string, value: string }> | null, ports?: Array<{ __typename?: 'ConfigRunServicePort', port: any, type: string, publish?: boolean | null, ingresses?: Array<{ __typename?: 'ConfigIngress', fqdn?: Array<string> | null }> | null, rateLimit?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null }> | null, healthCheck?: { __typename?: 'ConfigHealthCheck', port: any, initialDelaySeconds?: number | null, probePeriodSeconds?: number | null } | null } | null }>, runServices_aggregate: { __typename?: 'run_service_aggregate', aggregate?: { __typename?: 'run_service_aggregate_fields', count: number } | null } } | null };
 
-export type InsertRunServiceMutationVariables = Exact<{
-  object: Run_Service_Insert_Input;
+export type GetLocalRunServiceConfigsQueryVariables = Exact<{
+  appID: Scalars['uuid'];
+  resolve: Scalars['Boolean'];
 }>;
 
 
-export type InsertRunServiceMutation = { __typename?: 'mutation_root', insertRunService?: { __typename?: 'run_service', id: any, subdomain: string } | null };
+export type GetLocalRunServiceConfigsQuery = { __typename?: 'query_root', runServiceConfigs: Array<{ __typename?: 'ConfigRunServiceConfigWithID', serviceID: any, config: { __typename?: 'ConfigRunServiceConfig', name: any, command?: Array<string> | null, image: { __typename?: 'ConfigRunServiceImage', image: string, pullCredentials?: string | null }, resources: { __typename?: 'ConfigRunServiceResources', replicas: any, compute: { __typename?: 'ConfigComputeResources', cpu: any, memory: any }, storage?: Array<{ __typename?: 'ConfigRunServiceResourcesStorage', name: any, path: string, capacity: any }> | null, autoscaler?: { __typename?: 'ConfigAutoscaler', maxReplicas: any } | null }, environment?: Array<{ __typename?: 'ConfigEnvironmentVariable', name: string, value: string }> | null, ports?: Array<{ __typename?: 'ConfigRunServicePort', port: any, type: string, publish?: boolean | null, ingresses?: Array<{ __typename?: 'ConfigIngress', fqdn?: Array<string> | null }> | null, rateLimit?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null }> | null, healthCheck?: { __typename?: 'ConfigHealthCheck', port: any, initialDelaySeconds?: number | null, probePeriodSeconds?: number | null } | null } }> };
+
+export type RunServiceRateLimitFragment = { __typename?: 'ConfigRunServiceConfig', name: any, ports?: Array<{ __typename?: 'ConfigRunServicePort', port: any, type: string, publish?: boolean | null, rateLimit?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null, ingresses?: Array<{ __typename?: 'ConfigIngress', fqdn?: Array<string> | null }> | null }> | null };
+
+export type GetRunServicesRateLimitQueryVariables = Exact<{
+  appID: Scalars['uuid'];
+  resolve: Scalars['Boolean'];
+}>;
+
+
+export type GetRunServicesRateLimitQuery = { __typename?: 'query_root', app?: { __typename?: 'apps', runServices: Array<{ __typename?: 'run_service', id: any, createdAt: any, updatedAt: any, subdomain: string, config?: { __typename?: 'ConfigRunServiceConfig', name: any, ports?: Array<{ __typename?: 'ConfigRunServicePort', port: any, type: string, publish?: boolean | null, rateLimit?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null, ingresses?: Array<{ __typename?: 'ConfigIngress', fqdn?: Array<string> | null }> | null }> | null } | null }> } | null };
+
+export type GetLocalRunServiceRateLimitQueryVariables = Exact<{
+  appID: Scalars['uuid'];
+  resolve: Scalars['Boolean'];
+}>;
+
+
+export type GetLocalRunServiceRateLimitQuery = { __typename?: 'query_root', runServiceConfigs: Array<{ __typename?: 'ConfigRunServiceConfigWithID', serviceID: any, config: { __typename?: 'ConfigRunServiceConfig', name: any, ports?: Array<{ __typename?: 'ConfigRunServicePort', port: any, type: string, publish?: boolean | null, rateLimit?: { __typename?: 'ConfigRateLimit', limit: any, interval: string } | null, ingresses?: Array<{ __typename?: 'ConfigIngress', fqdn?: Array<string> | null }> | null }> | null } }> };
 
 export type InsertRunServiceConfigMutationVariables = Exact<{
   appID: Scalars['uuid'];
-  serviceID: Scalars['uuid'];
   config: ConfigRunServiceConfigInsertInput;
 }>;
 
 
-export type InsertRunServiceConfigMutation = { __typename?: 'mutation_root', insertRunServiceConfig: { __typename?: 'ConfigRunServiceConfig', name: string } };
+export type InsertRunServiceConfigMutation = { __typename?: 'mutation_root', insertRunServiceConfig: { __typename?: 'InsertRunServiceConfigResponse', serviceID: any, config: { __typename?: 'ConfigRunServiceConfig', name: any } } };
 
 export type ReplaceRunServiceConfigMutationVariables = Exact<{
   appID: Scalars['uuid'];
@@ -22143,7 +28581,7 @@ export type UpdateRunServiceConfigMutationVariables = Exact<{
 }>;
 
 
-export type UpdateRunServiceConfigMutation = { __typename?: 'mutation_root', updateRunServiceConfig: { __typename?: 'ConfigRunServiceConfig', name: string } };
+export type UpdateRunServiceConfigMutation = { __typename?: 'mutation_root', updateRunServiceConfig: { __typename?: 'ConfigRunServiceConfig', name: any } };
 
 export type GetFreeAndActiveProjectsQueryVariables = Exact<{
   userId: Scalars['uuid'];
@@ -22151,13 +28589,6 @@ export type GetFreeAndActiveProjectsQueryVariables = Exact<{
 
 
 export type GetFreeAndActiveProjectsQuery = { __typename?: 'query_root', freeAndActiveProjects: Array<{ __typename?: 'apps', id: any }> };
-
-export type InsertFeedbackOneMutationVariables = Exact<{
-  feedback: Feedback_Insert_Input;
-}>;
-
-
-export type InsertFeedbackOneMutation = { __typename?: 'mutation_root', insertFeedbackOne?: { __typename?: 'feedback', id: number } | null };
 
 export type DeleteWorkspaceMemberInvitesMutationVariables = Exact<{
   id: Scalars['uuid'];
@@ -22253,6 +28684,14 @@ export const ServiceResourcesFragmentDoc = gql`
         memory
       }
       replicas
+      autoscaler {
+        maxReplicas
+      }
+      networking {
+        ingresses {
+          fqdn
+        }
+      }
     }
   }
   hasura {
@@ -22262,15 +28701,30 @@ export const ServiceResourcesFragmentDoc = gql`
         memory
       }
       replicas
+      autoscaler {
+        maxReplicas
+      }
+      networking {
+        ingresses {
+          fqdn
+        }
+      }
     }
   }
   postgres {
     resources {
+      storage {
+        capacity
+      }
+      enablePublicAccess
       compute {
         cpu
         memory
       }
       replicas
+      autoscaler {
+        maxReplicas
+      }
     }
   }
   storage {
@@ -22280,6 +28734,9 @@ export const ServiceResourcesFragmentDoc = gql`
         memory
       }
       replicas
+      autoscaler {
+        maxReplicas
+      }
     }
   }
 }
@@ -22294,7 +28751,7 @@ export const GetAppPlanAndGlobalPlansAppFragmentDoc = gql`
       id
     }
   }
-  plan {
+  legacyPlan {
     id
     name
   }
@@ -22343,7 +28800,7 @@ export const PrefetchNewAppWorkspaceFragmentDoc = gql`
 }
     `;
 export const EnvironmentVariableFragmentDoc = gql`
-    fragment EnvironmentVariable on ConfigEnvironmentVariable {
+    fragment EnvironmentVariable on ConfigGlobalEnvironmentVariable {
   id: name
   name
   value
@@ -22354,9 +28811,17 @@ export const JwtSecretFragmentDoc = gql`
   issuer
   key
   type
+  signingKey
+  kid
   jwk_url
   header
   claims_namespace_path
+  claims_map {
+    claim
+    default
+    path
+    value
+  }
   claims_namespace
   claims_format
   audience
@@ -22403,11 +28868,9 @@ export const ProjectFragmentDoc = gql`
   name
   repositoryProductionBranch
   subdomain
-  isProvisioned
   createdAt
   desiredState
   nhostBaseFolder
-  providersUpdated
   config(resolve: true) {
     observability {
       grafana {
@@ -22419,6 +28882,9 @@ export const ProjectFragmentDoc = gql`
       settings {
         enableConsole
       }
+    }
+    ai {
+      version
     }
   }
   featureFlags {
@@ -22437,15 +28903,16 @@ export const ProjectFragmentDoc = gql`
   region {
     id
     countryCode
-    awsName
+    name
     domain
     city
   }
-  plan {
+  legacyPlan {
     id
     name
     price
     isFree
+    featureMaxDbSize
   }
   githubRepository {
     fullName
@@ -22514,7 +28981,7 @@ export const GetPaymentMethodsFragmentDoc = gql`
     id
     apps {
       id
-      plan {
+      legacyPlan {
         isFree
       }
     }
@@ -22535,6 +29002,7 @@ export const RemoteAppGetUsersFragmentDoc = gql`
   defaultRole
   lastSeen
   locale
+  metadata
   roles {
     id
     role
@@ -22544,6 +29012,69 @@ export const RemoteAppGetUsersFragmentDoc = gql`
     providerId
   }
   disabled
+}
+    `;
+export const RunServiceConfigFragmentDoc = gql`
+    fragment RunServiceConfig on ConfigRunServiceConfig {
+  name
+  image {
+    image
+    pullCredentials
+  }
+  command
+  resources {
+    compute {
+      cpu
+      memory
+    }
+    storage {
+      name
+      path
+      capacity
+    }
+    replicas
+    autoscaler {
+      maxReplicas
+    }
+  }
+  environment {
+    name
+    value
+  }
+  ports {
+    port
+    type
+    publish
+    ingresses {
+      fqdn
+    }
+    rateLimit {
+      limit
+      interval
+    }
+  }
+  healthCheck {
+    port
+    initialDelaySeconds
+    probePeriodSeconds
+  }
+}
+    `;
+export const RunServiceRateLimitFragmentDoc = gql`
+    fragment RunServiceRateLimit on ConfigRunServiceConfig {
+  name
+  ports {
+    port
+    type
+    publish
+    rateLimit {
+      limit
+      interval
+    }
+    ingresses {
+      fqdn
+    }
+  }
 }
     `;
 export const GetWorkspaceMembersWorkspaceMemberFragmentDoc = gql`
@@ -22565,6 +29096,77 @@ export const GetWorkspaceMembersWorkspaceMemberInviteFragmentDoc = gql`
   memberType
 }
     `;
+export const DeleteUserAccountDocument = gql`
+    mutation deleteUserAccount($id: uuid!) {
+  deleteUser(id: $id) {
+    __typename
+  }
+}
+    `;
+export type DeleteUserAccountMutationFn = Apollo.MutationFunction<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>;
+
+/**
+ * __useDeleteUserAccountMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserAccountMutation, { data, loading, error }] = useDeleteUserAccountMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteUserAccountMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>(DeleteUserAccountDocument, options);
+      }
+export type DeleteUserAccountMutationHookResult = ReturnType<typeof useDeleteUserAccountMutation>;
+export type DeleteUserAccountMutationResult = Apollo.MutationResult<DeleteUserAccountMutation>;
+export type DeleteUserAccountMutationOptions = Apollo.BaseMutationOptions<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>;
+export const GetAuthUserProvidersDocument = gql`
+    query getAuthUserProviders {
+  authUserProviders {
+    id
+    providerId
+  }
+}
+    `;
+
+/**
+ * __useGetAuthUserProvidersQuery__
+ *
+ * To run a query within a React component, call `useGetAuthUserProvidersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAuthUserProvidersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAuthUserProvidersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAuthUserProvidersQuery(baseOptions?: Apollo.QueryHookOptions<GetAuthUserProvidersQuery, GetAuthUserProvidersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAuthUserProvidersQuery, GetAuthUserProvidersQueryVariables>(GetAuthUserProvidersDocument, options);
+      }
+export function useGetAuthUserProvidersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAuthUserProvidersQuery, GetAuthUserProvidersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAuthUserProvidersQuery, GetAuthUserProvidersQueryVariables>(GetAuthUserProvidersDocument, options);
+        }
+export type GetAuthUserProvidersQueryHookResult = ReturnType<typeof useGetAuthUserProvidersQuery>;
+export type GetAuthUserProvidersLazyQueryHookResult = ReturnType<typeof useGetAuthUserProvidersLazyQuery>;
+export type GetAuthUserProvidersQueryResult = Apollo.QueryResult<GetAuthUserProvidersQuery, GetAuthUserProvidersQueryVariables>;
+export function refetchGetAuthUserProvidersQuery(variables?: GetAuthUserProvidersQueryVariables) {
+      return { query: GetAuthUserProvidersDocument, variables: variables }
+    }
 export const GetPersonalAccessTokensDocument = gql`
     query GetPersonalAccessTokens {
   personalAccessTokens: authRefreshTokens(
@@ -22642,9 +29244,101 @@ export function useDeletePersonalAccessTokenMutation(baseOptions?: Apollo.Mutati
 export type DeletePersonalAccessTokenMutationHookResult = ReturnType<typeof useDeletePersonalAccessTokenMutation>;
 export type DeletePersonalAccessTokenMutationResult = Apollo.MutationResult<DeletePersonalAccessTokenMutation>;
 export type DeletePersonalAccessTokenMutationOptions = Apollo.BaseMutationOptions<DeletePersonalAccessTokenMutation, DeletePersonalAccessTokenMutationVariables>;
+export const UpdateUserDisplayNameDocument = gql`
+    mutation updateUserDisplayName($id: uuid!, $displayName: String!) {
+  updateUser(pk_columns: {id: $id}, _set: {displayName: $displayName}) {
+    id
+    displayName
+  }
+}
+    `;
+export type UpdateUserDisplayNameMutationFn = Apollo.MutationFunction<UpdateUserDisplayNameMutation, UpdateUserDisplayNameMutationVariables>;
+
+/**
+ * __useUpdateUserDisplayNameMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserDisplayNameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserDisplayNameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserDisplayNameMutation, { data, loading, error }] = useUpdateUserDisplayNameMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      displayName: // value for 'displayName'
+ *   },
+ * });
+ */
+export function useUpdateUserDisplayNameMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserDisplayNameMutation, UpdateUserDisplayNameMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserDisplayNameMutation, UpdateUserDisplayNameMutationVariables>(UpdateUserDisplayNameDocument, options);
+      }
+export type UpdateUserDisplayNameMutationHookResult = ReturnType<typeof useUpdateUserDisplayNameMutation>;
+export type UpdateUserDisplayNameMutationResult = Apollo.MutationResult<UpdateUserDisplayNameMutation>;
+export type UpdateUserDisplayNameMutationOptions = Apollo.BaseMutationOptions<UpdateUserDisplayNameMutation, UpdateUserDisplayNameMutationVariables>;
+export const GetAiSettingsDocument = gql`
+    query GetAISettings($appId: uuid!) {
+  config(appID: $appId, resolve: false) {
+    postgres {
+      version
+    }
+    ai {
+      version
+      webhookSecret
+      autoEmbeddings {
+        synchPeriodMinutes
+      }
+      openai {
+        apiKey
+        organization
+      }
+      resources {
+        compute {
+          cpu
+          memory
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAiSettingsQuery__
+ *
+ * To run a query within a React component, call `useGetAiSettingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAiSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAiSettingsQuery({
+ *   variables: {
+ *      appId: // value for 'appId'
+ *   },
+ * });
+ */
+export function useGetAiSettingsQuery(baseOptions: Apollo.QueryHookOptions<GetAiSettingsQuery, GetAiSettingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAiSettingsQuery, GetAiSettingsQueryVariables>(GetAiSettingsDocument, options);
+      }
+export function useGetAiSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAiSettingsQuery, GetAiSettingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAiSettingsQuery, GetAiSettingsQueryVariables>(GetAiSettingsDocument, options);
+        }
+export type GetAiSettingsQueryHookResult = ReturnType<typeof useGetAiSettingsQuery>;
+export type GetAiSettingsLazyQueryHookResult = ReturnType<typeof useGetAiSettingsLazyQuery>;
+export type GetAiSettingsQueryResult = Apollo.QueryResult<GetAiSettingsQuery, GetAiSettingsQueryVariables>;
+export function refetchGetAiSettingsQuery(variables: GetAiSettingsQueryVariables) {
+      return { query: GetAiSettingsDocument, variables: variables }
+    }
 export const GetAuthenticationSettingsDocument = gql`
     query GetAuthenticationSettings($appId: uuid!) {
-  config(appID: $appId, resolve: true) {
+  config(appID: $appId, resolve: false) {
     id: __typename
     __typename
     auth {
@@ -22660,6 +29354,7 @@ export const GetAuthenticationSettingsDocument = gql`
       }
       signUp {
         enabled
+        disableNewUsers
       }
       session {
         accessToken {
@@ -22667,6 +29362,13 @@ export const GetAuthenticationSettingsDocument = gql`
         }
         refreshToken {
           expiresIn
+        }
+      }
+      resources {
+        networking {
+          ingresses {
+            fqdn
+          }
         }
       }
       user {
@@ -22687,6 +29389,9 @@ export const GetAuthenticationSettingsDocument = gql`
           allowed
           default
         }
+      }
+      misc {
+        concealErrors
       }
       version
     }
@@ -22731,11 +29436,17 @@ export const GetPostgresSettingsDocument = gql`
       database
     }
   }
-  config(appID: $appId, resolve: true) {
+  config(appID: $appId, resolve: false) {
     id: __typename
     __typename
     postgres {
       version
+      resources {
+        storage {
+          capacity
+        }
+        enablePublicAccess
+      }
     }
   }
 }
@@ -22805,7 +29516,7 @@ export type ResetDatabasePasswordMutationResult = Apollo.MutationResult<ResetDat
 export type ResetDatabasePasswordMutationOptions = Apollo.BaseMutationOptions<ResetDatabasePasswordMutation, ResetDatabasePasswordMutationVariables>;
 export const GetHasuraSettingsDocument = gql`
     query GetHasuraSettings($appId: uuid!) {
-  config(appID: $appId, resolve: true) {
+  config(appID: $appId, resolve: false) {
     id: __typename
     __typename
     hasura {
@@ -22817,12 +29528,20 @@ export const GetHasuraSettingsDocument = gql`
         devMode
         corsDomain
         enabledAPIs
+        inferFunctionPermissions
       }
       logs {
         level
       }
       events {
         httpPoolSize
+      }
+      resources {
+        networking {
+          ingresses {
+            fqdn
+          }
+        }
       }
     }
   }
@@ -22944,9 +29663,196 @@ export type GetBackupPresignedUrlQueryResult = Apollo.QueryResult<GetBackupPresi
 export function refetchGetBackupPresignedUrlQuery(variables: GetBackupPresignedUrlQueryVariables) {
       return { query: GetBackupPresignedUrlDocument, variables: variables }
     }
+export const GetPersistentVolumesEncryptedDocument = gql`
+    query GetPersistentVolumesEncrypted($appId: uuid!) {
+  systemConfig(appID: $appId) {
+    persistentVolumesEncrypted
+  }
+}
+    `;
+
+/**
+ * __useGetPersistentVolumesEncryptedQuery__
+ *
+ * To run a query within a React component, call `useGetPersistentVolumesEncryptedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPersistentVolumesEncryptedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPersistentVolumesEncryptedQuery({
+ *   variables: {
+ *      appId: // value for 'appId'
+ *   },
+ * });
+ */
+export function useGetPersistentVolumesEncryptedQuery(baseOptions: Apollo.QueryHookOptions<GetPersistentVolumesEncryptedQuery, GetPersistentVolumesEncryptedQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPersistentVolumesEncryptedQuery, GetPersistentVolumesEncryptedQueryVariables>(GetPersistentVolumesEncryptedDocument, options);
+      }
+export function useGetPersistentVolumesEncryptedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPersistentVolumesEncryptedQuery, GetPersistentVolumesEncryptedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPersistentVolumesEncryptedQuery, GetPersistentVolumesEncryptedQueryVariables>(GetPersistentVolumesEncryptedDocument, options);
+        }
+export type GetPersistentVolumesEncryptedQueryHookResult = ReturnType<typeof useGetPersistentVolumesEncryptedQuery>;
+export type GetPersistentVolumesEncryptedLazyQueryHookResult = ReturnType<typeof useGetPersistentVolumesEncryptedLazyQuery>;
+export type GetPersistentVolumesEncryptedQueryResult = Apollo.QueryResult<GetPersistentVolumesEncryptedQuery, GetPersistentVolumesEncryptedQueryVariables>;
+export function refetchGetPersistentVolumesEncryptedQuery(variables: GetPersistentVolumesEncryptedQueryVariables) {
+      return { query: GetPersistentVolumesEncryptedDocument, variables: variables }
+    }
+export const GetJwtSecretsDocument = gql`
+    query GetJWTSecrets($appId: uuid!) {
+  config(appID: $appId, resolve: false) {
+    id: __typename
+    __typename
+    hasura {
+      jwtSecrets {
+        type
+        key
+        signingKey
+        kid
+        jwk_url
+        allowed_skew
+        audience
+        claims_format
+        claims_map {
+          claim
+          default
+          path
+          value
+        }
+        claims_namespace
+        claims_namespace_path
+        header
+        issuer
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetJwtSecretsQuery__
+ *
+ * To run a query within a React component, call `useGetJwtSecretsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetJwtSecretsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetJwtSecretsQuery({
+ *   variables: {
+ *      appId: // value for 'appId'
+ *   },
+ * });
+ */
+export function useGetJwtSecretsQuery(baseOptions: Apollo.QueryHookOptions<GetJwtSecretsQuery, GetJwtSecretsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetJwtSecretsQuery, GetJwtSecretsQueryVariables>(GetJwtSecretsDocument, options);
+      }
+export function useGetJwtSecretsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetJwtSecretsQuery, GetJwtSecretsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetJwtSecretsQuery, GetJwtSecretsQueryVariables>(GetJwtSecretsDocument, options);
+        }
+export type GetJwtSecretsQueryHookResult = ReturnType<typeof useGetJwtSecretsQuery>;
+export type GetJwtSecretsLazyQueryHookResult = ReturnType<typeof useGetJwtSecretsLazyQuery>;
+export type GetJwtSecretsQueryResult = Apollo.QueryResult<GetJwtSecretsQuery, GetJwtSecretsQueryVariables>;
+export function refetchGetJwtSecretsQuery(variables: GetJwtSecretsQueryVariables) {
+      return { query: GetJwtSecretsDocument, variables: variables }
+    }
+export const GetObservabilitySettingsDocument = gql`
+    query GetObservabilitySettings($appId: uuid!) {
+  config(appID: $appId, resolve: false) {
+    id: __typename
+    __typename
+    observability {
+      grafana {
+        alerting {
+          enabled
+        }
+        smtp {
+          host
+          password
+          port
+          sender
+          user
+        }
+        contacts {
+          emails
+          discord {
+            avatarUrl
+            url
+          }
+          pagerduty {
+            integrationKey
+            severity
+            class
+            component
+            group
+          }
+          slack {
+            recipient
+            token
+            username
+            iconEmoji
+            iconURL
+            mentionUsers
+            mentionGroups
+            mentionChannel
+            url
+            endpointURL
+          }
+          webhook {
+            url
+            httpMethod
+            username
+            password
+            authorizationScheme
+            authorizationCredentials
+            maxAlerts
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetObservabilitySettingsQuery__
+ *
+ * To run a query within a React component, call `useGetObservabilitySettingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetObservabilitySettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetObservabilitySettingsQuery({
+ *   variables: {
+ *      appId: // value for 'appId'
+ *   },
+ * });
+ */
+export function useGetObservabilitySettingsQuery(baseOptions: Apollo.QueryHookOptions<GetObservabilitySettingsQuery, GetObservabilitySettingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetObservabilitySettingsQuery, GetObservabilitySettingsQueryVariables>(GetObservabilitySettingsDocument, options);
+      }
+export function useGetObservabilitySettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetObservabilitySettingsQuery, GetObservabilitySettingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetObservabilitySettingsQuery, GetObservabilitySettingsQueryVariables>(GetObservabilitySettingsDocument, options);
+        }
+export type GetObservabilitySettingsQueryHookResult = ReturnType<typeof useGetObservabilitySettingsQuery>;
+export type GetObservabilitySettingsLazyQueryHookResult = ReturnType<typeof useGetObservabilitySettingsLazyQuery>;
+export type GetObservabilitySettingsQueryResult = Apollo.QueryResult<GetObservabilitySettingsQuery, GetObservabilitySettingsQueryVariables>;
+export function refetchGetObservabilitySettingsQuery(variables: GetObservabilitySettingsQueryVariables) {
+      return { query: GetObservabilitySettingsDocument, variables: variables }
+    }
 export const GetResourcesDocument = gql`
     query GetResources($appId: uuid!) {
-  config(appID: $appId, resolve: true) {
+  config(appID: $appId, resolve: false) {
     ...ServiceResources
   }
 }
@@ -22984,7 +29890,7 @@ export function refetchGetResourcesQuery(variables: GetResourcesQueryVariables) 
     }
 export const GetStorageSettingsDocument = gql`
     query GetStorageSettings($appId: uuid!) {
-  config(appID: $appId, resolve: true) {
+  config(appID: $appId, resolve: false) {
     id: __typename
     __typename
     storage {
@@ -23026,6 +29932,52 @@ export type GetStorageSettingsLazyQueryHookResult = ReturnType<typeof useGetStor
 export type GetStorageSettingsQueryResult = Apollo.QueryResult<GetStorageSettingsQuery, GetStorageSettingsQueryVariables>;
 export function refetchGetStorageSettingsQuery(variables: GetStorageSettingsQueryVariables) {
       return { query: GetStorageSettingsDocument, variables: variables }
+    }
+export const GetServerlessFunctionsSettingsDocument = gql`
+    query GetServerlessFunctionsSettings($appId: uuid!) {
+  config(appID: $appId, resolve: false) {
+    functions {
+      resources {
+        networking {
+          ingresses {
+            fqdn
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetServerlessFunctionsSettingsQuery__
+ *
+ * To run a query within a React component, call `useGetServerlessFunctionsSettingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetServerlessFunctionsSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetServerlessFunctionsSettingsQuery({
+ *   variables: {
+ *      appId: // value for 'appId'
+ *   },
+ * });
+ */
+export function useGetServerlessFunctionsSettingsQuery(baseOptions: Apollo.QueryHookOptions<GetServerlessFunctionsSettingsQuery, GetServerlessFunctionsSettingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetServerlessFunctionsSettingsQuery, GetServerlessFunctionsSettingsQueryVariables>(GetServerlessFunctionsSettingsDocument, options);
+      }
+export function useGetServerlessFunctionsSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetServerlessFunctionsSettingsQuery, GetServerlessFunctionsSettingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetServerlessFunctionsSettingsQuery, GetServerlessFunctionsSettingsQueryVariables>(GetServerlessFunctionsSettingsDocument, options);
+        }
+export type GetServerlessFunctionsSettingsQueryHookResult = ReturnType<typeof useGetServerlessFunctionsSettingsQuery>;
+export type GetServerlessFunctionsSettingsLazyQueryHookResult = ReturnType<typeof useGetServerlessFunctionsSettingsLazyQuery>;
+export type GetServerlessFunctionsSettingsQueryResult = Apollo.QueryResult<GetServerlessFunctionsSettingsQuery, GetServerlessFunctionsSettingsQueryVariables>;
+export function refetchGetServerlessFunctionsSettingsQuery(variables: GetServerlessFunctionsSettingsQueryVariables) {
+      return { query: GetServerlessFunctionsSettingsDocument, variables: variables }
     }
 export const DeleteApplicationDocument = gql`
     mutation deleteApplication($appId: uuid!) {
@@ -23098,8 +30050,10 @@ export function refetchGetAllWorkspacesAndProjectsQuery(variables?: GetAllWorksp
       return { query: GetAllWorkspacesAndProjectsDocument, variables: variables }
     }
 export const GetAppPlanAndGlobalPlansDocument = gql`
-    query getAppPlanAndGlobalPlans($workspaceSlug: String!, $appSlug: String!) {
-  apps(where: {workspace: {slug: {_eq: $workspaceSlug}}, slug: {_eq: $appSlug}}) {
+    query getAppPlanAndGlobalPlans($workspaceSlug: String!, $appSubdomain: String!) {
+  apps(
+    where: {workspace: {slug: {_eq: $workspaceSlug}}, slug: {_eq: $appSubdomain}}
+  ) {
     ...getAppPlanAndGlobalPlansApp
   }
   plans {
@@ -23122,7 +30076,7 @@ ${GetAppPlanAndGlobalPlansPlanFragmentDoc}`;
  * const { data, loading, error } = useGetAppPlanAndGlobalPlansQuery({
  *   variables: {
  *      workspaceSlug: // value for 'workspaceSlug'
- *      appSlug: // value for 'appSlug'
+ *      appSubdomain: // value for 'appSubdomain'
  *   },
  * });
  */
@@ -23145,7 +30099,7 @@ export const GetApplicationPlanDocument = gql`
   apps(where: {workspace: {slug: {_eq: $workspace}}, slug: {_eq: $slug}}) {
     id
     subdomain
-    plan {
+    legacyPlan {
       name
       price
       upatedAt
@@ -23228,9 +30182,100 @@ export type GetApplicationStateQueryResult = Apollo.QueryResult<GetApplicationSt
 export function refetchGetApplicationStateQuery(variables: GetApplicationStateQueryVariables) {
       return { query: GetApplicationStateDocument, variables: variables }
     }
+export const GetConfiguredVersionsDocument = gql`
+    query getConfiguredVersions($appId: uuid!) {
+  config(appID: $appId, resolve: true) {
+    auth {
+      version
+    }
+    postgres {
+      version
+    }
+    hasura {
+      version
+    }
+    ai {
+      version
+    }
+    storage {
+      version
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetConfiguredVersionsQuery__
+ *
+ * To run a query within a React component, call `useGetConfiguredVersionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetConfiguredVersionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetConfiguredVersionsQuery({
+ *   variables: {
+ *      appId: // value for 'appId'
+ *   },
+ * });
+ */
+export function useGetConfiguredVersionsQuery(baseOptions: Apollo.QueryHookOptions<GetConfiguredVersionsQuery, GetConfiguredVersionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetConfiguredVersionsQuery, GetConfiguredVersionsQueryVariables>(GetConfiguredVersionsDocument, options);
+      }
+export function useGetConfiguredVersionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetConfiguredVersionsQuery, GetConfiguredVersionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetConfiguredVersionsQuery, GetConfiguredVersionsQueryVariables>(GetConfiguredVersionsDocument, options);
+        }
+export type GetConfiguredVersionsQueryHookResult = ReturnType<typeof useGetConfiguredVersionsQuery>;
+export type GetConfiguredVersionsLazyQueryHookResult = ReturnType<typeof useGetConfiguredVersionsLazyQuery>;
+export type GetConfiguredVersionsQueryResult = Apollo.QueryResult<GetConfiguredVersionsQuery, GetConfiguredVersionsQueryVariables>;
+export function refetchGetConfiguredVersionsQuery(variables: GetConfiguredVersionsQueryVariables) {
+      return { query: GetConfiguredVersionsDocument, variables: variables }
+    }
+export const GetProjectIsLockedDocument = gql`
+    query getProjectIsLocked($appId: uuid!) {
+  app(id: $appId) {
+    isLocked
+    isLockedReason
+  }
+}
+    `;
+
+/**
+ * __useGetProjectIsLockedQuery__
+ *
+ * To run a query within a React component, call `useGetProjectIsLockedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectIsLockedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectIsLockedQuery({
+ *   variables: {
+ *      appId: // value for 'appId'
+ *   },
+ * });
+ */
+export function useGetProjectIsLockedQuery(baseOptions: Apollo.QueryHookOptions<GetProjectIsLockedQuery, GetProjectIsLockedQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectIsLockedQuery, GetProjectIsLockedQueryVariables>(GetProjectIsLockedDocument, options);
+      }
+export function useGetProjectIsLockedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectIsLockedQuery, GetProjectIsLockedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectIsLockedQuery, GetProjectIsLockedQueryVariables>(GetProjectIsLockedDocument, options);
+        }
+export type GetProjectIsLockedQueryHookResult = ReturnType<typeof useGetProjectIsLockedQuery>;
+export type GetProjectIsLockedLazyQueryHookResult = ReturnType<typeof useGetProjectIsLockedLazyQuery>;
+export type GetProjectIsLockedQueryResult = Apollo.QueryResult<GetProjectIsLockedQuery, GetProjectIsLockedQueryVariables>;
+export function refetchGetProjectIsLockedQuery(variables: GetProjectIsLockedQueryVariables) {
+      return { query: GetProjectIsLockedDocument, variables: variables }
+    }
 export const GetProjectLocalesDocument = gql`
     query getProjectLocales($appId: uuid!) {
-  config(appID: $appId, resolve: true) {
+  config(appID: $appId, resolve: false) {
     auth {
       user {
         locale {
@@ -23344,6 +30389,99 @@ export type GetProjectMetricsQueryResult = Apollo.QueryResult<GetProjectMetricsQ
 export function refetchGetProjectMetricsQuery(variables: GetProjectMetricsQueryVariables) {
       return { query: GetProjectMetricsDocument, variables: variables }
     }
+export const GetProjectRequestsMetricDocument = gql`
+    query GetProjectRequestsMetric($appId: String!, $from: Timestamp, $to: Timestamp) {
+  totalRequests: getTotalRequests(appID: $appId, from: $from, to: $to) {
+    value
+  }
+}
+    `;
+
+/**
+ * __useGetProjectRequestsMetricQuery__
+ *
+ * To run a query within a React component, call `useGetProjectRequestsMetricQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectRequestsMetricQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectRequestsMetricQuery({
+ *   variables: {
+ *      appId: // value for 'appId'
+ *      from: // value for 'from'
+ *      to: // value for 'to'
+ *   },
+ * });
+ */
+export function useGetProjectRequestsMetricQuery(baseOptions: Apollo.QueryHookOptions<GetProjectRequestsMetricQuery, GetProjectRequestsMetricQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectRequestsMetricQuery, GetProjectRequestsMetricQueryVariables>(GetProjectRequestsMetricDocument, options);
+      }
+export function useGetProjectRequestsMetricLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectRequestsMetricQuery, GetProjectRequestsMetricQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectRequestsMetricQuery, GetProjectRequestsMetricQueryVariables>(GetProjectRequestsMetricDocument, options);
+        }
+export type GetProjectRequestsMetricQueryHookResult = ReturnType<typeof useGetProjectRequestsMetricQuery>;
+export type GetProjectRequestsMetricLazyQueryHookResult = ReturnType<typeof useGetProjectRequestsMetricLazyQuery>;
+export type GetProjectRequestsMetricQueryResult = Apollo.QueryResult<GetProjectRequestsMetricQuery, GetProjectRequestsMetricQueryVariables>;
+export function refetchGetProjectRequestsMetricQuery(variables: GetProjectRequestsMetricQueryVariables) {
+      return { query: GetProjectRequestsMetricDocument, variables: variables }
+    }
+export const GetProjectServicesHealthDocument = gql`
+    query getProjectServicesHealth($appId: String!) {
+  getProjectStatus(appID: $appId) {
+    services {
+      name
+      state
+      replicas {
+        ready
+        date
+        errors {
+          name
+          lastError {
+            reason
+            exitCode
+            message
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetProjectServicesHealthQuery__
+ *
+ * To run a query within a React component, call `useGetProjectServicesHealthQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectServicesHealthQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectServicesHealthQuery({
+ *   variables: {
+ *      appId: // value for 'appId'
+ *   },
+ * });
+ */
+export function useGetProjectServicesHealthQuery(baseOptions: Apollo.QueryHookOptions<GetProjectServicesHealthQuery, GetProjectServicesHealthQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectServicesHealthQuery, GetProjectServicesHealthQueryVariables>(GetProjectServicesHealthDocument, options);
+      }
+export function useGetProjectServicesHealthLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectServicesHealthQuery, GetProjectServicesHealthQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectServicesHealthQuery, GetProjectServicesHealthQueryVariables>(GetProjectServicesHealthDocument, options);
+        }
+export type GetProjectServicesHealthQueryHookResult = ReturnType<typeof useGetProjectServicesHealthQuery>;
+export type GetProjectServicesHealthLazyQueryHookResult = ReturnType<typeof useGetProjectServicesHealthLazyQuery>;
+export type GetProjectServicesHealthQueryResult = Apollo.QueryResult<GetProjectServicesHealthQuery, GetProjectServicesHealthQueryVariables>;
+export function refetchGetProjectServicesHealthQuery(variables: GetProjectServicesHealthQueryVariables) {
+      return { query: GetProjectServicesHealthDocument, variables: variables }
+    }
 export const GetRemoteAppRolesDocument = gql`
     query getRemoteAppRoles {
   authRoles {
@@ -23419,6 +30557,49 @@ export type GetWorkspaceAndProjectLazyQueryHookResult = ReturnType<typeof useGet
 export type GetWorkspaceAndProjectQueryResult = Apollo.QueryResult<GetWorkspaceAndProjectQuery, GetWorkspaceAndProjectQueryVariables>;
 export function refetchGetWorkspaceAndProjectQuery(variables: GetWorkspaceAndProjectQueryVariables) {
       return { query: GetWorkspaceAndProjectDocument, variables: variables }
+    }
+export const GetWorkspacesAppPlansAndGlobalPlansDocument = gql`
+    query getWorkspacesAppPlansAndGlobalPlans($workspaceSlug: String!, $slug: String!) {
+  apps(where: {workspace: {slug: {_eq: $workspaceSlug}}, slug: {_eq: $slug}}) {
+    ...getAppPlanAndGlobalPlansApp
+  }
+  plans {
+    ...getAppPlanAndGlobalPlansPlan
+  }
+}
+    ${GetAppPlanAndGlobalPlansAppFragmentDoc}
+${GetAppPlanAndGlobalPlansPlanFragmentDoc}`;
+
+/**
+ * __useGetWorkspacesAppPlansAndGlobalPlansQuery__
+ *
+ * To run a query within a React component, call `useGetWorkspacesAppPlansAndGlobalPlansQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWorkspacesAppPlansAndGlobalPlansQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetWorkspacesAppPlansAndGlobalPlansQuery({
+ *   variables: {
+ *      workspaceSlug: // value for 'workspaceSlug'
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGetWorkspacesAppPlansAndGlobalPlansQuery(baseOptions: Apollo.QueryHookOptions<GetWorkspacesAppPlansAndGlobalPlansQuery, GetWorkspacesAppPlansAndGlobalPlansQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetWorkspacesAppPlansAndGlobalPlansQuery, GetWorkspacesAppPlansAndGlobalPlansQueryVariables>(GetWorkspacesAppPlansAndGlobalPlansDocument, options);
+      }
+export function useGetWorkspacesAppPlansAndGlobalPlansLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetWorkspacesAppPlansAndGlobalPlansQuery, GetWorkspacesAppPlansAndGlobalPlansQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetWorkspacesAppPlansAndGlobalPlansQuery, GetWorkspacesAppPlansAndGlobalPlansQueryVariables>(GetWorkspacesAppPlansAndGlobalPlansDocument, options);
+        }
+export type GetWorkspacesAppPlansAndGlobalPlansQueryHookResult = ReturnType<typeof useGetWorkspacesAppPlansAndGlobalPlansQuery>;
+export type GetWorkspacesAppPlansAndGlobalPlansLazyQueryHookResult = ReturnType<typeof useGetWorkspacesAppPlansAndGlobalPlansLazyQuery>;
+export type GetWorkspacesAppPlansAndGlobalPlansQueryResult = Apollo.QueryResult<GetWorkspacesAppPlansAndGlobalPlansQuery, GetWorkspacesAppPlansAndGlobalPlansQueryVariables>;
+export function refetchGetWorkspacesAppPlansAndGlobalPlansQuery(variables: GetWorkspacesAppPlansAndGlobalPlansQueryVariables) {
+      return { query: GetWorkspacesAppPlansAndGlobalPlansDocument, variables: variables }
     }
 export const InsertApplicationDocument = gql`
     mutation insertApplication($app: apps_insert_input!) {
@@ -23498,7 +30679,10 @@ export const PrefetchNewAppDocument = gql`
   regions(order_by: {city: asc}) {
     ...PrefetchNewAppRegions
   }
-  plans(order_by: {sort: asc}) {
+  plans(
+    order_by: {sort: asc}
+    where: {deprecated: {_eq: false}, isPublic: {_eq: true}}
+  ) {
     ...PrefetchNewAppPlans
   }
   workspaces {
@@ -23538,9 +30722,45 @@ export type PrefetchNewAppQueryResult = Apollo.QueryResult<PrefetchNewAppQuery, 
 export function refetchPrefetchNewAppQuery(variables?: PrefetchNewAppQueryVariables) {
       return { query: PrefetchNewAppDocument, variables: variables }
     }
+export const DnsLookupCnameDocument = gql`
+    query dnsLookupCNAME($hostname: String!) {
+  dnsLookupCNAME(hostname: $hostname)
+}
+    `;
+
+/**
+ * __useDnsLookupCnameQuery__
+ *
+ * To run a query within a React component, call `useDnsLookupCnameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDnsLookupCnameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDnsLookupCnameQuery({
+ *   variables: {
+ *      hostname: // value for 'hostname'
+ *   },
+ * });
+ */
+export function useDnsLookupCnameQuery(baseOptions: Apollo.QueryHookOptions<DnsLookupCnameQuery, DnsLookupCnameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DnsLookupCnameQuery, DnsLookupCnameQueryVariables>(DnsLookupCnameDocument, options);
+      }
+export function useDnsLookupCnameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DnsLookupCnameQuery, DnsLookupCnameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DnsLookupCnameQuery, DnsLookupCnameQueryVariables>(DnsLookupCnameDocument, options);
+        }
+export type DnsLookupCnameQueryHookResult = ReturnType<typeof useDnsLookupCnameQuery>;
+export type DnsLookupCnameLazyQueryHookResult = ReturnType<typeof useDnsLookupCnameLazyQuery>;
+export type DnsLookupCnameQueryResult = Apollo.QueryResult<DnsLookupCnameQuery, DnsLookupCnameQueryVariables>;
+export function refetchDnsLookupCnameQuery(variables: DnsLookupCnameQueryVariables) {
+      return { query: DnsLookupCnameDocument, variables: variables }
+    }
 export const GetEnvironmentVariablesDocument = gql`
     query GetEnvironmentVariables($appId: uuid!) {
-  config(appID: $appId, resolve: true) {
+  config(appID: $appId, resolve: false) {
     id: __typename
     __typename
     global {
@@ -23590,9 +30810,232 @@ export type GetEnvironmentVariablesQueryResult = Apollo.QueryResult<GetEnvironme
 export function refetchGetEnvironmentVariablesQuery(variables: GetEnvironmentVariablesQueryVariables) {
       return { query: GetEnvironmentVariablesDocument, variables: variables }
     }
+export const GetConfigRawJsonDocument = gql`
+    query getConfigRawJSON($appID: uuid!) {
+  configRawJSON(appID: $appID, resolve: false)
+}
+    `;
+
+/**
+ * __useGetConfigRawJsonQuery__
+ *
+ * To run a query within a React component, call `useGetConfigRawJsonQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetConfigRawJsonQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetConfigRawJsonQuery({
+ *   variables: {
+ *      appID: // value for 'appID'
+ *   },
+ * });
+ */
+export function useGetConfigRawJsonQuery(baseOptions: Apollo.QueryHookOptions<GetConfigRawJsonQuery, GetConfigRawJsonQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetConfigRawJsonQuery, GetConfigRawJsonQueryVariables>(GetConfigRawJsonDocument, options);
+      }
+export function useGetConfigRawJsonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetConfigRawJsonQuery, GetConfigRawJsonQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetConfigRawJsonQuery, GetConfigRawJsonQueryVariables>(GetConfigRawJsonDocument, options);
+        }
+export type GetConfigRawJsonQueryHookResult = ReturnType<typeof useGetConfigRawJsonQuery>;
+export type GetConfigRawJsonLazyQueryHookResult = ReturnType<typeof useGetConfigRawJsonLazyQuery>;
+export type GetConfigRawJsonQueryResult = Apollo.QueryResult<GetConfigRawJsonQuery, GetConfigRawJsonQueryVariables>;
+export function refetchGetConfigRawJsonQuery(variables: GetConfigRawJsonQueryVariables) {
+      return { query: GetConfigRawJsonDocument, variables: variables }
+    }
+export const GetRateLimitConfigDocument = gql`
+    query getRateLimitConfig($appId: uuid!, $resolve: Boolean!) {
+  config(appID: $appId, resolve: $resolve) {
+    hasura {
+      rateLimit {
+        limit
+        interval
+      }
+    }
+    storage {
+      rateLimit {
+        limit
+        interval
+      }
+    }
+    functions {
+      rateLimit {
+        limit
+        interval
+      }
+    }
+    auth {
+      rateLimit {
+        bruteForce {
+          limit
+          interval
+        }
+        emails {
+          limit
+          interval
+        }
+        global {
+          limit
+          interval
+        }
+        signups {
+          limit
+          interval
+        }
+        sms {
+          limit
+          interval
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetRateLimitConfigQuery__
+ *
+ * To run a query within a React component, call `useGetRateLimitConfigQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRateLimitConfigQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRateLimitConfigQuery({
+ *   variables: {
+ *      appId: // value for 'appId'
+ *      resolve: // value for 'resolve'
+ *   },
+ * });
+ */
+export function useGetRateLimitConfigQuery(baseOptions: Apollo.QueryHookOptions<GetRateLimitConfigQuery, GetRateLimitConfigQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRateLimitConfigQuery, GetRateLimitConfigQueryVariables>(GetRateLimitConfigDocument, options);
+      }
+export function useGetRateLimitConfigLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRateLimitConfigQuery, GetRateLimitConfigQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRateLimitConfigQuery, GetRateLimitConfigQueryVariables>(GetRateLimitConfigDocument, options);
+        }
+export type GetRateLimitConfigQueryHookResult = ReturnType<typeof useGetRateLimitConfigQuery>;
+export type GetRateLimitConfigLazyQueryHookResult = ReturnType<typeof useGetRateLimitConfigLazyQuery>;
+export type GetRateLimitConfigQueryResult = Apollo.QueryResult<GetRateLimitConfigQuery, GetRateLimitConfigQueryVariables>;
+export function refetchGetRateLimitConfigQuery(variables: GetRateLimitConfigQueryVariables) {
+      return { query: GetRateLimitConfigDocument, variables: variables }
+    }
+export const UpdateRateLimitConfigDocument = gql`
+    mutation UpdateRateLimitConfig($appId: uuid!, $config: ConfigConfigUpdateInput!) {
+  updateConfig(appID: $appId, config: $config) {
+    hasura {
+      rateLimit {
+        limit
+        interval
+      }
+    }
+    storage {
+      rateLimit {
+        limit
+        interval
+      }
+    }
+    functions {
+      rateLimit {
+        limit
+        interval
+      }
+    }
+    auth {
+      rateLimit {
+        bruteForce {
+          limit
+          interval
+        }
+        emails {
+          limit
+          interval
+        }
+        global {
+          limit
+          interval
+        }
+        signups {
+          limit
+          interval
+        }
+        sms {
+          limit
+          interval
+        }
+      }
+    }
+  }
+}
+    `;
+export type UpdateRateLimitConfigMutationFn = Apollo.MutationFunction<UpdateRateLimitConfigMutation, UpdateRateLimitConfigMutationVariables>;
+
+/**
+ * __useUpdateRateLimitConfigMutation__
+ *
+ * To run a mutation, you first call `useUpdateRateLimitConfigMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateRateLimitConfigMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateRateLimitConfigMutation, { data, loading, error }] = useUpdateRateLimitConfigMutation({
+ *   variables: {
+ *      appId: // value for 'appId'
+ *      config: // value for 'config'
+ *   },
+ * });
+ */
+export function useUpdateRateLimitConfigMutation(baseOptions?: Apollo.MutationHookOptions<UpdateRateLimitConfigMutation, UpdateRateLimitConfigMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateRateLimitConfigMutation, UpdateRateLimitConfigMutationVariables>(UpdateRateLimitConfigDocument, options);
+      }
+export type UpdateRateLimitConfigMutationHookResult = ReturnType<typeof useUpdateRateLimitConfigMutation>;
+export type UpdateRateLimitConfigMutationResult = Apollo.MutationResult<UpdateRateLimitConfigMutation>;
+export type UpdateRateLimitConfigMutationOptions = Apollo.BaseMutationOptions<UpdateRateLimitConfigMutation, UpdateRateLimitConfigMutationVariables>;
+export const ReplaceConfigRawJsonDocument = gql`
+    mutation ReplaceConfigRawJSON($appID: uuid!, $rawJSON: String!) {
+  replaceConfigRawJSON(appID: $appID, rawJSON: $rawJSON)
+}
+    `;
+export type ReplaceConfigRawJsonMutationFn = Apollo.MutationFunction<ReplaceConfigRawJsonMutation, ReplaceConfigRawJsonMutationVariables>;
+
+/**
+ * __useReplaceConfigRawJsonMutation__
+ *
+ * To run a mutation, you first call `useReplaceConfigRawJsonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReplaceConfigRawJsonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [replaceConfigRawJsonMutation, { data, loading, error }] = useReplaceConfigRawJsonMutation({
+ *   variables: {
+ *      appID: // value for 'appID'
+ *      rawJSON: // value for 'rawJSON'
+ *   },
+ * });
+ */
+export function useReplaceConfigRawJsonMutation(baseOptions?: Apollo.MutationHookOptions<ReplaceConfigRawJsonMutation, ReplaceConfigRawJsonMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ReplaceConfigRawJsonMutation, ReplaceConfigRawJsonMutationVariables>(ReplaceConfigRawJsonDocument, options);
+      }
+export type ReplaceConfigRawJsonMutationHookResult = ReturnType<typeof useReplaceConfigRawJsonMutation>;
+export type ReplaceConfigRawJsonMutationResult = Apollo.MutationResult<ReplaceConfigRawJsonMutation>;
+export type ReplaceConfigRawJsonMutationOptions = Apollo.BaseMutationOptions<ReplaceConfigRawJsonMutation, ReplaceConfigRawJsonMutationVariables>;
 export const GetRolesPermissionsDocument = gql`
     query GetRolesPermissions($appId: uuid!) {
-  config(appID: $appId, resolve: true) {
+  config(appID: $appId, resolve: false) {
     id: __typename
     __typename
     auth {
@@ -23786,7 +31229,7 @@ export type UpdateSecretMutationResult = Apollo.MutationResult<UpdateSecretMutat
 export type UpdateSecretMutationOptions = Apollo.BaseMutationOptions<UpdateSecretMutation, UpdateSecretMutationVariables>;
 export const GetSignInMethodsDocument = gql`
     query GetSignInMethods($appId: uuid!) {
-  config(appID: $appId, resolve: true) {
+  config(appID: $appId, resolve: false) {
     id: __typename
     __typename
     provider {
@@ -23803,6 +31246,11 @@ export const GetSignInMethodsDocument = gql`
       id: __typename
       __typename
       method {
+        otp {
+          email {
+            enabled
+          }
+        }
         emailPassword {
           emailVerificationRequired
           hibpEnabled
@@ -23827,6 +31275,7 @@ export const GetSignInMethodsDocument = gql`
             keyId
             teamId
             privateKey
+            audience
           }
           bitbucket {
             enabled
@@ -23868,6 +31317,7 @@ export const GetSignInMethodsDocument = gql`
             clientId
             clientSecret
             scope
+            audience
           }
           linkedin {
             enabled
@@ -23950,7 +31400,7 @@ export function refetchGetSignInMethodsQuery(variables: GetSignInMethodsQueryVar
     }
 export const GetSmtpSettingsDocument = gql`
     query GetSmtpSettings($appId: uuid!) {
-  config(appID: $appId, resolve: true) {
+  config(appID: $appId, resolve: false) {
     id: __typename
     __typename
     provider {
@@ -23963,6 +31413,7 @@ export const GetSmtpSettingsDocument = gql`
         secure
         sender
         user
+        password
       }
     }
   }
@@ -24003,6 +31454,31 @@ export const UpdateConfigDocument = gql`
     mutation UpdateConfig($appId: uuid!, $config: ConfigConfigUpdateInput!) {
   updateConfig(appID: $appId, config: $config) {
     id: __typename
+    postgres {
+      resources {
+        storage {
+          capacity
+        }
+        enablePublicAccess
+      }
+    }
+    ai {
+      version
+      webhookSecret
+      autoEmbeddings {
+        synchPeriodMinutes
+      }
+      openai {
+        organization
+        apiKey
+      }
+      resources {
+        compute {
+          cpu
+          memory
+        }
+      }
+    }
   }
 }
     `;
@@ -24033,6 +31509,38 @@ export function useUpdateConfigMutation(baseOptions?: Apollo.MutationHookOptions
 export type UpdateConfigMutationHookResult = ReturnType<typeof useUpdateConfigMutation>;
 export type UpdateConfigMutationResult = Apollo.MutationResult<UpdateConfigMutation>;
 export type UpdateConfigMutationOptions = Apollo.BaseMutationOptions<UpdateConfigMutation, UpdateConfigMutationVariables>;
+export const UpdateDatabaseVersionDocument = gql`
+    mutation UpdateDatabaseVersion($appId: uuid!, $version: String!) {
+  changeDatabaseVersion(appID: $appId, version: $version)
+}
+    `;
+export type UpdateDatabaseVersionMutationFn = Apollo.MutationFunction<UpdateDatabaseVersionMutation, UpdateDatabaseVersionMutationVariables>;
+
+/**
+ * __useUpdateDatabaseVersionMutation__
+ *
+ * To run a mutation, you first call `useUpdateDatabaseVersionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateDatabaseVersionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateDatabaseVersionMutation, { data, loading, error }] = useUpdateDatabaseVersionMutation({
+ *   variables: {
+ *      appId: // value for 'appId'
+ *      version: // value for 'version'
+ *   },
+ * });
+ */
+export function useUpdateDatabaseVersionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateDatabaseVersionMutation, UpdateDatabaseVersionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateDatabaseVersionMutation, UpdateDatabaseVersionMutationVariables>(UpdateDatabaseVersionDocument, options);
+      }
+export type UpdateDatabaseVersionMutationHookResult = ReturnType<typeof useUpdateDatabaseVersionMutation>;
+export type UpdateDatabaseVersionMutationResult = Apollo.MutationResult<UpdateDatabaseVersionMutation>;
+export type UpdateDatabaseVersionMutationOptions = Apollo.BaseMutationOptions<UpdateDatabaseVersionMutation, UpdateDatabaseVersionMutationVariables>;
 export const UnpauseApplicationDocument = gql`
     mutation UnpauseApplication($appId: uuid!) {
   updateApp(pk_columns: {id: $appId}, _set: {desiredState: 5}) {
@@ -24072,6 +31580,7 @@ export const UpdateApplicationDocument = gql`
     name
     id
     slug
+    subdomain
   }
 }
     `;
@@ -24500,8 +32009,14 @@ export function refetchGetGithubRepositoriesQuery(variables?: GetGithubRepositor
       return { query: GetGithubRepositoriesDocument, variables: variables }
     }
 export const GetProjectLogsDocument = gql`
-    query getProjectLogs($appID: String!, $service: String, $from: Timestamp, $to: Timestamp) {
-  logs(appID: $appID, service: $service, from: $from, to: $to) {
+    query getProjectLogs($appID: String!, $service: String, $from: Timestamp, $to: Timestamp, $regexFilter: String) {
+  logs(
+    appID: $appID
+    service: $service
+    from: $from
+    to: $to
+    regexFilter: $regexFilter
+  ) {
     log
     service
     timestamp
@@ -24525,6 +32040,7 @@ export const GetProjectLogsDocument = gql`
  *      service: // value for 'service'
  *      from: // value for 'from'
  *      to: // value for 'to'
+ *      regexFilter: // value for 'regexFilter'
  *   },
  * });
  */
@@ -24543,8 +32059,8 @@ export function refetchGetProjectLogsQuery(variables: GetProjectLogsQueryVariabl
       return { query: GetProjectLogsDocument, variables: variables }
     }
 export const GetLogsSubscriptionDocument = gql`
-    subscription getLogsSubscription($appID: String!, $service: String, $from: Timestamp) {
-  logs(appID: $appID, service: $service, from: $from) {
+    subscription getLogsSubscription($appID: String!, $service: String, $from: Timestamp, $regexFilter: String) {
+  logs(appID: $appID, service: $service, from: $from, regexFilter: $regexFilter) {
     log
     service
     timestamp
@@ -24567,6 +32083,7 @@ export const GetLogsSubscriptionDocument = gql`
  *      appID: // value for 'appID'
  *      service: // value for 'service'
  *      from: // value for 'from'
+ *      regexFilter: // value for 'regexFilter'
  *   },
  * });
  */
@@ -24576,6 +32093,1419 @@ export function useGetLogsSubscriptionSubscription(baseOptions: Apollo.Subscript
       }
 export type GetLogsSubscriptionSubscriptionHookResult = ReturnType<typeof useGetLogsSubscriptionSubscription>;
 export type GetLogsSubscriptionSubscriptionResult = Apollo.SubscriptionResult<GetLogsSubscriptionSubscription>;
+export const GetServiceLabelValuesDocument = gql`
+    query getServiceLabelValues($appID: String!) {
+  getServiceLabelValues(appID: $appID)
+}
+    `;
+
+/**
+ * __useGetServiceLabelValuesQuery__
+ *
+ * To run a query within a React component, call `useGetServiceLabelValuesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetServiceLabelValuesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetServiceLabelValuesQuery({
+ *   variables: {
+ *      appID: // value for 'appID'
+ *   },
+ * });
+ */
+export function useGetServiceLabelValuesQuery(baseOptions: Apollo.QueryHookOptions<GetServiceLabelValuesQuery, GetServiceLabelValuesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetServiceLabelValuesQuery, GetServiceLabelValuesQueryVariables>(GetServiceLabelValuesDocument, options);
+      }
+export function useGetServiceLabelValuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetServiceLabelValuesQuery, GetServiceLabelValuesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetServiceLabelValuesQuery, GetServiceLabelValuesQueryVariables>(GetServiceLabelValuesDocument, options);
+        }
+export type GetServiceLabelValuesQueryHookResult = ReturnType<typeof useGetServiceLabelValuesQuery>;
+export type GetServiceLabelValuesLazyQueryHookResult = ReturnType<typeof useGetServiceLabelValuesLazyQuery>;
+export type GetServiceLabelValuesQueryResult = Apollo.QueryResult<GetServiceLabelValuesQuery, GetServiceLabelValuesQueryVariables>;
+export function refetchGetServiceLabelValuesQuery(variables: GetServiceLabelValuesQueryVariables) {
+      return { query: GetServiceLabelValuesDocument, variables: variables }
+    }
+export const GetSystemLogsDocument = gql`
+    query getSystemLogs($appID: String!, $action: String!, $from: Timestamp, $to: Timestamp) {
+  systemLogs(appID: $appID, action: $action, from: $from) {
+    timestamp
+    log
+  }
+}
+    `;
+
+/**
+ * __useGetSystemLogsQuery__
+ *
+ * To run a query within a React component, call `useGetSystemLogsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSystemLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSystemLogsQuery({
+ *   variables: {
+ *      appID: // value for 'appID'
+ *      action: // value for 'action'
+ *      from: // value for 'from'
+ *      to: // value for 'to'
+ *   },
+ * });
+ */
+export function useGetSystemLogsQuery(baseOptions: Apollo.QueryHookOptions<GetSystemLogsQuery, GetSystemLogsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSystemLogsQuery, GetSystemLogsQueryVariables>(GetSystemLogsDocument, options);
+      }
+export function useGetSystemLogsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSystemLogsQuery, GetSystemLogsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSystemLogsQuery, GetSystemLogsQueryVariables>(GetSystemLogsDocument, options);
+        }
+export type GetSystemLogsQueryHookResult = ReturnType<typeof useGetSystemLogsQuery>;
+export type GetSystemLogsLazyQueryHookResult = ReturnType<typeof useGetSystemLogsLazyQuery>;
+export type GetSystemLogsQueryResult = Apollo.QueryResult<GetSystemLogsQuery, GetSystemLogsQueryVariables>;
+export function refetchGetSystemLogsQuery(variables: GetSystemLogsQueryVariables) {
+      return { query: GetSystemLogsDocument, variables: variables }
+    }
+export const BillingChangeOrganizationPlanDocument = gql`
+    mutation billingChangeOrganizationPlan($organizationID: uuid!, $planID: uuid!) {
+  billingChangeOrganizationPlan(organizationID: $organizationID, planID: $planID)
+}
+    `;
+export type BillingChangeOrganizationPlanMutationFn = Apollo.MutationFunction<BillingChangeOrganizationPlanMutation, BillingChangeOrganizationPlanMutationVariables>;
+
+/**
+ * __useBillingChangeOrganizationPlanMutation__
+ *
+ * To run a mutation, you first call `useBillingChangeOrganizationPlanMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBillingChangeOrganizationPlanMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [billingChangeOrganizationPlanMutation, { data, loading, error }] = useBillingChangeOrganizationPlanMutation({
+ *   variables: {
+ *      organizationID: // value for 'organizationID'
+ *      planID: // value for 'planID'
+ *   },
+ * });
+ */
+export function useBillingChangeOrganizationPlanMutation(baseOptions?: Apollo.MutationHookOptions<BillingChangeOrganizationPlanMutation, BillingChangeOrganizationPlanMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<BillingChangeOrganizationPlanMutation, BillingChangeOrganizationPlanMutationVariables>(BillingChangeOrganizationPlanDocument, options);
+      }
+export type BillingChangeOrganizationPlanMutationHookResult = ReturnType<typeof useBillingChangeOrganizationPlanMutation>;
+export type BillingChangeOrganizationPlanMutationResult = Apollo.MutationResult<BillingChangeOrganizationPlanMutation>;
+export type BillingChangeOrganizationPlanMutationOptions = Apollo.BaseMutationOptions<BillingChangeOrganizationPlanMutation, BillingChangeOrganizationPlanMutationVariables>;
+export const BillingDeleteAppDocument = gql`
+    mutation billingDeleteApp($appID: uuid!) {
+  billingDeleteApp(appID: $appID)
+}
+    `;
+export type BillingDeleteAppMutationFn = Apollo.MutationFunction<BillingDeleteAppMutation, BillingDeleteAppMutationVariables>;
+
+/**
+ * __useBillingDeleteAppMutation__
+ *
+ * To run a mutation, you first call `useBillingDeleteAppMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBillingDeleteAppMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [billingDeleteAppMutation, { data, loading, error }] = useBillingDeleteAppMutation({
+ *   variables: {
+ *      appID: // value for 'appID'
+ *   },
+ * });
+ */
+export function useBillingDeleteAppMutation(baseOptions?: Apollo.MutationHookOptions<BillingDeleteAppMutation, BillingDeleteAppMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<BillingDeleteAppMutation, BillingDeleteAppMutationVariables>(BillingDeleteAppDocument, options);
+      }
+export type BillingDeleteAppMutationHookResult = ReturnType<typeof useBillingDeleteAppMutation>;
+export type BillingDeleteAppMutationResult = Apollo.MutationResult<BillingDeleteAppMutation>;
+export type BillingDeleteAppMutationOptions = Apollo.BaseMutationOptions<BillingDeleteAppMutation, BillingDeleteAppMutationVariables>;
+export const BillingGetNextInvoiceDocument = gql`
+    query billingGetNextInvoice($organizationID: uuid!) {
+  billingGetNextInvoice(organizationID: $organizationID) {
+    items {
+      Description
+      Amount
+    }
+    AmountDue
+    PeriodEnd
+  }
+}
+    `;
+
+/**
+ * __useBillingGetNextInvoiceQuery__
+ *
+ * To run a query within a React component, call `useBillingGetNextInvoiceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBillingGetNextInvoiceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBillingGetNextInvoiceQuery({
+ *   variables: {
+ *      organizationID: // value for 'organizationID'
+ *   },
+ * });
+ */
+export function useBillingGetNextInvoiceQuery(baseOptions: Apollo.QueryHookOptions<BillingGetNextInvoiceQuery, BillingGetNextInvoiceQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BillingGetNextInvoiceQuery, BillingGetNextInvoiceQueryVariables>(BillingGetNextInvoiceDocument, options);
+      }
+export function useBillingGetNextInvoiceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BillingGetNextInvoiceQuery, BillingGetNextInvoiceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BillingGetNextInvoiceQuery, BillingGetNextInvoiceQueryVariables>(BillingGetNextInvoiceDocument, options);
+        }
+export type BillingGetNextInvoiceQueryHookResult = ReturnType<typeof useBillingGetNextInvoiceQuery>;
+export type BillingGetNextInvoiceLazyQueryHookResult = ReturnType<typeof useBillingGetNextInvoiceLazyQuery>;
+export type BillingGetNextInvoiceQueryResult = Apollo.QueryResult<BillingGetNextInvoiceQuery, BillingGetNextInvoiceQueryVariables>;
+export function refetchBillingGetNextInvoiceQuery(variables: BillingGetNextInvoiceQueryVariables) {
+      return { query: BillingGetNextInvoiceDocument, variables: variables }
+    }
+export const BillingMigrateProjectToOrganizationDocument = gql`
+    mutation billingMigrateProjectToOrganization($appID: uuid!, $organizationID: uuid!) {
+  billingMigrateProjectToOrganization(
+    appID: $appID
+    organizationID: $organizationID
+  )
+}
+    `;
+export type BillingMigrateProjectToOrganizationMutationFn = Apollo.MutationFunction<BillingMigrateProjectToOrganizationMutation, BillingMigrateProjectToOrganizationMutationVariables>;
+
+/**
+ * __useBillingMigrateProjectToOrganizationMutation__
+ *
+ * To run a mutation, you first call `useBillingMigrateProjectToOrganizationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBillingMigrateProjectToOrganizationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [billingMigrateProjectToOrganizationMutation, { data, loading, error }] = useBillingMigrateProjectToOrganizationMutation({
+ *   variables: {
+ *      appID: // value for 'appID'
+ *      organizationID: // value for 'organizationID'
+ *   },
+ * });
+ */
+export function useBillingMigrateProjectToOrganizationMutation(baseOptions?: Apollo.MutationHookOptions<BillingMigrateProjectToOrganizationMutation, BillingMigrateProjectToOrganizationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<BillingMigrateProjectToOrganizationMutation, BillingMigrateProjectToOrganizationMutationVariables>(BillingMigrateProjectToOrganizationDocument, options);
+      }
+export type BillingMigrateProjectToOrganizationMutationHookResult = ReturnType<typeof useBillingMigrateProjectToOrganizationMutation>;
+export type BillingMigrateProjectToOrganizationMutationResult = Apollo.MutationResult<BillingMigrateProjectToOrganizationMutation>;
+export type BillingMigrateProjectToOrganizationMutationOptions = Apollo.BaseMutationOptions<BillingMigrateProjectToOrganizationMutation, BillingMigrateProjectToOrganizationMutationVariables>;
+export const BillingOrganizationCustomePortalDocument = gql`
+    query billingOrganizationCustomePortal($organizationID: uuid!) {
+  billingOrganizationCustomePortal(organizationID: $organizationID)
+}
+    `;
+
+/**
+ * __useBillingOrganizationCustomePortalQuery__
+ *
+ * To run a query within a React component, call `useBillingOrganizationCustomePortalQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBillingOrganizationCustomePortalQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBillingOrganizationCustomePortalQuery({
+ *   variables: {
+ *      organizationID: // value for 'organizationID'
+ *   },
+ * });
+ */
+export function useBillingOrganizationCustomePortalQuery(baseOptions: Apollo.QueryHookOptions<BillingOrganizationCustomePortalQuery, BillingOrganizationCustomePortalQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BillingOrganizationCustomePortalQuery, BillingOrganizationCustomePortalQueryVariables>(BillingOrganizationCustomePortalDocument, options);
+      }
+export function useBillingOrganizationCustomePortalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BillingOrganizationCustomePortalQuery, BillingOrganizationCustomePortalQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BillingOrganizationCustomePortalQuery, BillingOrganizationCustomePortalQueryVariables>(BillingOrganizationCustomePortalDocument, options);
+        }
+export type BillingOrganizationCustomePortalQueryHookResult = ReturnType<typeof useBillingOrganizationCustomePortalQuery>;
+export type BillingOrganizationCustomePortalLazyQueryHookResult = ReturnType<typeof useBillingOrganizationCustomePortalLazyQuery>;
+export type BillingOrganizationCustomePortalQueryResult = Apollo.QueryResult<BillingOrganizationCustomePortalQuery, BillingOrganizationCustomePortalQueryVariables>;
+export function refetchBillingOrganizationCustomePortalQuery(variables: BillingOrganizationCustomePortalQueryVariables) {
+      return { query: BillingOrganizationCustomePortalDocument, variables: variables }
+    }
+export const BillingTransferAppDocument = gql`
+    mutation billingTransferApp($appID: uuid!, $organizationID: uuid!) {
+  billingTransferApp(appID: $appID, organizationID: $organizationID)
+}
+    `;
+export type BillingTransferAppMutationFn = Apollo.MutationFunction<BillingTransferAppMutation, BillingTransferAppMutationVariables>;
+
+/**
+ * __useBillingTransferAppMutation__
+ *
+ * To run a mutation, you first call `useBillingTransferAppMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBillingTransferAppMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [billingTransferAppMutation, { data, loading, error }] = useBillingTransferAppMutation({
+ *   variables: {
+ *      appID: // value for 'appID'
+ *      organizationID: // value for 'organizationID'
+ *   },
+ * });
+ */
+export function useBillingTransferAppMutation(baseOptions?: Apollo.MutationHookOptions<BillingTransferAppMutation, BillingTransferAppMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<BillingTransferAppMutation, BillingTransferAppMutationVariables>(BillingTransferAppDocument, options);
+      }
+export type BillingTransferAppMutationHookResult = ReturnType<typeof useBillingTransferAppMutation>;
+export type BillingTransferAppMutationResult = Apollo.MutationResult<BillingTransferAppMutation>;
+export type BillingTransferAppMutationOptions = Apollo.BaseMutationOptions<BillingTransferAppMutation, BillingTransferAppMutationVariables>;
+export const CreateOrganizationRequestDocument = gql`
+    mutation createOrganizationRequest($organizationName: String!, $planID: uuid!, $redirectURL: String!) {
+  billingCreateOrganizationRequest(
+    organizationName: $organizationName
+    planID: $planID
+    redirectURL: $redirectURL
+  )
+}
+    `;
+export type CreateOrganizationRequestMutationFn = Apollo.MutationFunction<CreateOrganizationRequestMutation, CreateOrganizationRequestMutationVariables>;
+
+/**
+ * __useCreateOrganizationRequestMutation__
+ *
+ * To run a mutation, you first call `useCreateOrganizationRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrganizationRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrganizationRequestMutation, { data, loading, error }] = useCreateOrganizationRequestMutation({
+ *   variables: {
+ *      organizationName: // value for 'organizationName'
+ *      planID: // value for 'planID'
+ *      redirectURL: // value for 'redirectURL'
+ *   },
+ * });
+ */
+export function useCreateOrganizationRequestMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrganizationRequestMutation, CreateOrganizationRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateOrganizationRequestMutation, CreateOrganizationRequestMutationVariables>(CreateOrganizationRequestDocument, options);
+      }
+export type CreateOrganizationRequestMutationHookResult = ReturnType<typeof useCreateOrganizationRequestMutation>;
+export type CreateOrganizationRequestMutationResult = Apollo.MutationResult<CreateOrganizationRequestMutation>;
+export type CreateOrganizationRequestMutationOptions = Apollo.BaseMutationOptions<CreateOrganizationRequestMutation, CreateOrganizationRequestMutationVariables>;
+export const DeleteOrganizationMemberInviteDocument = gql`
+    mutation deleteOrganizationMemberInvite($inviteId: uuid!) {
+  deleteOrganizationMemberInvite(id: $inviteId) {
+    __typename
+  }
+}
+    `;
+export type DeleteOrganizationMemberInviteMutationFn = Apollo.MutationFunction<DeleteOrganizationMemberInviteMutation, DeleteOrganizationMemberInviteMutationVariables>;
+
+/**
+ * __useDeleteOrganizationMemberInviteMutation__
+ *
+ * To run a mutation, you first call `useDeleteOrganizationMemberInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteOrganizationMemberInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteOrganizationMemberInviteMutation, { data, loading, error }] = useDeleteOrganizationMemberInviteMutation({
+ *   variables: {
+ *      inviteId: // value for 'inviteId'
+ *   },
+ * });
+ */
+export function useDeleteOrganizationMemberInviteMutation(baseOptions?: Apollo.MutationHookOptions<DeleteOrganizationMemberInviteMutation, DeleteOrganizationMemberInviteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteOrganizationMemberInviteMutation, DeleteOrganizationMemberInviteMutationVariables>(DeleteOrganizationMemberInviteDocument, options);
+      }
+export type DeleteOrganizationMemberInviteMutationHookResult = ReturnType<typeof useDeleteOrganizationMemberInviteMutation>;
+export type DeleteOrganizationMemberInviteMutationResult = Apollo.MutationResult<DeleteOrganizationMemberInviteMutation>;
+export type DeleteOrganizationMemberInviteMutationOptions = Apollo.BaseMutationOptions<DeleteOrganizationMemberInviteMutation, DeleteOrganizationMemberInviteMutationVariables>;
+export const DeleteOrganizationDocument = gql`
+    mutation deleteOrganization($id: uuid!) {
+  billingDeleteOrganization(organizationID: $id)
+}
+    `;
+export type DeleteOrganizationMutationFn = Apollo.MutationFunction<DeleteOrganizationMutation, DeleteOrganizationMutationVariables>;
+
+/**
+ * __useDeleteOrganizationMutation__
+ *
+ * To run a mutation, you first call `useDeleteOrganizationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteOrganizationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteOrganizationMutation, { data, loading, error }] = useDeleteOrganizationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteOrganizationMutation(baseOptions?: Apollo.MutationHookOptions<DeleteOrganizationMutation, DeleteOrganizationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteOrganizationMutation, DeleteOrganizationMutationVariables>(DeleteOrganizationDocument, options);
+      }
+export type DeleteOrganizationMutationHookResult = ReturnType<typeof useDeleteOrganizationMutation>;
+export type DeleteOrganizationMutationResult = Apollo.MutationResult<DeleteOrganizationMutation>;
+export type DeleteOrganizationMutationOptions = Apollo.BaseMutationOptions<DeleteOrganizationMutation, DeleteOrganizationMutationVariables>;
+export const DeleteOrganizationMemberDocument = gql`
+    mutation deleteOrganizationMember($memberId: uuid!) {
+  deleteOrganizationMember(id: $memberId) {
+    __typename
+  }
+}
+    `;
+export type DeleteOrganizationMemberMutationFn = Apollo.MutationFunction<DeleteOrganizationMemberMutation, DeleteOrganizationMemberMutationVariables>;
+
+/**
+ * __useDeleteOrganizationMemberMutation__
+ *
+ * To run a mutation, you first call `useDeleteOrganizationMemberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteOrganizationMemberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteOrganizationMemberMutation, { data, loading, error }] = useDeleteOrganizationMemberMutation({
+ *   variables: {
+ *      memberId: // value for 'memberId'
+ *   },
+ * });
+ */
+export function useDeleteOrganizationMemberMutation(baseOptions?: Apollo.MutationHookOptions<DeleteOrganizationMemberMutation, DeleteOrganizationMemberMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteOrganizationMemberMutation, DeleteOrganizationMemberMutationVariables>(DeleteOrganizationMemberDocument, options);
+      }
+export type DeleteOrganizationMemberMutationHookResult = ReturnType<typeof useDeleteOrganizationMemberMutation>;
+export type DeleteOrganizationMemberMutationResult = Apollo.MutationResult<DeleteOrganizationMemberMutation>;
+export type DeleteOrganizationMemberMutationOptions = Apollo.BaseMutationOptions<DeleteOrganizationMemberMutation, DeleteOrganizationMemberMutationVariables>;
+export const GetOrganizationDocument = gql`
+    query getOrganization($orgSlug: String!) {
+  organizations(where: {slug: {_eq: $orgSlug}}) {
+    id
+    name
+    slug
+    status
+    plan {
+      id
+      name
+      price
+      deprecated
+      individual
+      isFree
+      featureMaxDbSize
+    }
+    members {
+      id
+      role
+      user {
+        id
+        email
+        displayName
+        avatarUrl
+      }
+    }
+    apps(order_by: {name: asc}) {
+      id
+      name
+      subdomain
+      slug
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetOrganizationQuery__
+ *
+ * To run a query within a React component, call `useGetOrganizationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrganizationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrganizationQuery({
+ *   variables: {
+ *      orgSlug: // value for 'orgSlug'
+ *   },
+ * });
+ */
+export function useGetOrganizationQuery(baseOptions: Apollo.QueryHookOptions<GetOrganizationQuery, GetOrganizationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOrganizationQuery, GetOrganizationQueryVariables>(GetOrganizationDocument, options);
+      }
+export function useGetOrganizationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrganizationQuery, GetOrganizationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOrganizationQuery, GetOrganizationQueryVariables>(GetOrganizationDocument, options);
+        }
+export type GetOrganizationQueryHookResult = ReturnType<typeof useGetOrganizationQuery>;
+export type GetOrganizationLazyQueryHookResult = ReturnType<typeof useGetOrganizationLazyQuery>;
+export type GetOrganizationQueryResult = Apollo.QueryResult<GetOrganizationQuery, GetOrganizationQueryVariables>;
+export function refetchGetOrganizationQuery(variables: GetOrganizationQueryVariables) {
+      return { query: GetOrganizationDocument, variables: variables }
+    }
+export const GetOrganizationByIdDocument = gql`
+    query getOrganizationById($orgId: uuid!) {
+  organizations(where: {id: {_eq: $orgId}}) {
+    id
+    name
+    slug
+  }
+}
+    `;
+
+/**
+ * __useGetOrganizationByIdQuery__
+ *
+ * To run a query within a React component, call `useGetOrganizationByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrganizationByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrganizationByIdQuery({
+ *   variables: {
+ *      orgId: // value for 'orgId'
+ *   },
+ * });
+ */
+export function useGetOrganizationByIdQuery(baseOptions: Apollo.QueryHookOptions<GetOrganizationByIdQuery, GetOrganizationByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOrganizationByIdQuery, GetOrganizationByIdQueryVariables>(GetOrganizationByIdDocument, options);
+      }
+export function useGetOrganizationByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrganizationByIdQuery, GetOrganizationByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOrganizationByIdQuery, GetOrganizationByIdQueryVariables>(GetOrganizationByIdDocument, options);
+        }
+export type GetOrganizationByIdQueryHookResult = ReturnType<typeof useGetOrganizationByIdQuery>;
+export type GetOrganizationByIdLazyQueryHookResult = ReturnType<typeof useGetOrganizationByIdLazyQuery>;
+export type GetOrganizationByIdQueryResult = Apollo.QueryResult<GetOrganizationByIdQuery, GetOrganizationByIdQueryVariables>;
+export function refetchGetOrganizationByIdQuery(variables: GetOrganizationByIdQueryVariables) {
+      return { query: GetOrganizationByIdDocument, variables: variables }
+    }
+export const GetOrganizationInvitesDocument = gql`
+    query getOrganizationInvites($organizationId: uuid!) {
+  organizationMemberInvites(
+    where: {organizationID: {_eq: $organizationId}}
+    order_by: {createdAt: desc}
+  ) {
+    id
+    email
+    role
+    createdAt
+    updateAt
+  }
+}
+    `;
+
+/**
+ * __useGetOrganizationInvitesQuery__
+ *
+ * To run a query within a React component, call `useGetOrganizationInvitesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrganizationInvitesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrganizationInvitesQuery({
+ *   variables: {
+ *      organizationId: // value for 'organizationId'
+ *   },
+ * });
+ */
+export function useGetOrganizationInvitesQuery(baseOptions: Apollo.QueryHookOptions<GetOrganizationInvitesQuery, GetOrganizationInvitesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOrganizationInvitesQuery, GetOrganizationInvitesQueryVariables>(GetOrganizationInvitesDocument, options);
+      }
+export function useGetOrganizationInvitesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrganizationInvitesQuery, GetOrganizationInvitesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOrganizationInvitesQuery, GetOrganizationInvitesQueryVariables>(GetOrganizationInvitesDocument, options);
+        }
+export type GetOrganizationInvitesQueryHookResult = ReturnType<typeof useGetOrganizationInvitesQuery>;
+export type GetOrganizationInvitesLazyQueryHookResult = ReturnType<typeof useGetOrganizationInvitesLazyQuery>;
+export type GetOrganizationInvitesQueryResult = Apollo.QueryResult<GetOrganizationInvitesQuery, GetOrganizationInvitesQueryVariables>;
+export function refetchGetOrganizationInvitesQuery(variables: GetOrganizationInvitesQueryVariables) {
+      return { query: GetOrganizationInvitesDocument, variables: variables }
+    }
+export const GetOrganizationProjectsDocument = gql`
+    query getOrganizationProjects($orgId: uuid!) {
+  apps(where: {organizationID: {_eq: $orgId}}, order_by: {name: asc}) {
+    ...Project
+  }
+}
+    ${ProjectFragmentDoc}`;
+
+/**
+ * __useGetOrganizationProjectsQuery__
+ *
+ * To run a query within a React component, call `useGetOrganizationProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrganizationProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrganizationProjectsQuery({
+ *   variables: {
+ *      orgId: // value for 'orgId'
+ *   },
+ * });
+ */
+export function useGetOrganizationProjectsQuery(baseOptions: Apollo.QueryHookOptions<GetOrganizationProjectsQuery, GetOrganizationProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOrganizationProjectsQuery, GetOrganizationProjectsQueryVariables>(GetOrganizationProjectsDocument, options);
+      }
+export function useGetOrganizationProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrganizationProjectsQuery, GetOrganizationProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOrganizationProjectsQuery, GetOrganizationProjectsQueryVariables>(GetOrganizationProjectsDocument, options);
+        }
+export type GetOrganizationProjectsQueryHookResult = ReturnType<typeof useGetOrganizationProjectsQuery>;
+export type GetOrganizationProjectsLazyQueryHookResult = ReturnType<typeof useGetOrganizationProjectsLazyQuery>;
+export type GetOrganizationProjectsQueryResult = Apollo.QueryResult<GetOrganizationProjectsQuery, GetOrganizationProjectsQueryVariables>;
+export function refetchGetOrganizationProjectsQuery(variables: GetOrganizationProjectsQueryVariables) {
+      return { query: GetOrganizationProjectsDocument, variables: variables }
+    }
+export const GetOrganizationSpendingNotificationDocument = gql`
+    query getOrganizationSpendingNotification($orgId: uuid!) {
+  organizations(where: {id: {_eq: $orgId}}) {
+    threshold
+  }
+}
+    `;
+
+/**
+ * __useGetOrganizationSpendingNotificationQuery__
+ *
+ * To run a query within a React component, call `useGetOrganizationSpendingNotificationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrganizationSpendingNotificationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrganizationSpendingNotificationQuery({
+ *   variables: {
+ *      orgId: // value for 'orgId'
+ *   },
+ * });
+ */
+export function useGetOrganizationSpendingNotificationQuery(baseOptions: Apollo.QueryHookOptions<GetOrganizationSpendingNotificationQuery, GetOrganizationSpendingNotificationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOrganizationSpendingNotificationQuery, GetOrganizationSpendingNotificationQueryVariables>(GetOrganizationSpendingNotificationDocument, options);
+      }
+export function useGetOrganizationSpendingNotificationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrganizationSpendingNotificationQuery, GetOrganizationSpendingNotificationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOrganizationSpendingNotificationQuery, GetOrganizationSpendingNotificationQueryVariables>(GetOrganizationSpendingNotificationDocument, options);
+        }
+export type GetOrganizationSpendingNotificationQueryHookResult = ReturnType<typeof useGetOrganizationSpendingNotificationQuery>;
+export type GetOrganizationSpendingNotificationLazyQueryHookResult = ReturnType<typeof useGetOrganizationSpendingNotificationLazyQuery>;
+export type GetOrganizationSpendingNotificationQueryResult = Apollo.QueryResult<GetOrganizationSpendingNotificationQuery, GetOrganizationSpendingNotificationQueryVariables>;
+export function refetchGetOrganizationSpendingNotificationQuery(variables: GetOrganizationSpendingNotificationQueryVariables) {
+      return { query: GetOrganizationSpendingNotificationDocument, variables: variables }
+    }
+export const GetOrganizationsDocument = gql`
+    query getOrganizations($userId: uuid!) {
+  organizations(order_by: {name: asc}, where: {members: {userID: {_eq: $userId}}}) {
+    id
+    name
+    slug
+    plan {
+      id
+      name
+      price
+      deprecated
+      individual
+      isFree
+      featureMaxDbSize
+    }
+    apps(order_by: {name: asc}) {
+      id
+      name
+      subdomain
+      slug
+    }
+    members {
+      id
+      role
+      user {
+        id
+        email
+        displayName
+        avatarUrl
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetOrganizationsQuery__
+ *
+ * To run a query within a React component, call `useGetOrganizationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrganizationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrganizationsQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetOrganizationsQuery(baseOptions: Apollo.QueryHookOptions<GetOrganizationsQuery, GetOrganizationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOrganizationsQuery, GetOrganizationsQueryVariables>(GetOrganizationsDocument, options);
+      }
+export function useGetOrganizationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrganizationsQuery, GetOrganizationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOrganizationsQuery, GetOrganizationsQueryVariables>(GetOrganizationsDocument, options);
+        }
+export type GetOrganizationsQueryHookResult = ReturnType<typeof useGetOrganizationsQuery>;
+export type GetOrganizationsLazyQueryHookResult = ReturnType<typeof useGetOrganizationsLazyQuery>;
+export type GetOrganizationsQueryResult = Apollo.QueryResult<GetOrganizationsQuery, GetOrganizationsQueryVariables>;
+export function refetchGetOrganizationsQuery(variables: GetOrganizationsQueryVariables) {
+      return { query: GetOrganizationsDocument, variables: variables }
+    }
+export const GetOrganizationPlansDocument = gql`
+    query getOrganizationPlans {
+  plans(
+    order_by: {sort: asc}
+    where: {deprecated: {_eq: false}, isPublic: {_eq: true}}
+  ) {
+    id
+    name
+    isDefault
+    isFree
+    price
+    featureBackupEnabled
+    featureCustomDomainsEnabled
+    featureMaxDbSize
+  }
+}
+    `;
+
+/**
+ * __useGetOrganizationPlansQuery__
+ *
+ * To run a query within a React component, call `useGetOrganizationPlansQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrganizationPlansQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrganizationPlansQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetOrganizationPlansQuery(baseOptions?: Apollo.QueryHookOptions<GetOrganizationPlansQuery, GetOrganizationPlansQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOrganizationPlansQuery, GetOrganizationPlansQueryVariables>(GetOrganizationPlansDocument, options);
+      }
+export function useGetOrganizationPlansLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrganizationPlansQuery, GetOrganizationPlansQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOrganizationPlansQuery, GetOrganizationPlansQueryVariables>(GetOrganizationPlansDocument, options);
+        }
+export type GetOrganizationPlansQueryHookResult = ReturnType<typeof useGetOrganizationPlansQuery>;
+export type GetOrganizationPlansLazyQueryHookResult = ReturnType<typeof useGetOrganizationPlansLazyQuery>;
+export type GetOrganizationPlansQueryResult = Apollo.QueryResult<GetOrganizationPlansQuery, GetOrganizationPlansQueryVariables>;
+export function refetchGetOrganizationPlansQuery(variables?: GetOrganizationPlansQueryVariables) {
+      return { query: GetOrganizationPlansDocument, variables: variables }
+    }
+export const GetProjectDocument = gql`
+    query getProject($subdomain: String!) {
+  apps(where: {subdomain: {_eq: $subdomain}}) {
+    id
+    slug
+    name
+    repositoryProductionBranch
+    subdomain
+    createdAt
+    desiredState
+    nhostBaseFolder
+    config(resolve: true) {
+      observability {
+        grafana {
+          adminPassword
+        }
+      }
+      hasura {
+        adminSecret
+        settings {
+          enableConsole
+        }
+      }
+      ai {
+        version
+      }
+    }
+    featureFlags {
+      description
+      id
+      name
+      value
+    }
+    appStates(order_by: {createdAt: desc}, limit: 1) {
+      id
+      appId
+      message
+      stateId
+      createdAt
+    }
+    region {
+      id
+      countryCode
+      name
+      domain
+      city
+    }
+    legacyPlan {
+      id
+      name
+      price
+      isFree
+      featureMaxDbSize
+    }
+    githubRepository {
+      fullName
+    }
+    deployments(limit: 4, order_by: {deploymentStartedAt: desc}) {
+      id
+      commitSHA
+      commitMessage
+      commitUserName
+      deploymentStartedAt
+      deploymentEndedAt
+      commitUserAvatarUrl
+      deploymentStatus
+    }
+    creator {
+      id
+      email
+      displayName
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetProjectQuery__
+ *
+ * To run a query within a React component, call `useGetProjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectQuery({
+ *   variables: {
+ *      subdomain: // value for 'subdomain'
+ *   },
+ * });
+ */
+export function useGetProjectQuery(baseOptions: Apollo.QueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
+      }
+export function useGetProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
+        }
+export type GetProjectQueryHookResult = ReturnType<typeof useGetProjectQuery>;
+export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQuery>;
+export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;
+export function refetchGetProjectQuery(variables: GetProjectQueryVariables) {
+      return { query: GetProjectDocument, variables: variables }
+    }
+export const GetProjectStateDocument = gql`
+    query getProjectState($subdomain: String!) {
+  apps(where: {subdomain: {_eq: $subdomain}}) {
+    id
+    name
+    subdomain
+    region {
+      id
+      countryCode
+      name
+      domain
+      city
+    }
+    createdAt
+    desiredState
+    appStates(order_by: {createdAt: desc}, limit: 1) {
+      id
+      appId
+      message
+      stateId
+      createdAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetProjectStateQuery__
+ *
+ * To run a query within a React component, call `useGetProjectStateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectStateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectStateQuery({
+ *   variables: {
+ *      subdomain: // value for 'subdomain'
+ *   },
+ * });
+ */
+export function useGetProjectStateQuery(baseOptions: Apollo.QueryHookOptions<GetProjectStateQuery, GetProjectStateQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectStateQuery, GetProjectStateQueryVariables>(GetProjectStateDocument, options);
+      }
+export function useGetProjectStateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectStateQuery, GetProjectStateQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectStateQuery, GetProjectStateQueryVariables>(GetProjectStateDocument, options);
+        }
+export type GetProjectStateQueryHookResult = ReturnType<typeof useGetProjectStateQuery>;
+export type GetProjectStateLazyQueryHookResult = ReturnType<typeof useGetProjectStateLazyQuery>;
+export type GetProjectStateQueryResult = Apollo.QueryResult<GetProjectStateQuery, GetProjectStateQueryVariables>;
+export function refetchGetProjectStateQuery(variables: GetProjectStateQueryVariables) {
+      return { query: GetProjectStateDocument, variables: variables }
+    }
+export const GetProjectsDocument = gql`
+    query getProjects($orgSlug: String!) {
+  apps(where: {organization: {slug: {_eq: $orgSlug}}}) {
+    id
+    name
+    slug
+    createdAt
+    subdomain
+    region {
+      id
+      name
+    }
+    deployments(limit: 4, order_by: {deploymentStartedAt: desc}) {
+      id
+      commitSHA
+      commitMessage
+      commitUserName
+      deploymentStartedAt
+      deploymentEndedAt
+      commitUserAvatarUrl
+      deploymentStatus
+    }
+    creator {
+      id
+      email
+      displayName
+    }
+    appStates(order_by: {createdAt: desc}, limit: 1) {
+      id
+      appId
+      message
+      stateId
+      createdAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetProjectsQuery__
+ *
+ * To run a query within a React component, call `useGetProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectsQuery({
+ *   variables: {
+ *      orgSlug: // value for 'orgSlug'
+ *   },
+ * });
+ */
+export function useGetProjectsQuery(baseOptions: Apollo.QueryHookOptions<GetProjectsQuery, GetProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, options);
+      }
+export function useGetProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectsQuery, GetProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, options);
+        }
+export type GetProjectsQueryHookResult = ReturnType<typeof useGetProjectsQuery>;
+export type GetProjectsLazyQueryHookResult = ReturnType<typeof useGetProjectsLazyQuery>;
+export type GetProjectsQueryResult = Apollo.QueryResult<GetProjectsQuery, GetProjectsQueryVariables>;
+export function refetchGetProjectsQuery(variables: GetProjectsQueryVariables) {
+      return { query: GetProjectsDocument, variables: variables }
+    }
+export const GetUserProjectMetricsDocument = gql`
+    query GetUserProjectMetrics($startOfMonth: timestamptz!, $today: timestamptz!) {
+  monthlyActiveUsers: usersAggregate(
+    where: {lastSeen: {_gte: $startOfMonth, _lte: $today}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+  dailyActiveUsers: usersAggregate(where: {lastSeen: {_gte: $today}}) {
+    aggregate {
+      count
+    }
+  }
+  allUsers: usersAggregate {
+    aggregate {
+      count
+    }
+  }
+  filesAggregate {
+    aggregate {
+      count
+      sum {
+        size
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserProjectMetricsQuery__
+ *
+ * To run a query within a React component, call `useGetUserProjectMetricsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserProjectMetricsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserProjectMetricsQuery({
+ *   variables: {
+ *      startOfMonth: // value for 'startOfMonth'
+ *      today: // value for 'today'
+ *   },
+ * });
+ */
+export function useGetUserProjectMetricsQuery(baseOptions: Apollo.QueryHookOptions<GetUserProjectMetricsQuery, GetUserProjectMetricsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserProjectMetricsQuery, GetUserProjectMetricsQueryVariables>(GetUserProjectMetricsDocument, options);
+      }
+export function useGetUserProjectMetricsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserProjectMetricsQuery, GetUserProjectMetricsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserProjectMetricsQuery, GetUserProjectMetricsQueryVariables>(GetUserProjectMetricsDocument, options);
+        }
+export type GetUserProjectMetricsQueryHookResult = ReturnType<typeof useGetUserProjectMetricsQuery>;
+export type GetUserProjectMetricsLazyQueryHookResult = ReturnType<typeof useGetUserProjectMetricsLazyQuery>;
+export type GetUserProjectMetricsQueryResult = Apollo.QueryResult<GetUserProjectMetricsQuery, GetUserProjectMetricsQueryVariables>;
+export function refetchGetUserProjectMetricsQuery(variables: GetUserProjectMetricsQueryVariables) {
+      return { query: GetUserProjectMetricsDocument, variables: variables }
+    }
+export const InsertOrgApplicationDocument = gql`
+    mutation insertOrgApplication($app: apps_insert_input!) {
+  insertApp(object: $app) {
+    id
+    name
+    slug
+    subdomain
+  }
+}
+    `;
+export type InsertOrgApplicationMutationFn = Apollo.MutationFunction<InsertOrgApplicationMutation, InsertOrgApplicationMutationVariables>;
+
+/**
+ * __useInsertOrgApplicationMutation__
+ *
+ * To run a mutation, you first call `useInsertOrgApplicationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertOrgApplicationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertOrgApplicationMutation, { data, loading, error }] = useInsertOrgApplicationMutation({
+ *   variables: {
+ *      app: // value for 'app'
+ *   },
+ * });
+ */
+export function useInsertOrgApplicationMutation(baseOptions?: Apollo.MutationHookOptions<InsertOrgApplicationMutation, InsertOrgApplicationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertOrgApplicationMutation, InsertOrgApplicationMutationVariables>(InsertOrgApplicationDocument, options);
+      }
+export type InsertOrgApplicationMutationHookResult = ReturnType<typeof useInsertOrgApplicationMutation>;
+export type InsertOrgApplicationMutationResult = Apollo.MutationResult<InsertOrgApplicationMutation>;
+export type InsertOrgApplicationMutationOptions = Apollo.BaseMutationOptions<InsertOrgApplicationMutation, InsertOrgApplicationMutationVariables>;
+export const InsertOrganizationMemberInviteDocument = gql`
+    mutation insertOrganizationMemberInvite($organizationMemberInvite: organization_member_invites_insert_input!) {
+  insertOrganizationMemberInvite(object: $organizationMemberInvite) {
+    id
+  }
+}
+    `;
+export type InsertOrganizationMemberInviteMutationFn = Apollo.MutationFunction<InsertOrganizationMemberInviteMutation, InsertOrganizationMemberInviteMutationVariables>;
+
+/**
+ * __useInsertOrganizationMemberInviteMutation__
+ *
+ * To run a mutation, you first call `useInsertOrganizationMemberInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertOrganizationMemberInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertOrganizationMemberInviteMutation, { data, loading, error }] = useInsertOrganizationMemberInviteMutation({
+ *   variables: {
+ *      organizationMemberInvite: // value for 'organizationMemberInvite'
+ *   },
+ * });
+ */
+export function useInsertOrganizationMemberInviteMutation(baseOptions?: Apollo.MutationHookOptions<InsertOrganizationMemberInviteMutation, InsertOrganizationMemberInviteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertOrganizationMemberInviteMutation, InsertOrganizationMemberInviteMutationVariables>(InsertOrganizationMemberInviteDocument, options);
+      }
+export type InsertOrganizationMemberInviteMutationHookResult = ReturnType<typeof useInsertOrganizationMemberInviteMutation>;
+export type InsertOrganizationMemberInviteMutationResult = Apollo.MutationResult<InsertOrganizationMemberInviteMutation>;
+export type InsertOrganizationMemberInviteMutationOptions = Apollo.BaseMutationOptions<InsertOrganizationMemberInviteMutation, InsertOrganizationMemberInviteMutationVariables>;
+export const OrganizationMemberInviteAcceptDocument = gql`
+    mutation organizationMemberInviteAccept($inviteId: uuid!) {
+  organizationMemberInviteAccept(args: {id: $inviteId}) {
+    __typename
+  }
+}
+    `;
+export type OrganizationMemberInviteAcceptMutationFn = Apollo.MutationFunction<OrganizationMemberInviteAcceptMutation, OrganizationMemberInviteAcceptMutationVariables>;
+
+/**
+ * __useOrganizationMemberInviteAcceptMutation__
+ *
+ * To run a mutation, you first call `useOrganizationMemberInviteAcceptMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useOrganizationMemberInviteAcceptMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [organizationMemberInviteAcceptMutation, { data, loading, error }] = useOrganizationMemberInviteAcceptMutation({
+ *   variables: {
+ *      inviteId: // value for 'inviteId'
+ *   },
+ * });
+ */
+export function useOrganizationMemberInviteAcceptMutation(baseOptions?: Apollo.MutationHookOptions<OrganizationMemberInviteAcceptMutation, OrganizationMemberInviteAcceptMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<OrganizationMemberInviteAcceptMutation, OrganizationMemberInviteAcceptMutationVariables>(OrganizationMemberInviteAcceptDocument, options);
+      }
+export type OrganizationMemberInviteAcceptMutationHookResult = ReturnType<typeof useOrganizationMemberInviteAcceptMutation>;
+export type OrganizationMemberInviteAcceptMutationResult = Apollo.MutationResult<OrganizationMemberInviteAcceptMutation>;
+export type OrganizationMemberInviteAcceptMutationOptions = Apollo.BaseMutationOptions<OrganizationMemberInviteAcceptMutation, OrganizationMemberInviteAcceptMutationVariables>;
+export const OrganizationMemberInvitesDocument = gql`
+    query organizationMemberInvites($userId: uuid!) {
+  organizationMemberInvites(
+    where: {user: {id: {_eq: $userId}}}
+    order_by: {createdAt: desc}
+  ) {
+    id
+    email
+    role
+    createdAt
+    updateAt
+    organization {
+      name
+      slug
+    }
+  }
+}
+    `;
+
+/**
+ * __useOrganizationMemberInvitesQuery__
+ *
+ * To run a query within a React component, call `useOrganizationMemberInvitesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOrganizationMemberInvitesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOrganizationMemberInvitesQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useOrganizationMemberInvitesQuery(baseOptions: Apollo.QueryHookOptions<OrganizationMemberInvitesQuery, OrganizationMemberInvitesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<OrganizationMemberInvitesQuery, OrganizationMemberInvitesQueryVariables>(OrganizationMemberInvitesDocument, options);
+      }
+export function useOrganizationMemberInvitesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OrganizationMemberInvitesQuery, OrganizationMemberInvitesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<OrganizationMemberInvitesQuery, OrganizationMemberInvitesQueryVariables>(OrganizationMemberInvitesDocument, options);
+        }
+export type OrganizationMemberInvitesQueryHookResult = ReturnType<typeof useOrganizationMemberInvitesQuery>;
+export type OrganizationMemberInvitesLazyQueryHookResult = ReturnType<typeof useOrganizationMemberInvitesLazyQuery>;
+export type OrganizationMemberInvitesQueryResult = Apollo.QueryResult<OrganizationMemberInvitesQuery, OrganizationMemberInvitesQueryVariables>;
+export function refetchOrganizationMemberInvitesQuery(variables: OrganizationMemberInvitesQueryVariables) {
+      return { query: OrganizationMemberInvitesDocument, variables: variables }
+    }
+export const OrganizationNewRequestsDocument = gql`
+    query organizationNewRequests($userID: uuid!) {
+  organizationNewRequests(where: {userID: {_eq: $userID}}) {
+    id
+    sessionID
+  }
+}
+    `;
+
+/**
+ * __useOrganizationNewRequestsQuery__
+ *
+ * To run a query within a React component, call `useOrganizationNewRequestsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOrganizationNewRequestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOrganizationNewRequestsQuery({
+ *   variables: {
+ *      userID: // value for 'userID'
+ *   },
+ * });
+ */
+export function useOrganizationNewRequestsQuery(baseOptions: Apollo.QueryHookOptions<OrganizationNewRequestsQuery, OrganizationNewRequestsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<OrganizationNewRequestsQuery, OrganizationNewRequestsQueryVariables>(OrganizationNewRequestsDocument, options);
+      }
+export function useOrganizationNewRequestsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OrganizationNewRequestsQuery, OrganizationNewRequestsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<OrganizationNewRequestsQuery, OrganizationNewRequestsQueryVariables>(OrganizationNewRequestsDocument, options);
+        }
+export type OrganizationNewRequestsQueryHookResult = ReturnType<typeof useOrganizationNewRequestsQuery>;
+export type OrganizationNewRequestsLazyQueryHookResult = ReturnType<typeof useOrganizationNewRequestsLazyQuery>;
+export type OrganizationNewRequestsQueryResult = Apollo.QueryResult<OrganizationNewRequestsQuery, OrganizationNewRequestsQueryVariables>;
+export function refetchOrganizationNewRequestsQuery(variables: OrganizationNewRequestsQueryVariables) {
+      return { query: OrganizationNewRequestsDocument, variables: variables }
+    }
+export const PostOrganizationRequestDocument = gql`
+    mutation postOrganizationRequest($sessionID: String!) {
+  billingPostOrganizationRequest(sessionID: $sessionID) {
+    Status
+    Slug
+    ClientSecret
+  }
+}
+    `;
+export type PostOrganizationRequestMutationFn = Apollo.MutationFunction<PostOrganizationRequestMutation, PostOrganizationRequestMutationVariables>;
+
+/**
+ * __usePostOrganizationRequestMutation__
+ *
+ * To run a mutation, you first call `usePostOrganizationRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `usePostOrganizationRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [postOrganizationRequestMutation, { data, loading, error }] = usePostOrganizationRequestMutation({
+ *   variables: {
+ *      sessionID: // value for 'sessionID'
+ *   },
+ * });
+ */
+export function usePostOrganizationRequestMutation(baseOptions?: Apollo.MutationHookOptions<PostOrganizationRequestMutation, PostOrganizationRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<PostOrganizationRequestMutation, PostOrganizationRequestMutationVariables>(PostOrganizationRequestDocument, options);
+      }
+export type PostOrganizationRequestMutationHookResult = ReturnType<typeof usePostOrganizationRequestMutation>;
+export type PostOrganizationRequestMutationResult = Apollo.MutationResult<PostOrganizationRequestMutation>;
+export type PostOrganizationRequestMutationOptions = Apollo.BaseMutationOptions<PostOrganizationRequestMutation, PostOrganizationRequestMutationVariables>;
+export const UpdateOrganizationDocument = gql`
+    mutation updateOrganization($id: uuid!, $organization: organizations_set_input!) {
+  updateOrganization(pk_columns: {id: $id}, _set: $organization) {
+    id
+    name
+  }
+}
+    `;
+export type UpdateOrganizationMutationFn = Apollo.MutationFunction<UpdateOrganizationMutation, UpdateOrganizationMutationVariables>;
+
+/**
+ * __useUpdateOrganizationMutation__
+ *
+ * To run a mutation, you first call `useUpdateOrganizationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOrganizationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOrganizationMutation, { data, loading, error }] = useUpdateOrganizationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      organization: // value for 'organization'
+ *   },
+ * });
+ */
+export function useUpdateOrganizationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOrganizationMutation, UpdateOrganizationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateOrganizationMutation, UpdateOrganizationMutationVariables>(UpdateOrganizationDocument, options);
+      }
+export type UpdateOrganizationMutationHookResult = ReturnType<typeof useUpdateOrganizationMutation>;
+export type UpdateOrganizationMutationResult = Apollo.MutationResult<UpdateOrganizationMutation>;
+export type UpdateOrganizationMutationOptions = Apollo.BaseMutationOptions<UpdateOrganizationMutation, UpdateOrganizationMutationVariables>;
+export const UpdateOrganizationMemberInviteDocument = gql`
+    mutation updateOrganizationMemberInvite($inviteId: uuid!, $role: organization_members_role_enum!) {
+  updateOrganizationMemberInvite(pk_columns: {id: $inviteId}, _set: {role: $role}) {
+    id
+  }
+}
+    `;
+export type UpdateOrganizationMemberInviteMutationFn = Apollo.MutationFunction<UpdateOrganizationMemberInviteMutation, UpdateOrganizationMemberInviteMutationVariables>;
+
+/**
+ * __useUpdateOrganizationMemberInviteMutation__
+ *
+ * To run a mutation, you first call `useUpdateOrganizationMemberInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOrganizationMemberInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOrganizationMemberInviteMutation, { data, loading, error }] = useUpdateOrganizationMemberInviteMutation({
+ *   variables: {
+ *      inviteId: // value for 'inviteId'
+ *      role: // value for 'role'
+ *   },
+ * });
+ */
+export function useUpdateOrganizationMemberInviteMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOrganizationMemberInviteMutation, UpdateOrganizationMemberInviteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateOrganizationMemberInviteMutation, UpdateOrganizationMemberInviteMutationVariables>(UpdateOrganizationMemberInviteDocument, options);
+      }
+export type UpdateOrganizationMemberInviteMutationHookResult = ReturnType<typeof useUpdateOrganizationMemberInviteMutation>;
+export type UpdateOrganizationMemberInviteMutationResult = Apollo.MutationResult<UpdateOrganizationMemberInviteMutation>;
+export type UpdateOrganizationMemberInviteMutationOptions = Apollo.BaseMutationOptions<UpdateOrganizationMemberInviteMutation, UpdateOrganizationMemberInviteMutationVariables>;
+export const UpdateOrganizationMemberDocument = gql`
+    mutation updateOrganizationMember($memberId: uuid!, $role: organization_members_role_enum!) {
+  updateOrganizationMember(pk_columns: {id: $memberId}, _set: {role: $role}) {
+    id
+  }
+}
+    `;
+export type UpdateOrganizationMemberMutationFn = Apollo.MutationFunction<UpdateOrganizationMemberMutation, UpdateOrganizationMemberMutationVariables>;
+
+/**
+ * __useUpdateOrganizationMemberMutation__
+ *
+ * To run a mutation, you first call `useUpdateOrganizationMemberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOrganizationMemberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOrganizationMemberMutation, { data, loading, error }] = useUpdateOrganizationMemberMutation({
+ *   variables: {
+ *      memberId: // value for 'memberId'
+ *      role: // value for 'role'
+ *   },
+ * });
+ */
+export function useUpdateOrganizationMemberMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOrganizationMemberMutation, UpdateOrganizationMemberMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateOrganizationMemberMutation, UpdateOrganizationMemberMutationVariables>(UpdateOrganizationMemberDocument, options);
+      }
+export type UpdateOrganizationMemberMutationHookResult = ReturnType<typeof useUpdateOrganizationMemberMutation>;
+export type UpdateOrganizationMemberMutationResult = Apollo.MutationResult<UpdateOrganizationMemberMutation>;
+export type UpdateOrganizationMemberMutationOptions = Apollo.BaseMutationOptions<UpdateOrganizationMemberMutation, UpdateOrganizationMemberMutationVariables>;
+export const UpdateOrganizationSpendingNotificationDocument = gql`
+    mutation updateOrganizationSpendingNotification($id: uuid!, $threshold: Int!) {
+  updateOrganization(pk_columns: {id: $id}, _set: {threshold: $threshold}) {
+    threshold
+  }
+}
+    `;
+export type UpdateOrganizationSpendingNotificationMutationFn = Apollo.MutationFunction<UpdateOrganizationSpendingNotificationMutation, UpdateOrganizationSpendingNotificationMutationVariables>;
+
+/**
+ * __useUpdateOrganizationSpendingNotificationMutation__
+ *
+ * To run a mutation, you first call `useUpdateOrganizationSpendingNotificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOrganizationSpendingNotificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOrganizationSpendingNotificationMutation, { data, loading, error }] = useUpdateOrganizationSpendingNotificationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      threshold: // value for 'threshold'
+ *   },
+ * });
+ */
+export function useUpdateOrganizationSpendingNotificationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOrganizationSpendingNotificationMutation, UpdateOrganizationSpendingNotificationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateOrganizationSpendingNotificationMutation, UpdateOrganizationSpendingNotificationMutationVariables>(UpdateOrganizationSpendingNotificationDocument, options);
+      }
+export type UpdateOrganizationSpendingNotificationMutationHookResult = ReturnType<typeof useUpdateOrganizationSpendingNotificationMutation>;
+export type UpdateOrganizationSpendingNotificationMutationResult = Apollo.MutationResult<UpdateOrganizationSpendingNotificationMutation>;
+export type UpdateOrganizationSpendingNotificationMutationOptions = Apollo.BaseMutationOptions<UpdateOrganizationSpendingNotificationMutation, UpdateOrganizationSpendingNotificationMutationVariables>;
 export const DeletePaymentMethodDocument = gql`
     mutation deletePaymentMethod($paymentMethodId: uuid!) {
   deletePaymentMethod(id: $paymentMethodId) {
@@ -24733,6 +33663,85 @@ export function useSetNewDefaultPaymentMethodMutation(baseOptions?: Apollo.Mutat
 export type SetNewDefaultPaymentMethodMutationHookResult = ReturnType<typeof useSetNewDefaultPaymentMethodMutation>;
 export type SetNewDefaultPaymentMethodMutationResult = Apollo.MutationResult<SetNewDefaultPaymentMethodMutation>;
 export type SetNewDefaultPaymentMethodMutationOptions = Apollo.BaseMutationOptions<SetNewDefaultPaymentMethodMutation, SetNewDefaultPaymentMethodMutationVariables>;
+export const DeleteAnnouncementReadDocument = gql`
+    mutation deleteAnnouncementRead($id: uuid!) {
+  deleteAnnouncementRead(id: $id) {
+    announcementID
+  }
+}
+    `;
+export type DeleteAnnouncementReadMutationFn = Apollo.MutationFunction<DeleteAnnouncementReadMutation, DeleteAnnouncementReadMutationVariables>;
+
+/**
+ * __useDeleteAnnouncementReadMutation__
+ *
+ * To run a mutation, you first call `useDeleteAnnouncementReadMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAnnouncementReadMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAnnouncementReadMutation, { data, loading, error }] = useDeleteAnnouncementReadMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteAnnouncementReadMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAnnouncementReadMutation, DeleteAnnouncementReadMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteAnnouncementReadMutation, DeleteAnnouncementReadMutationVariables>(DeleteAnnouncementReadDocument, options);
+      }
+export type DeleteAnnouncementReadMutationHookResult = ReturnType<typeof useDeleteAnnouncementReadMutation>;
+export type DeleteAnnouncementReadMutationResult = Apollo.MutationResult<DeleteAnnouncementReadMutation>;
+export type DeleteAnnouncementReadMutationOptions = Apollo.BaseMutationOptions<DeleteAnnouncementReadMutation, DeleteAnnouncementReadMutationVariables>;
+export const GetAnnouncementsDocument = gql`
+    query getAnnouncements {
+  announcements(
+    order_by: {createdAt: desc}
+    where: {_or: [{expiresAt: {_is_null: true}}, {expiresAt: {_gt: now}}]}
+  ) {
+    id
+    href
+    content
+    createdAt
+    read {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAnnouncementsQuery__
+ *
+ * To run a query within a React component, call `useGetAnnouncementsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAnnouncementsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAnnouncementsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAnnouncementsQuery(baseOptions?: Apollo.QueryHookOptions<GetAnnouncementsQuery, GetAnnouncementsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAnnouncementsQuery, GetAnnouncementsQueryVariables>(GetAnnouncementsDocument, options);
+      }
+export function useGetAnnouncementsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAnnouncementsQuery, GetAnnouncementsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAnnouncementsQuery, GetAnnouncementsQueryVariables>(GetAnnouncementsDocument, options);
+        }
+export type GetAnnouncementsQueryHookResult = ReturnType<typeof useGetAnnouncementsQuery>;
+export type GetAnnouncementsLazyQueryHookResult = ReturnType<typeof useGetAnnouncementsLazyQuery>;
+export type GetAnnouncementsQueryResult = Apollo.QueryResult<GetAnnouncementsQuery, GetAnnouncementsQueryVariables>;
+export function refetchGetAnnouncementsQuery(variables?: GetAnnouncementsQueryVariables) {
+      return { query: GetAnnouncementsDocument, variables: variables }
+    }
 export const GetPlansDocument = gql`
     query GetPlans($where: plans_bool_exp) {
   plans(where: $where) {
@@ -24774,6 +33783,44 @@ export type GetPlansQueryResult = Apollo.QueryResult<GetPlansQuery, GetPlansQuer
 export function refetchGetPlansQuery(variables?: GetPlansQueryVariables) {
       return { query: GetPlansDocument, variables: variables }
     }
+export const GetRecommendedSoftwareVersionsDocument = gql`
+    query getRecommendedSoftwareVersions {
+  softwareVersions {
+    software
+    version
+  }
+}
+    `;
+
+/**
+ * __useGetRecommendedSoftwareVersionsQuery__
+ *
+ * To run a query within a React component, call `useGetRecommendedSoftwareVersionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRecommendedSoftwareVersionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRecommendedSoftwareVersionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetRecommendedSoftwareVersionsQuery(baseOptions?: Apollo.QueryHookOptions<GetRecommendedSoftwareVersionsQuery, GetRecommendedSoftwareVersionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRecommendedSoftwareVersionsQuery, GetRecommendedSoftwareVersionsQueryVariables>(GetRecommendedSoftwareVersionsDocument, options);
+      }
+export function useGetRecommendedSoftwareVersionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRecommendedSoftwareVersionsQuery, GetRecommendedSoftwareVersionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRecommendedSoftwareVersionsQuery, GetRecommendedSoftwareVersionsQueryVariables>(GetRecommendedSoftwareVersionsDocument, options);
+        }
+export type GetRecommendedSoftwareVersionsQueryHookResult = ReturnType<typeof useGetRecommendedSoftwareVersionsQuery>;
+export type GetRecommendedSoftwareVersionsLazyQueryHookResult = ReturnType<typeof useGetRecommendedSoftwareVersionsLazyQuery>;
+export type GetRecommendedSoftwareVersionsQueryResult = Apollo.QueryResult<GetRecommendedSoftwareVersionsQuery, GetRecommendedSoftwareVersionsQueryVariables>;
+export function refetchGetRecommendedSoftwareVersionsQuery(variables?: GetRecommendedSoftwareVersionsQueryVariables) {
+      return { query: GetRecommendedSoftwareVersionsDocument, variables: variables }
+    }
 export const GetSoftwareVersionsDocument = gql`
     query getSoftwareVersions($software: software_type_enum!) {
   softwareVersions(where: {software: {_eq: $software}}, order_by: {version: desc}) {
@@ -24813,6 +33860,39 @@ export type GetSoftwareVersionsQueryResult = Apollo.QueryResult<GetSoftwareVersi
 export function refetchGetSoftwareVersionsQuery(variables: GetSoftwareVersionsQueryVariables) {
       return { query: GetSoftwareVersionsDocument, variables: variables }
     }
+export const InsertAnnouncementReadDocument = gql`
+    mutation insertAnnouncementRead($announcementID: uuid!) {
+  insertAnnouncementRead(object: {announcementID: $announcementID}) {
+    id
+  }
+}
+    `;
+export type InsertAnnouncementReadMutationFn = Apollo.MutationFunction<InsertAnnouncementReadMutation, InsertAnnouncementReadMutationVariables>;
+
+/**
+ * __useInsertAnnouncementReadMutation__
+ *
+ * To run a mutation, you first call `useInsertAnnouncementReadMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertAnnouncementReadMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertAnnouncementReadMutation, { data, loading, error }] = useInsertAnnouncementReadMutation({
+ *   variables: {
+ *      announcementID: // value for 'announcementID'
+ *   },
+ * });
+ */
+export function useInsertAnnouncementReadMutation(baseOptions?: Apollo.MutationHookOptions<InsertAnnouncementReadMutation, InsertAnnouncementReadMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertAnnouncementReadMutation, InsertAnnouncementReadMutationVariables>(InsertAnnouncementReadDocument, options);
+      }
+export type InsertAnnouncementReadMutationHookResult = ReturnType<typeof useInsertAnnouncementReadMutation>;
+export type InsertAnnouncementReadMutationResult = Apollo.MutationResult<InsertAnnouncementReadMutation>;
+export type InsertAnnouncementReadMutationOptions = Apollo.BaseMutationOptions<InsertAnnouncementReadMutation, InsertAnnouncementReadMutationVariables>;
 export const RestoreApplicationDatabaseDocument = gql`
     mutation RestoreApplicationDatabase($appId: String!, $backupId: String!) {
   restoreApplicationDatabase(appID: $appId, backupID: $backupId)
@@ -24964,8 +34044,8 @@ export type GetRemoteAppMetricsQueryResult = Apollo.QueryResult<GetRemoteAppMetr
 export function refetchGetRemoteAppMetricsQuery(variables?: GetRemoteAppMetricsQueryVariables) {
       return { query: GetRemoteAppMetricsDocument, variables: variables }
     }
-export const RemoteAppGetUsersDocument = gql`
-    query remoteAppGetUsers($where: users_bool_exp!, $limit: Int!, $offset: Int!) {
+export const RemoteAppGetUsersAndAuthRolesDocument = gql`
+    query remoteAppGetUsersAndAuthRoles($where: users_bool_exp!, $limit: Int!, $offset: Int!) {
   users(
     where: $where
     limit: $limit
@@ -24984,20 +34064,23 @@ export const RemoteAppGetUsersDocument = gql`
       count
     }
   }
+  authRoles {
+    role
+  }
 }
     ${RemoteAppGetUsersFragmentDoc}`;
 
 /**
- * __useRemoteAppGetUsersQuery__
+ * __useRemoteAppGetUsersAndAuthRolesQuery__
  *
- * To run a query within a React component, call `useRemoteAppGetUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useRemoteAppGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useRemoteAppGetUsersAndAuthRolesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRemoteAppGetUsersAndAuthRolesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useRemoteAppGetUsersQuery({
+ * const { data, loading, error } = useRemoteAppGetUsersAndAuthRolesQuery({
  *   variables: {
  *      where: // value for 'where'
  *      limit: // value for 'limit'
@@ -25005,19 +34088,19 @@ export const RemoteAppGetUsersDocument = gql`
  *   },
  * });
  */
-export function useRemoteAppGetUsersQuery(baseOptions: Apollo.QueryHookOptions<RemoteAppGetUsersQuery, RemoteAppGetUsersQueryVariables>) {
+export function useRemoteAppGetUsersAndAuthRolesQuery(baseOptions: Apollo.QueryHookOptions<RemoteAppGetUsersAndAuthRolesQuery, RemoteAppGetUsersAndAuthRolesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<RemoteAppGetUsersQuery, RemoteAppGetUsersQueryVariables>(RemoteAppGetUsersDocument, options);
+        return Apollo.useQuery<RemoteAppGetUsersAndAuthRolesQuery, RemoteAppGetUsersAndAuthRolesQueryVariables>(RemoteAppGetUsersAndAuthRolesDocument, options);
       }
-export function useRemoteAppGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RemoteAppGetUsersQuery, RemoteAppGetUsersQueryVariables>) {
+export function useRemoteAppGetUsersAndAuthRolesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RemoteAppGetUsersAndAuthRolesQuery, RemoteAppGetUsersAndAuthRolesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<RemoteAppGetUsersQuery, RemoteAppGetUsersQueryVariables>(RemoteAppGetUsersDocument, options);
+          return Apollo.useLazyQuery<RemoteAppGetUsersAndAuthRolesQuery, RemoteAppGetUsersAndAuthRolesQueryVariables>(RemoteAppGetUsersAndAuthRolesDocument, options);
         }
-export type RemoteAppGetUsersQueryHookResult = ReturnType<typeof useRemoteAppGetUsersQuery>;
-export type RemoteAppGetUsersLazyQueryHookResult = ReturnType<typeof useRemoteAppGetUsersLazyQuery>;
-export type RemoteAppGetUsersQueryResult = Apollo.QueryResult<RemoteAppGetUsersQuery, RemoteAppGetUsersQueryVariables>;
-export function refetchRemoteAppGetUsersQuery(variables: RemoteAppGetUsersQueryVariables) {
-      return { query: RemoteAppGetUsersDocument, variables: variables }
+export type RemoteAppGetUsersAndAuthRolesQueryHookResult = ReturnType<typeof useRemoteAppGetUsersAndAuthRolesQuery>;
+export type RemoteAppGetUsersAndAuthRolesLazyQueryHookResult = ReturnType<typeof useRemoteAppGetUsersAndAuthRolesLazyQuery>;
+export type RemoteAppGetUsersAndAuthRolesQueryResult = Apollo.QueryResult<RemoteAppGetUsersAndAuthRolesQuery, RemoteAppGetUsersAndAuthRolesQueryVariables>;
+export function refetchRemoteAppGetUsersAndAuthRolesQuery(variables: RemoteAppGetUsersAndAuthRolesQueryVariables) {
+      return { query: RemoteAppGetUsersAndAuthRolesDocument, variables: variables }
     }
 export const RemoteAppGetUsersCustomDocument = gql`
     query remoteAppGetUsersCustom($where: users_bool_exp!, $limit: Int!, $offset: Int!) {
@@ -25377,6 +34460,7 @@ export const GetRunServiceDocument = gql`
       name
       image {
         image
+        pullCredentials
       }
       command
       resources {
@@ -25390,6 +34474,9 @@ export const GetRunServiceDocument = gql`
           capacity
         }
         replicas
+        autoscaler {
+          maxReplicas
+        }
       }
       environment {
         name
@@ -25445,32 +34532,7 @@ export const GetRunServicesDocument = gql`
       updatedAt
       subdomain
       config(resolve: $resolve) {
-        name
-        image {
-          image
-        }
-        command
-        resources {
-          compute {
-            cpu
-            memory
-          }
-          storage {
-            name
-            path
-            capacity
-          }
-          replicas
-        }
-        environment {
-          name
-          value
-        }
-        ports {
-          port
-          type
-          publish
-        }
+        ...RunServiceConfig
       }
     }
     runServices_aggregate {
@@ -25480,7 +34542,7 @@ export const GetRunServicesDocument = gql`
     }
   }
 }
-    `;
+    ${RunServiceConfigFragmentDoc}`;
 
 /**
  * __useGetRunServicesQuery__
@@ -25515,44 +34577,144 @@ export type GetRunServicesQueryResult = Apollo.QueryResult<GetRunServicesQuery, 
 export function refetchGetRunServicesQuery(variables: GetRunServicesQueryVariables) {
       return { query: GetRunServicesDocument, variables: variables }
     }
-export const InsertRunServiceDocument = gql`
-    mutation insertRunService($object: run_service_insert_input!) {
-  insertRunService(object: $object) {
-    id
-    subdomain
+export const GetLocalRunServiceConfigsDocument = gql`
+    query getLocalRunServiceConfigs($appID: uuid!, $resolve: Boolean!) {
+  runServiceConfigs(appID: $appID, resolve: $resolve) {
+    serviceID
+    config {
+      ...RunServiceConfig
+    }
   }
 }
-    `;
-export type InsertRunServiceMutationFn = Apollo.MutationFunction<InsertRunServiceMutation, InsertRunServiceMutationVariables>;
+    ${RunServiceConfigFragmentDoc}`;
 
 /**
- * __useInsertRunServiceMutation__
+ * __useGetLocalRunServiceConfigsQuery__
  *
- * To run a mutation, you first call `useInsertRunServiceMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertRunServiceMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
+ * To run a query within a React component, call `useGetLocalRunServiceConfigsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLocalRunServiceConfigsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
  *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const [insertRunServiceMutation, { data, loading, error }] = useInsertRunServiceMutation({
+ * const { data, loading, error } = useGetLocalRunServiceConfigsQuery({
  *   variables: {
- *      object: // value for 'object'
+ *      appID: // value for 'appID'
+ *      resolve: // value for 'resolve'
  *   },
  * });
  */
-export function useInsertRunServiceMutation(baseOptions?: Apollo.MutationHookOptions<InsertRunServiceMutation, InsertRunServiceMutationVariables>) {
+export function useGetLocalRunServiceConfigsQuery(baseOptions: Apollo.QueryHookOptions<GetLocalRunServiceConfigsQuery, GetLocalRunServiceConfigsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InsertRunServiceMutation, InsertRunServiceMutationVariables>(InsertRunServiceDocument, options);
+        return Apollo.useQuery<GetLocalRunServiceConfigsQuery, GetLocalRunServiceConfigsQueryVariables>(GetLocalRunServiceConfigsDocument, options);
       }
-export type InsertRunServiceMutationHookResult = ReturnType<typeof useInsertRunServiceMutation>;
-export type InsertRunServiceMutationResult = Apollo.MutationResult<InsertRunServiceMutation>;
-export type InsertRunServiceMutationOptions = Apollo.BaseMutationOptions<InsertRunServiceMutation, InsertRunServiceMutationVariables>;
+export function useGetLocalRunServiceConfigsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLocalRunServiceConfigsQuery, GetLocalRunServiceConfigsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLocalRunServiceConfigsQuery, GetLocalRunServiceConfigsQueryVariables>(GetLocalRunServiceConfigsDocument, options);
+        }
+export type GetLocalRunServiceConfigsQueryHookResult = ReturnType<typeof useGetLocalRunServiceConfigsQuery>;
+export type GetLocalRunServiceConfigsLazyQueryHookResult = ReturnType<typeof useGetLocalRunServiceConfigsLazyQuery>;
+export type GetLocalRunServiceConfigsQueryResult = Apollo.QueryResult<GetLocalRunServiceConfigsQuery, GetLocalRunServiceConfigsQueryVariables>;
+export function refetchGetLocalRunServiceConfigsQuery(variables: GetLocalRunServiceConfigsQueryVariables) {
+      return { query: GetLocalRunServiceConfigsDocument, variables: variables }
+    }
+export const GetRunServicesRateLimitDocument = gql`
+    query getRunServicesRateLimit($appID: uuid!, $resolve: Boolean!) {
+  app(id: $appID) {
+    runServices {
+      id
+      createdAt
+      updatedAt
+      subdomain
+      config(resolve: $resolve) {
+        ...RunServiceRateLimit
+      }
+    }
+  }
+}
+    ${RunServiceRateLimitFragmentDoc}`;
+
+/**
+ * __useGetRunServicesRateLimitQuery__
+ *
+ * To run a query within a React component, call `useGetRunServicesRateLimitQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRunServicesRateLimitQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRunServicesRateLimitQuery({
+ *   variables: {
+ *      appID: // value for 'appID'
+ *      resolve: // value for 'resolve'
+ *   },
+ * });
+ */
+export function useGetRunServicesRateLimitQuery(baseOptions: Apollo.QueryHookOptions<GetRunServicesRateLimitQuery, GetRunServicesRateLimitQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRunServicesRateLimitQuery, GetRunServicesRateLimitQueryVariables>(GetRunServicesRateLimitDocument, options);
+      }
+export function useGetRunServicesRateLimitLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRunServicesRateLimitQuery, GetRunServicesRateLimitQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRunServicesRateLimitQuery, GetRunServicesRateLimitQueryVariables>(GetRunServicesRateLimitDocument, options);
+        }
+export type GetRunServicesRateLimitQueryHookResult = ReturnType<typeof useGetRunServicesRateLimitQuery>;
+export type GetRunServicesRateLimitLazyQueryHookResult = ReturnType<typeof useGetRunServicesRateLimitLazyQuery>;
+export type GetRunServicesRateLimitQueryResult = Apollo.QueryResult<GetRunServicesRateLimitQuery, GetRunServicesRateLimitQueryVariables>;
+export function refetchGetRunServicesRateLimitQuery(variables: GetRunServicesRateLimitQueryVariables) {
+      return { query: GetRunServicesRateLimitDocument, variables: variables }
+    }
+export const GetLocalRunServiceRateLimitDocument = gql`
+    query getLocalRunServiceRateLimit($appID: uuid!, $resolve: Boolean!) {
+  runServiceConfigs(appID: $appID, resolve: $resolve) {
+    serviceID
+    config {
+      ...RunServiceRateLimit
+    }
+  }
+}
+    ${RunServiceRateLimitFragmentDoc}`;
+
+/**
+ * __useGetLocalRunServiceRateLimitQuery__
+ *
+ * To run a query within a React component, call `useGetLocalRunServiceRateLimitQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLocalRunServiceRateLimitQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLocalRunServiceRateLimitQuery({
+ *   variables: {
+ *      appID: // value for 'appID'
+ *      resolve: // value for 'resolve'
+ *   },
+ * });
+ */
+export function useGetLocalRunServiceRateLimitQuery(baseOptions: Apollo.QueryHookOptions<GetLocalRunServiceRateLimitQuery, GetLocalRunServiceRateLimitQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLocalRunServiceRateLimitQuery, GetLocalRunServiceRateLimitQueryVariables>(GetLocalRunServiceRateLimitDocument, options);
+      }
+export function useGetLocalRunServiceRateLimitLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLocalRunServiceRateLimitQuery, GetLocalRunServiceRateLimitQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLocalRunServiceRateLimitQuery, GetLocalRunServiceRateLimitQueryVariables>(GetLocalRunServiceRateLimitDocument, options);
+        }
+export type GetLocalRunServiceRateLimitQueryHookResult = ReturnType<typeof useGetLocalRunServiceRateLimitQuery>;
+export type GetLocalRunServiceRateLimitLazyQueryHookResult = ReturnType<typeof useGetLocalRunServiceRateLimitLazyQuery>;
+export type GetLocalRunServiceRateLimitQueryResult = Apollo.QueryResult<GetLocalRunServiceRateLimitQuery, GetLocalRunServiceRateLimitQueryVariables>;
+export function refetchGetLocalRunServiceRateLimitQuery(variables: GetLocalRunServiceRateLimitQueryVariables) {
+      return { query: GetLocalRunServiceRateLimitDocument, variables: variables }
+    }
 export const InsertRunServiceConfigDocument = gql`
-    mutation insertRunServiceConfig($appID: uuid!, $serviceID: uuid!, $config: ConfigRunServiceConfigInsertInput!) {
-  insertRunServiceConfig(appID: $appID, serviceID: $serviceID, config: $config) {
-    name
+    mutation InsertRunServiceConfig($appID: uuid!, $config: ConfigRunServiceConfigInsertInput!) {
+  insertRunServiceConfig(appID: $appID, config: $config) {
+    serviceID
+    config {
+      name
+    }
   }
 }
     `;
@@ -25572,7 +34734,6 @@ export type InsertRunServiceConfigMutationFn = Apollo.MutationFunction<InsertRun
  * const [insertRunServiceConfigMutation, { data, loading, error }] = useInsertRunServiceConfigMutation({
  *   variables: {
  *      appID: // value for 'appID'
- *      serviceID: // value for 'serviceID'
  *      config: // value for 'config'
  *   },
  * });
@@ -25657,7 +34818,7 @@ export type UpdateRunServiceConfigMutationOptions = Apollo.BaseMutationOptions<U
 export const GetFreeAndActiveProjectsDocument = gql`
     query GetFreeAndActiveProjects($userId: uuid!) {
   freeAndActiveProjects: apps(
-    where: {creatorUserId: {_eq: $userId}, plan: {isFree: {_eq: true}}, desiredState: {_eq: 5}}
+    where: {creatorUserId: {_eq: $userId}, legacyPlan: {isFree: {_eq: true}}, desiredState: {_eq: 5}}
   ) {
     id
   }
@@ -25694,39 +34855,6 @@ export type GetFreeAndActiveProjectsQueryResult = Apollo.QueryResult<GetFreeAndA
 export function refetchGetFreeAndActiveProjectsQuery(variables: GetFreeAndActiveProjectsQueryVariables) {
       return { query: GetFreeAndActiveProjectsDocument, variables: variables }
     }
-export const InsertFeedbackOneDocument = gql`
-    mutation insertFeedbackOne($feedback: feedback_insert_input!) {
-  insertFeedbackOne(object: $feedback) {
-    id
-  }
-}
-    `;
-export type InsertFeedbackOneMutationFn = Apollo.MutationFunction<InsertFeedbackOneMutation, InsertFeedbackOneMutationVariables>;
-
-/**
- * __useInsertFeedbackOneMutation__
- *
- * To run a mutation, you first call `useInsertFeedbackOneMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertFeedbackOneMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertFeedbackOneMutation, { data, loading, error }] = useInsertFeedbackOneMutation({
- *   variables: {
- *      feedback: // value for 'feedback'
- *   },
- * });
- */
-export function useInsertFeedbackOneMutation(baseOptions?: Apollo.MutationHookOptions<InsertFeedbackOneMutation, InsertFeedbackOneMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InsertFeedbackOneMutation, InsertFeedbackOneMutationVariables>(InsertFeedbackOneDocument, options);
-      }
-export type InsertFeedbackOneMutationHookResult = ReturnType<typeof useInsertFeedbackOneMutation>;
-export type InsertFeedbackOneMutationResult = Apollo.MutationResult<InsertFeedbackOneMutation>;
-export type InsertFeedbackOneMutationOptions = Apollo.BaseMutationOptions<InsertFeedbackOneMutation, InsertFeedbackOneMutationVariables>;
 export const DeleteWorkspaceMemberInvitesDocument = gql`
     mutation deleteWorkspaceMemberInvites($id: uuid!) {
   deleteWorkspaceMemberInvites(where: {id: {_eq: $id}}) {

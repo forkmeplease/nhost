@@ -4,7 +4,7 @@ import { getDesignTokens } from '@/components/ui/v2/theme/getDesignTokens';
 import { COLOR_PREFERENCE_STORAGE_KEY } from '@/utils/constants/common';
 import type { DefaultToastOptions } from 'react-hot-toast';
 
-function getToastBackgroundColor() {
+export function getToastBackgroundColor() {
   const lightTokens = getDesignTokens('light');
   const darkTokens = getDesignTokens('dark');
 
@@ -83,7 +83,7 @@ export const AUTH_GRAVATAR_DEFAULT = [
 /**
  *  Default Gravatar Rating for newly signed up users.
  *  Gravatar allows users to self-rate their images so that they can indicate if an image is appropriate for a certain audience.
- *  @see https://en.gravatar.com/site/implement/images/
+ *  @see {@link: https://en.gravatar.com/site/implement/images/}
  */
 export const AUTH_GRAVATAR_RATING = [
   {

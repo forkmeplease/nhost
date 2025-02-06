@@ -1,9 +1,9 @@
 import { Container } from '@/components/layout/Container';
-import { ProjectLayout } from '@/components/layout/ProjectLayout';
 import { RetryableErrorBoundary } from '@/components/presentational/RetryableErrorBoundary';
 import { ActivityIndicator } from '@/components/ui/v2/ActivityIndicator';
 import { Chip } from '@/components/ui/v2/Chip';
 import { Text } from '@/components/ui/v2/Text';
+import { ProjectLayout } from '@/features/orgs/layout/ProjectLayout';
 import { BackupList } from '@/features/projects/backups/components/BackupList';
 import { UpgradeNotification } from '@/features/projects/common/components/UpgradeNotification';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
@@ -11,7 +11,7 @@ import type { ReactElement } from 'react';
 
 function BackupsContent() {
   const { currentProject } = useCurrentWorkspaceAndProject();
-  const isPlanFree = currentProject.plan.isFree;
+  const isPlanFree = currentProject.legacyPlan.isFree;
 
   if (isPlanFree) {
     return (
@@ -39,7 +39,8 @@ function BackupsContent() {
 
 export default function BackupsPage() {
   const { currentProject, loading } = useCurrentWorkspaceAndProject();
-  const { plan } = currentProject;
+
+  const legacyPlan = currentProject?.legacyPlan;
 
   if (loading) {
     return <ActivityIndicator label="Loading project..." delay={1000} />;
@@ -53,8 +54,8 @@ export default function BackupsPage() {
         </Text>
 
         <Chip
-          color={plan.isFree ? 'default' : 'success'}
-          label={plan.isFree ? 'Off' : 'Live'}
+          color={legacyPlan.isFree ? 'default' : 'success'}
+          label={legacyPlan.isFree ? 'Off' : 'Live'}
           size="small"
         />
       </div>

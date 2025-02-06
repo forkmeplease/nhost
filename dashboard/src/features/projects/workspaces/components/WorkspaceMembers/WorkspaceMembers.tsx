@@ -6,14 +6,14 @@ import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/
 import { useIsCurrentUserOwner } from '@/features/projects/common/hooks/useIsCurrentUserOwner';
 import { PendingWorkspaceMemberInvitation } from '@/features/projects/workspaces/components/PendingWorkspaceMemberInvitation';
 import { WorkspaceMember } from '@/features/projects/workspaces/components/WorkspaceMember';
-import { discordAnnounce } from '@/utils/discordAnnounce';
-import { getErrorMessage } from '@/utils/getErrorMessage';
-import { triggerToast } from '@/utils/toast';
 import {
   refetchGetWorkspaceMembersQuery,
   useGetWorkspaceMembersQuery,
   useInsertWorkspaceMemberInviteMutation,
 } from '@/utils/__generated__/graphql';
+import { discordAnnounce } from '@/utils/discordAnnounce';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
+import { triggerToast } from '@/utils/toast';
 import { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import validator from 'validator';
@@ -52,38 +52,42 @@ function WorkspaceMemberInviteForm({
       return;
     }
 
-    try {
-      await insertWorkspaceMemberInvite({
-        variables: {
-          workspaceMemberInvite: {
-            workspaceId: currentWorkspace.id,
-            email,
-            memberType: 'member',
+    await execPromiseWithErrorToast(
+      async () => {
+        await insertWorkspaceMemberInvite({
+          variables: {
+            workspaceMemberInvite: {
+              workspaceId: currentWorkspace.id,
+              email,
+              memberType: 'member',
+            },
           },
-        },
-      });
-      triggerToast(
-        `Invite to join workspace ${currentWorkspace.name} sent to ${email}.`,
-      );
-    } catch (error) {
-      await discordAnnounce(
-        `Error trying to invite to ${email} to ${currentWorkspace.name} ${error.message}`,
-      );
-      if (
-        error.message ===
-        'Foreign key violation. insert or update on table "workspace_member_invites" violates foreign key constraint "workspace_member_invites_email_fkey"'
-      ) {
-        setWorkspaceInviteError(
-          'You can only invite users that are already registered at Nhost. Ask the person to register an account, then invite them again.',
+        });
+
+        triggerToast(
+          `Invite to join workspace ${currentWorkspace.name} sent to ${email}.`,
         );
+      },
+      {
+        loadingMessage: 'Sending invite...',
+        successMessage: 'The invite has been sent successfully.',
+        errorMessage: `Error trying to invite to ${email} to ${currentWorkspace.name}`,
+        onError: async (error) => {
+          await discordAnnounce(
+            `Error trying to invite to ${email} to ${currentWorkspace.name} ${error.message}`,
+          );
 
-        return;
-      }
-
-      setWorkspaceInviteError(getErrorMessage(error, 'invite'));
-
-      return;
-    }
+          if (
+            error.message ===
+            'Foreign key violation. insert or update on table "workspace_member_invites" violates foreign key constraint "workspace_member_invites_email_fkey"'
+          ) {
+            setWorkspaceInviteError(
+              'You can only invite users that are already registered at Nhost. Ask the person to register an account, then invite them again.',
+            );
+          }
+        },
+      },
+    );
 
     setEmail('');
   };

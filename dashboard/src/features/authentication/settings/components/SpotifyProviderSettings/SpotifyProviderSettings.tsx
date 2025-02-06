@@ -1,3 +1,5 @@
+import { ApplyLocalSettingsDialog } from '@/components/common/ApplyLocalSettingsDialog';
+import { useDialog } from '@/components/common/DialogProvider';
 import { useUI } from '@/components/common/UIProvider';
 import { Form } from '@/components/form/Form';
 import { SettingsContainer } from '@/components/layout/SettingsContainer';
@@ -12,30 +14,35 @@ import {
   baseProviderValidationSchema,
 } from '@/features/authentication/settings/components/BaseProviderSettings';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import { generateAppServiceUrl } from '@/features/projects/common/utils/generateAppServiceUrl';
 import {
   GetSignInMethodsDocument,
   useGetSignInMethodsQuery,
   useUpdateConfigMutation,
 } from '@/generated/graphql';
-import { getToastStyleProps } from '@/utils/constants/settings';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
 import { copy } from '@/utils/copy';
-import { getServerError } from '@/utils/getServerError';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
 import { twMerge } from 'tailwind-merge';
 
 export default function SpotifyProviderSettings() {
+  const { openDialog } = useDialog();
+  const isPlatform = useIsPlatform();
   const { maintenanceActive } = useUI();
+  const localMimirClient = useLocalMimirClient();
   const { currentProject } = useCurrentWorkspaceAndProject();
   const [updateConfig] = useUpdateConfigMutation({
     refetchQueries: [GetSignInMethodsDocument],
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { data, loading, error } = useGetSignInMethodsQuery({
     variables: { appId: currentProject?.id },
-    fetchPolicy: 'cache-only',
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { clientId, clientSecret, enabled } =
@@ -50,6 +57,16 @@ export default function SpotifyProviderSettings() {
     },
     resolver: yupResolver(baseProviderValidationSchema),
   });
+
+  useEffect(() => {
+    if (!loading) {
+      form.reset({
+        clientId: clientId || '',
+        clientSecret: clientSecret || '',
+        enabled: enabled || false,
+      });
+    }
+  }, [loading, clientId, clientSecret, enabled, form]);
 
   if (loading) {
     return (
@@ -87,23 +104,30 @@ export default function SpotifyProviderSettings() {
       },
     });
 
-    try {
-      await toast.promise(
-        updateConfigPromise,
-        {
-          loading: `Spotify settings are being updated...`,
-          success: `Spotify settings have been updated successfully.`,
-          error: getServerError(
-            `An error occurred while trying to update the project's Spotify settings.`,
-          ),
-        },
-        getToastStyleProps(),
-      );
+    await execPromiseWithErrorToast(
+      async () => {
+        await updateConfigPromise;
+        form.reset(formValues);
 
-      form.reset(formValues);
-    } catch {
-      // Note: The toast will handle the error.
-    }
+        if (!isPlatform) {
+          openDialog({
+            title: 'Apply your changes',
+            component: <ApplyLocalSettingsDialog />,
+            props: {
+              PaperProps: {
+                className: 'max-w-2xl',
+              },
+            },
+          });
+        }
+      },
+      {
+        loadingMessage: 'Spotify settings are being updated...',
+        successMessage: 'Spotify settings have been updated successfully.',
+        errorMessage:
+          "An error occurred while trying to update the project's Spotify settings.",
+      },
+    );
   }
 
   return (
@@ -118,13 +142,13 @@ export default function SpotifyProviderSettings() {
               loading: formState.isSubmitting,
             },
           }}
-          docsLink="https://docs.nhost.io/platform/authentication/sign-in-with-spotify"
+          docsLink="https://docs.nhost.io/guides/auth/social/sign-in-spotify"
           docsTitle="how to sign in users with Spotify"
           icon="/assets/brands/spotify.svg"
           switchId="enabled"
           showSwitch
           className={twMerge(
-            'grid-flow-rows grid grid-cols-2 grid-rows-2 gap-y-4 gap-x-3 px-4 py-2',
+            'grid-flow-rows grid grid-cols-2 grid-rows-2 gap-x-3 gap-y-4 px-4 py-2',
             !authEnabled && 'hidden',
           )}
         >

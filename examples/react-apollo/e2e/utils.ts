@@ -12,8 +12,9 @@ import { baseURL, mailhogURL } from './config'
  * @returns The user data.
  */
 export async function getUserData(page: Page) {
-  const textContent = await page.locator('h1:has-text("User information") + div pre').textContent()
-  const userData = textContent ? JSON.parse(textContent) : {}
+  const userInformation = await page.locator('pre').nth(0).textContent()
+
+  const userData = userInformation ? JSON.parse(userInformation) : {}
 
   return userData as User
 }
@@ -34,15 +35,13 @@ export async function signUpWithEmailAndPassword({
   email: string
   password: string
 }) {
-  await page.getByRole('button', { name: /home/i }).click()
   await page.getByRole('link', { name: /sign up/i }).click()
-  await page.getByRole('button', { name: /continue with email \+ password/i }).click()
+  await page.getByRole('link', { name: /continue with email \+ password/i }).click()
   await page.getByPlaceholder(/first name/i).type(faker.name.firstName())
   await page.getByPlaceholder(/last name/i).type(faker.name.lastName())
-  await page.getByPlaceholder(/email address/i).type(email)
+  await page.getByPlaceholder(/email/i).type(email)
   await page.getByPlaceholder(/^password$/i).type(password)
-  await page.getByPlaceholder(/confirm password/i).type(password)
-  await page.getByRole('button', { name: /continue with email \+ password/i }).click()
+  await page.getByRole('button', { name: /sign up/i }).click()
 }
 
 /**
@@ -61,11 +60,10 @@ export async function signInWithEmailAndPassword({
   email: string
   password: string
 }) {
-  await page.getByRole('button', { name: /home/i }).click()
-  await page.getByRole('button', { name: /continue with email \+ password/i }).click()
-  await page.getByPlaceholder(/email address/i).type(email)
+  await page.getByRole('link', { name: /continue with email \+ password/i }).click()
+  await page.getByPlaceholder(/email/i).type(email)
   await page.getByPlaceholder(/password/i).type(password)
-  await page.getByRole('button', { name: /sign in/i }).click()
+  await page.getByRole('button', { name: 'Sign In', exact: true }).click()
 }
 
 /**
@@ -74,8 +72,7 @@ export async function signInWithEmailAndPassword({
  * @param page - The page to sign in with.
  */
 export async function signInAnonymously({ page }: { page: Page }) {
-  await page.getByRole('button', { name: /home/i }).click()
-  await page.getByRole('link', { name: /sign in anonymously/i }).click()
+  await page.getByRole('button', { name: /sign in anonymously/i }).click()
   await page.waitForURL(baseURL)
 }
 
@@ -86,11 +83,10 @@ export async function signInAnonymously({ page }: { page: Page }) {
  * @param email - The email address to sign up with.
  */
 export async function signUpWithEmailPasswordless({ page, email }: { page: Page; email: string }) {
-  await page.getByRole('button', { name: /home/i }).click()
   await page.getByRole('link', { name: /sign up/i }).click()
-  await page.getByRole('button', { name: /continue with a magic link/i }).click()
-  await page.getByPlaceholder(/email address/i).fill(email)
-  await page.getByRole('button', { name: /continue with email/i }).click()
+  await page.getByRole('link', { name: /continue with a magic link/i }).click()
+  await page.getByPlaceholder(/email/i).fill(email)
+  await page.getByRole('button', { name: /sign up/i }).click()
 }
 
 /**
@@ -119,7 +115,7 @@ export async function verifyMagicLink({
 
   await page
     .frameLocator('#preview-html')
-    .getByRole('link', { name: /sign in/i })
+    .getByRole('link', { name: /verify email/i })
     .click()
 
   const authenticatedPage = await authenticatedPagePromise
@@ -154,12 +150,12 @@ export async function resetPassword({
 
   await page
     .frameLocator('#preview-html')
-    .getByRole('link', { name: /reset password/i })
+    .getByRole('link', { name: /verify email/i })
     .click()
 
   const authenticatedPage = await authenticatedPagePromise
+  await authenticatedPage.getByRole('link', { name: /Verify/i }).click()
   await authenticatedPage.waitForLoadState()
-
   return authenticatedPage
 }
 
@@ -177,25 +173,31 @@ export async function verifyEmail({
   email,
   page,
   context,
-  linkText = /verify email/i
+  linkText = /verify email/i,
+  requestType
 }: {
   email: string
   page: Page
   context: BrowserContext
   linkText?: string | RegExp
+  requestType?: 'email-confirm-change' | 'email-verify' | 'password-reset' | 'signin-passwordless'
 }) {
   await page.goto(mailhogURL)
   await page.locator('.messages > .msglist-message', { hasText: email }).nth(0).click()
 
   // Based on: https://playwright.dev/docs/pages#handling-new-pages
-  const authenticatedPagePromise = context.waitForEvent('page')
-
+  const verifyEmailPagePromise = context.waitForEvent('page')
   await page.frameLocator('#preview-html').getByRole('link', { name: linkText }).click()
+  const verifyEmailPage = await verifyEmailPagePromise
+  await verifyEmailPage.waitForLoadState()
 
-  const authenticatedPage = await authenticatedPagePromise
-  await authenticatedPage.waitForLoadState()
+  if (requestType === 'email-confirm-change') {
+    return verifyEmailPage
+  }
 
-  return authenticatedPage
+  await verifyEmailPage.getByRole('link', { name: /verify/i }).click()
+  await verifyEmailPage.waitForLoadState()
+  return verifyEmailPage
 }
 
 /**

@@ -11,11 +11,11 @@ import { Text } from '@/components/ui/v2/Text';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
 import { DeploymentListItem } from '@/features/projects/deployments/components/DeploymentListItem';
 import { useGitHubModal } from '@/features/projects/git/common/hooks/useGitHubModal';
-import { getLastLiveDeployment } from '@/utils/helpers';
 import {
   useGetDeploymentsSubSubscription,
   useScheduledOrPendingDeploymentsSubSubscription,
 } from '@/utils/__generated__/graphql';
+import { getLastLiveDeployment } from '@/utils/helpers';
 import NavLink from 'next/link';
 import { Fragment } from 'react';
 
@@ -32,6 +32,7 @@ function OverviewDeploymentsTopBar() {
       <NavLink
         href={`/${currentWorkspace?.slug}/${currentProject?.slug}/deployments`}
         passHref
+        legacyBehavior
       >
         <Button variant="borderless" disabled={!isGitHubConnected}>
           View all
@@ -73,7 +74,7 @@ function OverviewDeploymentList() {
 
   if (!deployments?.length) {
     return (
-      <Box className="grid grid-flow-row items-center justify-items-center gap-5 overflow-hidden rounded-lg border-1 py-12 px-4 shadow-sm">
+      <Box className="grid grid-flow-row items-center justify-items-center gap-5 overflow-hidden rounded-lg border-1 px-4 py-12 shadow-sm">
         <RocketIcon
           strokeWidth={1}
           className="h-10 w-10"
@@ -90,7 +91,7 @@ function OverviewDeploymentList() {
         </div>
 
         <Box
-          className="mt-6 flex w-full max-w-sm flex-row place-content-between rounded-lg py-2 px-2"
+          className="mt-6 flex w-full max-w-sm flex-row place-content-between rounded-lg px-2 py-2"
           sx={{ backgroundColor: 'grey.200' }}
         >
           <Box
@@ -106,6 +107,7 @@ function OverviewDeploymentList() {
           <NavLink
             href={`/${currentWorkspace.slug}/${currentProject.slug}/settings/git`}
             passHref
+            legacyBehavior
           >
             <Button variant="borderless" size="small">
               Edit
@@ -172,7 +174,7 @@ export default function OverviewDeployments() {
     <div className="flex flex-col">
       <OverviewDeploymentsTopBar />
 
-      <Box className="grid grid-flow-row items-center justify-items-center gap-5 rounded-lg border-1 py-12 px-4 shadow-sm">
+      <Box className="grid grid-flow-row items-center justify-items-center gap-5 rounded-lg border-1 px-4 py-12 shadow-sm">
         <RocketIcon strokeWidth={1} className="h-10 w-10" />
 
         <div className="grid grid-flow-row gap-1">

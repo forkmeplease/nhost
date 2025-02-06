@@ -16,17 +16,20 @@ import { useAppClient } from '@/features/projects/common/hooks/useAppClient';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
 import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import {
-  defaultLocalBackendSlugs,
   defaultRemoteBackendSlugs,
   generateAppServiceUrl,
 } from '@/features/projects/common/utils/generateAppServiceUrl';
 import { EditJwtSecretForm } from '@/features/projects/environmentVariables/settings/components/EditJwtSecretForm';
 import { getJwtSecretsWithoutFalsyValues } from '@/features/projects/environmentVariables/settings/utils/getJwtSecretsWithoutFalsyValues';
-import { getHasuraConsoleServiceUrl } from '@/utils/env';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
 import { useGetEnvironmentVariablesQuery } from '@/utils/__generated__/graphql';
+import { getHasuraConsoleServiceUrl } from '@/utils/env';
 import { Fragment, useState } from 'react';
 
 export default function SystemEnvironmentVariableSettings() {
+  const isPlatform = useIsPlatform();
+  const localMimirClient = useLocalMimirClient();
+
   const [showAdminSecret, setShowAdminSecret] = useState(false);
   const [showWebhookSecret, setShowWebhookSecret] = useState(false);
 
@@ -35,7 +38,7 @@ export default function SystemEnvironmentVariableSettings() {
   const { currentProject } = useCurrentWorkspaceAndProject();
   const { data, loading, error } = useGetEnvironmentVariablesQuery({
     variables: { appId: currentProject?.id },
-    fetchPolicy: 'cache-only',
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { jwtSecrets, webhookSecret, adminSecret } = data?.config?.hasura || {};
@@ -46,8 +49,6 @@ export default function SystemEnvironmentVariableSettings() {
     jwtSecretsWithoutFalsyValues.length === 1
       ? JSON.stringify(jwtSecretsWithoutFalsyValues[0], null, 2)
       : JSON.stringify(jwtSecretsWithoutFalsyValues, null, 2);
-
-  const isPlatform = useIsPlatform();
 
   const appClient = useAppClient();
 
@@ -100,7 +101,7 @@ export default function SystemEnvironmentVariableSettings() {
 
   const systemEnvironmentVariables = [
     { key: 'NHOST_SUBDOMAIN', value: currentProject.subdomain },
-    { key: 'NHOST_REGION', value: currentProject.region.awsName },
+    { key: 'NHOST_REGION', value: currentProject.region.name },
     {
       key: 'NHOST_HASURA_URL',
       value:
@@ -110,7 +111,6 @@ export default function SystemEnvironmentVariableSettings() {
               currentProject?.subdomain,
               currentProject?.region,
               'hasura',
-              defaultLocalBackendSlugs,
               { ...defaultRemoteBackendSlugs, hasura: '/console' },
             ),
     },
@@ -126,7 +126,7 @@ export default function SystemEnvironmentVariableSettings() {
       description="System environment variables are automatically generated from the configuration file and your project's subdomain and region."
       docsLink="https://docs.nhost.io/platform/environment-variables#system-environment-variables"
       rootClassName="gap-0"
-      className="mt-2 mb-2.5 px-0"
+      className="mb-2.5 mt-2 px-0"
       slotProps={{ submitButton: { className: 'hidden' } }}
     >
       <Box className="grid grid-cols-3 gap-2 border-b-1 px-4 py-3">
@@ -219,7 +219,7 @@ export default function SystemEnvironmentVariableSettings() {
           </Fragment>
         ))}
 
-        <Divider component="li" className="!mt-4 !mb-2.5" />
+        <Divider component="li" className="!mb-2.5 !mt-4" />
 
         <ListItem.Root className="grid grid-cols-2 justify-start px-4 lg:grid-cols-3">
           <ListItem.Text>NHOST_JWT_SECRET</ListItem.Text>

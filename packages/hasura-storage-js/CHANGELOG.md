@@ -1,5 +1,59 @@
 # @nhost/hasura-storage-js
 
+## 2.7.0
+
+### Minor Changes
+
+- 5c6ff6e: fix: correct StorageErrorPayload TypeScript typing
+
+## 2.6.0
+
+### Minor Changes
+
+- 4148964: fix: stack overflow on storage client getHeaders method call
+
+## 2.5.1
+
+### Patch Changes
+
+- 8512a7f: fix: fix types StorageGetUrlParams and StorageGetPresignedUrlParams to include missing StorageHeadersParam
+
+## 2.5.0
+
+### Minor Changes
+
+- 304065a: feat: add `setHeaders` method enabling global configuration of storage, graphql, and functions client headers, alongside added support for passing specific headers with individual calls
+
+## 2.4.0
+
+### Minor Changes
+
+- 2505b2e: fix: fix headers sent with getPresignedUrl
+
+## 2.3.0
+
+### Minor Changes
+
+- d3d1424: feat: Add support for authenticated download of files
+
+### Patch Changes
+
+- e5bab6a: chore: update dependencies
+
+## 2.2.6
+
+### Patch Changes
+
+- 8d91f71: chore: update deps and enable pnpm audit
+
+## 2.2.5
+
+### Patch Changes
+
+- 4fe4a1696: - accept FormData exported from [`form-data`](https://www.npmjs.com/package/form-data) as LegacyFormData
+  - accept native FormData available on node18 and above
+  - call native fetch available on node18 and above when running on [EdgeRuntime](https://edge-runtime.vercel.app/)
+
 ## 2.2.4
 
 ### Patch Changes

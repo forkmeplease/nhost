@@ -1,12 +1,19 @@
-import AnnouncementProvider from '@/components/common/Announcement/AnnouncementProvider';
 import { DialogProvider } from '@/components/common/DialogProvider';
 import { UIProvider } from '@/components/common/UIProvider';
+import { TreeNavStateProvider } from '@/components/layout/MainNav/TreeNavStateContext';
 import { RetryableErrorBoundary } from '@/components/presentational/RetryableErrorBoundary';
 import { ThemeProvider } from '@/components/ui/v2/ThemeProvider';
+import { TooltipProvider } from '@/components/ui/v3/tooltip';
 import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
+// eslint-disable-next-line import/extensions
 import '@/styles/fonts.css';
+// eslint-disable-next-line import/extensions
+import '@/styles/github-dark.css';
+// eslint-disable-next-line import/extensions
 import '@/styles/globals.css';
+// eslint-disable-next-line import/extensions
 import '@/styles/graphiql.min.css';
+// eslint-disable-next-line import/extensions
 import '@/styles/style.css';
 import { COLOR_PREFERENCE_STORAGE_KEY } from '@/utils/constants/common';
 import { createEmotionCache } from '@/utils/createEmotionCache';
@@ -24,6 +31,7 @@ import { NhostApolloProvider } from '@nhost/react-apollo';
 import * as snippet from '@segment/snippet';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { NextPage } from 'next';
+import { PagesProgressBar as ProgressBar } from 'next-nprogress-bar';
 import { DefaultSeo } from 'next-seo';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
@@ -31,6 +39,7 @@ import Script from 'next/script';
 import type { ReactElement } from 'react';
 import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { RecoilRoot } from 'recoil';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -105,11 +114,20 @@ function MyApp({
                 colorPreferenceStorageKey={COLOR_PREFERENCE_STORAGE_KEY}
               >
                 <RetryableErrorBoundary>
-                  <DialogProvider>
-                    <AnnouncementProvider>
-                      {getLayout(<Component {...pageProps} />)}
-                    </AnnouncementProvider>
-                  </DialogProvider>
+                  <RecoilRoot>
+                    <TooltipProvider>
+                      <DialogProvider>
+                        <ProgressBar
+                          height="2px"
+                          color="#0052cd"
+                          options={{ showSpinner: false }}
+                        />
+                        <TreeNavStateProvider>
+                          {getLayout(<Component {...pageProps} />)}
+                        </TreeNavStateProvider>
+                      </DialogProvider>
+                    </TooltipProvider>
+                  </RecoilRoot>
                 </RetryableErrorBoundary>
               </ThemeProvider>
             </UIProvider>

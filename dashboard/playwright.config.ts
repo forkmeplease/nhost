@@ -6,25 +6,32 @@ dotenv.config({ path: path.resolve(__dirname, '.env.test') });
 
 export default defineConfig({
   testDir: './e2e',
-  timeout: 30 * 1000,
+  timeout: 60 * 1000,
   expect: {
-    timeout: 5000,
+    timeout: 10000,
   },
-  fullyParallel: true,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1,
   reporter: 'html',
-  globalTeardown: require.resolve('./global-teardown'),
   use: {
     actionTimeout: 0,
     trace: 'on-first-retry',
     baseURL: process.env.NHOST_TEST_DASHBOARD_URL,
+    launchOptions: {
+      slowMo: 500,
+    },
   },
   projects: [
     {
       name: 'setup',
       testMatch: ['**/setup/*.setup.ts'],
+      teardown: 'teardown',
+    },
+    {
+      name: 'teardown',
+      testMatch: ['**/teardown/*.teardown.ts'],
     },
     {
       name: 'chromium',

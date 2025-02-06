@@ -64,6 +64,10 @@ export interface SettingsContainerProps
    */
   showSwitch?: boolean;
   /**
+   * Custom element to be rendered at the top-right corner of the section.
+   */
+  topRightElement?: ReactNode;
+  /**
    * Custom class names passed to the root element.
    */
   rootClassName?: string;
@@ -108,6 +112,7 @@ export default function SettingsContainer({
   showSwitch = false,
   rootClassName,
   docsTitle,
+  topRightElement,
   slotProps: { root, switch: switchSlot, submitButton, footer } = {},
 }: SettingsContainerProps) {
   return (
@@ -128,11 +133,16 @@ export default function SettingsContainer({
             icon}
 
           <div className="grid grid-flow-row gap-1">
-            <Text className="text-lg font-semibold">{title}</Text>
+            {typeof title === 'string' ? (
+              <Text className="text-lg font-semibold">{title}</Text>
+            ) : (
+              title
+            )}
 
             {description && <Text color="secondary">{description}</Text>}
           </div>
         </div>
+        {topRightElement}
         {!switchId && showSwitch && (
           <Switch
             checked={enabled}

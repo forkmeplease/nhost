@@ -1,3 +1,5 @@
+import { ApplyLocalSettingsDialog } from '@/components/common/ApplyLocalSettingsDialog';
+import { useDialog } from '@/components/common/DialogProvider';
 import { useUI } from '@/components/common/UIProvider';
 import { Form } from '@/components/form/Form';
 import { SettingsContainer } from '@/components/layout/SettingsContainer';
@@ -7,17 +9,18 @@ import { Option } from '@/components/ui/v2/Option';
 import { Select } from '@/components/ui/v2/Select';
 import { Text } from '@/components/ui/v2/Text';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import {
   GetSignInMethodsDocument,
   useGetSignInMethodsQuery,
   useUpdateConfigMutation,
 } from '@/generated/graphql';
-import { getToastStyleProps } from '@/utils/constants/settings';
-import { getServerError } from '@/utils/getServerError';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Image from 'next/image';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
 import { twMerge } from 'tailwind-merge';
 import * as Yup from 'yup';
 
@@ -46,15 +49,19 @@ const validationSchema = Yup.object({
 export type SMSSettingsFormValues = Yup.InferType<typeof validationSchema>;
 
 export default function SMSSettings() {
+  const { openDialog } = useDialog();
+  const isPlatform = useIsPlatform();
   const { maintenanceActive } = useUI();
+  const localMimirClient = useLocalMimirClient();
   const { currentProject } = useCurrentWorkspaceAndProject();
   const [updateConfig] = useUpdateConfigMutation({
     refetchQueries: [GetSignInMethodsDocument],
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { data, error, loading } = useGetSignInMethodsQuery({
     variables: { appId: currentProject?.id },
-    fetchPolicy: 'cache-only',
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { accountSid, authToken, messagingServiceId } =
@@ -71,6 +78,17 @@ export default function SMSSettings() {
     },
     resolver: yupResolver(validationSchema),
   });
+
+  useEffect(() => {
+    if (!loading) {
+      form.reset({
+        accountSid: accountSid || '',
+        authToken: authToken || '',
+        messagingServiceId: messagingServiceId || '',
+        enabled: enabled || false,
+      });
+    }
+  }, [loading, accountSid, authToken, messagingServiceId, enabled, form]);
 
   if (loading) {
     return (
@@ -112,23 +130,29 @@ export default function SMSSettings() {
       },
     });
 
-    try {
-      await toast.promise(
-        updateConfigPromise,
-        {
-          loading: `SMS settings are being updated...`,
-          success: `SMS settings have been updated successfully.`,
-          error: getServerError(
-            `An error occurred while trying to update SMS settings.`,
-          ),
-        },
-        getToastStyleProps(),
-      );
+    await execPromiseWithErrorToast(
+      async () => {
+        await updateConfigPromise;
+        form.reset(values);
 
-      form.reset(values);
-    } catch {
-      // Note: The toast will handle the error.
-    }
+        if (!isPlatform) {
+          openDialog({
+            title: 'Apply your changes',
+            component: <ApplyLocalSettingsDialog />,
+            props: {
+              PaperProps: {
+                className: 'max-w-2xl',
+              },
+            },
+          });
+        }
+      },
+      {
+        loadingMessage: 'SMS settings are being updated...',
+        successMessage: 'SMS settings have been updated successfully.',
+        errorMessage: 'An error occurred while trying to update SMS settings.',
+      },
+    );
   };
 
   return (
@@ -145,10 +169,10 @@ export default function SMSSettings() {
           }}
           switchId="enabled"
           showSwitch
-          docsLink="https://docs.nhost.io/authentication/sign-in-with-phone-number-sms"
+          docsLink="https://docs.nhost.io/guides/auth/sign-in-phone-number"
           docsTitle="how to sign in users with a phone number (SMS)"
           className={twMerge(
-            'grid grid-flow-col grid-cols-2 grid-rows-4 gap-y-4 gap-x-3 px-4 py-2',
+            'grid grid-flow-col grid-cols-2 grid-rows-4 gap-x-3 gap-y-4 px-4 py-2',
             !authSmsPasswordlessEnabled && 'hidden',
           )}
         >

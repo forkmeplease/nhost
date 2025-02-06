@@ -6,6 +6,7 @@ import { InfoIcon } from '@/components/ui/v2/icons/InfoIcon';
 import { Link } from '@/components/ui/v2/Link';
 import { Text } from '@/components/ui/v2/Text';
 import { Tooltip } from '@/components/ui/v2/Tooltip';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import { useProPlan } from '@/features/projects/common/hooks/useProPlan';
 import { calculateBillableResources } from '@/features/projects/resources/settings/utils/calculateBillableResources';
 import type { ResourceSettingsFormValues } from '@/features/projects/resources/settings/utils/resourceSettingsValidationSchema';
@@ -16,6 +17,8 @@ import {
 import { useFormState, useWatch } from 'react-hook-form';
 
 export default function ResourcesFormFooter() {
+  const isPlatform = useIsPlatform();
+
   const {
     data: proPlan,
     loading: proPlanLoading,
@@ -63,13 +66,23 @@ export default function ResourcesFormFooter() {
     },
   );
 
-  const updatedPrice = enabled
-    ? Math.max(
-        priceForTotalAvailableVCPU,
-        (billableResources.vcpu / RESOURCE_VCPU_MULTIPLIER) *
-          RESOURCE_VCPU_PRICE,
-      ) + proPlan.price
-    : proPlan.price;
+  const computeUpdatedPrice = () => {
+    if (!isPlatform) {
+      return 0;
+    }
+
+    if (enabled) {
+      return (
+        Math.max(
+          priceForTotalAvailableVCPU,
+          (billableResources.vcpu / RESOURCE_VCPU_MULTIPLIER) *
+            RESOURCE_VCPU_PRICE,
+        ) + proPlan.price
+      );
+    }
+
+    return proPlan.price;
+  };
 
   return (
     <Box
@@ -79,7 +92,7 @@ export default function ResourcesFormFooter() {
       <Text>
         Learn more about{' '}
         <Link
-          href="https://docs.nhost.io/platform/compute"
+          href="https://docs.nhost.io/platform/compute-resources"
           target="_blank"
           rel="noopener noreferrer"
           underline="hover"
@@ -95,7 +108,9 @@ export default function ResourcesFormFooter() {
           <Box className="grid grid-flow-col items-center gap-1.5">
             <Text>
               Approximate cost:{' '}
-              <span className="font-medium">${updatedPrice.toFixed(2)}/mo</span>
+              <span className="font-medium">
+                ${computeUpdatedPrice().toFixed(2)}/mo
+              </span>
             </Text>
 
             <Tooltip title="$0.0012/minute for every 1 vCPU and 2 GiB of RAM">

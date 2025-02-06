@@ -3,6 +3,7 @@ import { Box } from '@/components/ui/v2/Box';
 import { ArrowRightIcon } from '@/components/ui/v2/icons/ArrowRightIcon';
 import { Slider, sliderClasses } from '@/components/ui/v2/Slider';
 import { Text } from '@/components/ui/v2/Text';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import { useProPlan } from '@/features/projects/common/hooks/useProPlan';
 import { calculateBillableResources } from '@/features/projects/resources/settings/utils/calculateBillableResources';
 import { getAllocatedResources } from '@/features/projects/resources/settings/utils/getAllocatedResources';
@@ -39,15 +40,18 @@ const StyledAvailableCpuSlider = styled(Slider)(({ theme }) => ({
 export default function TotalResourcesFormFragment({
   initialPrice,
 }: TotalResourcesFormFragmentProps) {
+  const isPlatform = useIsPlatform();
+
   const {
     data: proPlan,
     error: proPlanError,
     loading: proPlanLoading,
   } = useProPlan();
+
   const { setValue } = useFormContext<ResourceSettingsFormValues>();
   const formValues = useWatch<ResourceSettingsFormValues>();
 
-  if (!proPlan && !proPlanLoading) {
+  if (isPlatform && !proPlan && !proPlanLoading) {
     return (
       <Alert severity="error">
         Couldn&apos;t load the plan for this projectee. Please try again.
@@ -67,30 +71,34 @@ export default function TotalResourcesFormFragment({
     {
       replicas: formValues.database?.replicas,
       vcpu: formValues.database?.vcpu,
-      memory: formValues.database?.memory,
     },
     {
       replicas: formValues.hasura?.replicas,
       vcpu: formValues.hasura?.vcpu,
-      memory: formValues.hasura?.memory,
     },
     {
       replicas: formValues.auth?.replicas,
       vcpu: formValues.auth?.vcpu,
-      memory: formValues.auth?.memory,
     },
     {
       replicas: formValues.storage?.replicas,
       vcpu: formValues.storage?.vcpu,
-      memory: formValues.storage?.memory,
     },
   );
 
-  const updatedPrice =
-    Math.max(
-      priceForTotalAvailableVCPU,
-      (billableResources.vcpu / RESOURCE_VCPU_MULTIPLIER) * RESOURCE_VCPU_PRICE,
-    ) + proPlan.price;
+  const computeUpdatedPrice = () => {
+    if (!isPlatform) {
+      return 0;
+    }
+
+    return (
+      Math.max(
+        priceForTotalAvailableVCPU,
+        (billableResources.vcpu / RESOURCE_VCPU_MULTIPLIER) *
+          RESOURCE_VCPU_PRICE,
+      ) + proPlan.price
+    );
+  };
 
   const { vcpu: allocatedVCPU, memory: allocatedMemory } =
     getAllocatedResources(formValues);
@@ -137,14 +145,14 @@ export default function TotalResourcesFormFragment({
               Total available compute for your project:
             </Text>
 
-            {initialPrice !== updatedPrice && (
+            {initialPrice !== computeUpdatedPrice() && (
               <Text className="flex flex-row items-center justify-end gap-2">
                 <Text component="span" color="secondary">
                   ${initialPrice.toFixed(2)}/mo
                 </Text>
                 <ArrowRightIcon />
                 <Text component="span" className="font-medium">
-                  ${updatedPrice.toFixed(2)}/mo
+                  ${computeUpdatedPrice().toFixed(2)}/mo
                 </Text>
               </Text>
             )}
@@ -179,7 +187,7 @@ export default function TotalResourcesFormFragment({
           severity={
             hasUnusedResources || hasOverallocatedResources ? 'warning' : 'info'
           }
-          className="grid grid-flow-row gap-2 rounded-t-none rounded-b-[5px] text-left"
+          className="grid grid-flow-row gap-2 rounded-b-[5px] rounded-t-none text-left"
         >
           {hasUnusedResources && !hasOverallocatedResources && (
             <>

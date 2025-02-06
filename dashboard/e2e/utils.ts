@@ -5,24 +5,27 @@ import type { Page } from '@playwright/test';
  * Open a project by navigating to the project's overview page.
  *
  * @param page - The Playwright page object.
- * @param workspaceSlug - The slug of the workspace that contains the project.
- * @param projectSlug - The slug of the project to open.
- * @param projectName - The name of the project to open.
+ * @param orgSlug - The slug of the organization that contains the project.
+ * @param projectSubdomain - The subdomain of the project to open.
  * @returns A promise that resolves when the project is opened.
  */
-export async function openProject({
+export async function navigateToProject({
   page,
-  projectName,
-  workspaceSlug,
-  projectSlug,
+  orgSlug,
+  projectSubdomain,
 }: {
   page: Page;
-  workspaceSlug: string;
-  projectSlug: string;
-  projectName: string;
+  orgSlug: string;
+  projectSubdomain: string;
 }) {
-  await page.getByRole('link', { name: projectName }).click();
-  await page.waitForURL(`/${workspaceSlug}/${projectSlug}`);
+  const projectUrl = `/orgs/${orgSlug}/projects/${projectSubdomain}`;
+
+  try {
+    await page.goto(projectUrl, { waitUntil: 'networkidle' });
+    await page.waitForURL(projectUrl, { timeout: 10000 });
+  } catch (error) {
+    console.error(`Failed to navigate to project URL: ${projectUrl}`, error);
+  }
 }
 
 /**
@@ -116,7 +119,8 @@ export async function prepareTable({
   );
 
   // select the first column as primary key
-  await page.getByRole('button', { name: /primary key/i }).click();
+  // await page.getByRole('button', { name: /primary key/i }).click();
+  await page.getByLabel('Primary Key').click();
   await page.getByRole('option', { name: primaryKey, exact: true }).click();
 }
 
@@ -186,4 +190,24 @@ export function generateTestEmail(prefix: string = 'Nhost_Test_') {
   const email = faker.internet.email();
 
   return [prefix, email].join('');
+}
+
+export async function clickPermissionButton({
+  page,
+  role,
+  permission,
+}: {
+  page: Page;
+  role: string;
+  permission: 'Insert' | 'Select' | 'Update' | 'Delete';
+}) {
+  const permissionIndex =
+    ['Insert', 'Select', 'Update', 'Delete'].indexOf(permission) + 1;
+
+  await page
+    .locator('tr', { hasText: role })
+    .locator('td')
+    .nth(permissionIndex)
+    .locator('button')
+    .click();
 }

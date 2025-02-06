@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/v2/Button';
 import { Divider } from '@/components/ui/v2/Divider';
 import { GitHubIcon } from '@/components/ui/v2/icons/GitHubIcon';
 import { Text } from '@/components/ui/v2/Text';
+import { useHostName } from '@/features/projects/common/hooks/useHostName';
 import { getToastStyleProps } from '@/utils/constants/settings';
 import { nhost } from '@/utils/nhost';
 import type { ReactElement } from 'react';
@@ -13,6 +14,8 @@ import { toast } from 'react-hot-toast';
 
 export default function SignUpPage() {
   const [loading, setLoading] = useState(false);
+
+  const redirectTo = useHostName();
 
   return (
     <>
@@ -35,7 +38,10 @@ export default function SignUpPage() {
             setLoading(true);
 
             try {
-              await nhost.auth.signIn({ provider: 'github' });
+              await nhost.auth.signIn({
+                provider: 'github',
+                options: { redirectTo },
+              });
             } catch {
               toast.error(
                 `An error occurred while trying to sign in using GitHub. Please try again later.`,

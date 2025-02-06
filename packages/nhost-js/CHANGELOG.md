@@ -1,5 +1,242 @@
 # @nhost/nhost-js
 
+## 3.2.4
+
+### Patch Changes
+
+- Updated dependencies [5c6ff6e]
+  - @nhost/hasura-storage-js@2.7.0
+
+## 3.2.3
+
+### Patch Changes
+
+- Updated dependencies [44c1e17]
+- Updated dependencies [04d2ce1]
+  - @nhost/hasura-auth-js@2.10.0
+
+## 3.2.2
+
+### Patch Changes
+
+- Updated dependencies [b944d05]
+- Updated dependencies [4148964]
+  - @nhost/hasura-auth-js@2.9.0
+  - @nhost/hasura-storage-js@2.6.0
+
+## 3.2.1
+
+### Patch Changes
+
+- Updated dependencies [14e6100]
+  - @nhost/hasura-auth-js@2.8.0
+
+## 3.2.0
+
+### Minor Changes
+
+- 72899a6: fix: use a unique `broadcastKey` per nhost client for synchronizing authentication state across browser tabs
+
+### Patch Changes
+
+- Updated dependencies [fe6e8e2]
+- Updated dependencies [72899a6]
+  - @nhost/hasura-auth-js@2.7.0
+
+## 3.1.10
+
+### Patch Changes
+
+- Updated dependencies [55d8bb5]
+  - @nhost/hasura-auth-js@2.6.0
+
+## 3.1.9
+
+### Patch Changes
+
+- Updated dependencies [8b12426]
+  - @nhost/hasura-auth-js@2.5.6
+
+## 3.1.8
+
+### Patch Changes
+
+- Updated dependencies [caa8bd7]
+  - @nhost/hasura-auth-js@2.5.5
+
+## 3.1.7
+
+### Patch Changes
+
+- Updated dependencies [4564232]
+  - @nhost/hasura-auth-js@2.5.4
+
+## 3.1.6
+
+### Patch Changes
+
+- Updated dependencies [e28975d]
+  - @nhost/hasura-auth-js@2.5.3
+
+## 3.1.5
+
+### Patch Changes
+
+- Updated dependencies [a03fb2c]
+  - @nhost/hasura-auth-js@2.5.2
+
+## 3.1.4
+
+### Patch Changes
+
+- Updated dependencies [f4f0353]
+- Updated dependencies [defffd8]
+  - @nhost/hasura-auth-js@2.5.1
+
+## 3.1.3
+
+### Patch Changes
+
+- Updated dependencies [d0c9f4c]
+  - @nhost/hasura-auth-js@2.5.0
+  - @nhost/graphql-js@0.3.0
+
+## 3.1.2
+
+### Patch Changes
+
+- 4c35171: fix: update docstring to correctly reflect usage of nhost.unsetRole method
+- 3cea460: chore: update docs links for nhost-js setRole and unsetRole methods
+
+## 3.1.1
+
+### Patch Changes
+
+- Updated dependencies [8512a7f]
+  - @nhost/hasura-storage-js@2.5.1
+
+## 3.1.0
+
+### Minor Changes
+
+- 304065a: feat: add `setHeaders` method enabling global configuration of storage, graphql, and functions client headers, alongside added support for passing specific headers with individual calls
+
+### Patch Changes
+
+- Updated dependencies [68e0622]
+- Updated dependencies [304065a]
+  - @nhost/hasura-auth-js@2.4.2
+  - @nhost/hasura-storage-js@2.5.0
+  - @nhost/graphql-js@0.2.0
+
+## 3.0.11
+
+### Patch Changes
+
+- Updated dependencies [bcd889b]
+  - @nhost/hasura-auth-js@2.4.1
+
+## 3.0.10
+
+### Patch Changes
+
+- Updated dependencies [1623e9b]
+- Updated dependencies [311374e]
+  - @nhost/hasura-auth-js@2.4.0
+
+## 3.0.9
+
+### Patch Changes
+
+- Updated dependencies [7789469]
+  - @nhost/graphql-js@0.1.9
+
+## 3.0.8
+
+### Patch Changes
+
+- Updated dependencies [407feea]
+  - @nhost/graphql-js@0.1.8
+
+## 3.0.7
+
+### Patch Changes
+
+- Updated dependencies [2d68fee]
+  - @nhost/graphql-js@0.1.7
+
+## 3.0.6
+
+### Patch Changes
+
+- Updated dependencies [7baee8a]
+- Updated dependencies [e0ab6d9]
+  - @nhost/hasura-auth-js@2.3.1
+  - @nhost/graphql-js@0.1.6
+
+## 3.0.5
+
+### Patch Changes
+
+- Updated dependencies [017f1a6]
+  - @nhost/hasura-auth-js@2.3.0
+
+## 3.0.4
+
+### Patch Changes
+
+- Updated dependencies [2505b2e]
+  - @nhost/hasura-storage-js@2.4.0
+
+## 3.0.3
+
+### Patch Changes
+
+- Updated dependencies [1a61c65]
+- Updated dependencies [e5bab6a]
+- Updated dependencies [d3d1424]
+  - @nhost/hasura-auth-js@2.2.0
+  - @nhost/hasura-storage-js@2.3.0
+  - @nhost/graphql-js@0.1.5
+
+## 3.0.2
+
+### Patch Changes
+
+- 8d91f71: chore: update deps and enable pnpm audit
+- Updated dependencies [8d91f71]
+  - @nhost/hasura-storage-js@2.2.6
+  - @nhost/hasura-auth-js@2.1.11
+  - @nhost/graphql-js@0.1.5
+
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies [b338793d6]
+  - @nhost/hasura-auth-js@2.1.10
+
+## 3.0.0
+
+### Major Changes
+
+- bc9eff6e4: chore: remove support for using backendUrl when instantiating the Nhost client
+
+## 2.2.18
+
+### Patch Changes
+
+- 8b127fbb6: feat: export `urlFromSubdomain` helper
+
+## 2.2.17
+
+### Patch Changes
+
+- Updated dependencies [4fe4a1696]
+- Updated dependencies [4fe4a1696]
+  - @nhost/hasura-auth-js@2.1.9
+  - @nhost/hasura-storage-js@2.2.5
+
 ## 2.2.16
 
 ### Patch Changes

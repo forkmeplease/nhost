@@ -1,10 +1,12 @@
+import { ApplyLocalSettingsDialog } from '@/components/common/ApplyLocalSettingsDialog';
+import { useDialog } from '@/components/common/DialogProvider';
 import { useUI } from '@/components/common/UIProvider';
 import { ControlledAutocomplete } from '@/components/form/ControlledAutocomplete';
 import { Form } from '@/components/form/Form';
 import { SettingsContainer } from '@/components/layout/SettingsContainer';
 import { ActivityIndicator } from '@/components/ui/v2/ActivityIndicator';
-import { filterOptions } from '@/components/ui/v2/Autocomplete';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import {
   GetHasuraSettingsDocument,
   Software_Type_Enum,
@@ -12,11 +14,11 @@ import {
   useGetSoftwareVersionsQuery,
   useUpdateConfigMutation,
 } from '@/generated/graphql';
-import { getToastStyleProps } from '@/utils/constants/settings';
-import { getServerError } from '@/utils/getServerError';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object({
@@ -33,22 +35,27 @@ export type HasuraServiceVersionFormValues = Yup.InferType<
 >;
 
 export default function HasuraServiceVersionSettings() {
+  const isPlatform = useIsPlatform();
+  const { openDialog } = useDialog();
   const { maintenanceActive } = useUI();
+  const localMimirClient = useLocalMimirClient();
   const { currentProject, refetch: refetchWorkspaceAndProject } =
     useCurrentWorkspaceAndProject();
   const [updateConfig] = useUpdateConfigMutation({
     refetchQueries: [GetHasuraSettingsDocument],
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { data, loading, error } = useGetHasuraSettingsQuery({
     variables: { appId: currentProject?.id },
-    fetchPolicy: 'cache-only',
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { data: hasuraVersionsData } = useGetSoftwareVersionsQuery({
     variables: {
       software: Software_Type_Enum.Hasura,
     },
+    skip: !isPlatform,
   });
 
   const { version } = data?.config?.hasura || {};
@@ -56,6 +63,7 @@ export default function HasuraServiceVersionSettings() {
   const availableVersions = Array.from(
     new Set(versions.map((el) => el.version)).add(version),
   )
+    .filter((v) => !!v)
     .sort()
     .reverse()
     .map((availableVersion) => ({
@@ -63,11 +71,24 @@ export default function HasuraServiceVersionSettings() {
       value: availableVersion,
     }));
 
+  // TODO make sure the network request is made in the parent component
+  // also this request should be made against cache only and the data should be available right away
   const form = useForm<HasuraServiceVersionFormValues>({
     reValidateMode: 'onSubmit',
-    defaultValues: { version: { label: version, value: version } },
+    defaultValues: { version: { label: '', value: '' } },
     resolver: yupResolver(validationSchema),
   });
+
+  useEffect(() => {
+    if (!loading && version) {
+      form.reset({
+        version: {
+          label: version,
+          value: version,
+        },
+      });
+    }
+  }, [loading, version, form]);
 
   if (loading) {
     return (
@@ -97,24 +118,31 @@ export default function HasuraServiceVersionSettings() {
       },
     });
 
-    try {
-      await toast.promise(
-        updateConfigPromise,
-        {
-          loading: `Hasura version is being updated...`,
-          success: `Hasura version has been updated successfully.`,
-          error: getServerError(
-            `An error occurred while trying to update Hasura version.`,
-          ),
-        },
-        getToastStyleProps(),
-      );
+    await execPromiseWithErrorToast(
+      async () => {
+        await updateConfigPromise;
+        form.reset(formValues);
+        await refetchWorkspaceAndProject();
 
-      form.reset(formValues);
-      await refetchWorkspaceAndProject();
-    } catch {
-      // Note: The toast will handle the error.
-    }
+        if (!isPlatform) {
+          openDialog({
+            title: 'Apply your changes',
+            component: <ApplyLocalSettingsDialog />,
+            props: {
+              PaperProps: {
+                className: 'max-w-2xl',
+              },
+            },
+          });
+        }
+      },
+      {
+        loadingMessage: 'Hasura version is being updated...',
+        successMessage: 'Hasura version has been updated successfully.',
+        errorMessage:
+          'An error occurred while trying to update Hasura version.',
+      },
+    );
   }
 
   return (
@@ -131,17 +159,39 @@ export default function HasuraServiceVersionSettings() {
           }}
           docsLink="https://hub.docker.com/r/nhost/graphql-engine/tags"
           docsTitle="the latest releases"
-          className="grid grid-flow-row gap-y-2 gap-x-4 px-4 lg:grid-cols-5"
+          className="grid grid-flow-row gap-x-4 gap-y-2 px-4 lg:grid-cols-5"
         >
           <ControlledAutocomplete
             id="version"
             name="version"
-            filterOptions={(options, state) => {
-              if (state.inputValue === version) {
-                return options;
+            freeSolo
+            getOptionLabel={(option) => {
+              if (typeof option === 'string') {
+                return option || '';
               }
 
-              return filterOptions(options, state);
+              return option.value;
+            }}
+            autoHighlight
+            isOptionEqualToValue={() => false}
+            filterOptions={(options, { inputValue }) => {
+              const inputValueLower = inputValue.toLowerCase();
+              const matched = [];
+              const otherOptions = [];
+
+              options.forEach((option) => {
+                const optionLabelLower = option.label.toLowerCase();
+
+                if (optionLabelLower.startsWith(inputValueLower)) {
+                  matched.push(option);
+                } else {
+                  otherOptions.push(option);
+                }
+              });
+
+              const result = [...matched, ...otherOptions];
+
+              return result;
             }}
             fullWidth
             className="lg:col-span-2"

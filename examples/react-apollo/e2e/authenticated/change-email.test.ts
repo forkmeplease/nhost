@@ -12,18 +12,23 @@ test('should be able to change email', async ({ page, browser }) => {
   await expect(page.getByText(/verification email sent/i)).toBeVisible()
 
   const newPage = await verifyEmail({ page, email, context: page.context() })
-  await newPage.getByRole('button', { name: /profile/i }).click()
+  await newPage.getByRole('link', { name: /profile/i }).click()
 
   const newEmail = faker.internet.email()
 
   await newPage.getByPlaceholder(/new email/i).fill(newEmail)
-  await newPage.locator('h1:has-text("Change email") + div button:has-text("Change")').click()
+
+  await newPage
+    .locator('div')
+    .filter({ hasText: /^Change emailChange$/ })
+    .getByRole('button')
+    .click()
 
   await expect(
-    newPage.getByText(/please check your inbox and follow the link to confirm the email change/i)
+    newPage.getByText('Please check your inbox and follow the link to confirm the email change.')
   ).toBeVisible()
 
-  await newPage.getByRole('button', { name: /sign out/i }).click()
+  await newPage.getByRole('link', { name: /sign out/i }).click()
 
   const mailhogPage = await browser.newPage()
 
@@ -31,10 +36,11 @@ test('should be able to change email', async ({ page, browser }) => {
     page: mailhogPage,
     email: newEmail,
     context: mailhogPage.context(),
-    linkText: /change email/i
+    linkText: /change email/i,
+    requestType: 'email-confirm-change'
   })
 
-  await expect(updatedEmailPage.getByText(/profile page/i)).toBeVisible()
+  await expect(updatedEmailPage.getByRole('heading', { name: /profile/i })).toBeVisible()
 })
 
 test('should not accept an invalid email', async ({ page }) => {
@@ -47,12 +53,17 @@ test('should not accept an invalid email', async ({ page }) => {
   await expect(page.getByText(/verification email sent/i)).toBeVisible()
 
   const newPage = await verifyEmail({ page, email, context: page.context() })
-  await newPage.getByRole('button', { name: /profile/i }).click()
+  await newPage.getByRole('link', { name: /profile/i }).click()
 
   const newEmail = faker.random.alphaNumeric()
 
   await newPage.getByPlaceholder(/new email/i).fill(newEmail)
-  await newPage.locator('h1:has-text("Change email") + div button:has-text("Change")').click()
+
+  await newPage
+    .locator('div')
+    .filter({ hasText: /^Change emailChange$/ })
+    .getByRole('button')
+    .click()
 
   await expect(newPage.getByText(/email is incorrectly formatted/i)).toBeVisible()
 })

@@ -102,7 +102,7 @@ export default function WorkspaceAndProjectList({
           placeholder="Find Project"
           startAdornment={
             <SearchIcon
-              className="ml-2 -mr-1 h-4 w-4 shrink-0"
+              className="-mr-1 ml-2 h-4 w-4 shrink-0"
               sx={{ color: 'text.disabled' }}
             />
           }
@@ -110,7 +110,7 @@ export default function WorkspaceAndProjectList({
           onChange={handleQueryChange}
         />
 
-        <NavLink href="/new" passHref>
+        <NavLink href="/new" passHref legacyBehavior>
           <Button
             variant="outlined"
             color="secondary"
@@ -126,7 +126,7 @@ export default function WorkspaceAndProjectList({
       <Box className="my-8 grid grid-flow-row gap-8">
         {filteredWorkspaces.map((workspace) => (
           <div key={workspace.slug}>
-            <NavLink href={`/${workspace.slug}`} passHref>
+            <NavLink href={`/${workspace.slug}`} passHref legacyBehavior>
               <Link
                 href={`${workspace.slug}`}
                 className="mb-1.5 block font-medium"
@@ -171,6 +171,8 @@ export default function WorkspaceAndProjectList({
                       <NavLink
                         href={`${workspace?.slug}/${project.slug}`}
                         passHref
+                        className="w-full"
+                        legacyBehavior
                       >
                         <ListItem.Button className="rounded-none">
                           <ListItem.Avatar>

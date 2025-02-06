@@ -1,5 +1,283 @@
 # @nhost/react-apollo
 
+## 17.0.0
+
+### Patch Changes
+
+- Updated dependencies [cb63233]
+  - @nhost/react@3.10.0
+
+## 16.0.1
+
+### Patch Changes
+
+- @nhost/apollo@8.0.4
+- @nhost/react@3.9.1
+
+## 16.0.0
+
+### Patch Changes
+
+- Updated dependencies [04d2ce1]
+  - @nhost/react@3.9.0
+  - @nhost/apollo@8.0.3
+
+## 15.0.1
+
+### Patch Changes
+
+- @nhost/apollo@8.0.2
+- @nhost/react@3.8.1
+
+## 15.0.0
+
+### Patch Changes
+
+- Updated dependencies [14e6100]
+  - @nhost/react@3.8.0
+  - @nhost/apollo@8.0.1
+
+## 14.0.0
+
+### Patch Changes
+
+- Updated dependencies [fe6e8e2]
+  - @nhost/react@3.7.0
+  - @nhost/apollo@8.0.0
+
+## 13.0.0
+
+### Patch Changes
+
+- Updated dependencies [55d8bb5]
+  - @nhost/react@3.6.0
+  - @nhost/apollo@7.1.7
+
+## 12.0.6
+
+### Patch Changes
+
+- @nhost/apollo@7.1.6
+- @nhost/react@3.5.6
+
+## 12.0.5
+
+### Patch Changes
+
+- @nhost/apollo@7.1.5
+- @nhost/react@3.5.5
+
+## 12.0.4
+
+### Patch Changes
+
+- @nhost/apollo@7.1.4
+- @nhost/react@3.5.4
+
+## 12.0.3
+
+### Patch Changes
+
+- @nhost/apollo@7.1.3
+- @nhost/react@3.5.3
+
+## 12.0.2
+
+### Patch Changes
+
+- @nhost/apollo@7.1.2
+- @nhost/react@3.5.2
+
+## 12.0.1
+
+### Patch Changes
+
+- @nhost/apollo@7.1.1
+- @nhost/react@3.5.1
+
+## 12.0.0
+
+### Patch Changes
+
+- Updated dependencies [d0c9f4c]
+  - @nhost/apollo@7.1.0
+  - @nhost/react@3.5.0
+
+## 11.0.4
+
+### Patch Changes
+
+- @nhost/apollo@7.0.2
+- @nhost/react@3.4.4
+
+## 11.0.3
+
+### Patch Changes
+
+- @nhost/apollo@7.0.1
+- @nhost/react@3.4.3
+
+## 11.0.2
+
+### Patch Changes
+
+- @nhost/apollo@7.0.0
+- @nhost/react@3.4.2
+
+## 11.0.1
+
+### Patch Changes
+
+- @nhost/apollo@6.2.1
+- @nhost/react@3.4.1
+
+## 11.0.0
+
+### Minor Changes
+
+- 768ca17: chore: update dependencies
+
+### Patch Changes
+
+- Updated dependencies [768ca17]
+  - @nhost/apollo@6.2.0
+  - @nhost/react@3.4.0
+
+## 10.0.2
+
+### Patch Changes
+
+- Updated dependencies [311374e]
+  - @nhost/react@3.3.2
+  - @nhost/apollo@6.1.2
+
+## 10.0.1
+
+### Patch Changes
+
+- @nhost/apollo@6.1.1
+- @nhost/react@3.3.1
+
+## 10.0.0
+
+### Minor Changes
+
+- 49a80c2: chore: update dependencies
+
+### Patch Changes
+
+- Updated dependencies [49a80c2]
+  - @nhost/apollo@6.1.0
+  - @nhost/react@3.3.0
+
+## 9.0.3
+
+### Patch Changes
+
+- @nhost/apollo@6.0.8
+- @nhost/react@3.2.3
+
+## 9.0.2
+
+### Patch Changes
+
+- @nhost/apollo@6.0.7
+- @nhost/react@3.2.2
+
+## 9.0.1
+
+### Patch Changes
+
+- Updated dependencies [e0ab6d9]
+  - @nhost/apollo@6.0.6
+  - @nhost/react@3.2.1
+
+## 9.0.0
+
+### Patch Changes
+
+- Updated dependencies [017f1a6]
+  - @nhost/react@3.2.0
+  - @nhost/apollo@6.0.5
+
+## 8.0.1
+
+### Patch Changes
+
+- @nhost/apollo@6.0.4
+- @nhost/react@3.1.1
+
+## 8.0.0
+
+### Patch Changes
+
+- e5bab6a: chore: update dependencies
+- Updated dependencies [1a61c65]
+- Updated dependencies [e5bab6a]
+  - @nhost/react@3.1.0
+  - @nhost/apollo@6.0.3
+
+## 7.0.2
+
+### Patch Changes
+
+- 8d91f71: chore: update deps and enable pnpm audit
+- Updated dependencies [8d91f71]
+  - @nhost/apollo@6.0.2
+  - @nhost/react@3.0.2
+
+## 7.0.1
+
+### Patch Changes
+
+- @nhost/apollo@6.0.1
+- @nhost/react@3.0.1
+
+## 7.0.0
+
+### Patch Changes
+
+- Updated dependencies [bc9eff6e4]
+  - @nhost/react@3.0.0
+  - @nhost/apollo@6.0.0
+
+## 6.0.1
+
+### Patch Changes
+
+- @nhost/apollo@5.2.22
+- @nhost/react@2.1.1
+
+## 6.0.0
+
+### Patch Changes
+
+- Updated dependencies [00c363f80]
+- Updated dependencies [66c3193bc]
+  - @nhost/react@2.1.0
+
+## 5.0.38
+
+### Patch Changes
+
+- Updated dependencies [f777a3380]
+  - @nhost/apollo@5.2.21
+
+## 5.0.37
+
+### Patch Changes
+
+- Updated dependencies [7459a9413]
+  - @nhost/apollo@5.2.20
+
+## 5.0.36
+
+### Patch Changes
+
+- Updated dependencies [4fe4a1696]
+  - @nhost/react@2.0.32
+  - @nhost/apollo@5.2.19
+
 ## 5.0.35
 
 ### Patch Changes

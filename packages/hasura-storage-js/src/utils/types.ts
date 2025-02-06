@@ -1,4 +1,4 @@
-import FormData from 'form-data'
+import LegacyFormData from 'form-data'
 
 // TODO shared with other packages
 export type StorageErrorPayload = {
@@ -25,8 +25,12 @@ export interface FileUploadConfig {
   adminSecret?: string
 }
 
+export interface StorageHeadersParam {
+  headers?: Record<string, string>
+}
+
 // works only in browser. Used for for hooks
-export interface StorageUploadFileParams {
+export interface StorageUploadFileParams extends StorageHeadersParam {
   file: File
   id?: string
   name?: string
@@ -34,10 +38,9 @@ export interface StorageUploadFileParams {
 }
 
 // works in browser and server
-export interface StorageUploadFormDataParams {
-  formData: FormData
+export interface StorageUploadFormDataParams extends StorageHeadersParam {
+  formData: FormData | LegacyFormData
   bucketId?: string
-  headers?: Record<string, string>
 }
 
 // works in browser and server
@@ -52,6 +55,14 @@ export type StorageUploadFormDataResponse =
   | { fileMetadata: null; error: StorageErrorPayload }
 
 export type StorageUploadResponse = StorageUploadFileResponse | StorageUploadFormDataResponse
+
+export interface StorageDownloadFileParams
+  extends StorageImageTransformationParams,
+    StorageHeadersParam {
+  fileId: string
+}
+
+export type StorageDownloadFileResponse = { file: Blob; error: null } | { file: null; error: Error }
 
 export interface StorageImageTransformationParams {
   /** Image width, in pixels */
@@ -70,7 +81,9 @@ export interface StorageGetUrlParams extends StorageImageTransformationParams {
   fileId: string
 }
 
-export interface StorageGetPresignedUrlParams extends StorageImageTransformationParams {
+export interface StorageGetPresignedUrlParams
+  extends StorageImageTransformationParams,
+    StorageHeadersParam {
   fileId: string
 }
 
@@ -101,7 +114,7 @@ export interface FileResponse {
 
 // TODO not implemented yet in hasura-storage
 // export interface ApiGetPresignedUrlParams extends StorageImageTransformationParams {
-export interface ApiGetPresignedUrlParams {
+export interface ApiGetPresignedUrlParams extends StorageHeadersParam {
   fileId: string
 }
 
@@ -109,7 +122,7 @@ export type ApiGetPresignedUrlResponse =
   | { presignedUrl: { url: string; expiration: number }; error: null }
   | { presignedUrl: null; error: Error }
 
-export interface ApiDeleteParams {
+export interface ApiDeleteParams extends StorageHeadersParam {
   fileId: string
 }
 

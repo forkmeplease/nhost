@@ -6,18 +6,16 @@ import { Input } from '@/components/ui/v2/Input';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
 import { useRemoteApplicationGQLClient } from '@/hooks/useRemoteApplicationGQLClient';
 import type { DialogFormProps } from '@/types/common';
-import { getToastStyleProps } from '@/utils/constants/settings';
-import { getServerError } from '@/utils/getServerError';
-import type { RemoteAppGetUsersQuery } from '@/utils/__generated__/graphql';
+import type { RemoteAppGetUsersAndAuthRolesQuery } from '@/utils/__generated__/graphql';
 import {
   useGetSignInMethodsQuery,
   useUpdateRemoteAppUserMutation,
 } from '@/utils/__generated__/graphql';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import { yupResolver } from '@hookform/resolvers/yup';
 import bcrypt from 'bcryptjs';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
 import * as Yup from 'yup';
 
 export interface EditUserPasswordFormProps extends DialogFormProps {
@@ -28,7 +26,7 @@ export interface EditUserPasswordFormProps extends DialogFormProps {
   /**
    * The selected user.
    */
-  user: RemoteAppGetUsersQuery['users'][0];
+  user: RemoteAppGetUsersAndAuthRolesQuery['users'][0];
 }
 
 export default function EditUserPasswordForm({
@@ -90,23 +88,23 @@ export default function EditUserPasswordForm({
       client: remoteProjectGQLClient,
     });
 
-    try {
-      await toast.promise(
-        updateUserPasswordPromise,
-        {
-          loading: 'Updating user password...',
-          success: 'User password updated successfully.',
-          error: getServerError('Failed to update user password.'),
+    await execPromiseWithErrorToast(
+      async () => {
+        await updateUserPasswordPromise;
+      },
+      {
+        loadingMessage: 'Updating user password...',
+        successMessage: 'User password updated successfully.',
+        errorMessage: 'Failed to update user password.',
+        onError: (error) => {
+          setEditUserPasswordFormError(
+            new Error(error.message || 'Something went wrong.'),
+          );
         },
-        getToastStyleProps(),
-      );
-    } catch (error) {
-      setEditUserPasswordFormError(
-        new Error(error.message || 'Something went wrong.'),
-      );
-    } finally {
-      closeDialog();
-    }
+      },
+    );
+
+    closeDialog();
   };
 
   const {

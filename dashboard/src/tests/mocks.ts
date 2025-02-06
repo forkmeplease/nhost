@@ -1,5 +1,6 @@
-import type { Project, Workspace } from '@/types/application';
+import type { Organization, Project, Workspace } from '@/types/application';
 import { ApplicationStatus } from '@/types/application';
+import { Organization_Status_Enum } from '@/utils/__generated__/graphql';
 import { faker } from '@faker-js/faker';
 import type { NhostSession } from '@nhost/nextjs';
 import type { NextRouter } from 'next/router';
@@ -40,6 +41,7 @@ export const mockRouter: NextRouter = {
     emit: vi.fn(),
   },
   isFallback: false,
+  forward: vi.fn(),
 };
 
 export const mockApplication: Project = {
@@ -48,9 +50,8 @@ export const mockApplication: Project = {
   slug: 'test-application',
   appStates: [],
   subdomain: '',
-  isProvisioned: true,
   region: {
-    awsName: 'us-east-1',
+    name: 'us-east-1',
     city: 'New York',
     countryCode: 'US',
     id: '1',
@@ -60,15 +61,15 @@ export const mockApplication: Project = {
   deployments: [],
   desiredState: ApplicationStatus.Live,
   featureFlags: [],
-  providersUpdated: true,
   githubRepository: { fullName: 'test/git-project' },
   repositoryProductionBranch: null,
   nhostBaseFolder: null,
-  plan: {
+  legacyPlan: {
     id: '1',
     name: 'Starter',
     isFree: true,
     price: 0,
+    featureMaxDbSize: 1,
   },
   config: {
     observability: {
@@ -112,3 +113,84 @@ export const mockSession: NhostSession = {
     activeMfaType: 'totp',
   },
 };
+
+export const mockOrganization: Organization = {
+  id: '93297df9-125e-49df-9db3-94067fa065bd',
+  name: 'Test organization',
+  slug: 'xyz',
+  status: Organization_Status_Enum.Ok,
+  plan: {
+    id: 'abc',
+    name: 'Pro',
+    deprecated: false,
+    individual: false,
+    isFree: false,
+    featureMaxDbSize: 1,
+    price: 25,
+    __typename: 'plans',
+  },
+  members: [],
+  apps: [
+    {
+      id: '1',
+      name: 'Test Application',
+      subdomain: '',
+      slug: 'test-application',
+      __typename: 'apps',
+    },
+  ],
+  __typename: 'organizations',
+};
+
+export const mockOrganizations: Organization[] = [
+  {
+    id: 'org-1',
+    name: "User's Personal Organization",
+    slug: 'ynrnjteywyxjhlmgzgif',
+    status: Organization_Status_Enum.Ok,
+    plan: {
+      id: 'starter',
+      name: 'Starter',
+      price: 0,
+      deprecated: false,
+      individual: true,
+      isFree: true,
+      featureMaxDbSize: 1,
+      __typename: 'plans',
+    },
+    apps: [],
+    members: [],
+    __typename: 'organizations',
+  },
+  {
+    id: 'org-2',
+    name: 'Second First Try',
+    slug: 'kbdoxvsoisppkrwzjhwl',
+    status: Organization_Status_Enum.Ok,
+    plan: {
+      id: 'pro',
+      name: 'Pro',
+      price: 25,
+      deprecated: false,
+      individual: false,
+      isFree: false,
+      featureMaxDbSize: 10,
+      __typename: 'plans',
+    },
+    apps: [],
+    members: [],
+    __typename: 'organizations',
+  },
+];
+
+export const newOrg: Organization = {
+  ...mockOrganization,
+  id: 'newOrg',
+  name: 'New Org',
+  slug: 'new-org',
+};
+
+export const mockOrganizationsWithNewOrg: Organization[] = [
+  ...mockOrganizations,
+  newOrg,
+];

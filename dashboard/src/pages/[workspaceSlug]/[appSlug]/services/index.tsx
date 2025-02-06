@@ -1,85 +1,42 @@
 import { useDialog } from '@/components/common/DialogProvider';
 import { Pagination } from '@/components/common/Pagination';
 import { Container } from '@/components/layout/Container';
-import { ProjectLayout } from '@/components/layout/ProjectLayout';
 import { Box } from '@/components/ui/v2/Box';
 import { Button } from '@/components/ui/v2/Button';
 import { CubeIcon } from '@/components/ui/v2/icons/CubeIcon';
 import { PlusIcon } from '@/components/ui/v2/icons/PlusIcon';
 import { ServicesIcon } from '@/components/ui/v2/icons/ServicesIcon';
 import { Text } from '@/components/ui/v2/Text';
+import { ProjectLayout } from '@/features/orgs/layout/ProjectLayout';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
-import type { GetRunServicesQuery } from '@/utils/__generated__/graphql';
-import { useGetRunServicesQuery } from '@/utils/__generated__/graphql';
 
 import { UpgradeNotification } from '@/features/projects/common/components/UpgradeNotification';
-import {
-  ServiceForm,
-  type PortTypes,
-} from '@/features/services/components/ServiceForm';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
+import { ServiceForm } from '@/features/services/components/ServiceForm';
+import { type PortTypes } from '@/features/services/components/ServiceForm/components/PortsFormSection/PortsFormSectionTypes';
 import ServicesList from '@/features/services/components/ServicesList/ServicesList';
+import { useRunServices, type RunServiceConfig } from '@/hooks/useRunServices';
 import { useRouter } from 'next/router';
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type ReactElement,
-} from 'react';
-
-export type RunService = Omit<
-  GetRunServicesQuery['app']['runServices'][0],
-  '__typename'
->;
-
-export type RunServiceConfig = Omit<
-  GetRunServicesQuery['app']['runServices'][0]['config'],
-  '__typename'
->;
+import { useCallback, useEffect, type ReactElement } from 'react';
 
 export default function ServicesPage() {
-  const limit = useRef(25);
   const router = useRouter();
+  const isPlatform = useIsPlatform();
   const { openDrawer, openAlertDialog } = useDialog();
   const { currentProject } = useCurrentWorkspaceAndProject();
-  const isPlanFree = currentProject.plan.isFree;
-
-  const [currentPage, setCurrentPage] = useState(
-    parseInt(router.query.page as string, 10) || 1,
-  );
-
-  const [nrOfPages, setNrOfPages] = useState(0);
-
-  const offset = useMemo(() => currentPage - 1, [currentPage]);
 
   const {
-    data,
     loading,
-    refetch: refetchServices,
-  } = useGetRunServicesQuery({
-    variables: {
-      appID: currentProject.id,
-      resolve: false,
-      limit: limit.current,
-      offset,
-    },
-  });
+    services,
+    totalServicesCount,
+    limit,
+    nrOfPages,
+    currentPage,
+    setCurrentPage,
+    refetch,
+  } = useRunServices();
 
-  useEffect(() => {
-    if (loading) {
-      return;
-    }
-
-    const userCount = data?.app?.runServices_aggregate.aggregate.count ?? 0;
-
-    setNrOfPages(Math.ceil(userCount / limit.current));
-  }, [data, loading]);
-
-  const services = useMemo(
-    () => data?.app?.runServices.map((service) => service) ?? [],
-    [data],
-  );
+  const isPlanFree = currentProject?.legacyPlan?.isFree;
 
   const checkConfigFromQuery = useCallback(
     (base64Config: string) => {
@@ -103,6 +60,7 @@ export default function ServicesPage() {
                     cpu: 62,
                     memory: 128,
                   },
+                  autoscaler: parsedConfig?.resources?.autoscaler,
                   image: parsedConfig?.image?.image,
                   command: parsedConfig?.command?.join(' '),
                   ports: parsedConfig?.ports.map((item) => ({
@@ -113,7 +71,7 @@ export default function ServicesPage() {
                   replicas: parsedConfig?.resources?.replicas,
                   storage: parsedConfig?.resources?.storage,
                 }}
-                onSubmit={refetchServices}
+                onSubmit={refetch}
               />
             ),
           });
@@ -129,7 +87,7 @@ export default function ServicesPage() {
         }
       }
     },
-    [router.query.config, openDrawer, refetchServices, openAlertDialog],
+    [router.query.config, openDrawer, refetch, openAlertDialog],
   );
 
   useEffect(() => {
@@ -139,6 +97,11 @@ export default function ServicesPage() {
   }, [checkConfigFromQuery, router.query]);
 
   const openCreateServiceDialog = () => {
+    // creating services using the local dashboard is not supported
+    if (!isPlatform) {
+      return;
+    }
+
     openDrawer({
       title: (
         <Box className="flex flex-row items-center space-x-2">
@@ -146,11 +109,11 @@ export default function ServicesPage() {
           <Text>Create a new service</Text>
         </Box>
       ),
-      component: <ServiceForm onSubmit={refetchServices} />,
+      component: <ServiceForm onSubmit={refetch} />,
     });
   };
 
-  if (isPlanFree) {
+  if (isPlatform && isPlanFree) {
     return (
       <Container>
         <UpgradeNotification
@@ -161,7 +124,7 @@ export default function ServicesPage() {
     );
   }
 
-  if (data?.app.runServices.length === 0 && !loading) {
+  if (services.length === 0 && !loading) {
     return (
       <Container className="mx-auto max-w-9xl space-y-5 overflow-x-hidden">
         <div className="flex flex-row place-content-end">
@@ -170,6 +133,7 @@ export default function ServicesPage() {
             color="primary"
             onClick={openCreateServiceDialog}
             startIcon={<PlusIcon className="h-4 w-4" />}
+            disabled={!isPlatform}
           >
             Add service
           </Button>
@@ -182,20 +146,22 @@ export default function ServicesPage() {
               No custom services are available
             </Text>
             <Text variant="subtitle1" className="text-center">
-              All your project’s custom services will be listed here.
+              All your project&apos;s custom services will be listed here.
             </Text>
           </div>
-          <div className="flex flex-row place-content-between rounded-lg ">
-            <Button
-              variant="contained"
-              color="primary"
-              className="w-full"
-              onClick={openCreateServiceDialog}
-              startIcon={<PlusIcon className="h-4 w-4" />}
-            >
-              Add service
-            </Button>
-          </div>
+          {isPlatform ? (
+            <div className="flex flex-row place-content-between rounded-lg">
+              <Button
+                variant="contained"
+                color="primary"
+                className="w-full"
+                onClick={openCreateServiceDialog}
+                startIcon={<PlusIcon className="h-4 w-4" />}
+              >
+                Add service
+              </Button>
+            </div>
+          ) : null}
         </Box>
       </Container>
     );
@@ -209,6 +175,7 @@ export default function ServicesPage() {
           color="primary"
           onClick={openCreateServiceDialog}
           startIcon={<PlusIcon className="h-4 w-4" />}
+          disabled={!isPlatform}
         >
           Add service
         </Button>
@@ -216,42 +183,42 @@ export default function ServicesPage() {
       <Box className="space-y-4">
         <ServicesList
           services={services}
-          onDelete={() => refetchServices()}
-          onCreateOrUpdate={() => refetchServices()}
+          onDelete={() => refetch()}
+          onCreateOrUpdate={() => refetch()}
         />
-        <Pagination
-          className="px-2"
-          totalNrOfPages={nrOfPages}
-          currentPageNumber={currentPage}
-          totalNrOfElements={
-            data?.app?.runServices_aggregate.aggregate.count ?? 0
-          }
-          itemsLabel="services"
-          elementsPerPage={limit.current}
-          onPrevPageClick={async () => {
-            setCurrentPage((page) => page - 1);
-            if (currentPage - 1 !== 1) {
+        {isPlatform ? (
+          <Pagination
+            className="px-2"
+            totalNrOfPages={nrOfPages}
+            currentPageNumber={currentPage}
+            totalNrOfElements={totalServicesCount}
+            itemsLabel="services"
+            elementsPerPage={limit.current}
+            onPrevPageClick={async () => {
+              setCurrentPage((page) => page - 1);
+              if (currentPage - 1 !== 1) {
+                await router.push({
+                  pathname: router.pathname,
+                  query: { ...router.query, page: currentPage - 1 },
+                });
+              }
+            }}
+            onNextPageClick={async () => {
+              setCurrentPage((page) => page + 1);
               await router.push({
                 pathname: router.pathname,
-                query: { ...router.query, page: currentPage - 1 },
+                query: { ...router.query, page: currentPage + 1 },
               });
-            }
-          }}
-          onNextPageClick={async () => {
-            setCurrentPage((page) => page + 1);
-            await router.push({
-              pathname: router.pathname,
-              query: { ...router.query, page: currentPage + 1 },
-            });
-          }}
-          onPageChange={async (page) => {
-            setCurrentPage(page);
-            await router.push({
-              pathname: router.pathname,
-              query: { ...router.query, page },
-            });
-          }}
-        />
+            }}
+            onPageChange={async (page) => {
+              setCurrentPage(page);
+              await router.push({
+                pathname: router.pathname,
+                query: { ...router.query, page },
+              });
+            }}
+          />
+        ) : null}
       </Box>
     </div>
   );

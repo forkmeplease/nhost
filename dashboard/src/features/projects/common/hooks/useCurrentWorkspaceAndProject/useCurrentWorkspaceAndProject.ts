@@ -91,7 +91,7 @@ export default function useCurrentWorkspaceAndProject(): UseCurrentWorkspaceAndP
   // Return a default project if working locally
   if (!isPlatform) {
     const localProject: Project = {
-      id: 'local',
+      id: '00000000-0000-0000-0000-000000000000',
       slug: 'local',
       name: 'local',
       appStates: [
@@ -108,17 +108,15 @@ export default function useCurrentWorkspaceAndProject(): UseCurrentWorkspaceAndP
         id: null,
         countryCode: null,
         city: null,
-        awsName: null,
+        name: null,
         domain: null,
       },
-      isProvisioned: true,
       createdAt: new Date().toISOString(),
       desiredState: ApplicationStatus.Live,
       featureFlags: [],
-      providersUpdated: true,
       repositoryProductionBranch: null,
       nhostBaseFolder: null,
-      plan: null,
+      legacyPlan: null,
       config: {
         observability: {
           grafana: {

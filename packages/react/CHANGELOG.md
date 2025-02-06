@@ -1,5 +1,264 @@
 # @nhost/react
 
+## 3.10.0
+
+### Minor Changes
+
+- cb63233: chore: add react 19 as peer dependency
+
+## 3.9.1
+
+### Patch Changes
+
+- @nhost/nhost-js@3.2.4
+
+## 3.9.0
+
+### Minor Changes
+
+- 04d2ce1: feat: add signin security key with user handle
+
+### Patch Changes
+
+- @nhost/nhost-js@3.2.3
+
+## 3.8.1
+
+### Patch Changes
+
+- @nhost/nhost-js@3.2.2
+
+## 3.8.0
+
+### Minor Changes
+
+- 14e6100: feat: add support for ID token sign-in from authentication providers
+
+### Patch Changes
+
+- @nhost/nhost-js@3.2.1
+
+## 3.7.0
+
+### Minor Changes
+
+- fe6e8e2: feat: add email OTP sign-in functionality
+
+### Patch Changes
+
+- Updated dependencies [72899a6]
+  - @nhost/nhost-js@3.2.0
+
+## 3.6.0
+
+### Minor Changes
+
+- 55d8bb5: feat: add `requestOptions` to `signUpEmailPassword` to allow passing extra headers with the signup request
+
+### Patch Changes
+
+- @nhost/nhost-js@3.1.10
+
+## 3.5.6
+
+### Patch Changes
+
+- @nhost/nhost-js@3.1.9
+
+## 3.5.5
+
+### Patch Changes
+
+- @nhost/nhost-js@3.1.8
+
+## 3.5.4
+
+### Patch Changes
+
+- @nhost/nhost-js@3.1.7
+
+## 3.5.3
+
+### Patch Changes
+
+- @nhost/nhost-js@3.1.6
+
+## 3.5.2
+
+### Patch Changes
+
+- @nhost/nhost-js@3.1.5
+
+## 3.5.1
+
+### Patch Changes
+
+- @nhost/nhost-js@3.1.4
+
+## 3.5.0
+
+### Minor Changes
+
+- d0c9f4c: fix: replace `jose` with `jwt-decode` version 4.0.0
+
+### Patch Changes
+
+- @nhost/nhost-js@3.1.3
+
+## 3.4.4
+
+### Patch Changes
+
+- Updated dependencies [4c35171]
+- Updated dependencies [3cea460]
+  - @nhost/nhost-js@3.1.2
+
+## 3.4.3
+
+### Patch Changes
+
+- @nhost/nhost-js@3.1.1
+
+## 3.4.2
+
+### Patch Changes
+
+- Updated dependencies [304065a]
+  - @nhost/nhost-js@3.1.0
+
+## 3.4.1
+
+### Patch Changes
+
+- @nhost/nhost-js@3.0.11
+
+## 3.4.0
+
+### Minor Changes
+
+- 768ca17: chore: update dependencies
+
+### Patch Changes
+
+- @nhost/nhost-js@3.0.10
+
+## 3.3.2
+
+### Patch Changes
+
+- 311374e: feat: add `connect` param to `useProviderLink` hook
+  - @nhost/nhost-js@3.0.10
+
+## 3.3.1
+
+### Patch Changes
+
+- @nhost/nhost-js@3.0.9
+
+## 3.3.0
+
+### Minor Changes
+
+- 49a80c2: chore: update dependencies
+
+### Patch Changes
+
+- @nhost/nhost-js@3.0.8
+
+## 3.2.3
+
+### Patch Changes
+
+- @nhost/nhost-js@3.0.8
+
+## 3.2.2
+
+### Patch Changes
+
+- @nhost/nhost-js@3.0.7
+
+## 3.2.1
+
+### Patch Changes
+
+- @nhost/nhost-js@3.0.6
+
+## 3.2.0
+
+### Minor Changes
+
+- 017f1a6: feat: add elevated permission examples
+
+### Patch Changes
+
+- @nhost/nhost-js@3.0.5
+
+## 3.1.1
+
+### Patch Changes
+
+- @nhost/nhost-js@3.0.4
+
+## 3.1.0
+
+### Minor Changes
+
+- 1a61c65: feat: add 'elevateEmailSecurityKey' to the SDKs along with integration into react-apollo and vue-apollo examples
+
+### Patch Changes
+
+- e5bab6a: chore: update dependencies
+  - @nhost/nhost-js@3.0.3
+
+## 3.0.2
+
+### Patch Changes
+
+- 8d91f71: chore: update deps and enable pnpm audit
+- Updated dependencies [8d91f71]
+  - @nhost/nhost-js@3.0.2
+
+## 3.0.1
+
+### Patch Changes
+
+- @nhost/nhost-js@3.0.1
+
+## 3.0.0
+
+### Major Changes
+
+- bc9eff6e4: chore: remove support for using backendUrl when instantiating the Nhost client
+
+### Patch Changes
+
+- Updated dependencies [bc9eff6e4]
+  - @nhost/nhost-js@3.0.0
+
+## 2.1.1
+
+### Patch Changes
+
+- Updated dependencies [8b127fbb6]
+  - @nhost/nhost-js@2.2.18
+
+## 2.1.0
+
+### Minor Changes
+
+- 66c3193bc: Update useChangePassword hook interface to include ActionLoadingState
+
+### Patch Changes
+
+- 00c363f80: fix(docs): update changeEmail usage reference
+
+## 2.0.32
+
+### Patch Changes
+
+- 4fe4a1696: return `refreshToken` immediately after signIn and signUp
+  - @nhost/nhost-js@2.2.17
+
 ## 2.0.31
 
 ### Patch Changes

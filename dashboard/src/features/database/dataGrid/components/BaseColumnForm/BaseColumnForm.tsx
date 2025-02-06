@@ -105,7 +105,7 @@ export default function BaseColumnForm({
       className="flex flex-auto flex-col content-between overflow-hidden border-t-1"
     >
       <div className="flex-auto overflow-y-auto">
-        <section className="grid grid-cols-8 py-3 px-6">
+        <section className="grid grid-cols-8 px-6 py-3">
           <Input
             {...register('name', {
               onChange: (event) => {
@@ -197,7 +197,7 @@ export default function BaseColumnForm({
 
         <Box
           component="section"
-          className="grid grid-cols-8 border-t-1 py-3 px-6"
+          className="grid grid-cols-8 border-t-1 px-6 py-3"
         >
           <ControlledAutocomplete
             id="defaultValue"

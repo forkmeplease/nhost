@@ -25,7 +25,7 @@ httpPoolSize = 100
 
 [functions]
 [functions.node]
-version = 16
+version = 18
 
 [auth]
 version = '0.20.2'
@@ -70,7 +70,7 @@ enabled = true
 
 [auth.method.emailPassword]
 hibpEnabled = false
-emailVerificationRequired = true
+emailVerificationRequired = false
 passwordMinLength = 8
 
 [auth.method.smsPasswordless]

@@ -2,8 +2,8 @@ import { useDialog } from '@/components/common/DialogProvider';
 import { Alert } from '@/components/ui/v2/Alert';
 import { Button } from '@/components/ui/v2/Button';
 import { Text } from '@/components/ui/v2/Text';
-import { ChangePlanModal } from '@/features/projects/common/components/ChangePlanModal';
-import { useIsCurrentUserOwner } from '@/features/projects/common/hooks/useIsCurrentUserOwner';
+import { ChangePlanModal } from '@/features/orgs/projects/common/components/ChangePlanModal';
+import { useIsCurrentUserOwner } from '@/features/orgs/projects/common/hooks/useIsCurrentUserOwner';
 import type { DetailedHTMLProps, HTMLProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
@@ -31,7 +31,7 @@ export default function UpgradeNotification({
 
           {!isOwner && (
             <Text component="span" color="secondary" className="text-sm">
-              Ask an owner of this workspace to upgrade the project.
+              Ask an Admin to upgrade the organization.
             </Text>
           )}
         </Text>

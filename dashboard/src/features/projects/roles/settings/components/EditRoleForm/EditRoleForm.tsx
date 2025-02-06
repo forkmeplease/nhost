@@ -1,5 +1,8 @@
+import { ApplyLocalSettingsDialog } from '@/components/common/ApplyLocalSettingsDialog';
+import { useDialog } from '@/components/common/DialogProvider';
 import { ActivityIndicator } from '@/components/ui/v2/ActivityIndicator';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
+import { useIsPlatform } from '@/features/projects/common/hooks/useIsPlatform';
 import type {
   BaseRoleFormProps,
   BaseRoleFormValues,
@@ -9,17 +12,16 @@ import {
   baseRoleFormValidationSchema,
 } from '@/features/projects/roles/settings/components/BaseRoleForm';
 import { getUserRoles } from '@/features/projects/roles/settings/utils/getUserRoles';
+import { useLocalMimirClient } from '@/hooks/useLocalMimirClient';
 import type { Role } from '@/types/application';
-import { getToastStyleProps } from '@/utils/constants/settings';
-import { getServerError } from '@/utils/getServerError';
 import {
   GetRolesPermissionsDocument,
   useGetRolesPermissionsQuery,
   useUpdateConfigMutation,
 } from '@/utils/__generated__/graphql';
+import { execPromiseWithErrorToast } from '@/utils/execPromiseWithErrorToast';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 
 export interface EditRoleFormProps
   extends Pick<BaseRoleFormProps, 'onCancel' | 'location'> {
@@ -30,7 +32,7 @@ export interface EditRoleFormProps
   /**
    * Function to be called when the form is submitted.
    */
-  onSubmit?: () => Promise<void>;
+  onSubmit?: () => Promise<any>;
 }
 
 export default function EditRoleForm({
@@ -38,10 +40,13 @@ export default function EditRoleForm({
   onSubmit,
   ...props
 }: EditRoleFormProps) {
+  const { openDialog } = useDialog();
+  const isPlatform = useIsPlatform();
+  const localMimirClient = useLocalMimirClient();
   const { currentProject } = useCurrentWorkspaceAndProject();
   const { data, loading, error } = useGetRolesPermissionsQuery({
     variables: { appId: currentProject?.id },
-    fetchPolicy: 'cache-only',
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   const { allowed: allowedRoles, default: defaultRole } =
@@ -57,6 +62,7 @@ export default function EditRoleForm({
 
   const [updateConfig] = useUpdateConfigMutation({
     refetchQueries: [GetRolesPermissionsDocument],
+    ...(!isPlatform ? { client: localMimirClient } : {}),
   });
 
   if (loading) {
@@ -113,23 +119,29 @@ export default function EditRoleForm({
       },
     });
 
-    try {
-      await toast.promise(
-        updateConfigPromise,
-        {
-          loading: 'Updating role...',
-          success: 'Role has been updated successfully.',
-          error: getServerError(
-            'An error occurred while trying to update the role.',
-          ),
-        },
-        getToastStyleProps(),
-      );
+    await execPromiseWithErrorToast(
+      async () => {
+        await updateConfigPromise;
+        await onSubmit?.();
 
-      onSubmit?.();
-    } catch (updateConfigError) {
-      console.error(updateConfigError);
-    }
+        if (!isPlatform) {
+          openDialog({
+            title: 'Apply your changes',
+            component: <ApplyLocalSettingsDialog />,
+            props: {
+              PaperProps: {
+                className: 'max-w-2xl',
+              },
+            },
+          });
+        }
+      },
+      {
+        loadingMessage: 'Updating role...',
+        successMessage: 'Role has been updated successfully.',
+        errorMessage: 'An error occurred while trying to update the role.',
+      },
+    );
   }
 
   return (

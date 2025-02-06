@@ -6,8 +6,7 @@ import Image from 'next/image';
 export default function OverviewProjectInfo() {
   const { currentProject } = useCurrentWorkspaceAndProject();
   const { region, subdomain } = currentProject || {};
-  const isRegionAvailable =
-    region?.awsName && region?.countryCode && region?.city;
+  const isRegionAvailable = region?.name && region?.countryCode && region?.city;
 
   return (
     <div className="grid grid-flow-row content-start gap-6">
@@ -17,7 +16,7 @@ export default function OverviewProjectInfo() {
         <div className="grid grid-flow-row gap-3">
           <InfoCard
             title="Region"
-            value={region?.awsName}
+            value={region?.name}
             customValue={
               region?.countryCode &&
               region?.city && (
@@ -30,7 +29,7 @@ export default function OverviewProjectInfo() {
                   />
 
                   <Text className="truncate text-sm font-medium">
-                    {region.city} ({region.awsName})
+                    {region.city} ({region.name})
                   </Text>
                 </div>
               )

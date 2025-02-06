@@ -7,8 +7,8 @@ import { GitHubIcon } from '@/components/ui/v2/icons/GitHubIcon';
 import { Text } from '@/components/ui/v2/Text';
 import { useCurrentWorkspaceAndProject } from '@/features/projects/common/hooks/useCurrentWorkspaceAndProject';
 import { useGitHubModal } from '@/features/projects/git/common/hooks/useGitHubModal';
-import { triggerToast } from '@/utils/toast';
 import { useUpdateApplicationMutation } from '@/utils/__generated__/graphql';
+import { triggerToast } from '@/utils/toast';
 
 export default function GitConnectionSettings() {
   const { maintenanceActive } = useUI();
@@ -23,7 +23,7 @@ export default function GitConnectionSettings() {
       payload: (
         <p>
           Are you sure you want to disconnect{' '}
-          <b>{currentProject.githubRepository.fullName}</b>?
+          <b>{currentProject?.githubRepository.fullName}</b>?
         </p>
       ),
       props: {
@@ -32,14 +32,14 @@ export default function GitConnectionSettings() {
         onPrimaryAction: async () => {
           await updateApp({
             variables: {
-              appId: currentProject.id,
+              appId: currentProject?.id,
               app: {
                 githubRepositoryId: null,
               },
             },
           });
           triggerToast(
-            `Successfully disconnected GitHub repository from ${currentProject.name}.`,
+            `Successfully disconnected GitHub repository from ${currentProject?.name}.`,
           );
           await refetch();
         },
@@ -55,7 +55,7 @@ export default function GitConnectionSettings() {
       slotProps={{ submitButton: { className: 'hidden' } }}
       className="grid grid-cols-5"
     >
-      {!currentProject.githubRepository ? (
+      {!currentProject?.githubRepository ? (
         <Button
           onClick={openGitHubModal}
           className="col-span-5 grid grid-flow-col gap-1.5 xs:col-span-3 lg:col-span-2"
@@ -69,7 +69,7 @@ export default function GitConnectionSettings() {
           <div className="ml-2 flex flex-row">
             <GitHubIcon className="mr-1.5 h-7 w-7 self-center" />
             <Text className="self-center font-normal">
-              {currentProject.githubRepository.fullName}
+              {currentProject?.githubRepository.fullName}
             </Text>
           </div>
           <Button
